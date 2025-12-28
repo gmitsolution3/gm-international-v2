@@ -37,12 +37,12 @@ const HotlineButton = () => {
           aria-label={`Call our hotline at ${hotlineNumber}`}
         >
           <button
-            className="hotline-btn-inner inline-flex items-center justify-center gap-2 px-8 py-2 
+            className="hotline-btn-inner inline-flex items-center justify-center gap-2 px-4 md:px-6 lg:px-8 py-2 
             bg-red-500 hover:bg-red-600 text-white font-semibold
             transition-all duration-200
             shadow-[0_8px_24px_rgba(239,68,68,0.4)]
             hover:shadow-[0_12px_32px_rgba(239,68,68,0.6)]
-            active:scale-95 w-full"
+            active:scale-95 w-full text-xs md:text-xl"
           >
             <span>HOTLINE</span>
             <Phone size={20} strokeWidth={2.5} />

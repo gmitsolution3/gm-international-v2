@@ -372,27 +372,33 @@ export function NavBar() {
               >
                 <div className="bg-gray-50 pl-4">
                   <MobileMenuItem
-                    href="#"
-                    label="Components"
+                    href="https://www.facebook.com/gminternational.live"
+                    label="Facebook"
                     onClick={closeMobileMenu}
-                    description="Browse all components"
+                    target="_blank"
                   />
                   <MobileMenuItem
-                    href="#"
-                    label="Documentation"
+                    href="https://www.instagram.com/gminternational.live?igsh=MWF2ZHB2M25mNTkwOA=="
+                    label="Instagram"
                     onClick={closeMobileMenu}
-                    description="Learn how to use"
+                    target="_blank"
                   />
                   <MobileMenuItem
-                    href="#"
-                    label="Blog"
+                    href="https://www.youtube.com/@gminternationalvisaagency"
+                    label="Youtube"
                     onClick={closeMobileMenu}
-                    description="Read our latest posts"
+                    target="_blank"
+                  />
+                  <MobileMenuItem
+                    href="https://www.tiktok.com/@gminternational.live"
+                    label="Tiktok"
+                    onClick={closeMobileMenu}
+                    target="_blank"
                   />
                 </div>
               </MobileMenuSection>
 
-              <MobileMenuSection
+              {/* <MobileMenuSection
                 label="About Us"
                 isOpen={expandedMenu === "about"}
                 onClick={() => toggleExpandMenu("about")}
@@ -417,7 +423,12 @@ export function NavBar() {
                     icon={<CircleCheckIcon size={18} />}
                   />
                 </div>
-              </MobileMenuSection>
+              </MobileMenuSection> */}
+              <MobileMenuItem
+                href="/#hero"
+                label="About Us"
+                onClick={closeMobileMenu}
+              />
             </div>
           </div>
         )}
@@ -432,15 +443,17 @@ function MobileMenuItem({
   onClick,
   description,
   icon,
+  target,
 }: {
   href: string;
   label: string;
   onClick: () => void;
   description?: string;
   icon?: React.ReactNode;
+  target?: "_blank" | "_self";
 }) {
   return (
-    <Link href={href} onClick={onClick}>
+    <Link href={href} onClick={onClick} target={target}>
       <div className="px-4 py-3 border-b hover:bg-red-50 transition-colors flex items-center gap-2">
         {icon}
         <div>
