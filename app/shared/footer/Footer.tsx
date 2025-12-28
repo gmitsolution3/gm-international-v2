@@ -228,7 +228,7 @@ export default function Footer() {
                     <img
                       src="https://i.postimg.cc/8CnTyv3D/mmqrcode1766604271983.png"
                       alt="Wechat QR"
-                      className="w-42 h-42 rounded-lg shadow-lg border bg-white"
+                      className="w-42 h-48 rounded-lg shadow-lg border bg-white"
                     />
                   </div>
                 </div>
