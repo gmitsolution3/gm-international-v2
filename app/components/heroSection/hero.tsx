@@ -244,7 +244,7 @@ export default function Hero() {
   };
 
   return (
-    <div className="relative w-full h-50 md:h-[40vh] lg:h-[80vh] overflow-hidden bg-gray-900">
+    <div className="relative w-full h-50 md:h-[50vh] lg:h-[90vh] overflow-hidden bg-gray-900">
       {/* Slides */}
       <div className="relative w-full h-full">
         {slides.map((slide, index) => (

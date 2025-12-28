@@ -37,7 +37,7 @@ export default function WaveLogoSection() {
           <img
             src="https://i.postimg.cc/WbV55LZS/Group-2.png"
             alt="Company Logo"
-            className="w-12 h-12 object-contain"
+            className="w-20 h-20 object-contain"
           />
         </div>
 

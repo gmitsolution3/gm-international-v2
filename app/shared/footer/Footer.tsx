@@ -72,12 +72,57 @@ export default function Footer() {
               </p>{" "}
               <br />
               <p className="text-white text-center md:text-left text-sm leading-relaxed">
-                <strong>Bangladesh Branches:</strong> Mirpur | Dhanmondi |
-                Chattogram | Sylhet | Bogura
+                <strong>Bangladesh Branches:</strong>
+                <a
+                  href="https://www.facebook.com/gminternational.live"
+                  className="ml-2 hover:underline"
+                  target="_blank"
+                >
+                  Mirpur
+                </a>{" "}
+                |
+                <a
+                  href="https://www.facebook.com/gminternationaldhanmondi"
+                  className="ml-2 hover:underline"
+                  target="_blank"
+                >
+                  Dhanmondi
+                </a>
+                {"  "}|{" "}
+                <a
+                  href="https://www.facebook.com/gminternationalctg"
+                  className="ml-2 hover:underline"
+                  target="_blank"
+                >
+                  Chattogram
+                </a>
+                {"  "}|{" "}
+                <a
+                  href="https://www.facebook.com/gminternationalsylhet"
+                  className="mx-2 hover:underline"
+                  target="_blank"
+                >
+                  Sylhet
+                </a>
+                |{" "}
+                <a
+                  href="https://www.facebook.com/gminternationalbogura"
+                  className="ml-2 hover:underline"
+                  target="_blank"
+                >
+                  Bogura
+                </a>
               </p>{" "}
               <br />
               <p className="text-white text-center md:text-left text-sm leading-relaxed">
-                <strong>China Branches:</strong> Guangzhou | Kunming
+                <strong>China Branches:</strong>{" "}
+                <a
+                  href="https://www.facebook.com/profile.php?id=61580654585072"
+                  className="hover:underline"
+                  target="_blank"
+                >
+                  Guangzhou | Kunming
+                </a>
               </p>
             </div>
 
@@ -173,7 +218,7 @@ export default function Footer() {
 
                   <a
                     // href="weixin://contacts/profile/apon_01"
-                    onClick={(e)=>handleWeChatClick(e)}
+                    onClick={(e) => handleWeChatClick(e)}
                     // target="_blank"
                     className="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 transition"
                   >
@@ -261,7 +306,11 @@ export default function Footer() {
             <p className="text-center">
               Copyright @2025 GM International all right reserved.
             </p>
-            <a href="#" className="hover:text-gray-200 transition">
+            <a
+              href="https://www.gmitsolution.net/"
+              target="_blank"
+              className="hover:text-gray-200 transition"
+            >
               Development by GM IT Solution
             </a>
           </div>
