@@ -121,8 +121,9 @@ export default function Footer() {
                   className="hover:underline"
                   target="_blank"
                 >
-                  Guangzhou | Kunming
-                </a>
+                  Guangzhou
+                </a>{" "}
+                | Kunming
               </p>
             </div>
 
