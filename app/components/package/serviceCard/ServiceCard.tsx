@@ -31,20 +31,21 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ iconUrl, title, description, 
 const ServicesSection: React.FC = () => {
   const services = [
     {
-      iconUrl: "https://i.postimg.cc/y84YY3ng/famicons-school-sharp.png",  // placeholder URL
+      iconUrl: "https://i.postimg.cc/y84YY3ng/famicons-school-sharp.png", // placeholder URL
       title: "Student",
       description: "Your Global Education Starts Here",
       color: "bg-gray-100",
       titleColor: "text-blue-700",
-      page_link: "/student-home-page"
+      page_link: "/student-home-page",
     },
     {
-      iconUrl: "https://i.postimg.cc/TPQR97xj/streamline-ultimate-favorite-medical-bold.png",
+      iconUrl:
+        "https://i.postimg.cc/TPQR97xj/streamline-ultimate-favorite-medical-bold.png",
       title: "Medical",
       description: "Advanced Medical Treatment Abroad",
       color: "bg-red-500",
       titleColor: "text-red-500",
-      page_link: "/medical-home-page"
+      page_link: "/medical-home-page",
     },
     {
       iconUrl: "https://i.postimg.cc/bYZtZb0B/majesticons-airplane.png",
@@ -52,7 +53,7 @@ const ServicesSection: React.FC = () => {
       description: "Travel the World with Confidence",
       color: "bg-sky-400",
       titleColor: "text-sky-300",
-      page_link: "/tourist-home-page"
+      page_link: "/tourist-home-page",
     },
     {
       iconUrl: "https://i.postimg.cc/5tPX0N6m/solar-pie-chart-3-bold.png",
@@ -60,24 +61,27 @@ const ServicesSection: React.FC = () => {
       description: "Expand Your Business Globally",
       color: "bg-gray-800",
       titleColor: "text-black",
-      page_link: "/business-home-page"
+      page_link: "/business-home-page",
     },
     {
       iconUrl: "https://i.postimg.cc/L8253ZfF/9023992-student-fill-icon-1.png",
       title: "International Student",
-      description: "GM International আপনাকে দিচ্ছে Full & Partial Scholarship, Admission, Visa Processing এবং Complete Guideline",
+      description:
+        "GM International আপনাকে দিচ্ছে Full & Partial Scholarship, Admission, Visa Processing এবং Complete Guideline",
       color: "bg-red-500",
       titleColor: "text-red-500",
-      page_link: "/"
+      page_link: "/international-student",
     },
     {
-      iconUrl: "https://i.postimg.cc/sDRg3ZTr/3383446-airport-departure-luggage-passenger-tourist-icon-1.png",
+      iconUrl:
+        "https://i.postimg.cc/sDRg3ZTr/3383446-airport-departure-luggage-passenger-tourist-icon-1.png",
       title: "International Tourist",
-      description: "স্বপ্নের দেশ ঘুরে দেখার পরিকল্পনা?আমরা দিচ্ছি Tourist Visa Processing Proper Documentation, Embassy Guideline এবং Visa Success Rate বাড়ানোর Complete Support।",
+      description:
+        "স্বপ্নের দেশ ঘুরে দেখার পরিকল্পনা?আমরা দিচ্ছি Tourist Visa Processing Proper Documentation, Embassy Guideline এবং Visa Success Rate বাড়ানোর Complete Support।",
       color: "bg-gray-700",
       titleColor: "text-blue-700",
-      page_link: "/"
-    }
+      page_link: "/international-tourist",
+    },
   ];
 
   return (
