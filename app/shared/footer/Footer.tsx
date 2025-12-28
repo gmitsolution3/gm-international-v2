@@ -31,17 +31,17 @@ export default function Footer() {
     }
   };
 
-  const handleWeChatClick = (e:any) => {
-  e.preventDefault();
-  
-  // অ্যাপ ওপেন করার চেষ্টা করবে
-  window.location.href = "weixin://dl/chat?apon_01";
-  
-  // যদি ২ সেকেন্ডের মধ্যে অ্যাপ ওপেন না হয়, তবে ব্রাউজার লিংকে নিয়ে যাবে
-  setTimeout(() => {
-    window.open("https://www.wechat.com/", "_blank");
-  }, 2000);
-};
+  const handleWeChatClick = (e: any) => {
+    e.preventDefault();
+
+    // অ্যাপ ওপেন করার চেষ্টা করবে
+    window.location.href = "weixin://dl/chat?apon_01";
+
+    // যদি ২ সেকেন্ডের মধ্যে অ্যাপ ওপেন না হয়, তবে ব্রাউজার লিংকে নিয়ে যাবে
+    setTimeout(() => {
+      window.open("https://www.wechat.com/", "_blank");
+    }, 2000);
+  };
 
   return (
     <footer className="relative mt-16 z-10">
@@ -208,15 +208,6 @@ export default function Footer() {
               </h3>
               <div className="flex gap-4 mb-6">
                 <div className="relative group w-10 h-10 flex items-center justify-center">
-                  {/* ICON */}
-                  {/* <a
-                    href="https://www.wechat.com/apon_01"
-                    target="_blank"
-                    className="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 transition"
-                  >
-                    <IoLogoWechat size={20} className="text-black" />
-                  </a> */}
-
                   <a
                     // href="weixin://contacts/profile/apon_01"
                     onClick={(e) => handleWeChatClick(e)}
@@ -307,13 +298,16 @@ export default function Footer() {
             <p className="text-center">
               Copyright @2025 GM International all right reserved.
             </p>
-            <a
-              href="https://www.gmitsolution.net/"
-              target="_blank"
-              className="hover:text-gray-200 transition"
-            >
-              Development by GM IT Solution
-            </a>
+            <div>
+              Development by
+              <a
+                href="https://www.gmitsolution.net/"
+                target="_blank"
+                className="hover:text-gray-200 transition ml-1 hover:underline"
+              >
+                GM IT Solution
+              </a>
+            </div>
           </div>
         </div>
       </div>
