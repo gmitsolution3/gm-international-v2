@@ -1,0 +1,20 @@
+{
+  "china": [
+    "Tsinghua University",
+    "Fudan University",
+    "Peking University",
+    "Shanghai Jiao Tong University"
+  ],
+  "australia": [
+    "Deakin University",
+    "Monash University",
+    "La Trobe University",
+    "RMIT University"
+  ],
+  "malaysia": [
+    "Universiti Putra Malaysia",
+    "University of Malaya",
+    "UCSI University",
+    "Taylor’s University"
+  ]
+}
