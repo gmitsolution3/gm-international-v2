@@ -136,6 +136,10 @@ select {
   color: inherit;
 }
 
+.leaflet-container {
+    touch-action: pan-y; 
+}
+
 @keyframes bounce-animation {
   0%,
   100% {

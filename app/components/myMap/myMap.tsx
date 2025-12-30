@@ -42,8 +42,12 @@ export default function MyMap() {
         center={[23.685, 90.3563] as any}
         zoom={7}
         // scrollWheelZoom={true}
+        dragging={!L.Browser.mobile}
+        tapHold={false}
+        touchZoom={true}
         scrollWheelZoom={false}
         style={{ height: "100%", width: "100%" }}
+        className="leaflet-container"
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
