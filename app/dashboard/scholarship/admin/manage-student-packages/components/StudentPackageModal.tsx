@@ -1,15 +1,18 @@
 import React from "react";
 import MainModal from "./mainModal";
 import { X } from "lucide-react";
+import { EducationMasterFormData } from "../../add-university/components/EducationMasterForm";
 
 interface StudentPackageModal {
   isOpen: boolean;
   onClose: () => void;
+  universityData:EducationMasterFormData[]
 }
 
 const StudentPackageModal: React.FC<StudentPackageModal> = ({
   isOpen,
   onClose,
+  universityData
 }) => {
   if (!isOpen) return null;
 
@@ -26,7 +29,7 @@ const StudentPackageModal: React.FC<StudentPackageModal> = ({
         </div>
 
         <div className="w-full">
-          <MainModal onClose = {onClose}/>
+          <MainModal onClose = {onClose} universityData={universityData}/>
         </div>
       </div>
     </div>

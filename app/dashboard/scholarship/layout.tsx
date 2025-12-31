@@ -35,6 +35,11 @@ const menuItems = [
     icon: Building2,
     href: "/dashboard/scholarship/admin/manage-student-university",
   },
+  {
+    label: "Add University",
+    icon: Building2,
+    href: "/dashboard/scholarship/admin/add-university",
+  },
 ];
 
 const userMenuItems = [

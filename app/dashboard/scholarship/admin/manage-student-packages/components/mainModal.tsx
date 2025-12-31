@@ -13,6 +13,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 // import { CheckCircle2Icon } from "lucide-react";
 import Swal from "sweetalert2";
 import { Checkbox } from "@/components/ui/checkbox";
+import { EducationMasterFormData } from "../../add-university/components/EducationMasterForm";
 
 interface Universities {
   all: string[];
@@ -20,6 +21,21 @@ interface Universities {
   china: string[];
   malaysia: string[];
 }
+
+type Course = { value: string };
+
+type University = {
+  name: string;
+  location: string;
+  courses: Course[];
+};
+
+type EducationMaster = {
+  _id: string;
+  country: string;
+  universities: University[];
+  isActive: boolean;
+};
 
 interface countryOption {
   id: number;
@@ -35,6 +51,7 @@ const countryOptions: countryOption[] = [
   { id: 1, name: "Australia" },
   { id: 2, name: "China" },
   { id: 3, name: "Malaysia" },
+  { id: 3, name: "Bangladesh" },
 ];
 
 const UniversitiesProgram: string[] = [
@@ -71,37 +88,58 @@ const duration: string[] = [
 
 const language: string[] = ["English", "Bangla", "Chinese", "Malaya"];
 
+
+
 const initialState = {
-  selectedCountry: countryOptions[0],
-  selectedUniversity: "Select University",
-  filteredUniversities: [],
-  selectUniversitiesProgram: UniversitiesProgram[0],
-  selectStudyLevel: studyLevel[0],
-  selectDuration: duration[0],
-  universityList: { all: [], australia: [], china: [], malaysia: [] },
+  selectedCountry: null,
+  selectedUniversity: null,
+  selectedCourse: null,
+
+  filteredUniversities: [] as University[],
+  filteredCourses: [] as string[],
+
+  universityData: [] as EducationMaster[],
 };
+
+
 
 function reducer(state: any, action: any) {
   switch (action.type) {
-    case "SET_UNIVERSITIES":
-      return { ...state, universityList: action.payload };
+    case "SET_UNIVERSITY_DATA":
+      return { ...state, universityData: action.payload };
 
-    case "SET_COUNTRY":
+    case "SET_COUNTRY": {
+      const countryData = state.universityData.find(
+        (c: any) => c.country === action.payload
+      );
+
       return {
         ...state,
         selectedCountry: action.payload,
-        filteredUniversities:
-          action.payload.name === "All"
-            ? state.universityList.all
-            : state.universityList[action.payload.name.toLowerCase()],
-        selectedUniversity: "Select University",
+        selectedUniversity: null,
+        selectedCourse: null,
+        filteredUniversities: countryData?.universities || [],
+        filteredCourses: [],
       };
+    }
 
-    case "SET_UNIVERSITY":
-      return { ...state, selectedUniversity: action.payload };
+    case "SET_UNIVERSITY": {
+      const university = state.filteredUniversities.find(
+        (u: any) => u.name === action.payload
+      );
+
+      return {
+        ...state,
+        selectedUniversity: action.payload,
+        selectedCourse: null,
+        filteredCourses: university
+          ? university.courses.map((c: any) => c.value)
+          : [],
+      };
+    }
 
     case "SET_PROGRAM":
-      return { ...state, selectUniversitiesProgram: action.payload };
+      return { ...state, selectedCourse: action.payload };
 
     case "SET_STUDY_LEVEL":
       return { ...state, selectStudyLevel: action.payload };
@@ -110,6 +148,7 @@ function reducer(state: any, action: any) {
       return { ...state, selectDuration: action.payload };
     case "SET_LANGUAGE":
       return { ...state, selectLanguage: action.payload };
+
     default:
       return state;
   }
@@ -130,13 +169,15 @@ type Inputs = {
   idCard: string;
   b2bPrice: string;
   addForB2B: boolean;
+  isInternationalStudent: boolean;
 };
 
 interface FunProps {
   onClose: () => void;
+  universityData: EducationMasterFormData[];
 }
 
-function MainModal({ onClose }: FunProps) {
+function MainModal({ onClose, universityData }: FunProps) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const [imgformData, setImgFormData] = useState<ImgFormData>({
@@ -155,13 +196,15 @@ function MainModal({ onClose }: FunProps) {
   } = useForm<Inputs>({
     defaultValues: {
       addForB2B: false,
+      isInternationalStudent: false,
     },
   });
 
   const forB2BUser = watch("addForB2B");
   const b2bPrice = watch("b2bPrice");
+  const internationalStudent = watch("isInternationalStudent");
 
-  const onSubmit: SubmitHandler<Inputs> | null = async(data) => {
+  const onSubmit: SubmitHandler<Inputs> | null = async (data) => {
     // setPackageFormData(data);
 
     const formData = {
@@ -169,14 +212,16 @@ function MainModal({ onClose }: FunProps) {
       imgURL: imgformData.secure_url,
       selectedCountry,
       selectedUniversity,
-      selectUniversitiesProgram,
+      selectUniversitiesProgram :state.selectedCourse,
       selectStudyLevel,
       selectDuration,
       selectLanguage,
       createdAt: new Date(),
       forB2BUser: forB2BUser,
       B2BPrice: b2bPrice,
+      isInternationalStudent: internationalStudent,
     };
+    console.log(formData);
     try {
       const addPackage = await fetch(
         "https://gm-international-server-gamma.vercel.app/admin/scholarship-package-management",
@@ -247,6 +292,15 @@ function MainModal({ onClose }: FunProps) {
       .catch((err) => console.error(err));
   }, []);
 
+  useEffect(() => {
+    if (universityData?.length) {
+      dispatch({
+        type: "SET_UNIVERSITY_DATA",
+        payload: universityData.filter((u) => u.isActive),
+      });
+    }
+  }, [universityData]);
+
   const handleInputChange = async (e: any) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -282,7 +336,6 @@ function MainModal({ onClose }: FunProps) {
     }
   };
 
- 
   return (
     <div className="mx-auto max-w-4xl overflow-auto bg-white/40">
       <div className="mb-8">
@@ -303,14 +356,14 @@ function MainModal({ onClose }: FunProps) {
               <div className="space-y-2">
                 {/* <DropDown /> */}
                 <div>
+                 
                   <SelectDropdown
                     label="Country"
-                    options={countryOptions}
-                    selected={selectedCountry}
+                    options={state.universityData.map((c: any) => c.country)}
+                    selected={state.selectedCountry}
                     onChange={(value) =>
                       dispatch({ type: "SET_COUNTRY", payload: value })
                     }
-                    displayKey="name"
                   />
                 </div>
               </div>
@@ -318,9 +371,9 @@ function MainModal({ onClose }: FunProps) {
               {/* select university */}
               <div className="space-y-2">
                 <SelectDropdown
-                  label="*University"
-                  options={filteredUniversities}
-                  selected={selectedUniversity}
+                  label="University"
+                  options={state.filteredUniversities.map((u: any) => u.name)}
+                  selected={state.selectedUniversity}
                   onChange={(value) =>
                     dispatch({ type: "SET_UNIVERSITY", payload: value })
                   }
@@ -379,8 +432,8 @@ function MainModal({ onClose }: FunProps) {
               <div className="space-y-2">
                 <SelectDropdown
                   label="*Program"
-                  options={UniversitiesProgram}
-                  selected={selectUniversitiesProgram}
+                  options={state.filteredCourses}
+                  selected={state.selectedCourse}
                   onChange={(value) =>
                     dispatch({ type: "SET_PROGRAM", payload: value })
                   }
@@ -579,6 +632,21 @@ function MainModal({ onClose }: FunProps) {
                 This package for b2b
               </label>
             </div>
+            <div className="flex items-center justify-between text-sm">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <Controller
+                  name="isInternationalStudent"
+                  control={control}
+                  render={({ field }) => (
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(checked) => field.onChange(checked)}
+                    />
+                  )}
+                />
+                This package for International Student
+              </label>
+            </div>
             <div className="my-5 ">
               {forB2BUser && (
                 <div className="space-y-2 max-w-61.25 w-full">
@@ -600,7 +668,6 @@ function MainModal({ onClose }: FunProps) {
               >
                 Add More +
               </Button>
-             
             </div>
             <div>
               <Button

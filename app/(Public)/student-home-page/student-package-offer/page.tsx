@@ -34,7 +34,7 @@ export default function ScholarshipListing() {
       try {
         // Replace with your actual API endpoint
         const response = await fetch(
-          "https://gm-international-server-gamma.vercel.app/admin/scholarship-package-management"
+          "https://gm-international-server-gamma.vercel.app/scholarship-package"
         );
         const data = await response.json();
         setOffers(data);

@@ -38,6 +38,7 @@ interface PackageFormData {
   [key: string]: any;
   updatedAt: string;
   createdBy: string | undefined;
+  internationalPackage: boolean;
 }
 
 const inclusions = [
@@ -74,6 +75,7 @@ const ManagePackageForm = ({ onClose }: OnClose) => {
     excludes: [],
     updatedAt: new Date().toISOString(),
     createdBy: session?.user?.email || undefined,
+    internationalPackage: false,
   });
 
   const [errors, setErrors] = useState<Partial<PackageFormData>>({});
@@ -81,6 +83,7 @@ const ManagePackageForm = ({ onClose }: OnClose) => {
   const [isUploading, setIsUploading] = useState(false);
   const [forB2BUser, setForB2BUser] = useState(false);
   const [b2bPrice, setB2bPrice] = useState("");
+  const [isInternationalPackage, setIsInternationalPackage] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -193,12 +196,13 @@ const ManagePackageForm = ({ onClose }: OnClose) => {
       ...formData,
       forB2BUser,
       B2BPrice: forB2BUser ? b2bPrice : null,
+      internationalPackage: isInternationalPackage,
     };
 
-    
+    console.log(dataToSubmit)
 
 
-    if (validateForm()) {
+    // if (validateForm()) {
       const res = await fetch(
         "https://gm-international-server-gamma.vercel.app/tourist-package",
         {
@@ -233,9 +237,9 @@ const ManagePackageForm = ({ onClose }: OnClose) => {
         });
         onClose();
       }
-    } else {
-      alert("Please fill up all required fields!");
-    }
+    // } else {
+    //   alert("Please fill up all required fields!");
+    // }
   };
 
   return (
@@ -437,6 +441,15 @@ const ManagePackageForm = ({ onClose }: OnClose) => {
             />
             <label className="text-sm font-medium">This package for B2B</label>
           </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              checked={isInternationalPackage}
+              onChange={(e) => setIsInternationalPackage(e.target.checked)}
+              className="h-4 w-4 text-red-600 border-gray-300 rounded"
+            />
+            <label className="text-sm font-medium">This is international package</label>
+          </div>
           <div className="my-5 ">
             {forB2BUser && (
               <div className="mt-4">
@@ -447,7 +460,7 @@ const ManagePackageForm = ({ onClose }: OnClose) => {
                   type="text"
                   value={b2bPrice}
                   onChange={(e) => setB2bPrice(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm sm:text-sm focus:border-red-500 focus:ring-red-500"
+                  className="mt-1 block w-full py-2 rounded-md border-gray-300 shadow-sm sm:text-sm focus:border-red-500 focus:ring-red-500"
                 />
               </div>
             )}

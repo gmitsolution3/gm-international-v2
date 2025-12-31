@@ -6,7 +6,7 @@ import React from "react";
 export const PackageCustomize = () => {
   return (
     <div className="min-h-[60vh] max-w-7xl w-full mx-auto flex justify-center items-center">
-      <div className="max-w-[793px] w-full text-center space-y-7 mx-auto">
+      <div className="max-w-198.25 w-full text-center space-y-7 mx-auto">
         <h1 className="text-5xl font-bold">
           Customize <span className="text-[#CA2328]">Package</span>
         </h1>

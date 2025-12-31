@@ -75,12 +75,12 @@ export default async function OfferDetailsPage({
             {/* Header */}
             <div className="flex flex-col md:justify-start">
               <div
-                className={`w-16 h-16 md:w-20 md:h-20 rounded-full bg-linear-to-br from-gray-300 to-gray-400 transition-all duration-300`}
+                className={`rounded-2xl bg-linear-to-br from-gray-300 to-gray-400 transition-all duration-300`}
               >
                 <img
                   src={imgURL}
                   alt=""
-                  className={`w-16 h-16 md:w-20 md:h-20 rounded-full bg-linear-to-br from-gray-300 to-gray-400 transition-all duration-300 hover:scale-110 shadow-lg `}
+                  className={`w-full rounded-2xl bg-linear-to-br from-gray-300 to-gray-400 transition-all duration-300 hover:scale-105 shadow-lg `}
                 />
               </div>
               {/* University Info */}

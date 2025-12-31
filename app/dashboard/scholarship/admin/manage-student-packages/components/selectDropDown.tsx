@@ -10,7 +10,7 @@ import {
 import { BadgePlus, ChevronDown } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import React, { useState } from "react";
-import { Input } from "@/components/ui/input"
+import { Input } from "@/components/ui/input";
 
 interface SelectDropdownProps<T> {
   label: string;
@@ -62,9 +62,9 @@ const SelectDropdown = <T extends string | object>({
 
           {/* Dropdown options */}
           <ComboboxOptions className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md border border-gray-200 bg-white shadow-lg focus:outline-none z-10">
-            {options.map((opt) => (
+            {options.map((opt,idx) => (
               <ComboboxOption
-                key={typeof opt === "string" ? opt : JSON.stringify(opt)}
+                key={`${getDisplayValue(opt)}-${idx}`}
                 value={opt}
                 className={({ active }) =>
                   `cursor-pointer select-none px-3 py-2 text-sm ${
@@ -77,37 +77,6 @@ const SelectDropdown = <T extends string | object>({
                 {getDisplayValue(opt)}
               </ComboboxOption>
             ))}
-            <div>
-              {addItems ? (
-                <div className="flex justify-center flex-col">
-                  <Input
-                    type="text"
-                    placeholder="Add items"
-                    className="text px-4 py-1 border border-red-200 rounded-lg flex gap-2 items-center w-full/2 justify-center my-1"
-                    onChange={(e) => setNewItem(e.target.value)}
-                    onKeyDown={(e) => e.stopPropagation()}
-                    onMouseDown={(e) => e.stopPropagation()}
-                  />
-                  <button
-                    onClick={handleAddItem}
-                    onMouseDown={(e) => e.stopPropagation()}
-                    className="bg-red-500 text-white px-2 py-1 rounded-md text-sm hover:bg-red-600"
-                  >
-                    Save
-                  </button>
-                </div>
-              ) : (
-                <div className="flex justify-center py-2">
-                  <button
-                    className="text bg-red-200 px-4 py-1 border border-red-200 rounded-lg flex gap-2 items-center w-full justify-center mx-4 hover:cursor-pointer"
-                    onClick={() => setAddItems((prve) => !prve)}
-                  >
-                    <BadgePlus size={20} />
-                    add items
-                  </button>
-                </div>
-              )}
-            </div>
           </ComboboxOptions>
         </div>
       </Combobox>

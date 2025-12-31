@@ -2,8 +2,15 @@
 
 import React, { useState } from "react";
 import StudentPackageModal from "./StudentPackageModal";
+import { EducationMasterFormData } from "../../add-university/components/EducationMasterForm";
 
-const AddScholarshipPackage = () => {
+export interface UniversityProps{
+  universityData:EducationMasterFormData[]
+}
+
+
+
+const AddScholarshipPackage = ({universityData}:UniversityProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -18,7 +25,7 @@ const AddScholarshipPackage = () => {
       
 
       {/* Modal */}
-      <StudentPackageModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <StudentPackageModal isOpen={isOpen} onClose={() => setIsOpen(false)} universityData={universityData}/>
     </div>
   );
 };

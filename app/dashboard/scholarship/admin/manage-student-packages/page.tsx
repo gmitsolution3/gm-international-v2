@@ -11,6 +11,7 @@ const ManageStudentPackage = async () => {
   );
   const scholarShipData = await manageScholarShipPackage.json();
 
+
   return (
     <main className="min-h-screen bg-background">
       <div className="w-full">
@@ -23,12 +24,12 @@ const ManageStudentPackage = async () => {
               Manage and track all student Package
             </p>
           </div>
-          <AddScholarshipPackage />
+          <AddScholarshipPackage universityData={scholarShipData.universityData}/>
         </div>
 
         {/* <ScholarshipPackageTable scholarShipData={scholarShipData}/> */}
         <ScholarshipPackageInAdminDashboard
-          scholarshipPackage={scholarShipData}
+          scholarshipPackage={scholarShipData.data}
         />
       </div>
     </main>
