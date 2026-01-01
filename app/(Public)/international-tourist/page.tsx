@@ -21,14 +21,21 @@ const InternationalTourist = async () => {
     </div>;
   }
 
-  const from = "international"
+  const from = "international";
   return (
     <div>
       <div>
         <TouristHomeHeader />
       </div>
       <div>
-        <TouristHomePackages packages={result} from={from}/>
+        <TouristHomePackages packages={result} from={from} />
+        <div className="flex justify-center">
+          <Link href="/international-tourist/international-tourist-package">
+            <Button className="bg-red-600 hover:bg-red-700 text-white rounded-full px-6 py-2 md:px-8 md:py-3 font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95">
+              View More
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );

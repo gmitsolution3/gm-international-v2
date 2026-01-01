@@ -23,6 +23,8 @@ export default async function OfferDetailsPage({
 
   const packageDetails = await res.json();
 
+ 
+
   // const {_id,selectedCountry,selectedUniversity,imgURL,packagePrice,applicationRequirement,courseName,createdAt,deadlineDate,idCard,scholarshipDetails,selectDuration,selectLanguage,selectStudyLevel,selectUniversitiesProgram,sl_No,} = packageDetails;
   const {
     _id,

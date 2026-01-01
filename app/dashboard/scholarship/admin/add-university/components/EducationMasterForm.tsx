@@ -6,13 +6,16 @@ import Swal from "sweetalert2";
 type University = {
   name: string;
   location: string;
+  admission_semester: { value: string }[];
   courses: { value: string }[];
+  languages: { value: string }[];
+  coverages: { value: string }[];
 };
 
 export type EducationMasterFormData = {
   country: string;
   universities: University[];
-  isActive: boolean
+  isActive: boolean;
 };
 
 export default function EducationMasterForm() {
@@ -29,9 +32,13 @@ export default function EducationMasterForm() {
         {
           name: "",
           location: "",
+          admission_semester: [{ value: "" }],
           courses: [{ value: "" }],
+          languages: [{ value: "" }],
+          coverages: [{ value: "" }],
         },
       ],
+
       isActive: true,
     },
   });
@@ -45,50 +52,47 @@ export default function EducationMasterForm() {
     name: "universities",
   });
 
-  const onSubmit =async (data: EducationMasterFormData) => {
-    console.log("Education Master Data:", data);
+  const onSubmit = async (data: EducationMasterFormData) => {
+    
 
     try {
-          const addUniversityDetails = await fetch(
-            "https://gm-international-server-gamma.vercel.app/add-university",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data),
-            }
-          );
-    
-          const result = await addUniversityDetails.json();
-    
-          if (!result) {
-            Swal.fire({
-              title: "University can't Added",
-              icon: "error",
-              draggable: false,
-              showConfirmButton: false,
-              timer: 2000,
-            });
-            return;
-          }
-    
-          if (result.insertedId) {
-            Swal.fire({
-              title: "University Added successfully",
-              icon: "success",
-              draggable: false,
-              showConfirmButton: false,
-              timer: 2000,
-            });
-           reset()
-          }
-        } catch (error) {
-          console.error("Error while adding package:", error);
+      const addUniversityDetails = await fetch(
+        "https://gm-international-server-gamma.vercel.app/add-university",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
         }
+      );
 
+      const result = await addUniversityDetails.json();
 
+      if (!result) {
+        Swal.fire({
+          title: "University can't Added",
+          icon: "error",
+          draggable: false,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        return;
+      }
 
+      if (result.insertedId) {
+        Swal.fire({
+          title: "University Added successfully",
+          icon: "success",
+          draggable: false,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        reset();
+      }
+    } catch (error) {
+      console.error("Error while adding package:", error);
+    }
   };
 
   return (
@@ -105,9 +109,7 @@ export default function EducationMasterForm() {
           placeholder="Bangladesh"
         />
         {errors.country && (
-          <p className="text-red-500 text-xs mt-1">
-            {errors.country.message}
-          </p>
+          <p className="text-red-500 text-xs mt-1">{errors.country.message}</p>
         )}
       </div>
 
@@ -167,6 +169,29 @@ export default function EducationMasterForm() {
               control={control}
               register={register}
               universityIndex={uIndex}
+              name="courses"
+              label="Course"
+            />
+            <CoursesField
+              control={control}
+              register={register}
+              universityIndex={uIndex}
+              label="Admission Semester"
+              name="admission_semester"
+            />
+            <CoursesField
+              control={control}
+              register={register}
+              universityIndex={uIndex}
+              name="languages"
+              label="Language"
+            />
+            <CoursesField
+              control={control}
+              register={register}
+              universityIndex={uIndex}
+              name="coverages"
+              label="Coverage"
             />
           </div>
         ))}
@@ -180,6 +205,9 @@ export default function EducationMasterForm() {
             name: "",
             location: "",
             courses: [{ value: "" }],
+            admission_semester: [{ value: "" }],
+            languages: [{ value: "" }],
+            coverages: [{ value: "" }],
           })
         }
         className="text-sm font-medium text-red-600"
@@ -200,39 +228,96 @@ export default function EducationMasterForm() {
   );
 }
 
+// function CoursesField({
+//   control,
+//   register,
+//   universityIndex,
+//   label,
+// }: {
+//   control: any;
+//   register: any;
+//   universityIndex: number;
+//   label: string
+// }) {
+//   const { fields, append, remove } = useFieldArray({
+//     control,
+//     name: `universities.${universityIndex}.${label}`,
+//   });
+
+//   return (
+//     <div className="space-y-3">
+//       <label className="block text-sm font-medium">{label}</label>
+
+//       {fields.map((field, cIndex) => (
+//         <div key={field.id} className="flex gap-2">
+//           <input
+//             {...register(
+//               `universities.${universityIndex}.${label}.${cIndex}.value`,
+//               { required: true }
+//             )}
+//             className="flex-1 rounded-md border px-3 py-2 text-sm"
+//             placeholder="BSc in Computer Science & Engineering"
+//           />
+
+//           {fields.length > 1 && (
+//             <button
+//               type="button"
+//               onClick={() => remove(cIndex)}
+//               className="text-sm text-red-500"
+//             >
+//               ✕
+//             </button>
+//           )}
+//         </div>
+//       ))}
+
+//       <button
+//         type="button"
+//         onClick={() => append({ value: "" })}
+//         className="text-xs text-red-700"
+//       >
+//         {`+ ${label}`}
+//       </button>
+//     </div>
+//   );
+// }
+
 function CoursesField({
   control,
   register,
   universityIndex,
+  name,
+  label,
 }: {
   control: any;
   register: any;
   universityIndex: number;
+  name: string;
+  label: string;
 }) {
   const { fields, append, remove } = useFieldArray({
     control,
-    name: `universities.${universityIndex}.courses`,
+    name: `universities.${universityIndex}.${name}`,
   });
 
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-medium">Courses</label>
+      <label className="block text-sm font-medium">{label}</label>
 
-      {fields.map((field, cIndex) => (
+      {fields.map((field, index) => (
         <div key={field.id} className="flex gap-2">
           <input
             {...register(
-              `universities.${universityIndex}.courses.${cIndex}.value`,
+              `universities.${universityIndex}.${name}.${index}.value`,
               { required: true }
             )}
             className="flex-1 rounded-md border px-3 py-2 text-sm"
-            placeholder="BSc in Computer Science & Engineering"
           />
 
           {fields.length > 1 && (
             <button
               type="button"
-              onClick={() => remove(cIndex)}
+              onClick={() => remove(index)}
               className="text-sm text-red-500"
             >
               ✕
@@ -246,7 +331,7 @@ function CoursesField({
         onClick={() => append({ value: "" })}
         className="text-xs text-red-700"
       >
-        + Add Course
+        {`+ ${label}`}
       </button>
     </div>
   );

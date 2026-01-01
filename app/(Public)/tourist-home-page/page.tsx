@@ -17,13 +17,16 @@ const TouristHomePage = async () => {
   );
 
   const packageOfRes = await res.json();
-  
 
-  if (!packageOfRes) {
-    return;
+  if (packageOfRes.length === 0) {
+    return (
+      <div className="text-2xl min-h-screen flex justify-center items-center">
+        No data found
+      </div>
+    );
   }
 
-  const from = "tourist"
+  const from = "tourist";
 
   return (
     <div className="max-w-full">
@@ -31,7 +34,7 @@ const TouristHomePage = async () => {
         <TouristHomeHeader />
       </div>
       <div>
-        <TouristHomePackages packages={packageOfRes} from={from}/>
+        <TouristHomePackages packages={packageOfRes} from={from} />
         {/* View More Button */}
         <div className="flex justify-center mt-8">
           <Link href="/tourist-home-page/package">

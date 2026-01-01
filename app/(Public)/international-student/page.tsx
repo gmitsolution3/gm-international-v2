@@ -17,17 +17,7 @@ const InternationalStudent = async () => {
   const from = "international"
 
   return (
-    // <div className="mix-h-[60vh] w-full flex flex-col justify-center items-center">
-    //   <img
-    //     src="https://i.postimg.cc/SxQt4ySd/OE60SH0.jpg"
-    //     alt="under construction"
-    //   />
-    //   <Link href="/">
-    //     <Button> Go Home</Button>
-    //   </Link>
-    // </div>
-
-    <div>
+      <div>
       <div>
         <HeroSection/>
       </div>

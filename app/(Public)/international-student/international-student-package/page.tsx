@@ -4,7 +4,7 @@ import OfferCard from "../../student-home-page/components/OfferCard";
 
 const InternationalStudentPackage = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/international-student-package",
+    "https://gm-international-server-gamma.vercel.app/get-all-international-tourist-package",
     {
       cache: "no-store",
     }
@@ -13,6 +13,14 @@ const InternationalStudentPackage = async () => {
   const result = await res.json();
 
   const from = "internationalDetails";
+
+  if (result.length === 0) {
+    return (
+      <div className="text-2xl text-red-600 min-h-screen flex justify-center items-center">
+        no data found
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto">

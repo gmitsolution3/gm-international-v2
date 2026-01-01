@@ -1,10 +1,17 @@
-"use client"
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle, Clock, Clock1, MapPin, Plane, XCircle } from 'lucide-react';
-import Link from 'next/link';
-import React, { useState } from 'react'
-
+import { Button } from "@/components/ui/button";
+import {
+  ArrowRight,
+  CheckCircle,
+  Clock,
+  Clock1,
+  MapPin,
+  Plane,
+  XCircle,
+} from "lucide-react";
+import Link from "next/link";
+import React, { useState } from "react";
 
 export interface TouristPackage {
   _id: string;
@@ -12,10 +19,10 @@ export interface TouristPackage {
   city: string;
   photos: string[];
   packageName: string;
-  price: string; 
+  price: string;
   duration: string;
-  startDate: string; 
-  endDate: string; 
+  startDate: string;
+  endDate: string;
   packageId: string;
   subDestination: string;
   destination: string;
@@ -31,8 +38,6 @@ interface PackageDetailsProps {
 const PackageDetails = ({ packageData, source }: PackageDetailsProps) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
- 
-
   const nights = parseInt(packageData.duration) - 1;
 
   const openModal = (imgUrl: string) => setSelectedImage(imgUrl);
@@ -40,35 +45,6 @@ const PackageDetails = ({ packageData, source }: PackageDetailsProps) => {
 
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-6 bg-white">
-      {/* Image Gallery */}
-      {/* <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-6"> */}
-      {/* If at least 1 image exists → show large main image */}
-      {/* {packageData.photos.length > 0 && (
-          <div
-            className={`col-span-2 ${
-              packageData.photos.length > 2 ? "md:col-span-1 md:row-span-3" : ""
-            }`}
-          >
-            <img
-              src={packageData.photos[0]}
-              alt="Main image"
-              className="w-full h-full object-cover rounded-lg hover:cursor-pointer"
-            />
-          </div>
-        )} */}
-
-      {/* Show remaining images depending on count */}
-      {/* {packageData.photos.slice(1).map((photo, index) => (
-          <div key={index} className="aspect-video md:aspect-auto">
-            <img
-              src={photo}
-              alt={`View ${index + 2}`}
-              className="w-full h-full object-cover rounded-lg hover:cursor-pointer"
-            />
-          </div>
-        ))} */}
-      {/* </div> */}
-
       <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-6">
         {packageData.photos.length > 0 && (
           <div
@@ -250,7 +226,9 @@ const PackageDetails = ({ packageData, source }: PackageDetailsProps) => {
 
       {/* View More Button */}
       <div className="flex justify-center">
-        <Link href={`/tourist-home-page/package/booking-form?source=${source}`}>
+        <Link
+          href={`/tourist-home-page/package/booking-form?id=${packageData._id}&source=${source}`}
+        >
           <Button
             className="group relative inline-flex h-12 items-center justify-center overflow-hidden 
           bg-linear-to-b from-[#CA2328] via-[#FF5E63] to-[#FF5E63] px-15 font-medium text-neutral-200 transition hover:scale-110 hover:cursor-pointer rounded-full"

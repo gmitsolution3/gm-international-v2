@@ -58,6 +58,10 @@ export function OfferSidebar({ packageSidebarInfo, source }: OfferSidebarProps) 
             <span className="font-medium">{selectDuration}</span>
           </div>
           <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">Program:</span>
+            <span className="font-medium">{selectUniversitiesProgram}</span>
+          </div>
+          <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Teaching Language:</span>
             <span className="font-medium">{selectLanguage}</span>
           </div>

@@ -37,6 +37,32 @@ import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
+interface InternationalPackage {
+  _id: string;
+  packageName: string;
+  packageId: string;
+  destination: string;
+  subDestination: string;
+  city: string;
+  country: string;
+  price: string; // Data-te string ("120000") ache
+  B2BPrice: number | null;
+  forB2BUser: boolean;
+  internationalPackage: boolean;
+  duration: string;
+  startDate: string; // ISO Date String ba "YYYY-MM-DD"
+  endDate: string;
+  includes: string[];
+  excludes: string[];
+  photos: string[];
+  createdBy: string;
+  updatedAt: string;
+}
+
+interface PackageProps {
+  touristPackage: InternationalPackage;
+}
+
 // --- Zod Schema ---
 const formSchema = z.object({
   // Personal Information
@@ -55,14 +81,14 @@ const formSchema = z.object({
 
   // Travel Arrangement
   airTicket: z.string().optional(),
-  destinationCountry: z.string().nonempty("Destination is required"),
-  destinationPlace: z.array(z.string()).min(1, "Select at least one place"),
+  subDestination: z.string(),
+  price: z.string(),
 
   // Travel Duration
-  duration: z.object({
-    days: z.coerce.number().min(1, "At least 1 day"),
-    nights: z.coerce.number().min(0),
-  }),
+  // duration: z.object({
+  //   days: z.coerce.number().min(1, "At least 1 day"),
+  //   nights: z.coerce.number().min(0),
+  // }),
 
   // Food Plan
   foodPlan: z.array(z.string()).min(1, "Select at least one food option"),
@@ -70,13 +96,6 @@ const formSchema = z.object({
   // Transportation
   transportation: z.array(z.string()).min(1, "Select transportation"),
 
-  // Date
-  dateFrom: z.date().refine((val) => val instanceof Date, {
-    message: "Start date is required",
-  }),
-  dateTo: z.date().refine((val) => val instanceof Date, {
-    message: "End date is required",
-  }),
 
   // Hotel Booking
   hotelCategory: z.array(z.string()).optional(),
@@ -94,7 +113,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export function TouristUserForm() {
+export function TouristUserForm({ touristPackage }: PackageProps) {
   const { data: session } = useSession();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const searchParams = useSearchParams();
@@ -104,8 +123,6 @@ export function TouristUserForm() {
     resolver: zodResolver(formSchema) as any,
     defaultValues: {
       guests: { adults: 1, children: 0, infants: 0 },
-      duration: { days: 0, nights: 0 },
-      destinationPlace: [],
       foodPlan: [],
       transportation: [],
       hotelCategory: [],
@@ -124,11 +141,8 @@ export function TouristUserForm() {
 
   // Watch values for custom inputs
   const guests = watch("guests");
-  const dateFrom = watch("dateFrom");
-  const dateTo = watch("dateTo");
   const foodPlan = watch("foodPlan") || [];
   const transportation = watch("transportation") || [];
-  const destinationPlace = watch("destinationPlace") || [];
   const hotelCategory = watch("hotelCategory") || [];
   const paymentMethod = watch("paymentMethod");
   const visaStatus = watch("visaStatus");
@@ -138,6 +152,21 @@ export function TouristUserForm() {
     // Simulate API call
 
     data.createdBy = session?.user?.email ?? undefined;
+
+    const payload = {
+      ...data,
+      country: touristPackage.country,
+      destinationPlace: touristPackage.city,
+      subDestination: touristPackage.subDestination,
+      totalCost: touristPackage.price,
+      packageId: touristPackage._id,
+      packageName: touristPackage.packageName,
+      dateFrom: touristPackage.startDate,
+      endTo: touristPackage.endDate
+    };
+
+
+
     const formData = await fetch(
       "https://gm-international-server-gamma.vercel.app/tourist-package-booking",
       {
@@ -145,7 +174,7 @@ export function TouristUserForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       }
     );
 
@@ -335,7 +364,11 @@ export function TouristUserForm() {
             </FormItem>
 
             <FormItem label="Travel Cost">
-              <Input placeholder="$0.00" {...register("travelCost")} />
+              <Input
+                placeholder="$0.00"
+                value={touristPackage.price}
+                readOnly
+              />
             </FormItem>
           </div>
         </Section>
@@ -356,72 +389,25 @@ export function TouristUserForm() {
               </Select>
             </FormItem>
 
-            <FormItem
-              label="Destination country"
-              error={errors.destinationCountry?.message}
-            >
-              <Select
-                onValueChange={(val) => setValue("destinationCountry", val)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select country" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="switzerland">Switzerland</SelectItem>
-                  <SelectItem value="thailand">Thailand</SelectItem>
-                  <SelectItem value="japan">Japan</SelectItem>
-                  <SelectItem value="italy">Italy</SelectItem>
-                </SelectContent>
-              </Select>
+            <FormItem label="Destination country">
+              <Input value={touristPackage.country} readOnly />
             </FormItem>
-
-            <FormItem
-              label="Destination place"
-              error={errors.destinationPlace?.message}
-            >
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className="w-full justify-between font-normal text-left overflow-hidden bg-transparent"
-                  >
-                    <span className="truncate">
-                      {destinationPlace.length > 0
-                        ? `${destinationPlace.length} Selected`
-                        : "Select places"}
-                    </span>
-                    <ChevronDown className="h-4 w-4 opacity-50" />
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-70 p-2" align="start">
-                  <div className="space-y-2">
-                    {["Zurich", "Geneva", "Zermatt", "Lucerne"].map((place) => (
-                      <div
-                        key={place}
-                        className="flex items-center space-x-2 p-2 hover:bg-gray-50 rounded"
-                      >
-                        <Checkbox
-                          id={`place-${place}`}
-                          checked={destinationPlace.includes(place)}
-                          onCheckedChange={() =>
-                            toggleSelection(
-                              destinationPlace,
-                              place,
-                              "destinationPlace"
-                            )
-                          }
-                        />
-                        <Label
-                          htmlFor={`place-${place}`}
-                          className="flex-1 cursor-pointer"
-                        >
-                          {place}
-                        </Label>
-                      </div>
-                    ))}
-                  </div>
-                </PopoverContent>
-              </Popover>
+            <FormItem label="Destination place">
+              <Input value={touristPackage.city} readOnly />
+            </FormItem>
+            <FormItem label="Sub Destination">
+              <Input
+                {...register("subDestination")}
+                value={touristPackage.subDestination}
+                readOnly
+              />
+            </FormItem>
+            <FormItem label="Total Price">
+              <Input
+                {...register("price")}
+                value={touristPackage.price}
+                readOnly
+              />
             </FormItem>
           </div>
         </Section>
@@ -429,11 +415,8 @@ export function TouristUserForm() {
         {/* Travel Duration */}
         <Section title="Travel Duration" required>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormItem label="Days" error={errors.duration?.days?.message}>
-              <Input type="number" {...register("duration.days")} min={1} />
-            </FormItem>
-            <FormItem label="Nights" error={errors.duration?.nights?.message}>
-              <Input type="number" {...register("duration.nights")} min={0} />
+            <FormItem label="Duration">
+              <Input value={touristPackage.duration} readOnly />
             </FormItem>
           </div>
         </Section>
@@ -548,8 +531,8 @@ export function TouristUserForm() {
         {/* Date */}
         <Section title="Date" required>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormItem label="From" error={errors.dateFrom?.message}>
-              <Popover>
+            <FormItem label="From" >
+              {/* <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant={"outline"}
@@ -574,11 +557,13 @@ export function TouristUserForm() {
                     initialFocus
                   />
                 </PopoverContent>
-              </Popover>
+              </Popover> */}
+
+              <Input value={touristPackage.startDate} readOnly />
             </FormItem>
 
-            <FormItem label="To" error={errors.dateTo?.message}>
-              <Popover>
+            <FormItem label="To">
+              {/* <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant={"outline"}
@@ -599,7 +584,8 @@ export function TouristUserForm() {
                     initialFocus
                   />
                 </PopoverContent>
-              </Popover>
+              </Popover> */}
+              <Input value={touristPackage.endDate} readOnly />
             </FormItem>
           </div>
         </Section>

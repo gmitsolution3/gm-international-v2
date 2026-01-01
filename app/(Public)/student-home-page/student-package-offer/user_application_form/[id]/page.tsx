@@ -2,7 +2,22 @@ import React, { Suspense } from "react";
 import ScholarshipApplicationForm from "../components/applicationForm";
 import Loader from "@/components/ui/loader";
 
-const Application = () => {
+interface ParamsProps {
+  params: { id: string };
+}
+
+const Application = async ({ params }: ParamsProps) => {
+  const { id } = await params;
+
+  const res = await fetch(
+    `https://gm-international-server-gamma.vercel.app/university-Apply/${id}`,
+    {
+      next: { revalidate: 300 },
+    }
+  );
+
+  const result = await res.json();
+
   return (
     <div>
       <Suspense
@@ -12,7 +27,7 @@ const Application = () => {
           </div>
         }
       >
-        <ScholarshipApplicationForm />
+        <ScholarshipApplicationForm packageData={result} />
       </Suspense>
     </div>
   );

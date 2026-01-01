@@ -7,13 +7,13 @@ const TouristAllPackage = async () => {
   const res = await fetch(
     "https://gm-international-server-gamma.vercel.app/all/tourist-package",
     {
-      cache: "no-store",
+      next: { revalidate: 300 },
     }
   );
 
   const data = await res.json();
 
-  const from = "tourist"
+  const from = "tourist";
 
   return (
     <div>

@@ -199,7 +199,7 @@ const ManagePackageForm = ({ onClose }: OnClose) => {
       internationalPackage: isInternationalPackage,
     };
 
-    console.log(dataToSubmit)
+    
 
 
     // if (validateForm()) {

@@ -15,19 +15,15 @@ import Swal from "sweetalert2";
 import { Checkbox } from "@/components/ui/checkbox";
 import { EducationMasterFormData } from "../../add-university/components/EducationMasterForm";
 
-interface Universities {
-  all: string[];
-  australia: string[];
-  china: string[];
-  malaysia: string[];
-}
 
 type Course = { value: string };
+type Language = { value: string };
 
 type University = {
   name: string;
   location: string;
   courses: Course[];
+  language: Language[]
 };
 
 type EducationMaster = {
@@ -46,31 +42,14 @@ interface ImgFormData {
   secure_url?: string;
 }
 
-const countryOptions: countryOption[] = [
-  { id: 0, name: "All" },
-  { id: 1, name: "Australia" },
-  { id: 2, name: "China" },
-  { id: 3, name: "Malaysia" },
-  { id: 3, name: "Bangladesh" },
-];
 
-const UniversitiesProgram: string[] = [
-  "Select Program",
-  "Health & Medicine",
-  "Business",
-  "Engineering",
-  "Language & Culture",
-  "Computing & IT",
-  "Teaching & Education",
-  "Economics",
-  "Art & Design",
-];
 
 const studyLevel: string[] = [
   "Select study level",
   "Doctorate",
   "Postgraduate",
   "Undergraduate",
+  "Graduate",
   "Vocational (vet)",
   "Pre-Degree & Vocational",
   "Foundation",
@@ -99,6 +78,7 @@ const initialState = {
   filteredCourses: [] as string[],
 
   universityData: [] as EducationMaster[],
+  filteredLanguage: [] as string[],
 };
 
 
@@ -132,8 +112,12 @@ function reducer(state: any, action: any) {
         ...state,
         selectedUniversity: action.payload,
         selectedCourse: null,
+        selectLanguage: null,
         filteredCourses: university
           ? university.courses.map((c: any) => c.value)
+          : [],
+        filteredLanguage: university
+          ? university.languages.map((c: any) => c.value)
           : [],
       };
     }
@@ -177,7 +161,9 @@ interface FunProps {
   universityData: EducationMasterFormData[];
 }
 
+
 function MainModal({ onClose, universityData }: FunProps) {
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const [imgformData, setImgFormData] = useState<ImgFormData>({
@@ -221,7 +207,7 @@ function MainModal({ onClose, universityData }: FunProps) {
       B2BPrice: b2bPrice,
       isInternationalStudent: internationalStudent,
     };
-    console.log(formData);
+    
     try {
       const addPackage = await fetch(
         "https://gm-international-server-gamma.vercel.app/admin/scholarship-package-management",
@@ -356,7 +342,6 @@ function MainModal({ onClose, universityData }: FunProps) {
               <div className="space-y-2">
                 {/* <DropDown /> */}
                 <div>
-                 
                   <SelectDropdown
                     label="Country"
                     options={state.universityData.map((c: any) => c.country)}
@@ -550,7 +535,7 @@ function MainModal({ onClose, universityData }: FunProps) {
               <div className="space-y-2 max-w-61.25 w-full">
                 <SelectDropdown
                   label="Technical language"
-                  options={language}
+                  options={state.filteredLanguage}
                   selected={selectLanguage}
                   onChange={(value) =>
                     dispatch({ type: "SET_LANGUAGE", payload: value })

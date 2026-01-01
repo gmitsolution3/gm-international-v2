@@ -211,7 +211,27 @@ const DOCUMENT_CATEGORIES = [
   },
 ];
 
-export default function ScholarshipApplicationForm() {
+interface Package {
+  course: { value: string };
+  location: string;
+  packagePrice: string;
+  selectDuration: string;
+  selectedCountry: string;
+  tuitionFree: string;
+  university: string;
+  semester: { value: string }[];
+  languages: { value: string }[];
+  coverages: { value: string }[];
+  scholarshipPackageId: string;
+}
+
+interface PackageProps {
+  packageData: Package;
+}
+
+export default function ScholarshipApplicationForm({
+  packageData,
+}: PackageProps) {
   const { data: session } = useSession();
   const searchParams = useSearchParams();
   const source = searchParams.get("source");
@@ -433,6 +453,10 @@ export default function ScholarshipApplicationForm() {
     }));
   };
 
+  const packageSemesters: string[] = packageData.semester.map((s) => s.value);
+  const language: string[] = packageData.languages.map((l) => l.value);
+  const coverage: string[] = packageData.coverages.map((c) => c.value);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -476,9 +500,18 @@ export default function ScholarshipApplicationForm() {
       // Submit form data
       const submissionData = {
         ...formData,
+        country: packageData.selectedCountry,
+        university: packageData.university,
+        courseName: packageData.course.value,
+        packagePrice: packageData.packagePrice,
+        tuitionFree: packageData.tuitionFree,
+        location: packageData.location,
         documents: uploadedDocuments,
         submittedAt: new Date().toISOString(),
+        packageId: packageData.scholarshipPackageId,
       };
+
+      
 
       const addApplicationForm = await fetch(
         "https://gm-international-server-gamma.vercel.app/student-home-page/student-package-offer/user-application-form",
@@ -710,10 +743,17 @@ export default function ScholarshipApplicationForm() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Country <span className="text-red-600">*</span>
                 </label>
-                <Dropdown
-                  options={["All", "Australia", "China", "Malaysia"]}
+                {/* <Dropdown
+                  options={[packageData.selectedCountry]}
                   value={formData.country}
                   onChange={(value) => handleInputChange("country", value)}
+                /> */}
+                <input
+                  type="text"
+                  required
+                  readOnly
+                  value={packageData.selectedCountry}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
                 />
                 {/* <select
                   value={formData.country}
@@ -733,16 +773,17 @@ export default function ScholarshipApplicationForm() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   University <span className="text-red-600">*</span>
                 </label>
-                <Dropdown
-                  options={[
-                    "University name",
-                    "Harvard",
-                    "MIT",
-                    "Oxford",
-                    "Cambridge",
-                  ]}
+                {/* <Dropdown
+                  options={[packageData.university]}
                   value={formData.university}
                   onChange={(value) => handleInputChange("university", value)}
+                /> */}
+                <input
+                  type="text"
+                  required
+                  readOnly
+                  value={packageData.university}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
                 />
                 {/* <select
                   value={formData.university}
@@ -763,16 +804,17 @@ export default function ScholarshipApplicationForm() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Course <span className="text-red-600">*</span>
                 </label>
-                <Dropdown
-                  options={[
-                    "Select Course",
-                    "BBA",
-                    "Engineering",
-                    "Law",
-                    "Science",
-                  ]}
+                {/* <Dropdown
+                  options={[packageData.course.value]}
                   value={formData.courseName}
                   onChange={(value) => handleInputChange("courseName", value)}
+                /> */}
+                <input
+                  type="text"
+                  required
+                  readOnly
+                  value={packageData.course.value}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
                 />
                 {/* <select
                   value={formData.courseName}
@@ -794,7 +836,7 @@ export default function ScholarshipApplicationForm() {
                   Admission Semester <span className="text-red-600">*</span>
                 </label>
                 <Dropdown
-                  options={["All", "Fall", "Spring", "Summer"]}
+                  options={[...packageSemesters]}
                   value={formData.admissionSemester}
                   onChange={(value) =>
                     handleInputChange("admissionSemester", value)
@@ -819,7 +861,7 @@ export default function ScholarshipApplicationForm() {
                   Language <span className="text-red-600">*</span>
                 </label>
                 <Dropdown
-                  options={["English", "Spanish", "French", "German"]}
+                  options={[...language]}
                   value={formData.language}
                   onChange={(value) => handleInputChange("language", value)}
                 />
@@ -842,11 +884,7 @@ export default function ScholarshipApplicationForm() {
                   Coverage <span className="text-red-600">*</span>
                 </label>
                 <Dropdown
-                  options={[
-                    "Tuition",
-                    "Full Scholarship",
-                    "Partial Scholarship",
-                  ]}
+                  options={[...coverage]}
                   value={formData.coverage}
                   onChange={(value) => handleInputChange("coverage", value)}
                 />
@@ -861,6 +899,43 @@ export default function ScholarshipApplicationForm() {
                   <option>Full Scholarship</option>
                   <option>Partial Scholarship</option>
                 </select> */}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Package Price <span className="text-red-600">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  readOnly
+                  value={packageData.packagePrice}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Tuition Free <span className="text-red-600">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  readOnly
+                  value={packageData.tuitionFree}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  University Location <span className="text-red-600">*</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  readOnly
+                  value={packageData.location}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
+                />
               </div>
             </div>
           </div>
