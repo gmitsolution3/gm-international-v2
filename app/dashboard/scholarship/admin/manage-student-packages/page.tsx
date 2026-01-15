@@ -6,7 +6,7 @@ const ManageStudentPackage = async () => {
   const manageScholarShipPackage = await fetch(
     "https://gm-international-server-gamma.vercel.app/admin/scholarship-package-management",
     {
-      cache: "no-store",
+      next: {revalidate: 300},
     }
   );
   const scholarShipData = await manageScholarShipPackage.json();

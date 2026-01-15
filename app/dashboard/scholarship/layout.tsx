@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import { Building2, FileText, LayoutDashboard, Package } from "lucide-react";
 import DashboardHeader from "../components/header";
 import Loader from "@/components/ui/loader";
+import { Toaster } from "sonner";
 
 type UserAvatar = {
   avatar: string | undefined;
@@ -76,7 +77,7 @@ export default function DashboardLayout({
       const user = await fetch(
         `https://gm-international-server-gamma.vercel.app/user/get-avatar?email=${session?.user?.email}`,
         {
-          cache: "no-store",
+          next: {revalidate: 60},
         }
       );
 
@@ -89,9 +90,9 @@ export default function DashboardLayout({
 
   const avatar = userAvatar?.avatar;
 
-  if (loading) {
-    return <Loader />;
-  }
+  // if (loading) {
+  //   return <Loader />;
+  // }
 
   return (
     <div className="flex min-h-screen overflow-auto">
@@ -127,7 +128,7 @@ export default function DashboardLayout({
               sidebarOpen={sidebarOpen}
             />
           </div>
-
+          <Toaster />
           {children}
         </main>
       </UserProvider>

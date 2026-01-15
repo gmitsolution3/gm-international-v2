@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+
 /* @import "tw-animate-css"; */
 @tailwind utilities;
 
@@ -119,7 +120,6 @@ html {
   scroll-behavior: smooth;
 }
 
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -137,7 +137,7 @@ select {
 }
 
 .leaflet-container {
-    touch-action: pan-y; 
+  touch-action: pan-y;
 }
 
 @keyframes bounce-animation {
@@ -448,115 +448,118 @@ select {
   animation: slideInDown 0.6s ease-out;
 }
 
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
- @keyframes slideInDown {
-          from {
-            opacity: 0;
-            transform: translateY(-30px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 
-        @keyframes scaleIn {
-          from {
-            opacity: 0;
-            transform: scale(0.95);
-          }
-          to {
-            opacity: 1;
-            transform: scale(1);
-          }
-        }
+.form-header {
+  animation: slideInDown 0.6s ease-out;
+}
 
-        .form-header {
-          animation: slideInDown 0.6s ease-out;
-        }
+.form-section {
+  animation: fadeInUp 0.6s ease-out;
+}
 
-        .form-section {
-          animation: fadeInUp 0.6s ease-out;
-        }
+.form-group {
+  animation: fadeInUp 0.6s ease-out;
+}
 
-        .form-group {
-          animation: fadeInUp 0.6s ease-out;
-        }
+.upload-button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        .upload-button {
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+.upload-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(220, 38, 38, 0.15);
+}
 
-        .upload-button:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 16px rgba(220, 38, 38, 0.15);
-        }
+.upload-button:active {
+  transform: translateY(0);
+}
 
-        .upload-button:active {
-          transform: translateY(0);
-        }
+.input-field {
+  transition: all 0.3s ease;
+}
 
-        .input-field {
-          transition: all 0.3s ease;
-        }
+.input-field:focus {
+  transform: scale(1.01);
+}
 
-        .input-field:focus {
-          transform: scale(1.01);
-        }
+.select-field {
+  transition: all 0.3s ease;
+}
 
-        .select-field {
-          transition: all 0.3s ease;
-        }
+.select-field:focus {
+  transform: scale(1.01);
+}
 
-        .select-field:focus {
-          transform: scale(1.01);
-        }
+.submit-button {
+  animation: scaleIn 0.4s ease-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        .submit-button {
-          animation: scaleIn 0.4s ease-out;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+.submit-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(220, 38, 38, 0.25);
+}
 
-        .submit-button:hover:not(:disabled) {
-          transform: translateY(-2px);
-          box-shadow: 0 12px 24px rgba(220, 38, 38, 0.25);
-        }
+.submit-button:disabled {
+  opacity: 0.7;
+}
 
-        .submit-button:disabled {
-          opacity: 0.7;
-        }
+.action-button {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-        .action-button {
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+.action-button:hover {
+  transform: translateY(-2px);
+}
 
-        .action-button:hover {
-          transform: translateY(-2px);
-        }
+.link-button {
+  transition: all 0.3s ease;
+  text-decoration: underline;
+  cursor: pointer;
+}
 
-        .link-button {
-          transition: all 0.3s ease;
-          text-decoration: underline;
-          cursor: pointer;
-        }
+.link-button:hover {
+  opacity: 0.8;
+}
 
-        .link-button:hover {
-          opacity: 0.8;
-        }
+@media (max-width: 640px) {
+  .form-group {
+    animation-delay: 0.1s;
+  }
+}
 
-        @media (max-width: 640px) {
-          .form-group {
-            animation-delay: 0.1s;
-          }
-        }
+.ql-editor {
+  min-height: 200px; 
+}
