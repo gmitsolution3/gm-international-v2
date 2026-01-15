@@ -6,8 +6,6 @@ import { Button } from "@/components/ui/button";
 import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 import { UniversitySection } from "./university-section";
 import { PackageDetailsSection } from "./package-details-section";
-// import { DescriptionEditor } from "./description-editor";
-// import { DescriptionEditor } from "./description-editor";
 import { useForm, Controller } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
