@@ -17,15 +17,13 @@ const BookingForm = async ({ searchParams }: ParamsProps) => {
   const id = params.id;
 
   const res = await fetch(
-    `https://gm-international-server-gamma.vercel.app/tourist-package/details/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/details/${id}`,
     {
       next: { revalidate: 300 },
     }
   );
 
   const result = await res.json();
-
-  
 
   return (
     <div>

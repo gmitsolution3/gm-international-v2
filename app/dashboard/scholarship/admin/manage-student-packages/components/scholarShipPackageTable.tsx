@@ -17,6 +17,7 @@ import {
   Languages,
   Award,
 } from "lucide-react"
+import { PackageDescriptionView } from "./PackageDescriptionView"
 
 // Types
 interface Country {
@@ -25,27 +26,36 @@ interface Country {
 }
 
 interface Scholarship {
-  _id: string
-  packagePrice: string
-  universityUrl: string
-  deadlineDate: string
-  startingDate: string
-  tuitionFree: string
-  sl_No: string
-  scholarshipDetails: string
-  universitysDescription: string
-  courseName: string
-  applicationRequirement: string
-  idCard: string
-  imgURL: string
-  selectedCountry: Country
-  selectedUniversity: string
-  selectUniversitiesProgram: string
-  selectStudyLevel: string
-  selectDuration: string
-  selectLanguage: string
-  createdAt: string
-  status?: string
+  _id: string;
+  packagePrice: string;
+  universityURL: string;
+  deadlineDate: string;
+  startingDate: string;
+  tuitionFree: string;
+  sl_No: string;
+  scholarshipDetails: string;
+  universitysDescription: string;
+  courseName: string;
+  applicationRequirement: string;
+  idCard: string;
+  thumbnail: string;
+  selectedCountry: Country;
+  universityName: string;
+  selectUniversitiesProgram: string;
+  selectStudyLevel: string;
+  selectDuration: string;
+  language: string;
+  createdAt: string;
+  status?: string;
+  country: string;
+  applicationFee: string;
+  serviceFee: string;
+  duration: string;
+  description: string;
+  universityDescription: string;
+  city: string;
+  deadline: string;
+  isInternationalStudent: boolean
 }
 
 const ScholarshipPackageInAdminDashboard: React.FC<{ scholarshipPackage: Scholarship[] }> = ({ scholarshipPackage }) => {
@@ -95,10 +105,11 @@ const ScholarshipPackageInAdminDashboard: React.FC<{ scholarshipPackage: Scholar
     }).format(Number(amount))
   }
 
+
+
   return (
     <div className="min-h-screen p-3 sm:p-6">
       <div className="max-w-7xl mx-auto">
-        
         {/* Mobile Card View */}
         <div className="block lg:hidden space-y-4 animate-slide-up">
           {scholarships.map((scholarship, idx) => (
@@ -108,13 +119,15 @@ const ScholarshipPackageInAdminDashboard: React.FC<{ scholarshipPackage: Scholar
             >
               <div className="relative h-48">
                 <img
-                  src={scholarship.imgURL || "/placeholder.svg"}
-                  alt={scholarship.selectedUniversity}
+                  src={scholarship.thumbnail || "/placeholder.svg"}
+                  alt={scholarship.universityName}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute top-3 right-3">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(scholarship.status)}`}
+                    className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
+                      scholarship.status
+                    )}`}
                   >
                     {scholarship.status || "Active"}
                   </span>
@@ -123,29 +136,40 @@ const ScholarshipPackageInAdminDashboard: React.FC<{ scholarshipPackage: Scholar
 
               <div className="p-4 space-y-3">
                 <div>
-                  <h3 className="font-bold text-lg text-gray-800 mb-1">{scholarship.selectedUniversity}</h3>
+                  <h3 className="font-bold text-lg text-gray-800 mb-1">
+                    {scholarship.universityName}
+                  </h3>
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <MapPin className="w-4 h-4 text-rose-500" />
-                    <span>{scholarship.selectedCountry.name}</span>
+                    <span>{scholarship.country}-</span>
+                    <span>{scholarship.city} </span>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div className="bg-rose-50 p-2 rounded-lg">
-                    <p className="text-xs text-gray-500">Program</p>
-                    <p className="font-semibold text-gray-800 truncate">{scholarship.selectUniversitiesProgram}</p>
+                    <p className="text-xs text-gray-500">Starting Date</p>
+                    <p className="font-semibold text-gray-800 truncate">
+                      {scholarship.startingDate}
+                    </p>
                   </div>
                   <div className="bg-rose-50 p-2 rounded-lg">
-                    <p className="text-xs text-gray-500">Level</p>
-                    <p className="font-semibold text-gray-800">{scholarship.selectStudyLevel}</p>
+                    <p className="text-xs text-gray-500">Deadline</p>
+                    <p className="font-semibold text-gray-800">
+                      {scholarship.deadline}
+                    </p>
                   </div>
                   <div className="bg-rose-50 p-2 rounded-lg">
-                    <p className="text-xs text-gray-500">Package</p>
-                    <p className="font-semibold text-gray-800">{formatCurrency(scholarship.packagePrice)}</p>
+                    <p className="text-xs text-gray-500">Service Fee</p>
+                    <p className="font-semibold text-gray-800">
+                      {formatCurrency(scholarship.serviceFee)}
+                    </p>
                   </div>
                   <div className="bg-rose-50 p-2 rounded-lg">
-                    <p className="text-xs text-gray-500">Duration</p>
-                    <p className="font-semibold text-gray-800">{scholarship.selectDuration}</p>
+                    <p className="text-xs text-gray-500">Application Fee</p>
+                    <p className="font-semibold text-gray-800">
+                      {formatCurrency(scholarship.applicationFee)}
+                    </p>
                   </div>
                 </div>
 
@@ -167,51 +191,67 @@ const ScholarshipPackageInAdminDashboard: React.FC<{ scholarshipPackage: Scholar
             <table className="w-full">
               <thead className="bg-linear-to-r from-rose-500 to-red-500 text-white">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">SL</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">University</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Country</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Program</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Study Level</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Package Price</th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Status</th>
-                  <th className="px-6 py-4 text-center text-sm font-semibold">Action</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                    University
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                    Country
+                  </th>
+
+                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                    Application Price(NRF)
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                    Service Price
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                    Status
+                  </th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {scholarships.map((scholarship, idx) => (
-                  <tr key={scholarship._id} className="hover:bg-rose-50 transition-colors duration-200">
-                    <td className="px-6 py-4 text-gray-700 font-medium">{scholarship.sl_No}</td>
+                  <tr
+                    key={scholarship._id}
+                    className="hover:bg-rose-50 transition-colors duration-200"
+                  >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <img
-                          src={scholarship.imgURL || "/placeholder.svg"}
-                          alt={scholarship.selectedUniversity}
+                          src={scholarship.thumbnail || "/placeholder.svg"}
+                          alt={scholarship.universityName}
                           className="w-12 h-12 rounded-lg object-cover"
                         />
                         <div>
-                          <div className="font-medium text-gray-900">{scholarship.selectedUniversity}</div>
-                          <div className="text-sm text-gray-500">{scholarship.courseName}</div>
+                          <div className="font-medium text-gray-900">
+                            {scholarship.universityName}
+                          </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <MapPin className="w-4 h-4 text-red-500" />
-                        <span className="text-gray-700">{scholarship.selectedCountry.name}</span>
+                        <span className="text-gray-700">
+                          {scholarship.country}
+                        </span>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-gray-700">{scholarship.selectUniversitiesProgram}</td>
-                    <td className="px-6 py-4">
-                      <span className="px-3 py-1 bg-rose-100 text-rose-700 rounded-full text-xs font-semibold">
-                        {scholarship.selectStudyLevel}
-                      </span>
+
+                    <td className="px-6 py-4 text-gray-700 font-semibold">
+                      {formatCurrency(scholarship.applicationFee)}
                     </td>
                     <td className="px-6 py-4 text-gray-700 font-semibold">
-                      {formatCurrency(scholarship.packagePrice)}
+                      {formatCurrency(scholarship.serviceFee)}
                     </td>
                     <td className="px-6 py-4">
                       <span
-                        className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(scholarship.status)}`}
+                        className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
+                          scholarship.status
+                        )}`}
                       >
                         {scholarship.status?.toUpperCase() || "Active"}
                       </span>
@@ -238,8 +278,12 @@ const ScholarshipPackageInAdminDashboard: React.FC<{ scholarshipPackage: Scholar
           <div className="bg-white rounded-2xl max-w-6xl w-full max-h-[95vh] overflow-y-auto shadow-2xl animate-scale-in my-4">
             <div className="sticky top-0 bg-linear-to-r from-rose-500 to-red-500 text-white p-4 sm:p-6 flex justify-between items-center z-10">
               <div>
-                <h2 className="text-xl sm:text-2xl font-bold">Scholarship Details</h2>
-                <p className="text-rose-100 text-xs sm:text-sm mt-1">ID: {selectedScholarship._id}</p>
+                <h2 className="text-xl sm:text-2xl font-bold">
+                  Scholarship Details
+                </h2>
+                <p className="text-rose-100 text-xs sm:text-sm mt-1">
+                  ID: {selectedScholarship._id}
+                </p>
               </div>
               <button
                 onClick={() => setSelectedScholarship(null)}
@@ -253,15 +297,19 @@ const ScholarshipPackageInAdminDashboard: React.FC<{ scholarshipPackage: Scholar
               {/* University Image */}
               <div className="relative rounded-xl overflow-hidden shadow-lg">
                 <img
-                  src={selectedScholarship.imgURL || "/placeholder.svg"}
-                  alt={selectedScholarship.selectedUniversity}
+                  src={selectedScholarship.thumbnail || "/placeholder.svg"}
+                  alt={selectedScholarship.universityName}
                   className="w-full h-48 sm:h-64 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
-                  onClick={() => setSelectedImage(selectedScholarship.imgURL)}
+                  onClick={() =>
+                    setSelectedImage(selectedScholarship.thumbnail)
+                  }
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black to-transparent p-4 sm:p-6">
-                  <h3 className="text-white text-xl sm:text-2xl font-bold">{selectedScholarship.selectedUniversity}</h3>
+                  <h3 className="text-white text-xl sm:text-2xl font-bold">
+                    {selectedScholarship.universityName}
+                  </h3>
                   <p className="text-white text-sm sm:text-base opacity-90">
-                    {selectedScholarship.selectedCountry.name}
+                    {selectedScholarship.country}
                   </p>
                 </div>
               </div>
@@ -274,17 +322,17 @@ const ScholarshipPackageInAdminDashboard: React.FC<{ scholarshipPackage: Scholar
                     <p className="text-xs text-gray-500">Package</p>
                   </div>
                   <p className="font-bold text-base sm:text-lg text-gray-800">
-                    {formatCurrency(selectedScholarship.packagePrice)}
+                    {formatCurrency(selectedScholarship.applicationFee)}
                   </p>
                 </div>
 
                 <div className="bg-linear-to-br from-rose-50 to-red-50 p-3 sm:p-4 rounded-lg border border-red-100">
                   <div className="flex items-center gap-2 mb-2">
                     <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />
-                    <p className="text-xs text-gray-500">Tuition</p>
+                    <p className="text-xs text-gray-500">Service Fee</p>
                   </div>
                   <p className="font-bold text-base sm:text-lg text-gray-800">
-                    {formatCurrency(selectedScholarship.tuitionFree)}
+                    {formatCurrency(selectedScholarship.serviceFee)}
                   </p>
                 </div>
 
@@ -293,7 +341,9 @@ const ScholarshipPackageInAdminDashboard: React.FC<{ scholarshipPackage: Scholar
                     <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />
                     <p className="text-xs text-gray-500">Duration</p>
                   </div>
-                  <p className="font-bold text-base sm:text-lg text-gray-800">{selectedScholarship.selectDuration}</p>
+                  <p className="font-bold text-base sm:text-lg text-gray-800">
+                    {selectedScholarship.duration}
+                  </p>
                 </div>
 
                 <div className="bg-linear-to-br from-rose-50 to-red-50 p-3 sm:p-4 rounded-lg border border-red-100">
@@ -301,8 +351,45 @@ const ScholarshipPackageInAdminDashboard: React.FC<{ scholarshipPackage: Scholar
                     <Languages className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />
                     <p className="text-xs text-gray-500">Language</p>
                   </div>
-                  <p className="font-bold text-base sm:text-lg text-gray-800">{selectedScholarship.selectLanguage}</p>
+                  <p className="font-bold text-base sm:text-lg text-gray-800">
+                    {selectedScholarship.language}
+                  </p>
                 </div>
+                <div className="bg-linear-to-br from-rose-50 to-red-50 p-3 sm:p-4 rounded-lg border border-red-100">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Languages className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />
+                    <p className="text-xs text-gray-500">
+                      Application Starting Date
+                    </p>
+                  </div>
+                  <p className="font-bold text-base sm:text-lg text-gray-800">
+                    {selectedScholarship.startingDate}
+                  </p>
+                </div>
+                <div className="bg-linear-to-br from-rose-50 to-red-50 p-3 sm:p-4 rounded-lg border border-red-100">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Languages className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />
+                    <p className="text-xs text-gray-500">
+                      Application Ending Date
+                    </p>
+                  </div>
+                  <p className="font-bold text-base sm:text-lg text-gray-800">
+                    {selectedScholarship.deadline}
+                  </p>
+                </div>
+                {selectedScholarship.isInternationalStudent && (
+                  <div className="bg-linear-to-br from-rose-50 to-red-50 p-3 sm:p-4 rounded-lg border border-red-100">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Languages className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />
+                      <p className="text-xs text-gray-500">
+                        International Student
+                      </p>
+                    </div>
+                    <p className="font-bold text-base sm:text-lg text-gray-800">
+                      This Package for international student
+                    </p>
+                  </div>
+                )}
               </div>
 
               {/* Academic Information */}
@@ -313,34 +400,26 @@ const ScholarshipPackageInAdminDashboard: React.FC<{ scholarshipPackage: Scholar
                   </div>
                   Academic Information
                 </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                <div className="">
                   <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                    <p className="text-xs text-gray-500 mb-1">Course Name</p>
-                    <p className="font-semibold text-gray-800">{selectedScholarship.courseName}</p>
+                    <PackageDescriptionView
+                      html={selectedScholarship?.description}
+                    />
                   </div>
-                  <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                    <p className="text-xs text-gray-500 mb-1">Study Level</p>
-                    <p className="font-medium text-gray-700">{selectedScholarship.selectStudyLevel}</p>
+                </div>
+              </section>
+              <section className="bg-linear-to-r from-rose-50 to-red-50 rounded-xl p-4 sm:p-6 border border-red-100">
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-rose-500 flex items-center justify-center">
+                    <GraduationCap className="w-4 h-4 text-white" />
                   </div>
+                  University Information
+                </h3>
+                <div className="w-full">
                   <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                    <p className="text-xs text-gray-500 mb-1">Program</p>
-                    <p className="font-medium text-gray-700">{selectedScholarship.selectUniversitiesProgram}</p>
-                  </div>
-                  <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                    <p className="text-xs text-gray-500 mb-1">ID Card</p>
-                    <p className="font-medium text-gray-700">{selectedScholarship.idCard}</p>
-                  </div>
-                  <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                    <p className="text-xs text-gray-500 mb-1">Starting Date</p>
-                    <p className="font-medium text-gray-700">
-                      {new Date(selectedScholarship.startingDate).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                    <p className="text-xs text-gray-500 mb-1">Deadline</p>
-                    <p className="text-rose-600 font-semibold">
-                      {new Date(selectedScholarship.deadlineDate).toLocaleDateString()}
-                    </p>
+                    <PackageDescriptionView
+                      html={selectedScholarship?.universityDescription}
+                    />
                   </div>
                 </div>
               </section>
@@ -354,58 +433,13 @@ const ScholarshipPackageInAdminDashboard: React.FC<{ scholarshipPackage: Scholar
                   University Website
                 </h3>
                 <a
-                  href={selectedScholarship.universityUrl}
+                  href={selectedScholarship.universityURL}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-rose-600 hover:text-rose-800 underline break-all text-sm sm:text-base font-medium"
                 >
-                  {selectedScholarship.universityUrl}
+                  {selectedScholarship.universityURL}
                 </a>
-              </section>
-
-              {/* Scholarship Details */}
-              <section className="bg-linear-to-r from-rose-50 to-red-50 rounded-xl p-4 sm:p-6 border border-red-100">
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-rose-500 flex items-center justify-center">
-                    <Award className="w-4 h-4 text-white" />
-                  </div>
-                  Scholarship Details
-                </h3>
-                <div className="bg-white p-4 sm:p-4 rounded-lg shadow-sm">
-                  <p className="text-gray-700 text-sm sm:text-base whitespace-pre-wrap">
-                    {selectedScholarship.scholarshipDetails}
-                  </p>
-                </div>
-              </section>
-
-              {/* University Description */}
-              <section className="bg-linear-to-r from-rose-50 to-red-50 rounded-xl p-4 sm:p-6 border border-red-100">
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-rose-500 flex items-center justify-center">
-                    <BookOpen className="w-4 h-4 text-white" />
-                  </div>
-                  University Description
-                </h3>
-                <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                  <p className="text-gray-700 text-sm sm:text-base whitespace-pre-wrap">
-                    {selectedScholarship.universitysDescription}
-                  </p>
-                </div>
-              </section>
-
-              {/* Application Requirements */}
-              <section className="bg-linear-to-r from-rose-50 to-red-50 rounded-xl p-4 sm:p-6 border border-red-100">
-                <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-rose-500 flex items-center justify-center">
-                    <FileText className="w-4 h-4 text-white" />
-                  </div>
-                  Application Requirements
-                </h3>
-                <div className="bg-white p-3 sm:p-4 rounded-lg shadow-sm">
-                  <p className="text-gray-700 text-sm sm:text-base whitespace-pre-wrap">
-                    {selectedScholarship.applicationRequirement}
-                  </p>
-                </div>
               </section>
 
               {/* Action Buttons */}
@@ -414,13 +448,17 @@ const ScholarshipPackageInAdminDashboard: React.FC<{ scholarshipPackage: Scholar
                   onClick={() =>
                     handleStatusChange(
                       selectedScholarship._id,
-                      selectedScholarship.status === "Active" ? "Inactive" : "Active",
+                      selectedScholarship.status === "Active"
+                        ? "Inactive"
+                        : "Active"
                     )
                   }
                   className="px-4 py-2.5 bg-linear-to-r from-rose-500 to-red-500 text-white rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2"
                 >
                   <Check className="w-4 h-4" />
-                  {selectedScholarship.status === "Active" ? "Deactivate" : "Activate"}
+                  {selectedScholarship.status === "Active"
+                    ? "Deactivate"
+                    : "Activate"}
                 </button>
                 <button
                   onClick={() => handleDelete(selectedScholarship._id)}
@@ -455,7 +493,7 @@ const ScholarshipPackageInAdminDashboard: React.FC<{ scholarshipPackage: Scholar
         </div>
       )}
     </div>
-  )
+  );
 }
 
 export default ScholarshipPackageInAdminDashboard

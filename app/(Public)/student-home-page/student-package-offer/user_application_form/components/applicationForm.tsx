@@ -20,6 +20,7 @@ import Swal from "sweetalert2";
 import Dropdown from "../components/dropDown";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { ScholarshipCardProps } from "../../../components/OfferCard";
 
 interface DocumentUpload {
   name: string;
@@ -226,7 +227,7 @@ interface Package {
 }
 
 interface PackageProps {
-  packageData: Package;
+  packageData: ScholarshipCardProps;
 }
 
 export default function ScholarshipApplicationForm({
@@ -453,9 +454,9 @@ export default function ScholarshipApplicationForm({
     }));
   };
 
-  const packageSemesters: string[] = packageData.semester.map((s) => s.value);
-  const language: string[] = packageData.languages.map((l) => l.value);
-  const coverage: string[] = packageData.coverages.map((c) => c.value);
+  // const packageSemesters: string[] = packageData.semester.map((s) => s.value);
+  // const language: string[] = packageData.languages.map((l) => l.value);
+  // const coverage: string[] = packageData.coverages.map((c) => c.value);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -500,21 +501,19 @@ export default function ScholarshipApplicationForm({
       // Submit form data
       const submissionData = {
         ...formData,
-        country: packageData.selectedCountry,
-        university: packageData.university,
-        courseName: packageData.course.value,
-        packagePrice: packageData.packagePrice,
-        tuitionFree: packageData.tuitionFree,
-        location: packageData.location,
+        country: packageData.country,
+        university: packageData.universityName,
+        // courseName: packageData.course.value,
+        applicationFee: packageData.applicationFee,
+        // tuitionFree: packageData.tuitionFree,
+        location: packageData.city,
         documents: uploadedDocuments,
         submittedAt: new Date().toISOString(),
-        packageId: packageData.scholarshipPackageId,
+        packageId: packageData._id,
       };
 
-      
-
       const addApplicationForm = await fetch(
-        "https://gm-international-server-gamma.vercel.app/student-home-page/student-package-offer/user-application-form",
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/student-home-page/student-package-offer/user-application-form`,
         {
           method: "POST",
           headers: {
@@ -752,7 +751,7 @@ export default function ScholarshipApplicationForm({
                   type="text"
                   required
                   readOnly
-                  value={packageData.selectedCountry}
+                  value={packageData.country}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
                 />
                 {/* <select
@@ -782,7 +781,7 @@ export default function ScholarshipApplicationForm({
                   type="text"
                   required
                   readOnly
-                  value={packageData.university}
+                  value={packageData.universityName}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
                 />
                 {/* <select
@@ -813,7 +812,7 @@ export default function ScholarshipApplicationForm({
                   type="text"
                   required
                   readOnly
-                  value={packageData.course.value}
+                  // value={packageData.course.value}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
                 />
                 {/* <select
@@ -835,13 +834,13 @@ export default function ScholarshipApplicationForm({
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Admission Semester <span className="text-red-600">*</span>
                 </label>
-                <Dropdown
+                {/* <Dropdown
                   options={[...packageSemesters]}
                   value={formData.admissionSemester}
                   onChange={(value) =>
                     handleInputChange("admissionSemester", value)
                   }
-                />
+                /> */}
                 {/* <select
                   value={formData.admissionSemester}
                   onChange={(e) =>
@@ -861,7 +860,7 @@ export default function ScholarshipApplicationForm({
                   Language <span className="text-red-600">*</span>
                 </label>
                 <Dropdown
-                  options={[...language]}
+                  options={["China", "English"]}
                   value={formData.language}
                   onChange={(value) => handleInputChange("language", value)}
                 />
@@ -883,11 +882,11 @@ export default function ScholarshipApplicationForm({
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Coverage <span className="text-red-600">*</span>
                 </label>
-                <Dropdown
+                {/* <Dropdown
                   options={[...coverage]}
                   value={formData.coverage}
                   onChange={(value) => handleInputChange("coverage", value)}
-                />
+                /> */}
                 {/* <select
                   value={formData.coverage}
                   onChange={(e) =>
@@ -903,13 +902,13 @@ export default function ScholarshipApplicationForm({
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Package Price <span className="text-red-600">*</span>
+                  Service Fee <span className="text-red-600">*</span>
                 </label>
                 <input
                   type="text"
                   required
                   readOnly
-                  value={packageData.packagePrice}
+                  value={packageData.serviceFee}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
                 />
               </div>
@@ -921,7 +920,7 @@ export default function ScholarshipApplicationForm({
                   type="text"
                   required
                   readOnly
-                  value={packageData.tuitionFree}
+                  value={packageData.applicationFee}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
                 />
               </div>
@@ -933,7 +932,7 @@ export default function ScholarshipApplicationForm({
                   type="text"
                   required
                   readOnly
-                  value={packageData.location}
+                  value={packageData.city}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
                 />
               </div>

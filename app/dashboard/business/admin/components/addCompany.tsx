@@ -98,7 +98,7 @@ export default function CompanyForm({ onClose, email }: OnClose) {
 
     try {
       const newPhotos = await Promise.all(uploadPromises);
-      
+
       setFormData((prev) => ({
         ...prev,
         images: [...prev.images, ...newPhotos],
@@ -185,11 +185,10 @@ export default function CompanyForm({ onClose, email }: OnClose) {
       return;
     }
 
- 
     // setTimeout(() => setSubmitted(false), 4000);
 
     const res = await fetch(
-      "https://gm-international-server-gamma.vercel.app/add-company",
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/add-company`,
       {
         method: "POST",
         headers: {

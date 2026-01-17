@@ -6,7 +6,7 @@ import { DashboardErrorHandler } from "@/app/dashboard/components/emtryHandaller
 
 const ManageApplicationPackage = async () => {
   const medicalApplicatoin = await fetch(
-    "https://gm-international-server-gamma.vercel.app/get-medical-all-appointment-forms",
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-medical-all-appointment-forms`,
     { cache: "no-store" }
   );
   const medicalApplicationData = await medicalApplicatoin.json();

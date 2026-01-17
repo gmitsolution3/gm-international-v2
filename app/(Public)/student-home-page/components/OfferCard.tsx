@@ -1,135 +1,125 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import React, { useState } from 'react';
+import { Calendar, Globe, Clock, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
-interface Country {
-  name: string;
-}
 
-interface Offer {
-  _id: string;
-  //   idCard: string;
-  //   sl_No: string;
-  selectedCountry: Country;
-  selectedUniversity: string;
-  //   selectUniversitiesProgram: string;
-  //   selectStudyLevel: string;
-  //   selectDuration: string;
-  //   selectLanguage: string;
-  //   courseName: string;
-  //   startingDate: string;
-  deadlineDate: string;
-  //   tuitionFree: string;
-  packagePrice: string;
-  scholarshipDetails: string;
-  imgURL: string;
-  B2BPrice: string;
-  //   universityUrl: string;
-  //   universitysDescription: string;
-  //   applicationRequirement: string;
-  //   createdAt: string;
+
+export interface ScholarshipCardProps {
+  _id: string,
+  city: string;
+  country: string;
+  deadline: string;
+  language: string;
+  duration: string;
+  startingDate: string;
+  thumbnail: string;
+  applicationFee: string;
+  description: string;
+  universityDescription: string;
+  serviceFee: string;
+  universityName: string;
+  universityURL: string;
 }
 
 interface OfferCardProps {
-  offer: Offer;
+  offer: ScholarshipCardProps;
   form: string;
 }
 
-export default function OfferCard({ offer, form }: OfferCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
+const OfferCard = ({ offer, form }: OfferCardProps) => {
+  const [isHovered, setIsHovered] = useState<boolean>(false);
 
+  const formatDate = (dateString: string): string => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
 
   return (
     <div
-      className="group relative h-full transition-all duration-300 ease-in-out transform hover:scale-105 hover:-translate-y-2"
+      className="w-full max-w-sm bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <div
-        className={`h-full rounded-3xl border-2  bg-gray-100 p-6 md:p-8 transition-all duration-300 ease-in-out flex flex-col ${
-          isHovered ? "shadow-2xl shadow-red-200 border-red-600" : "shadow-md"
-        }`}
-      >
-        <div className="flex justify-around">
-          {/* University Logo/Avatar */}
-          <div className="mb-4 flex justify-center md:justify-start">
-            <div
-              className={`w-16 h-16 md:w-20 md:h-20 rounded-full bg-linear-to-br from-gray-300 to-gray-400 transition-all duration-300 ${
-                isHovered ? "scale-110 shadow-lg" : ""
-              }`}
-            >
-              <img
-                src={offer.imgURL}
-                alt=""
-                className={`w-16 h-16 md:w-20 md:h-20 rounded-full bg-linear-to-br from-gray-300 to-gray-400 transition-all duration-300 ${
-                  isHovered ? "scale-110 shadow-lg" : ""
-                }`}
-              />
-            </div>
-          </div>
-
-          {/* University Info */}
-          <div>
-            <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-1">
-              {offer.selectedUniversity}
-            </h3>
-            <p className="text-sm text-gray-600 mb-4 transition-all duration-300">
-              {offer.selectedCountry.name}
-            </p>
-          </div>
-        </div>
-
-        {/* Amount and Deadline */}
-        <div className="grid grid-cols-2 gap-4 mb-4 md:mb-6">
-          <div className="my-2">
-            <p className="text-xs md:text-sm text-gray-600 font-semibold mb-1">
-              Amount:
-            </p>
-            <p className="text-sm md:text-base font-bold text-gray-900">
-              {offer.packagePrice}
-            </p>
-          </div>
-          <div>
-            <p className="text-xs md:text-sm text-gray-600 font-semibold mb-1">
-              Deadline:
-            </p>
-            <p className="text-sm md:text-base font-bold text-gray-900">
-              {offer.deadlineDate}
-            </p>
-          </div>
-          {offer.B2BPrice && (
-            <p className="text-xs md:text-sm text-gray-600 grow line-clamp-3 transition-colors duration-300">
-              B2B Price : {offer.B2BPrice}
-            </p>
-          )}
-        </div>
-
-        {/* Description */}
-        <p className="text-xs md:text-sm text-gray-600 mb-6 grow line-clamp-3 transition-colors duration-300">
-          {offer.scholarshipDetails}
-        </p>
-
-        {/* View Details Button */}
-        <Link
-          href={`/student-home-page/student-package-offer/${offer._id}?from=${form}`}
-        >
-          <Button
-            className={`w-full bg-[#CA2328] hover:bg-red-700 text-white font-semibold py-2 md:py-3 rounded-full transition-all duration-300 ease-in-out transform hover:cursor-pointer ${
-              isHovered ? "shadow-lg shadow-red-400 scale-105" : "shadow-md"
-            }`}
-          >
-            View Details
-          </Button>
-        </Link>
+      {/* Header Image */}
+      <div className="relative h-50 overflow-hidden bg-gray-200">
+        <img
+          src={offer.thumbnail}
+          alt={offer.city}
+          className="w-full h-full object-cover transition-transform duration-300"
+          style={{
+            transform: isHovered ? "scale(1.05)" : "scale(1)",
+          }}
+        />
       </div>
 
-      <div
-        className={`absolute inset-0 rounded-3xl bg-linear-to-r from-red-400 to-red-600 -z-10 transition-all duration-300 ease-in-out ${
-          isHovered ? "opacity-20 blur-xl" : "opacity-0 blur-2xl"
-        }`}
-      />
+      {/* Content */}
+      <div className="p-5">
+        <h3 className="text-lg font-bold text-gray-900 mb-1">
+          {offer.universityName}
+        </h3>
+        <p className="text-xs font-medium mb-4" style={{ color: "#CA2328" }}>
+          {offer.city}
+        </p>
+
+        {/* Details */}
+        <div className="space-y-3 mb-4 grid grid-cols-2">
+          <DetailRow
+            icon={<Globe className="w-4 h-4" />}
+            label="Country"
+            value={offer.country}
+          />
+          <DetailRow
+            icon={<Clock className="w-4 h-4" />}
+            label="Duration"
+            value={offer.duration}
+          />
+          <DetailRow
+            icon={<Calendar className="w-4 h-4" />}
+            label="Starts"
+            value={formatDate(offer.startingDate)}
+          />
+          <DetailRow
+            icon={<Calendar className="w-4 h-4" />}
+            label="Deadline"
+            value={formatDate(offer.deadline)}
+          />
+        </div>
+
+        {/* Button */}
+        <Link href={`/student-home-page/student-package-offer/${offer._id}`}>
+          <button
+            // onClick={onApply}
+            className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-white text-sm font-semibold transition-all duration-300 hover:shadow-md transform hover:scale-105"
+            style={{ backgroundColor: "#CA2328" }}
+          >
+            View Details
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </Link>
+      </div>
     </div>
   );
+};
+
+interface DetailRowProps {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
 }
+
+const DetailRow: React.FC<DetailRowProps> = ({ icon, label, value }) => (
+  <div className="flex items-center gap-3">
+    <div style={{ color: '#CA2328' }}>{icon}</div>
+    <div className="flex-1">
+      <p className="text-xs text-gray-500">{label}</p>
+      <p className="text-sm font-medium text-gray-800">{value}</p>
+    </div>
+  </div>
+);
+
+export default OfferCard;

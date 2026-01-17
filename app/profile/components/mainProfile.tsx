@@ -24,14 +24,14 @@ const MainProfile = ({ userProfleData }: UserProfileData) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   //   const handleProfileUpdate =async (updatedData: any) => {
-  //      
+  //
   //     setUser((prevUser) => ({
   //       ...prevUser,
   //       ...updatedData,
   //     }));
 
   //     try {
-  //     const res = await fetch(`https://gm-international-server-gamma.vercel.app/user/updated-profile/${user._id}`, {
+  //     const res = await fetch(`${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/updated-profile/${user._id}`, {
   //       method: "PUT",
   //       headers: { "Content-Type": "application/json" },
   //       body: JSON.stringify(updatedData),
@@ -53,7 +53,7 @@ const MainProfile = ({ userProfleData }: UserProfileData) => {
   //     alert("Something went wrong!");
   //   }
 
-  //     
+  //
   //     // setIsEditModalOpen(false);
   //   };
 

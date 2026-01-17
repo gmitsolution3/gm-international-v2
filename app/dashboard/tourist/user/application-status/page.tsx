@@ -52,7 +52,7 @@ export default function TouristUserApplicationStatus() {
     const userApplication = async () => {
       try {
         const res = await fetch(
-          `https://gm-international-server-gamma.vercel.app/get-user-booked-data?email=${session?.user?.email}`,
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-user-booked-data?email=${session?.user?.email}`,
           {
             cache: "no-store",
           }

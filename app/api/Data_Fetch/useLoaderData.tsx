@@ -13,7 +13,7 @@ const useLoaderData = (route: string) => {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `https://gm-international-server-gamma.vercel.app/${route}`,
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/${route}`,
           {
             cache: "no-store",
           }

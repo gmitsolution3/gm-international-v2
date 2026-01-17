@@ -72,8 +72,6 @@ export function EditProfileModal({
 
       const result = await res.json();
 
-      
-
       if (!result.secure_url) {
         throw new Error("Image upload failed");
       }
@@ -115,7 +113,7 @@ export function EditProfileModal({
       //   }
 
       const res = await fetch(
-        `https://gm-international-server-gamma.vercel.app/user/updated-profile/${user._id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/updated-profile/${user._id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -141,8 +139,6 @@ export function EditProfileModal({
   };
 
   if (!isOpen) return null;
-
- 
 
   if (isLoading) return <Loader />;
 

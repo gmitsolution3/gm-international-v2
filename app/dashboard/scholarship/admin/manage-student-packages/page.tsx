@@ -4,13 +4,14 @@ import ScholarshipPackageTable from "./components/scholarShipPackageTable";
 
 const ManageStudentPackage = async () => {
   const manageScholarShipPackage = await fetch(
-    "https://gm-international-server-gamma.vercel.app/admin/scholarship-package-management",
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management`,
     {
-      next: {revalidate: 300},
+      next: { revalidate: 300 },
     }
   );
   const scholarShipData = await manageScholarShipPackage.json();
 
+  console.log( "data",scholarShipData.data)
 
   return (
     <main className="min-h-screen bg-background">
@@ -24,7 +25,9 @@ const ManageStudentPackage = async () => {
               Manage and track all student Package
             </p>
           </div>
-          <AddScholarshipPackage universityData={scholarShipData.universityData}/>
+          <AddScholarshipPackage
+            universityData={scholarShipData.universityData}
+          />
         </div>
 
         {/* <ScholarshipPackageTable scholarShipData={scholarShipData}/> */}

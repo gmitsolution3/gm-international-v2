@@ -4,15 +4,13 @@ import { DashboardErrorHandler } from "@/app/dashboard/components/emtryHandaller
 
 const ManageApplication = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/get-tourist-booking-package",
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-tourist-booking-package`,
     {
       cache: "no-store",
     }
   );
 
   const resultOfRes = await res.json();
-
-
 
   return (
     <div>

@@ -60,7 +60,7 @@ export default function DashboardLayout({
   useEffect(() => {
     const userData = async () => {
       const user = await fetch(
-        `https://gm-international-server-gamma.vercel.app/user/get-avatar?email=${session?.user?.email}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/get-avatar?email=${session?.user?.email}`,
         {
           cache: "no-store",
         }

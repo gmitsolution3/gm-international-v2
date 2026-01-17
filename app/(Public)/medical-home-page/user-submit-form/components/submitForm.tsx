@@ -224,7 +224,7 @@ export default function AppointmentForm({ hospitals }: HospitalListProps) {
     }
 
     const submitData = await fetch(
-      "https://gm-international-server-gamma.vercel.app/medical_appointment_form",
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical_appointment_form`,
       {
         method: "POST",
         headers: {

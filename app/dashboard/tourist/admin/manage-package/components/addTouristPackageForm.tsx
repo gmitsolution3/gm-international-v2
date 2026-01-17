@@ -191,7 +191,6 @@ const ManagePackageForm = ({ onClose }: OnClose) => {
   };
 
   const handleSubmit = async () => {
-
     const dataToSubmit = {
       ...formData,
       forB2BUser,
@@ -199,44 +198,41 @@ const ManagePackageForm = ({ onClose }: OnClose) => {
       internationalPackage: isInternationalPackage,
     };
 
-    
-
-
     // if (validateForm()) {
-      const res = await fetch(
-        "https://gm-international-server-gamma.vercel.app/tourist-package",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dataToSubmit),
-        }
-      );
-
-      const result = await res.json();
-
-      if (!result) {
-        Swal.fire({
-          title: "Something was wrong!! try again",
-          icon: "error",
-          draggable: false,
-          showConfirmButton: false,
-          timer: 2000,
-        });
-        return;
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dataToSubmit),
       }
+    );
 
-      if (result.insertedId) {
-        Swal.fire({
-          title: "Your Form has been submitted",
-          icon: "success",
-          draggable: false,
-          showConfirmButton: false,
-          timer: 2000,
-        });
-        onClose();
-      }
+    const result = await res.json();
+
+    if (!result) {
+      Swal.fire({
+        title: "Something was wrong!! try again",
+        icon: "error",
+        draggable: false,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      return;
+    }
+
+    if (result.insertedId) {
+      Swal.fire({
+        title: "Your Form has been submitted",
+        icon: "success",
+        draggable: false,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      onClose();
+    }
     // } else {
     //   alert("Please fill up all required fields!");
     // }
@@ -448,7 +444,9 @@ const ManagePackageForm = ({ onClose }: OnClose) => {
               onChange={(e) => setIsInternationalPackage(e.target.checked)}
               className="h-4 w-4 text-red-600 border-gray-300 rounded"
             />
-            <label className="text-sm font-medium">This is international package</label>
+            <label className="text-sm font-medium">
+              This is international package
+            </label>
           </div>
           <div className="my-5 ">
             {forB2BUser && (

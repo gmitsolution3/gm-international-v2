@@ -49,13 +49,13 @@ export function UserApplicationsTable({ edit }: { edit?: boolean }) {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://gm-international-server-gamma.vercel.app/user/application-status?email=${email}`,
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/application-status?email=${email}`,
           {
             cache: "no-cache",
           }
         );
         const data = await response.json();
-        
+
         setFilteredApplications(data);
       } catch (error) {
         console.error("Error fetching applications:", error);
@@ -66,8 +66,6 @@ export function UserApplicationsTable({ edit }: { edit?: boolean }) {
 
     applicationData();
   }, [email, setFilteredApplications]);
-
-
 
   if (loading) {
     return (

@@ -92,11 +92,10 @@ const ApplicationInAdminDashboard: React.FC<{
   };
 
   const handleStatusChange = async (id: string, newStatus: string) => {
-    
     try {
       // TODO: Add your API call here
       const response = await fetch(
-        `https://gm-international-server-gamma.vercel.app/application-status-update/${id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/application-status-update/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -114,7 +113,6 @@ const ApplicationInAdminDashboard: React.FC<{
         });
       }
 
-      
       Swal.fire({
         title: "Status Updated Successfully",
         showClass: {
@@ -158,7 +156,7 @@ const ApplicationInAdminDashboard: React.FC<{
         if (result.isConfirmed) {
           // TODO: Add your API call here
           const response = await fetch(
-            `https://gm-international-server-gamma.vercel.app/delete-application/${id}`,
+            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/delete-application/${id}`,
             { method: "DELETE" }
           );
 

@@ -15,7 +15,6 @@ interface Step2Props {
 }
 // formData;
 export default function Step2({ onNext, onPrevious }: Step2Props) {
-  
   const {
     watch,
     formState: { errors, isValid },
@@ -53,7 +52,6 @@ export default function Step2({ onNext, onPrevious }: Step2Props) {
       onNext();
     } else {
       setIsFormValid(false);
-    
 
       Swal.fire({
         icon: "error",
@@ -84,7 +82,7 @@ export default function Step2({ onNext, onPrevious }: Step2Props) {
 
   //     try {
   //       const res = await fetch(
-  //         `https://gm-international-server-gamma.vercel.app/get-form-data?country=${country}&visaType=${visaType}`,
+  //         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-form-data?country=${country}&visaType=${visaType}`,
   //         {
   //           cache: "no-store",
   //         }
@@ -95,7 +93,7 @@ export default function Step2({ onNext, onPrevious }: Step2Props) {
   //       if (!res.ok) throw new Error("Failed to fetch");
 
   //       setVisaData(formData)
-  //       
+  //
   //     } catch (error) {
   //       console.error(`fiend error ${error}`);
   //     }finally{

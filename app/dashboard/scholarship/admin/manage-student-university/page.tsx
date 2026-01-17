@@ -5,15 +5,13 @@ import ScholarshipUniversityList from "./components/universitiesTable";
 
 const ManageStudentUniveristy = async () => {
   const data = await fetch(
-    "https://gm-international-server-gamma.vercel.app/mange-university/admin",
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/mange-university/admin`,
     {
       cache: "no-store",
     }
   );
 
   const allUniversitiesData = await data.json();
-
-  
 
   return (
     <div className="min-h-screen  text-center flex flex-col">

@@ -4,7 +4,7 @@ import TouristHomePackages from "../../tourist-home-page/components/home/homePac
 
 const InternationalPackage = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/get-all-international-tourist-package",
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-all-international-tourist-package`,
     {
       next: { revalidate: 300 },
     }

@@ -84,11 +84,9 @@ export default function TourPackagesAdmin({
   const handleUpdatePackage = async () => {
     if (!selectedPackage) return;
 
-    
-
     try {
       const response = await fetch(
-        `https://gm-international-server-gamma.vercel.app/update-tourist-package/${selectedPackage._id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/update-tourist-package/${selectedPackage._id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -129,7 +127,7 @@ export default function TourPackagesAdmin({
       }).then(async (result) => {
         if (result.isConfirmed) {
           const res = await fetch(
-            `https://gm-international-server-gamma.vercel.app/delete-tourist-package/${id}`,
+            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/delete-tourist-package/${id}`,
             {
               method: "DELETE",
             }

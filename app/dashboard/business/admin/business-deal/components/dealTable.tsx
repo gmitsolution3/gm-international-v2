@@ -96,7 +96,7 @@ const DealTable = ({ initialData }: BusinessApplicationProps) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await fetch(
-          `https://gm-international-server-gamma.vercel.app/delete-deal/${id}`,
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/delete-deal/${id}`,
           {
             method: "DELETE",
           }
@@ -139,7 +139,7 @@ const DealTable = ({ initialData }: BusinessApplicationProps) => {
   const handleApprove = async (id: string): Promise<void> => {
     try {
       const res = await fetch(
-        `https://gm-international-server-gamma.vercel.app/approve-business-deal/${id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/approve-business-deal/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -175,15 +175,13 @@ const DealTable = ({ initialData }: BusinessApplicationProps) => {
         timer: 1500,
         showConfirmButton: false,
       });
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const handleReject = async (id: string): Promise<void> => {
     try {
       const res = await fetch(
-        `https://gm-international-server-gamma.vercel.app/reject-business-deal/${id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/reject-business-deal/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

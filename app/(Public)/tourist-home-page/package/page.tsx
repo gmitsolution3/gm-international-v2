@@ -5,7 +5,7 @@ import TouristFilter from "./components/touristFilter";
 
 const TouristAllPackage = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/all/tourist-package",
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/all/tourist-package`,
     {
       next: { revalidate: 300 },
     }

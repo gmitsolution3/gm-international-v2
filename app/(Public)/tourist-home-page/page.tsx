@@ -10,7 +10,7 @@ import Link from "next/link";
 
 const TouristHomePage = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/tourist-package",
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package`,
     {
       cache: "no-store",
     }

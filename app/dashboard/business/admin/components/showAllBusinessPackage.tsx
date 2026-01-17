@@ -86,8 +86,6 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
     setSelectedPackage(null);
   };
 
-
-
   const handleToggleStatus = async (id: string): Promise<void> => {
     try {
       const pkg = packages.find((p) => p._id === id);
@@ -108,7 +106,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
 
         // Call Backend API
         const res = await fetch(
-          `https://gm-international-server-gamma.vercel.app/toggle-business-package-status/${id}`,
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/toggle-business-package-status/${id}`,
           {
             method: "PATCH",
           }
@@ -152,7 +150,6 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
         });
       });
     } catch (error) {
-      
       Swal.fire({
         icon: "error",
         title: "Unexpected error occurred",

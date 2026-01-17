@@ -14,7 +14,7 @@ interface University {
 
 export default async function UniversitySection() {
   const data = await fetch(
-    "https://gm-international-server-gamma.vercel.app/mange-university/admin",
+    `${process.env.NEXT_EXPRESS_BASE_URL}/mange-university/admin`,
     {
       cache: "no-cache",
     }

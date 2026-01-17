@@ -1,6 +1,6 @@
 export const fetchMedicalPackage = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/get-medical-package",
+    `${process.env.NEXT_EXPRESS_BASE_URL}/get-medical-package`,
     {
       cache: "no-store",
     }
@@ -13,7 +13,7 @@ export const fetchMedicalPackage = async () => {
 
 export const fetchMedicalAllPackages = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/get-medical-all-package",
+    `${process.env.NEXT_EXPRESS_BASE_URL}/get-medical-all-package`,
     {
       cache: "no-store",
     }
@@ -26,7 +26,7 @@ export const fetchMedicalAllPackages = async () => {
 
 export const fetchMedicalPackageDetails = async (id: string) => {
   const res = await fetch(
-    `https://gm-international-server-gamma.vercel.app/get-medical-package-details/${id}`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/get-medical-package-details/${id}`,
     {
       cache: "no-store",
     }
@@ -39,7 +39,7 @@ export const fetchMedicalPackageDetails = async (id: string) => {
 
 export const fetchMedicalList = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/get-medical-list",
+    `${process.env.NEXT_EXPRESS_BASE_URL}/get-medical-list`,
     {
       cache: "no-store",
     }
@@ -52,7 +52,7 @@ export const fetchMedicalList = async () => {
 
 export const getAllMedicalData = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/get-all-medical-list",
+    `${process.env.NEXT_EXPRESS_BASE_URL}/get-all-medical-list`,
     {
       cache: "no-store",
     }
@@ -65,7 +65,7 @@ export const getAllMedicalData = async () => {
 
 export const getMedicalDetails = async (id: string) => {
   const res = await fetch(
-    `https://gm-international-server-gamma.vercel.app/get-medical-details/${id}`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/get-medical-details/${id}`,
     {
       cache: "no-store",
     }

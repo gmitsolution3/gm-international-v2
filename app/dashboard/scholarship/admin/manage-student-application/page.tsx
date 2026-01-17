@@ -3,7 +3,7 @@ import AddApplication from "./components/addApplication";
 
 const ManageStudentApplication = async () => {
   const manageApplicationData = await fetch(
-    "https://gm-international-server-gamma.vercel.app/admin/manage-application",
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/manage-application`,
     {
       cache: "no-store",
     }

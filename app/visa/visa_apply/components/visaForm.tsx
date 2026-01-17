@@ -50,7 +50,7 @@ export default function VisaForm() {
       setLoading(true);
       try {
         const res = await fetch(
-          `https://gm-international-server-gamma.vercel.app/get-form-data?country=${country}&visaType=${visaType}`
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-form-data?country=${country}&visaType=${visaType}`
         );
         const result = await res.json();
 
@@ -69,7 +69,7 @@ export default function VisaForm() {
   const handleFileChange = async (fieldName: string, file: File | null) => {
     if (file) {
       const data = await UploadToCloudinary(file);
-      
+
       if (!!data) {
         setValue(`files.${fieldName}`, data, { shouldValidate: true });
       }

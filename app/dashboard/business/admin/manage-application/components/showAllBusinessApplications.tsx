@@ -69,7 +69,7 @@ const ShowAllBusinessApplications = ({
   const handleApprove = async (id: string): Promise<void> => {
     try {
       const res = await fetch(
-        `https://gm-international-server-gamma.vercel.app/approve-business-application/${id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/approve-business-application/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -115,7 +115,7 @@ const ShowAllBusinessApplications = ({
   const handleReject = async (id: string): Promise<void> => {
     try {
       const res = await fetch(
-        `https://gm-international-server-gamma.vercel.app/reject-business-application/${id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/reject-business-application/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

@@ -3,7 +3,7 @@ export const getSubmitApplication = async (
 ) => {
   if (!email) return;
   const res = await fetch(
-    `https://gm-international-server-gamma.vercel.app/get-user-application?email=${email}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-user-application?email=${email}`,
     {
       cache: "no-store",
     }
@@ -16,7 +16,7 @@ export const getSubmitApplication = async (
 
 export const getAllBusinessApplication = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/get-business-all-applications",
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-business-all-applications`,
     {
       cache: "no-store",
     }
@@ -29,7 +29,7 @@ export const getAllBusinessApplication = async () => {
 
 export const getAllBusinessDeal = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/get-business-deal",
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-business-deal`,
     {
       cache: "no-store",
     }
@@ -43,7 +43,7 @@ export const getAllBusinessDeal = async () => {
 export const getUserBusinessDeal = async (email: string | null | undefined) => {
   if (!email) return;
   const res = await fetch(
-    `https://gm-international-server-gamma.vercel.app/get-user-business-deal?email=${email}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-user-business-deal?email=${email}`,
     {
       cache: "no-store",
     }
@@ -56,7 +56,7 @@ export const getUserBusinessDeal = async (email: string | null | undefined) => {
 
 export const getAllBusinessPackage = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/get-all-business-package",
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-all-business-package`,
     {
       cache: "no-store",
     }
@@ -68,7 +68,7 @@ export const getAllBusinessPackage = async () => {
 
 export const getAllBusinessDocuments = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/get-all-admin-business-documents",
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-all-admin-business-documents`,
     {
       cache: "no-store",
     }

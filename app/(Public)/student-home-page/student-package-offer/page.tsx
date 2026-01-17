@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 // import FilterTag from "./filter-tag"
 import { Filter } from "lucide-react";
-import OfferCard from "../components/OfferCard";
+import OfferCard, { ScholarshipCardProps } from "../components/OfferCard";
 import FilterTag from "./components/filtered";
 
 interface Country {
@@ -25,7 +25,7 @@ interface Offer {
 export default function ScholarshipListing() {
   const [filters, setFilters] = useState<string[]>(["Doctorate", "Australia"]);
 
-  const [offers, setOffers] = useState<Offer[]>([]);
+  const [offers, setOffers] = useState<ScholarshipCardProps[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export default function ScholarshipListing() {
       try {
         // Replace with your actual API endpoint
         const response = await fetch(
-          "https://gm-international-server-gamma.vercel.app/scholarship-package"
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/scholarship-package`
         );
         const data = await response.json();
         setOffers(data);
@@ -91,7 +91,7 @@ export default function ScholarshipListing() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {offers.map((offer, index) => (
               <div
-                key={offer.id}
+                key={offer._id}
                 style={{ animationDelay: `${index * 0.1}s` }}
                 className="animate-card-appear"
               >

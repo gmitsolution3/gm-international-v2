@@ -127,8 +127,6 @@ export const EditApplicationModal = ({
     }
   }, [selectedId, filteredApplications]);
 
-  
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -150,7 +148,6 @@ export const EditApplicationModal = ({
     });
 
     if (Object.keys(changedFields).length === 0) {
-      
       return;
     }
 
@@ -159,7 +156,7 @@ export const EditApplicationModal = ({
 
     try {
       const res = await fetch(
-        `https://gm-international-server-gamma.vercel.app/user/update-application/${formData._id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/update-application/${formData._id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -170,7 +167,6 @@ export const EditApplicationModal = ({
       const data = await res.json();
 
       if (res.ok) {
-        
         alert("Application updated successfully!");
       } else {
         console.error("❌ Update failed:", data);

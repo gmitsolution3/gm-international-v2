@@ -6,7 +6,7 @@ import HeroSection from "../student-home-page/components/HeroSection";
 
 const InternationalStudent = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/international-student-package",
+    `${process.env.NEXT_EXPRESS_BASE_URL}/international-student-package`,
     {
       cache: "no-store",
     }

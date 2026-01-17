@@ -1,6 +1,6 @@
 export const getHomeCompany = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/home-page-company",
+    `${process.env.NEXT_EXPRESS_BASE_URL}/home-page-company`,
     {
       cache: "no-store",
     }
@@ -12,12 +12,9 @@ export const getHomeCompany = async () => {
 };
 
 export const getAllCompanies = async () => {
-  const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/all-company",
-    {
-      cache: "no-store",
-    }
-  );
+  const res = await fetch(`${process.env.NEXT_EXPRESS_BASE_URL}/all-company`, {
+    cache: "no-store",
+  });
 
   if (!res.ok) throw new Error("Failed to fetch packages");
 
@@ -26,7 +23,7 @@ export const getAllCompanies = async () => {
 
 export const getCompany = async (id: string) => {
   const res = await fetch(
-    `https://gm-international-server-gamma.vercel.app/get-company/${id}`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/get-company/${id}`,
     {
       cache: "no-store",
     }
@@ -39,7 +36,7 @@ export const getCompany = async (id: string) => {
 
 export const getHomePackage = async () => {
   const res = await fetch(
-    `https://gm-international-server-gamma.vercel.app/get-homepage-business-package`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/get-homepage-business-package`,
     {
       cache: "no-store",
     }
@@ -51,7 +48,7 @@ export const getHomePackage = async () => {
 };
 export const getBusinessPackages = async () => {
   const res = await fetch(
-    `https://gm-international-server-gamma.vercel.app/get-business-packages`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/get-business-packages`,
     {
       cache: "no-store",
     }
@@ -64,7 +61,7 @@ export const getBusinessPackages = async () => {
 
 export const getBusinessDetails = async (id: string) => {
   const res = await fetch(
-    `https://gm-international-server-gamma.vercel.app/get-business-details/${id}`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/get-business-details/${id}`,
     {
       cache: "no-store",
     }

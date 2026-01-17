@@ -56,10 +56,8 @@ export default function ManagePackageForm({ onClose, email }: onCloseProps) {
       formData.photo &&
       formData.country
     ) {
-      
-
       const submitData = await fetch(
-        "https://gm-international-server-gamma.vercel.app/medical-package",
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical-package`,
         {
           method: "POST",
           headers: {
@@ -82,7 +80,6 @@ export default function ManagePackageForm({ onClose, email }: onCloseProps) {
         return;
       }
 
-      
       if (isSubmit.insertedId) {
         Swal.fire({
           title: "Your Form has been submitted",
@@ -137,8 +134,7 @@ export default function ManagePackageForm({ onClose, email }: onCloseProps) {
       );
 
       const result = await res.json();
-      
-      
+
       if (!result.secure_url) {
         throw new Error("Image upload failed");
       }

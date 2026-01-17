@@ -17,7 +17,7 @@ export default async function TouristPackageDetails({
   const source = sParams.from;
 
   const res = await fetch(
-    `https://gm-international-server-gamma.vercel.app/tourist-package/details/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/details/${id}`,
     { next: { revalidate: 300 } }
   );
 

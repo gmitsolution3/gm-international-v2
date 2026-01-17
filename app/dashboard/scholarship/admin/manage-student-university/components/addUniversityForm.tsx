@@ -57,8 +57,7 @@ export default function AddUniversityForm({ onClose }: OnClose) {
       );
 
       const result = await res.json();
-     
-     
+
       if (!result.secure_url) {
         throw new Error("Image upload failed");
       }
@@ -91,11 +90,9 @@ export default function AddUniversityForm({ onClose }: OnClose) {
     onClose();
   };
 
-  
-
   const handleUniversityForm = async () => {
     const res = await fetch(
-      "https://gm-international-server-gamma.vercel.app/mange-university/admin",
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/mange-university/admin`,
       {
         method: "POST",
         headers: {
@@ -117,7 +114,7 @@ export default function AddUniversityForm({ onClose }: OnClose) {
       });
       return;
     }
-   
+
     if (resultOfRes.insertedId) {
       Swal.fire({
         title: "Your Form has been submitted",

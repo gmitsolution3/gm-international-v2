@@ -96,7 +96,6 @@ const formSchema = z.object({
   // Transportation
   transportation: z.array(z.string()).min(1, "Select transportation"),
 
-
   // Hotel Booking
   hotelCategory: z.array(z.string()).optional(),
 
@@ -162,13 +161,11 @@ export function TouristUserForm({ touristPackage }: PackageProps) {
       packageId: touristPackage._id,
       packageName: touristPackage.packageName,
       dateFrom: touristPackage.startDate,
-      endTo: touristPackage.endDate
+      endTo: touristPackage.endDate,
     };
 
-
-
     const formData = await fetch(
-      "https://gm-international-server-gamma.vercel.app/tourist-package-booking",
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package-booking`,
       {
         method: "POST",
         headers: {
@@ -531,7 +528,7 @@ export function TouristUserForm({ touristPackage }: PackageProps) {
         {/* Date */}
         <Section title="Date" required>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormItem label="From" >
+            <FormItem label="From">
               {/* <Popover>
                 <PopoverTrigger asChild>
                   <Button

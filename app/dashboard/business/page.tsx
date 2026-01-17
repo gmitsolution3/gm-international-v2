@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const Business = () => {
-  return (
-    <div>Business main page</div>
-  )
-}
+  return <div>Business main page</div>;
+};
 export default Business;
-// https://gm-international-server-gamma.vercel.app/
+// ${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/

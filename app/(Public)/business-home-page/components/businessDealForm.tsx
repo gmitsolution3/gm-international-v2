@@ -248,7 +248,7 @@ const BusinessDealForm = () => {
       }
 
       const res = await fetch(
-        "https://gm-international-server-gamma.vercel.app/submit-business-deal",
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/submit-business-deal`,
         {
           method: "POST",
           headers: {

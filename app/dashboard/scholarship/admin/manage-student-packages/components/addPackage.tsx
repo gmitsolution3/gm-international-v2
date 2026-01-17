@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AlertCircle, CheckCircle2, Loader2 } from "lucide-react";
 import { UniversitySection } from "./university-section";
@@ -12,14 +12,11 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
 import dynamic from "next/dynamic";
+import Swal from "sweetalert2";
 
-
-const DescriptionEditor = dynamic(
-  () =>
-    import("./description-editor").then(
-      (mod) => mod.DescriptionEditor
-    ),
-  { ssr: false } 
+const DescriptionEditorRHF = dynamic(
+  () => import("./description-editor").then((mod) => mod.DescriptionEditorRHF),
+  { ssr: false }
 );
 
 export default function AddPackagePage() {
@@ -29,148 +26,76 @@ export default function AddPackagePage() {
     text: string;
   } | null>(null);
 
+  const form = useForm({
+    defaultValues: {
+      isInternationalStudent: false,
+      universityName: "",
+      country: "",
+      city: "",
+      universityURL: "",
+      thumbnail: null as File | null,
+      startingDate: "",
+      deadline: "",
+      duration: "",
+      language: "",
+      applicationFee: "",
+      serviceFee: "",
+      description: "",
+      universityDescription: "",
+    },
+  });
+
   const {
     control,
     register,
     watch,
     reset,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      isInternationalStudent: false,
-      b2bPrice: "",
-    },
-  });
+  } = form;
 
   const isInternationalStudent = watch("isInternationalStudent");
-  const from = "forUniversityDescription"
+  const onSubmit = async (data: any) => {
+    console.log("SUBMIT:", data);
 
-  const [formData, setFormData] = useState({
-    universityName: "",
-    country: "",
-    city: "",
-    worldRanking: "",
-    thumbnail: null as File | null,
-    startingDate: "",
-    deadline: "",
-    duration: "",
-    language: "",
-    applicationFee: "",
-    serviceFee: "",
-    description: "",
-  });
+    try {
+      const addPackage = await fetch(
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
 
-  const handleUniversityChange = (field: string, value: any) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
+      const result = await addPackage.json();
 
-  const handlePackageDetailsChange = (field: string, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
-
-  const handleDescriptionChange = (value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      description: value,
-    }));
-  };
-
-  const validateForm = () => {
-    const requiredFields = [
-      "universityName",
-      "country",
-      "city",
-      "worldRanking",
-      "startingDate",
-      "deadline",
-      "duration",
-      "language",
-      "applicationFee",
-      "serviceFee",
-      "description",
-    ];
-
-    for (const field of requiredFields) {
-      if (!formData[field as keyof typeof formData]) {
-        return false;
+      if (!result) {
+        Swal.fire({
+          title: "Scholarship Package Added successfully",
+          icon: "error",
+          draggable: false,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        return;
       }
+
+      if (result.insertedId) {
+        Swal.fire({
+          title: "Scholarship Package Added successfully",
+          icon: "success",
+          draggable: false,
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        //  onClose();
+        //  setPackageFormData(null);
+      }
+    } catch (error) {
+      console.error("Error while adding package:", error);
     }
-    return true;
-  };
-
-  // const handleSubmit = async (e: React.FormEvent) => {
-  //   e.preventDefault();
-  //   setMessage(null);
-
-  //   if (!validateForm()) {
-  //     setMessage({
-  //       type: "error",
-  //       text: "Please fill in all required fields",
-  //     });
-  //     return;
-  //   }
-
-  //   setLoading(true);
-
-  //   try {
-  //     // Simulate API call
-  //     await new Promise((resolve) => setTimeout(resolve, 1500));
-
-  //     setMessage({
-  //       type: "success",
-  //       text: "Package added successfully! The package is now available for students.",
-  //     });
-
-  //     // Reset form
-  //     setFormData({
-  //       universityName: "",
-  //       country: "",
-  //       city: "",
-  //       worldRanking: "",
-  //       thumbnail: null,
-  //       startingDate: "",
-  //       deadline: "",
-  //       duration: "",
-  //       language: "",
-  //       applicationFee: "",
-  //       serviceFee: "",
-  //       description: "",
-  //     });
-
-  //     // Clear message after 3 seconds
-  //     setTimeout(() => setMessage(null), 3000);
-  //   } catch (error) {
-  //     setMessage({
-  //       type: "error",
-  //       text: "Failed to add package. Please try again.",
-  //     });
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateForm()) {
-      setMessage({
-        type: "error",
-        text: "Please fill in all required fields",
-      });
-      return toast.error(message?.text);
-    }
-
-    const payload = {
-      ...formData,
-      isInternationalStudent,
-    };
-
-    console.log(payload);
   };
 
   return (
@@ -207,35 +132,18 @@ export default function AddPackagePage() {
         )}
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           {/* University Section */}
-          <UniversitySection
-            data={formData}
-            onChange={handleUniversityChange}
-          />
+          <UniversitySection form={form} />
 
           {/* Package Details Section */}
-          <PackageDetailsSection
-            data={{
-              startingDate: formData.startingDate,
-              deadline: formData.deadline,
-              duration: formData.duration,
-              language: formData.language,
-              serviceFee: formData.serviceFee,
-              applicationFee: formData.applicationFee,
-            }}
-            onChange={handlePackageDetailsChange}
-          />
-
+          <PackageDetailsSection form={form} />
           {/* Description Editor * */}
-          <DescriptionEditor
-            value={formData.description}
-            onChange={handleDescriptionChange}
-          />
-          <DescriptionEditor
-            value={formData.description}
-            onChange={handleDescriptionChange}
-            from={from}
+          <DescriptionEditorRHF form={form} name="description" />
+          <DescriptionEditorRHF
+            form={form}
+            name="universityDescription"
+            from="forUniversityDescription"
           />
 
           <div className="space-y-4">
@@ -268,7 +176,7 @@ export default function AddPackagePage() {
                     required: isInternationalStudent,
                   })}
                 />
-                {errors.b2bPrice && (
+                {errors.isInternationalStudent && (
                   <p className="text-sm text-red-500">
                     International student package price is required
                   </p>
@@ -284,20 +192,7 @@ export default function AddPackagePage() {
               variant="outline"
               className="border-border text-foreground hover:bg-[#CA2328] hover:text-white bg-transparent"
               onClick={() => {
-                setFormData({
-                  universityName: "",
-                  country: "",
-                  city: "",
-                  worldRanking: "",
-                  thumbnail: null,
-                  startingDate: "",
-                  deadline: "",
-                  duration: "",
-                  language: "",
-                  applicationFee: "",
-                  serviceFee: "",
-                  description: "",
-                });
+                reset();
                 setMessage(null);
               }}
             >

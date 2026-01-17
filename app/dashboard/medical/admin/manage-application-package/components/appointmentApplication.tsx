@@ -97,7 +97,7 @@ export default function AppointmentsApplications({
   ) => {
     try {
       const res = await fetch(
-        `https://gm-international-server-gamma.vercel.app/update-medical-appointments-status/${id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/update-medical-appointments-status/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -133,7 +133,7 @@ export default function AppointmentsApplications({
       }).then(async (result) => {
         if (result.isConfirmed) {
           const res = await fetch(
-            `https://gm-international-server-gamma.vercel.app/delete-medical-appointments/${id}`,
+            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/delete-medical-appointments/${id}`,
             {
               method: "DELETE",
             }

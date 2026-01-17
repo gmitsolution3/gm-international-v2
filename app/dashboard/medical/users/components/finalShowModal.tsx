@@ -253,9 +253,9 @@ export default function FinalShowModal({
       });
       return;
     }
-    
+
     try {
-      const endpoint = `https://gm-international-server-gamma.vercel.app/update_medical_appointment_form/${formData._id}`;
+      const endpoint = `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/update_medical_appointment_form/${formData._id}`;
 
       const method = "PATCH";
 

@@ -119,7 +119,7 @@ export default function TravelPackagesTable({
   ) => {
     try {
       const res = await fetch(
-        `https://gm-international-server-gamma.vercel.app/update-tourist-booking-status/${id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/update-tourist-booking-status/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -164,7 +164,7 @@ export default function TravelPackagesTable({
       }).then(async (result) => {
         if (result.isConfirmed) {
           const res = await fetch(
-            `https://gm-international-server-gamma.vercel.app/delete-tourist-booking/${id}`,
+            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/delete-tourist-booking/${id}`,
             {
               method: "DELETE",
             }

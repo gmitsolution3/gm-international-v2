@@ -130,10 +130,9 @@ const MakePackage = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-  
 
     const res = await fetch(
-      "https://gm-international-server-gamma.vercel.app/post-business-package",
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/post-business-package`,
       {
         method: "POST",
         headers: {

@@ -6,10 +6,9 @@ interface Params {
 
 export default async function DetailsPage({ params }: Params) {
   const { id } = await params;
- 
 
   const data = await fetch(
-    `https://gm-international-server-gamma.vercel.app/manage-university/details/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/manage-university/details/${id}`,
     {
       cache: "no-store",
     }

@@ -142,7 +142,7 @@ const B2BStep2 = ({ onPrevious }: Step2Props) => {
     };
 
     const res = await fetch(
-      "https://gm-international-server-gamma.vercel.app/b2b-application-submit",
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b-application-submit`,
       {
         method: "POST",
         headers: {

@@ -10,13 +10,15 @@ const Application = async ({ params }: ParamsProps) => {
   const { id } = await params;
 
   const res = await fetch(
-    `https://gm-international-server-gamma.vercel.app/university-Apply/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management/${id}`,
     {
       next: { revalidate: 300 },
     }
   );
 
   const result = await res.json();
+
+  console.log({result: result})
 
   return (
     <div>

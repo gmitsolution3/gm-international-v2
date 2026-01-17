@@ -6,7 +6,7 @@ import { DashboardErrorHandler } from "@/app/dashboard/components/emtryHandaller
 
 const TouristManagePackage = async () => {
   const res = await fetch(
-    "https://gm-international-server-gamma.vercel.app/all/tourist-package",
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/all/tourist-package`,
     {
       cache: "no-store",
     }

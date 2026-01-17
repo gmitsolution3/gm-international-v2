@@ -50,12 +50,11 @@ export default function Step3({ onNext, onPrevious }: Step3Props) {
       setIsLoading(true);
       try {
         const res = await fetch(
-          `https://gm-international-server-gamma.vercel.app/get-file-data?country=${country}&visaType=${visaType}`,
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-file-data?country=${country}&visaType=${visaType}`,
           { cache: "no-store" }
         );
         const data = await res.json();
 
-        
         setRequiredFiles(data.data || []);
       } catch (err) {
         console.error("Failed to fetch file requirements");
@@ -94,7 +93,6 @@ export default function Step3({ onNext, onPrevious }: Step3Props) {
       const data = await uploadRes.json();
 
       if (data.secure_url) {
-        
         return data.secure_url;
       } else {
         console.error("Cloudinary API Response Error:", data);

@@ -48,14 +48,13 @@ const AllCompanies = ({ initialData }: AllCompaniesProps) => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await fetch(
-          `https://gm-international-server-gamma.vercel.app/delete-company/${id}`,
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/delete-company/${id}`,
           {
             method: "DELETE",
           }
         );
 
         const data = await res.json();
-        
 
         if (res.status !== 200) {
           Swal.fire({

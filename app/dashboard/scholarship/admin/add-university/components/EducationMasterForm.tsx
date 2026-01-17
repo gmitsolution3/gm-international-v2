@@ -53,11 +53,9 @@ export default function EducationMasterForm() {
   });
 
   const onSubmit = async (data: EducationMasterFormData) => {
-    
-
     try {
       const addUniversityDetails = await fetch(
-        "https://gm-international-server-gamma.vercel.app/add-university",
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/add-university`,
         {
           method: "POST",
           headers: {

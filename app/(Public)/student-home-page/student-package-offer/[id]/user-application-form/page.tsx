@@ -95,7 +95,7 @@ export default function AdmissionForm() {
     const packagePreFieldData = async () => {
       try {
         const res = await fetch(
-          `https://gm-international-server-gamma.vercel.app/admin/scholarship-package-management/${id}`,
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management/${id}`,
           {
             cache: "no-store",
           }
@@ -129,8 +129,7 @@ export default function AdmissionForm() {
       );
 
       const result = await res.json();
-   
-     
+
       if (!result.secure_url) {
         return;
       }
@@ -147,10 +146,9 @@ export default function AdmissionForm() {
 
   const handleApplicationSubmit = async (e: any) => {
     e.preventDefault();
-   
 
     const addApplicationForm = await fetch(
-      "https://gm-international-server-gamma.vercel.app/student-home-page/student-package-offer/user-application-form",
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/student-home-page/student-package-offer/user-application-form`,
       {
         method: "POST",
         headers: {
@@ -173,7 +171,6 @@ export default function AdmissionForm() {
       return;
     }
 
-    
     if (resultOfApplicationForm.insertedId) {
       Swal.fire({
         title: "Your Form has been submited",

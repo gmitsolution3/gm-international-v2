@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import OfferCard from "./OfferCard";
+import OfferCard, { ScholarshipCardProps } from "./OfferCard";
 import Link from "next/link";
 
 interface Country {
@@ -21,9 +21,9 @@ interface Offer {
 }
 
 const PackageOfferSection = () => {
-  const [offers, setOffers] = useState<Offer[]>([]);
-  const [displayedOffers, setDisplayedOffers] = useState<Offer[]>([]);
-  const [showAll, setShowAll] = useState(false);
+  const [displayedOffers, setDisplayedOffers] = useState<
+    ScholarshipCardProps[]
+  >([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -32,10 +32,9 @@ const PackageOfferSection = () => {
       try {
         // Replace with your actual API endpoint
         const response = await fetch(
-          "https://gm-international-server-gamma.vercel.app/scholarship-package"
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/scholarship-package`
         );
         const data = await response.json();
-        setOffers(data);
         setDisplayedOffers(data.slice(0, 3));
       } catch (error) {
         console.error("Failed to fetch offers:", error);
@@ -47,17 +46,9 @@ const PackageOfferSection = () => {
     fetchOffers();
   }, []);
 
-  const handleViewMore = () => {
-    if (showAll) {
-      setDisplayedOffers(offers.slice(0, 3));
-      setShowAll(false);
-    } else {
-      setDisplayedOffers(offers);
-      setShowAll(true);
-    }
-  };
+  console.log({ displayedOffers: displayedOffers });
 
-  const from = "student"
+  const from = "student";
 
   return (
     <section className="w-full py-12 md:py-20 px-4">
@@ -83,7 +74,7 @@ const PackageOfferSection = () => {
 
         <div className="flex justify-center">
           <Link href="/student-home-page/student-package-offer">
-            <Button className="bg-red-600 hover:bg-red-700 text-white rounded-full px-6 py-2 md:px-8 md:py-3 font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95">
+            <Button className="bg-[#CA2328] hover:bg-red-700 text-white rounded-full px-6 py-2 md:px-8 md:py-3 font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95 hover:cursor-pointer">
               View More
             </Button>
           </Link>

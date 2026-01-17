@@ -106,7 +106,7 @@ export default function RegistrationForm() {
       
 
       const res = await fetch(
-        "https://gm-international-server-gamma.vercel.app/business-submit-form",
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-submit-form`,
         {
           method: "POST",
           headers: {

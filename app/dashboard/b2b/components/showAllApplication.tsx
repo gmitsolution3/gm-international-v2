@@ -64,15 +64,15 @@ export default function ShowAllApplications({ data }: DataProps) {
     if (result.isConfirmed) {
       // API call here
       const deleteRes = await fetch(
-        `https://gm-international-server-gamma.vercel.app/delete-d2b-application/${id}`,{
-          method: "DELETE"
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/delete-d2b-application/${id}`,
+        {
+          method: "DELETE",
         }
       );
 
-
       const isDeleteConfirm = await deleteRes.json();
 
-      if(!isDeleteConfirm){
+      if (!isDeleteConfirm) {
         return Swal.fire({
           title: "Sorry!",
           text: "Application can't be deleted now! Try again!.",
@@ -93,7 +93,6 @@ export default function ShowAllApplications({ data }: DataProps) {
       });
     }
   };
-
 
   const handleStatusToggle = async (
     applicationId: string,
@@ -117,7 +116,7 @@ export default function ShowAllApplications({ data }: DataProps) {
     if (!newStatus || newStatus === currentStatus) return;
 
     const res = await fetch(
-      `https://gm-international-server-gamma.vercel.app/b2b-status/${applicationId}`,
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b-status/${applicationId}`,
       {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
@@ -151,11 +150,8 @@ export default function ShowAllApplications({ data }: DataProps) {
       icon: "success",
       confirmButtonColor: "#dc2626",
     });
-    setIsModalOpen(false)
+    setIsModalOpen(false);
   };
-
-
-
 
   const getStatusBadge = (status: string) => {
     switch (status) {

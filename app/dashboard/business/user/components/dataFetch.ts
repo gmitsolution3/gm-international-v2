@@ -1,6 +1,6 @@
 export const getBusinessUserDashboardData = async (email: string) => {
   const res = await fetch(
-    `https://gm-international-server-gamma.vercel.app/get-business-user-dashboard-data?email=${email}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-business-user-dashboard-data?email=${email}`,
     {
       cache: "no-store",
     }

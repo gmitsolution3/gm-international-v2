@@ -25,7 +25,7 @@ export default function Step4({ onPrevious }: Step4Props) {
       paymentStatus: "pending",
     };
     const res = await fetch(
-      "https://gm-international-server-gamma.vercel.app/submit-visa-application",
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/submit-visa-application`,
       {
         method: "POST",
         headers: {

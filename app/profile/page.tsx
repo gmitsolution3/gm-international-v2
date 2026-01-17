@@ -7,16 +7,14 @@ export default async function ProfilePage({
   searchParams?: { email?: string };
 }) {
   const email = (await searchParams)?.email;
-  
 
   const data = await fetch(
-    `https://gm-international-server-gamma.vercel.app/user/get-profile-info?email=${email}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/get-profile-info?email=${email}`,
     {
       cache: "no-store",
     }
   );
   const userProfleData = await data.json();
-  
 
   return (
     <main className="min-h-screen bg-linear-to-br from-background via-background to-slate-50 dark:to-slate-950 overflow-hidden">

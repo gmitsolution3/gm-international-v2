@@ -1,6 +1,6 @@
 export const getAllMedicalDocuments = async () => {
   const documents = await fetch(
-    "https://gm-international-server-gamma.vercel.app/get-all-medical-document",
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-all-medical-document`,
     {
       cache: "force-cache",
     }
@@ -13,7 +13,7 @@ export const getAllMedicalDocuments = async () => {
 
 export const getAllTouristDocuments = async () => {
   const documents = await fetch(
-    "https://gm-international-server-gamma.vercel.app/get-all-tourist-document",
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-all-tourist-document`,
     {
       cache: "force-cache",
     }
@@ -26,7 +26,7 @@ export const getAllTouristDocuments = async () => {
 
 export const getUserScholarshipDocuments = async (email: string) => {
   const documents = await fetch(
-    `https://gm-international-server-gamma.vercel.app/get-users-documents?email=${email}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-users-documents?email=${email}`,
     {
       cache: "force-cache",
     }
@@ -39,7 +39,7 @@ export const getUserScholarshipDocuments = async (email: string) => {
 
 export const getUserTouristDocuments = async (email: string) => {
   const documents = await fetch(
-    `https://gm-international-server-gamma.vercel.app/get-users-tourist-documents?email=${email}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-users-tourist-documents?email=${email}`,
     {
       cache: "force-cache",
     }
@@ -51,7 +51,7 @@ export const getUserTouristDocuments = async (email: string) => {
 };
 export const getUserMedicalDashboard = async (email: string) => {
   const documents = await fetch(
-    `https://gm-international-server-gamma.vercel.app/get-users-medical-documents?email=${email}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-users-medical-documents?email=${email}`,
     {
       cache: "force-cache",
     }

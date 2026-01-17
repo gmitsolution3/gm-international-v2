@@ -1,3 +1,4 @@
+import { PackageDescriptionView } from "@/app/dashboard/scholarship/admin/manage-student-packages/components/PackageDescriptionView";
 import { OfferSidebar } from "../components/offerSidebar";
 
 interface OfferDetailsPageProps {
@@ -15,7 +16,7 @@ export default async function OfferDetailsPage({
   const source = sParams.from;
 
   const res = await fetch(
-    `https://gm-international-server-gamma.vercel.app/admin/scholarship-package-management/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management/${id}`,
     {
       cache: "no-store",
     }
@@ -23,50 +24,24 @@ export default async function OfferDetailsPage({
 
   const packageDetails = await res.json();
 
- 
+ const {
+   _id,
+   city,
+   country,
+   deadline,
+   language,
+   duration,
+   startingDate,
+   thumbnail,
+   applicationFee,
+   description,
+   universityDescription,
+   serviceFee,
+   universityName,
+   universityURL,
+ } = packageDetails;
 
-  // const {_id,selectedCountry,selectedUniversity,imgURL,packagePrice,applicationRequirement,courseName,createdAt,deadlineDate,idCard,scholarshipDetails,selectDuration,selectLanguage,selectStudyLevel,selectUniversitiesProgram,sl_No,} = packageDetails;
-  const {
-    _id,
-    selectedCountry,
-    selectedUniversity,
-    imgURL,
-    packagePrice,
-    applicationRequirement,
-    courseName,
-    createdAt,
-    deadlineDate,
-    idCard,
-    scholarshipDetails,
-    selectDuration,
-    selectLanguage,
-    selectStudyLevel,
-    selectUniversitiesProgram,
-    sl_No,
-    startingDate,
-    tuitionFree,
-    universityUrl,
-    universitysDescription,
-  } = packageDetails;
 
-  const packageSidebarInfo = {
-    id,
-    _id,
-    packagePrice,
-    courseName,
-    createdAt,
-    deadlineDate,
-    idCard,
-    selectDuration,
-    selectLanguage,
-    selectStudyLevel,
-    selectUniversitiesProgram,
-    sl_No,
-    startingDate,
-    tuitionFree,
-  };
-
-  
 
   return (
     <div className="min-h-screen bg-background">
@@ -80,30 +55,31 @@ export default async function OfferDetailsPage({
                 className={`rounded-2xl bg-linear-to-br from-gray-300 to-gray-400 transition-all duration-300`}
               >
                 <img
-                  src={imgURL}
-                  alt=""
+                  src={thumbnail}
+                  alt={universityName}
                   className={`w-full rounded-2xl bg-linear-to-br from-gray-300 to-gray-400 transition-all duration-300 hover:scale-105 shadow-lg `}
                 />
               </div>
               {/* University Info */}
               <div className="mt-4">
                 <h3 className="text-lg md:text-xl lg:text-2xl font-bold text-gray-900 mb-1">
-                  {selectedUniversity}
+                  {universityName}
                 </h3>
-                <p className="text-sm text-gray-600 mb-4 transition-all duration-300">
-                  {/* {selectedCountry.name} */}
+                <p className="text-sm text-red-700 mb-4 transition-all duration-300">
+                  {country}-{city}
                 </p>
               </div>
             </div>
 
             {/* University Description */}
             <section className="space-y-3">
-              <h2 className="text-2xl font-bold">University Description:</h2>
-              <p className="text-foreground/80 leading-relaxed">
-                {universitysDescription}
-              </p>
+              <h2 className="text-2xl font-bold">Package Description:</h2>
+              
+              <div>
+                <PackageDescriptionView html={description}/>
+              </div>
               <a
-                href={universityUrl}
+                href={universityURL}
                 className="text-destructive font-semibold hover:underline"
                 target="_blank"
               >
@@ -111,91 +87,11 @@ export default async function OfferDetailsPage({
               </a>
             </section>
 
-            {/* Scholarship Details */}
-            <section className="space-y-3">
-              <h2 className="text-2xl font-bold">Scholarship Details:</h2>
-              <p className="text-foreground/80 leading-relaxed">
-                {scholarshipDetails}
-              </p>
-            </section>
-
-            {/* Apply Requirements */}
-            <section className="space-y-3">
-              <h2 className="text-2xl font-bold">Apply Requirements:</h2>
-              {/* <ul className="space-y-2">
-                <li className="flex gap-3 text-foreground/80">
-                  <span className="text-destructive">•</span>
-                  <span>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </span>
-                </li>
-                <li className="flex gap-3 text-foreground/80">
-                  <span className="text-destructive">•</span>
-                  <span>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </span>
-                </li>
-                <li className="flex gap-3 text-foreground/80">
-                  <span className="text-destructive">•</span>
-                  <span>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </span>
-                </li>
-                <li className="flex gap-3 text-foreground/80">
-                  <span className="text-destructive">•</span>
-                  <span>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </span>
-                </li>
-                <li className="flex gap-3 text-foreground/80">
-                  <span className="text-destructive">•</span>
-                  <span>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </span>
-                </li>
-              </ul> */}
-              <p>{applicationRequirement}</p>
-            </section>
-
-            {/* Application Process */}
-            <section className="space-y-3">
-              <h2 className="text-2xl font-bold">Application Process:</h2>
-              <ul className="space-y-2">
-                <li className="flex gap-3 text-foreground/80">
-                  <span className="text-destructive">•</span>
-                  <span>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </span>
-                </li>
-                <li className="flex gap-3 text-foreground/80">
-                  <span className="text-destructive">•</span>
-                  <span>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </span>
-                </li>
-                <li className="flex gap-3 text-foreground/80">
-                  <span className="text-destructive">•</span>
-                  <span>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </span>
-                </li>
-                <li className="flex gap-3 text-foreground/80">
-                  <span className="text-destructive">•</span>
-                  <span>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  </span>
-                </li>
-              </ul>
-              {}
-            </section>
           </div>
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <OfferSidebar
-              packageSidebarInfo={packageSidebarInfo}
-              source={source}
-            />
+            <OfferSidebar packageSidebarInfo={packageDetails} source={source} />
           </div>
         </div>
       </div>

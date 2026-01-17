@@ -40,7 +40,7 @@ export default function FinalBusinessModal({
     };
 
     const res = await fetch(
-      `https://gm-international-server-gamma.vercel.app/update-business-form/${formData._id}`,
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/update-business-form/${formData._id}`,
       {
         method: "PATCH",
         headers: {
@@ -51,7 +51,6 @@ export default function FinalBusinessModal({
     );
 
     const result = await res.json();
-  
 
     if (!result.ok) {
       Swal.fire({
@@ -73,7 +72,7 @@ export default function FinalBusinessModal({
     });
 
     setIsEditing(false);
-    
+
     // alert("Data updated successfully!");
   };
 

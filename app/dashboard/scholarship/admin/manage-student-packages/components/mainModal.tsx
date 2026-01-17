@@ -15,7 +15,6 @@ import Swal from "sweetalert2";
 import { Checkbox } from "@/components/ui/checkbox";
 import { EducationMasterFormData } from "../../add-university/components/EducationMasterForm";
 
-
 type Course = { value: string };
 type Language = { value: string };
 
@@ -23,7 +22,7 @@ type University = {
   name: string;
   location: string;
   courses: Course[];
-  language: Language[]
+  language: Language[];
 };
 
 type EducationMaster = {
@@ -41,8 +40,6 @@ interface countryOption {
 interface ImgFormData {
   secure_url?: string;
 }
-
-
 
 const studyLevel: string[] = [
   "Select study level",
@@ -67,8 +64,6 @@ const duration: string[] = [
 
 const language: string[] = ["English", "Bangla", "Chinese", "Malaya"];
 
-
-
 const initialState = {
   selectedCountry: null,
   selectedUniversity: null,
@@ -80,8 +75,6 @@ const initialState = {
   universityData: [] as EducationMaster[],
   filteredLanguage: [] as string[],
 };
-
-
 
 function reducer(state: any, action: any) {
   switch (action.type) {
@@ -161,9 +154,7 @@ interface FunProps {
   universityData: EducationMasterFormData[];
 }
 
-
 function MainModal({ onClose, universityData }: FunProps) {
-
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const [imgformData, setImgFormData] = useState<ImgFormData>({
@@ -198,7 +189,7 @@ function MainModal({ onClose, universityData }: FunProps) {
       imgURL: imgformData.secure_url,
       selectedCountry,
       selectedUniversity,
-      selectUniversitiesProgram :state.selectedCourse,
+      selectUniversitiesProgram: state.selectedCourse,
       selectStudyLevel,
       selectDuration,
       selectLanguage,
@@ -207,10 +198,10 @@ function MainModal({ onClose, universityData }: FunProps) {
       B2BPrice: b2bPrice,
       isInternationalStudent: internationalStudent,
     };
-    
+
     try {
       const addPackage = await fetch(
-        "https://gm-international-server-gamma.vercel.app/admin/scholarship-package-management",
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management`,
         {
           method: "POST",
           headers: {
