@@ -1,13 +1,19 @@
-import React from 'react'
-import { getB2BScholarshipPackage } from '../components/fetches'
-import OfferCard from '@/app/(Public)/student-home-page/components/OfferCard';
+import React from "react";
+import { getB2BScholarshipPackage } from "../components/fetches";
+import OfferCard from "@/app/(Public)/student-home-page/components/OfferCard";
+import { getServerSession } from "next-auth";
 
-const B2BScholarshipPackage = async() => {
 
-  const data =await getB2BScholarshipPackage()
+const B2BScholarshipPackage = async () => {
+  const session = await getServerSession();
 
-  
-  const form = 'b2b'
+  const data = await getB2BScholarshipPackage(session?.user?.email!);
+  const form = "b2b";
+
+  if(!data.success){
+    return <div>No Data found</div>
+  }
+
 
 
   return (
@@ -17,7 +23,7 @@ const B2BScholarshipPackage = async() => {
       </h1>
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {data.map((offer: any, index: number) => (
+          {/* {data.map((offer: any, index: number) => (
             <div
               key={offer.id}
               style={{ animationDelay: `${index * 0.1}s` }}
@@ -25,11 +31,11 @@ const B2BScholarshipPackage = async() => {
             >
               <OfferCard offer={offer} form={form} />
             </div>
-          ))}
+          ))} */}
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default B2BScholarshipPackage
+export default B2BScholarshipPackage;

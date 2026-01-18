@@ -46,7 +46,7 @@ const PackageOfferSection = () => {
     fetchOffers();
   }, []);
 
-  console.log({ displayedOffers: displayedOffers });
+
 
   const from = "student";
 

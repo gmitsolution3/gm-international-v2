@@ -13,13 +13,18 @@ export default async function DashboardPage() {
 
   const data = await getAllScholarshipDocumnetCount();
 
-  
-  const {totalApplicationCount,totalApprovedApplication,totalPendingApplication,totalRejectCount,totalScholarshipPackage,totalUniversityPackageCount} = data.documentCount
-  
+  const {
+    totalApplicationCount,
+    totalApprovedApplication,
+    totalPendingApplication,
+    totalRejectCount,
+    totalScholarshipPackage,
+    totalUniversityPackageCount,
+  } = data.documentCount;
+
   return (
     <div className="flex h-screen bg-background">
       {/* <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} avatar={" "}/> */}
-      
 
       <main className="flex-1 flex flex-col overflow-auto">
         {/* <Header onMenuToggle={() => setSidebarOpen(!sidebarOpen)} sidebarOpen={sidebarOpen} /> */}

@@ -8,8 +8,10 @@ interface OfferSidebarProps {
   source: string | undefined;
 }
 
-export function OfferSidebar({ packageSidebarInfo, source }: OfferSidebarProps) {
-
+export function OfferSidebar({
+  packageSidebarInfo,
+  source,
+}: OfferSidebarProps) {
   const {
     _id,
     city,
@@ -22,7 +24,6 @@ export function OfferSidebar({ packageSidebarInfo, source }: OfferSidebarProps) 
     serviceFee,
     universityName,
   } = packageSidebarInfo;
-
 
   return (
     <Card className="sticky top-8 bg-muted/50">
@@ -50,7 +51,7 @@ export function OfferSidebar({ packageSidebarInfo, source }: OfferSidebarProps) 
             <span className="text-muted-foreground">Duration:</span>
             <span className="font-medium">{duration}</span>
           </div>
-         
+
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Teaching Language:</span>
             <span className="font-medium">{language}</span>
@@ -65,22 +66,30 @@ export function OfferSidebar({ packageSidebarInfo, source }: OfferSidebarProps) 
             </span>
             <span className="font-medium">{applicationFee}</span>
           </div>
-          
+
           <div className="flex justify-between text-sm border-b border-border pb-3">
             <span className="text-muted-foreground">Service Fee:</span>
             <span className="font-medium">{serviceFee}</span>
           </div>
-
-      
         </div>
-        <Link
-          href={`/student-home-page/student-package-offer/user_application_form/${_id}?source=${source}`}
-          className="hover:cursor-pointer"
-        >
-          <Button className="w-full bg-destructive hover:bg-destructive/90 text-primary-foreground font-semibold h-11 hover:cursor-pointer">
-            Apply Now
-          </Button>
-        </Link>
+        <div>
+          <Link
+            href={`/student-home-page/student-package-offer/user_application_form/${_id}?source=${source}`}
+            className="hover:cursor-pointer"
+          >
+            <Button className="w-full bg-destructive hover:bg-destructive/90 text-primary-foreground font-semibold h-11 hover:cursor-pointer">
+              Apply Now
+            </Button>
+          </Link>
+          <Link
+            href={`/student-home-page/universities/${_id}`}
+            className="hover:cursor-pointer"
+          >
+            <button className="w-full hover:bg-destructive/90 border-2 hover:text-white rounded-lg font-semibold h-11 hover:cursor-pointer mt-5">
+              View University Details
+            </button>
+          </Link>
+        </div>
       </CardContent>
     </Card>
   );

@@ -25,7 +25,7 @@ export interface ScholarshipCardProps {
 
 interface OfferCardProps {
   offer: ScholarshipCardProps;
-  form: string;
+  form?: string;
 }
 
 const OfferCard = ({ offer, form }: OfferCardProps) => {

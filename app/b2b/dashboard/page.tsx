@@ -2,8 +2,16 @@ import React from "react";
 import { getB2BDocumentCount } from "./components/fetches";
 import StatCard from "@/app/dashboard/scholarship/components/stat_card";
 import { BadgePlus } from "lucide-react";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 const B2BUserDashboard = async () => {
+
+  const session = await getServerSession()
+
+  if(!session){
+    redirect("/b2b")
+  }
   const count = await getB2BDocumentCount();
 
   const { dashboard } = count;

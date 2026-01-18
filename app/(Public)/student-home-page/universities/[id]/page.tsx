@@ -7,6 +7,8 @@ interface Params {
 export default async function DetailsPage({ params }: Params) {
   const { id } = await params;
 
+
+
   const data = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/manage-university/details/${id}`,
     {
@@ -14,6 +16,7 @@ export default async function DetailsPage({ params }: Params) {
     }
   );
   const universityDetails = await data.json();
+
 
   return <UniversityDetailsPage university={universityDetails} />;
 }

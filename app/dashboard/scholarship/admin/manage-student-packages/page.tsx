@@ -11,7 +11,7 @@ const ManageStudentPackage = async () => {
   );
   const scholarShipData = await manageScholarShipPackage.json();
 
-  console.log( "data",scholarShipData.data)
+
 
   return (
     <main className="min-h-screen bg-background">

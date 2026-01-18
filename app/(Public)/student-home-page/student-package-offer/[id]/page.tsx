@@ -1,5 +1,6 @@
 import { PackageDescriptionView } from "@/app/dashboard/scholarship/admin/manage-student-packages/components/PackageDescriptionView";
 import { OfferSidebar } from "../components/offerSidebar";
+import { AiOutlineGlobal } from "react-icons/ai";
 
 interface OfferDetailsPageProps {
   params: { id: string };
@@ -69,24 +70,23 @@ export default async function OfferDetailsPage({
                   {country}-{city}
                 </p>
               </div>
+              <a
+                href={universityURL}
+                className="text-destructive font-semibold hover:underline flex items-center gap-2"
+                target="_blank"
+              >
+                <AiOutlineGlobal /> University
+              </a>
             </div>
 
             {/* University Description */}
             <section className="space-y-3">
               <h2 className="text-2xl font-bold">Package Description:</h2>
-              
-              <div>
-                <PackageDescriptionView html={description}/>
-              </div>
-              <a
-                href={universityURL}
-                className="text-destructive font-semibold hover:underline"
-                target="_blank"
-              >
-                Visit Website
-              </a>
-            </section>
 
+              <div>
+                <PackageDescriptionView html={description} />
+              </div>
+            </section>
           </div>
 
           {/* Sidebar */}

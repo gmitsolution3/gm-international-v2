@@ -9,6 +9,7 @@ import Loader from "@/components/ui/loader";
 import Sidebar from "@/app/dashboard/scholarship/components/sidebar";
 import UserSidebar from "@/app/dashboard/scholarship/user/components/user-sidebar";
 import DashboardHeader from "@/app/dashboard/components/header";
+import { redirect } from "next/navigation";
 
 type UserAvatar = {
   avatar: string | undefined;
@@ -61,10 +62,7 @@ export default function DashboardLayout({
 
   const avatar = userAvatar?.avatar;
 
-  //   if (loading) {
-  //     return <Loader />;
-  //   }
-
+ 
   return (
     <div className="flex min-h-screen overflow-auto">
       <UserProvider>

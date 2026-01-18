@@ -1,12 +1,12 @@
-export const getB2BScholarshipPackage = async () => {
+export const getB2BScholarshipPackage = async (email:string) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-b2b-scholarship-package`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-b2b-scholarship-package/${email}`,
     {
       cache: "no-store",
     }
   );
 
-  if (!res.ok) throw new Error("Data not found");
+  // if (!res.ok) throw new Error("Data not found");
 
   return res.json();
 };

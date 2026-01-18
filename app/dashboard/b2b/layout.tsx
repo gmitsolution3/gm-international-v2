@@ -66,9 +66,9 @@ export default function DashboardLayout({
 
   const avatar = userAvatar?.avatar;
 
-  if (loading) {
-    return <Loader />;
-  }
+  // if (loading) {
+  //   return <Loader />;
+  // }
 
   return (
     <div className="flex min-h-screen overflow-auto">

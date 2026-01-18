@@ -55,7 +55,7 @@ export default function AddPackagePage() {
 
   const isInternationalStudent = watch("isInternationalStudent");
   const onSubmit = async (data: any) => {
-    console.log("SUBMIT:", data);
+
 
     try {
       const addPackage = await fetch(

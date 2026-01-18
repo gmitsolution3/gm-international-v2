@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import OfferCard, { ScholarshipCardProps } from "./OfferCard";
 
 interface University {
   _id: string;
@@ -23,6 +24,7 @@ export default async function UniversitySection() {
   const universities = await data.json();
   const displayedUniversities = universities.slice(0, 3);
 
+
   return (
     <section className="w-full py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
@@ -35,8 +37,9 @@ export default async function UniversitySection() {
 
         {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {displayedUniversities.map((university: University) => (
+          {displayedUniversities.map((university: ScholarshipCardProps) => (
             <UniversityCard key={university._id} university={university} />
+            //  <OfferCard key={universities._id} offer={displayedUniversities} />
           ))}
         </div>
 
@@ -61,17 +64,17 @@ export default async function UniversitySection() {
   );
 }
 
-function UniversityCard({ university }: { university: University }) {
+function UniversityCard({ university }: { university: ScholarshipCardProps }) {
   return (
     <div className="border border-red-200 rounded-2xl overflow-hidden hover:shadow-lg transition-shadow duration-300 bg-white flex flex-col h-full">
       {/* Image Container */}
       <div className="relative w-full h-48 sm:h-56 bg-gray-200 overflow-hidden">
         <Image
-          src={university.photo || "/placeholder.svg"}
-          alt={university.university}
+          src={university.thumbnail || "/placeholder.svg"}
+          alt={university.universityName}
           fill
           className="object-cover"
-          priority={false}
+          priority={true}
         />
       </div>
 
@@ -79,7 +82,7 @@ function UniversityCard({ university }: { university: University }) {
       <div className="p-5 sm:p-6 flex flex-col grow">
         {/* University Name */}
         <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-1">
-          {university.university}
+          {university.universityName}
         </h3>
 
         {/* Country */}
@@ -89,7 +92,7 @@ function UniversityCard({ university }: { university: University }) {
 
         {/* Introduction/Description */}
         <p className="text-sm text-gray-600 leading-relaxed mb-5 grow line-clamp-3">
-          {university.introduction}
+          {university.city}
         </p>
 
         {/* View Details Button */}

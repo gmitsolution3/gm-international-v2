@@ -18,7 +18,7 @@ const Application = async ({ params }: ParamsProps) => {
 
   const result = await res.json();
 
-  console.log({result: result})
+
 
   return (
     <div>

@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { ScholarshipCardProps } from "../../components/OfferCard";
 
 interface UniversityCardProps {
   university: {
@@ -18,7 +19,11 @@ interface UniversityCardProps {
   };
 }
 
-export function UniversityCard({ university }: UniversityCardProps) {
+export function UniversityCard({
+  university,
+}: {
+  university: ScholarshipCardProps;
+}) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -31,8 +36,8 @@ export function UniversityCard({ university }: UniversityCardProps) {
         {/* Image Section - Left */}
         <div className="sm:col-span-4 h-48 sm:h-auto relative overflow-hidden bg-slate-100">
           <Image
-            src={university.photo || "/placeholder.svg"}
-            alt={university.university}
+            src={university.thumbnail || "/placeholder.svg"}
+            alt={university.universityName}
             fill
             className={`object-cover transition-transform duration-500 ${
               isHovered ? "scale-110" : "scale-100"
@@ -43,47 +48,55 @@ export function UniversityCard({ university }: UniversityCardProps) {
         </div>
 
         {/* Content Section - Right */}
-        <div className="sm:col-span-8 p-5 sm:p-6 flex flex-col justify-between">
+        <div className="sm:col-span-8 p-5 sm:p-6 flex flex-col justify-between ">
           <div>
-            <div className="flex justify-between">
-              <div >
+            <div className="flex flex-col md:flex-row justify-between">
+              <div>
                 {/* Title */}
                 <h3 className="text-lg sm:text-xl font-bold text-foreground mb-2">
-                  {university.university}
+                  {university.universityName}
                 </h3>
 
                 {/* Meta info */}
                 <p className="text-xs sm:text-sm text-slate-500 mb-4 font-medium uppercase tracking-wide">
                   {university.country} •
-                  <span className="text-red-400">{university.studyLevel}</span>
+                  <span className="text-red-400">{university.city}</span>
                 </p>
+                <p className="text-xs sm:text-sm text-slate-500 mb-4 font-medium uppercase tracking-wide">
+                  Application Starting Date:{" "}
+                  <span className="text-red-400">
+                    {university.startingDate}{" "}
+                  </span>{" "}
+                  <br />
+                  <span>
+                    Application Deadline:
+                    <span className="text-red-400">
+                      {university.deadline}
+                    </span>{" "}
+                  </span>
+                </p>
+                {/* Footer with button */}
+                <div className="mt-4 flex items-center justify-between">
+                  <a
+                    href={university.universityURL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-slate-500 hover:text-slate-700 transition-colors truncate"
+                  >
+                    {university.universityURL}
+                  </a>
+                </div>
               </div>
               <div>
-                <Link href={`/student-home-page/universities/${university._id}`}
-                  className="ml-4 bg-red-600 hover:bg-red-700 text-white text-sm h-9 px-4 rounded-lg transition-all duration-300 hover:shadow-md flex items-center gap-1 whitespace-nowrap shrink-0"
+                <Link
+                  href={`/student-home-page/universities/${university._id}`}
+                  className="md:ml-4 bg-red-600 hover:bg-red-700 text-white text-sm h-9 px-4 rounded-lg transition-all duration-300 hover:shadow-md flex items-center gap-1 whitespace-nowrap shrink-0 mt-4"
                 >
                   View Details
                   <ChevronRight size={16} />
                 </Link>
               </div>
             </div>
-
-            {/* Description */}
-            <p className="text-sm sm:text-base text-slate-600 line-clamp-3 leading-relaxed">
-              {university.introduction}
-            </p>
-          </div>
-
-          {/* Footer with button */}
-          <div className="mt-4 flex items-center justify-between">
-            <a
-              href={university.universityUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-slate-500 hover:text-slate-700 transition-colors truncate"
-            >
-              {university.universityUrl}
-            </a>
           </div>
         </div>
       </div>

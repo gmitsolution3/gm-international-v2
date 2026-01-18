@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { Users, Mail, Phone, Shield, CheckCircle, XCircle, Calendar, User } from 'lucide-react';
+import { GoPackageDependencies } from "react-icons/go";
+import Link from 'next/link';
 
 interface Users {
     _id: string;
@@ -19,25 +21,27 @@ interface UsersProps {
     allUsers: Users[]
 }
 
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+};
+
 export default function UsersTable({allUsers}:UsersProps) {
   const [users] = useState<Users[]>(allUsers);
 
-  const formatDate = (dateString:string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-  };
+  
 
   return (
     <div className="min-h-screen p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-400 mx-auto">
         {/* Header */}
-        
+
         {/* Mobile View - Cards */}
         <div className="block lg:hidden space-y-4">
           {users.map((user, index) => (
@@ -49,7 +53,9 @@ export default function UsersTable({allUsers}:UsersProps) {
               <div className="flex items-center justify-between mb-4 pb-3 border-b-2 border-red-100">
                 <div className="flex items-center gap-2">
                   <User className="w-5 h-5 text-red-600" />
-                  <h3 className="text-xl font-bold text-red-900">{user.userName}</h3>
+                  <h3 className="text-xl font-bold text-red-900">
+                    {user.userName}
+                  </h3>
                 </div>
                 {user.isActive ? (
                   <CheckCircle className="w-6 h-6 text-green-500" />
@@ -63,7 +69,9 @@ export default function UsersTable({allUsers}:UsersProps) {
                   <Mail className="w-4 h-4 text-red-500 mt-1 shrink-0" />
                   <div>
                     <p className="text-xs text-red-600 font-semibold">Email</p>
-                    <p className="text-sm text-gray-800 break-all">{user.email}</p>
+                    <p className="text-sm text-gray-800 break-all">
+                      {user.email}
+                    </p>
                   </div>
                 </div>
 
@@ -86,27 +94,59 @@ export default function UsersTable({allUsers}:UsersProps) {
                 </div>
 
                 <div className="flex items-start gap-2">
-                  <span className="text-red-500 mt-1 text-xs shrink-0">ID:</span>
+                  <span className="text-red-500 mt-1 text-xs shrink-0">
+                    ID:
+                  </span>
                   <div>
-                    <p className="text-xs text-red-600 font-semibold">B2B Profile</p>
-                    <p className="text-sm text-gray-800 break-all">{user.b2bProfileId}</p>
+                    <p className="text-xs text-red-600 font-semibold">
+                      B2B Profile
+                    </p>
+                    <p className="text-sm text-gray-800 break-all">
+                      {user.b2bProfileId}
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-2">
-                  <span className="text-red-500 mt-1 text-xs shrink-0">By:</span>
+                  <span className="text-red-500 mt-1 text-xs shrink-0">
+                    By:
+                  </span>
                   <div>
-                    <p className="text-xs text-red-600 font-semibold">Created By</p>
-                    <p className="text-sm text-gray-800 break-all">{user.createdBy}</p>
+                    <p className="text-xs text-red-600 font-semibold">
+                      Created By
+                    </p>
+                    <p className="text-sm text-gray-800 break-all">
+                      {user.createdBy}
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-2">
                   <Calendar className="w-4 h-4 text-red-500 mt-1 shrink-0" />
                   <div>
-                    <p className="text-xs text-red-600 font-semibold">Created At</p>
-                    <p className="text-sm text-gray-800">{formatDate(user.createdAt)}</p>
+                    <p className="text-xs text-red-600 font-semibold">
+                      Created At
+                    </p>
+                    <p className="text-sm text-gray-800">
+                      {formatDate(user.createdAt)}
+                    </p>
                   </div>
+                </div>
+                <div className="px-6 py-4 flex gap-2">
+                  <Link
+                    href={`/dashboard/b2b/assign/s-package?user=${user.b2bProfileId}`}
+                    className="flex items-center gap-2 border px-3 py-2 rounded-lg hover:bg-red-700 hover:text-white font-semibold hover:cursor-pointer"
+                  >
+                    <GoPackageDependencies className="group-hover:scale-110 transition-transform" />
+                    <span className="text-xs">ASP</span>
+                  </Link>
+                  <Link
+                    href={`/dashboard/b2b/assign/t-package?user=${user.b2bProfileId}`}
+                    className="flex items-center gap-2 border px-3 py-2 rounded-lg hover:bg-red-700 hover:text-white font-semibold hover:cursor-pointer"
+                  >
+                    <GoPackageDependencies className="group-hover:scale-110 transition-transform" />
+                    <span className="text-xs">ATP</span>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -118,14 +158,33 @@ export default function UsersTable({allUsers}:UsersProps) {
           <table className="w-full bg-white">
             <thead>
               <tr className="bg-linear-to-r from-red-600 to-rose-600 text-white">
-                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">User Name</th>
-                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Email</th>
-                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Phone</th>
-                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Role</th>
-                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Status</th>
-                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">B2B Profile ID</th>
-                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Created By</th>
-                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">Created At</th>
+                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">
+                  User Name
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">
+                  Email
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">
+                  Phone
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">
+                  Role
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">
+                  B2B Profile ID
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">
+                  Created By
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">
+                  Created At
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-bold uppercase tracking-wider">
+                  Atc
+                </th>
               </tr>
             </thead>
             <tbody className="divide-y divide-red-100">
@@ -138,7 +197,9 @@ export default function UsersTable({allUsers}:UsersProps) {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">
                       <User className="w-4 h-4 text-red-600 group-hover:scale-110 transition-transform" />
-                      <span className="font-semibold text-red-900">{user.userName}</span>
+                      <span className="font-semibold text-red-900">
+                        {user.userName}
+                      </span>
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -162,17 +223,23 @@ export default function UsersTable({allUsers}:UsersProps) {
                     {user.isActive ? (
                       <div className="flex items-center gap-1">
                         <CheckCircle className="w-5 h-5 text-green-500 group-hover:scale-110 transition-transform" />
-                        <span className="text-green-600 font-semibold text-sm">Active</span>
+                        <span className="text-green-600 font-semibold text-sm">
+                          Active
+                        </span>
                       </div>
                     ) : (
                       <div className="flex items-center gap-1">
                         <XCircle className="w-5 h-5 text-red-500 group-hover:scale-110 transition-transform" />
-                        <span className="text-red-600 font-semibold text-sm">Inactive</span>
+                        <span className="text-red-600 font-semibold text-sm">
+                          Inactive
+                        </span>
                       </div>
                     )}
                   </td>
                   <td className="px-6 py-4">
-                    <span className="text-gray-700 font-mono text-sm">{user.b2bProfileId}</span>
+                    <span className="text-gray-700 font-mono text-sm">
+                      {user.b2bProfileId}
+                    </span>
                   </td>
                   <td className="px-6 py-4">
                     <span className="text-gray-700">{user.createdBy}</span>
@@ -180,8 +247,26 @@ export default function UsersTable({allUsers}:UsersProps) {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-red-500 group-hover:scale-110 transition-transform" />
-                      <span className="text-gray-700 text-sm">{formatDate(user.createdAt)}</span>
+                      <span className="text-gray-700 text-sm">
+                        {formatDate(user.createdAt)}
+                      </span>
                     </div>
+                  </td>
+                  <td className="px-6 py-4 flex gap-2">
+                    <Link
+                      href={`/dashboard/b2b/assign/s-package?user=${user.b2bProfileId}`}
+                      className="flex items-center gap-2 border px-3 py-2 rounded-lg hover:bg-red-700 hover:text-white font-semibold hover:cursor-pointer"
+                    >
+                      <GoPackageDependencies className="group-hover:scale-110 transition-transform" />
+                      <span className="text-xs">ASP</span>
+                    </Link>
+                    <Link
+                      href={`/dashboard/b2b/assign/t-package?user=${user.b2bProfileId}`}
+                      className="flex items-center gap-2 border px-3 py-2 rounded-lg hover:bg-red-700 hover:text-white font-semibold hover:cursor-pointer"
+                    >
+                      <GoPackageDependencies className="group-hover:scale-110 transition-transform" />
+                      <span className="text-xs">ATP</span>
+                    </Link>
                   </td>
                 </tr>
               ))}

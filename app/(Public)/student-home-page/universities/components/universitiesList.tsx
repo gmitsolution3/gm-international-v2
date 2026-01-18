@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { UniversityCard } from "./universityCard"
+import { ScholarshipCardProps } from "../../components/OfferCard"
 
 interface University {
   _id: string
@@ -14,8 +15,8 @@ interface University {
 }
 
 interface UniversitiesListProps {
-  universities: University[]
-  country: string
+  universities: ScholarshipCardProps[]
+  country: string;
 }
 
 export function UniversitiesList({ universities, country }: UniversitiesListProps) {
@@ -31,7 +32,7 @@ export function UniversitiesList({ universities, country }: UniversitiesListProp
   }, [universities])
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div className="max-w-6xl min-h-screen mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
       <div className="space-y-4 sm:space-y-6">
         {universities.map((university, index) => (
           <div
