@@ -194,8 +194,6 @@ export const authConfig: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user, account }) {
-
-       console.log("JWT CALLBACK:", { token, user, account });
       if (account && user) {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;

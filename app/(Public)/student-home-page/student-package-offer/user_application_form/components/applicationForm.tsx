@@ -228,11 +228,13 @@ interface Package {
 
 interface PackageProps {
   packageData: ScholarshipCardProps;
-  session: any
+  session: any;
 }
 
-export default function ScholarshipApplicationForm({ packageData, session}: PackageProps) {
- 
+export default function ScholarshipApplicationForm({
+  packageData,
+  session,
+}: PackageProps) {
   const [formData, setFormData] = useState<FormData>({
     applicantId: `APP-${Date.now()}`,
     firstName: "",
@@ -244,8 +246,8 @@ export default function ScholarshipApplicationForm({ packageData, session}: Pack
     nidNumber: "",
     country: "All",
     university: "University name",
-    admissionSemester: "All",
-    courseName: "BBA",
+    admissionSemester: "",
+    courseName: "",
     language: "English",
     category: "Full",
     coverage: "Tuition",
@@ -558,7 +560,7 @@ export default function ScholarshipApplicationForm({ packageData, session}: Pack
       country: "All",
       university: "University name",
       admissionSemester: "All",
-      courseName: "BBA",
+      courseName: "",
       language: "English",
       category: "Full",
       coverage: "Tuition",
@@ -798,9 +800,12 @@ export default function ScholarshipApplicationForm({ packageData, session}: Pack
                 <input
                   type="text"
                   required
-                  readOnly
-                  // value={packageData.course.value}
+                  value={formData.courseName}
+                  onChange={(e) =>
+                    handleInputChange("courseName", e.target.value)
+                  }
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
+                  placeholder="Which course you want to do!!"
                 />
                 {/* <select
                   value={formData.courseName}
@@ -817,18 +822,34 @@ export default function ScholarshipApplicationForm({ packageData, session}: Pack
                 </select> */}
               </div>
 
+              {/* <div> */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Admission Semester <span className="text-red-600">*</span>
                 </label>
-                {/* <Dropdown
+                <input
+                  type="admissionSemester"
+                  required
+                  value={formData.admissionSemester}
+                  onChange={(e) =>
+                    handleInputChange("admissionSemester", e.target.value)
+                  }
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
+                  placeholder="Write your intake"
+                />
+              </div>
+
+              {/* <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Admission Semester <span className="text-red-600">*</span>
+                </label> */}
+              {/* <Dropdown
                   options={[...packageSemesters]}
                   value={formData.admissionSemester}
                   onChange={(value) =>
                     handleInputChange("admissionSemester", value)
                   }
                 /> */}
-                {/* <select
+              {/* <select
                   value={formData.admissionSemester}
                   onChange={(e) =>
                     handleInputChange("admissionSemester", e.target.value)
@@ -840,7 +861,7 @@ export default function ScholarshipApplicationForm({ packageData, session}: Pack
                   <option>Spring</option>
                   <option>Summer</option>
                 </select> */}
-              </div>
+              {/* </div> */}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -865,16 +886,16 @@ export default function ScholarshipApplicationForm({ packageData, session}: Pack
                 </select> */}
               </div>
 
-              <div>
+              {/* <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Coverage <span className="text-red-600">*</span>
-                </label>
-                {/* <Dropdown
+                </label> */}
+              {/* <Dropdown
                   options={[...coverage]}
                   value={formData.coverage}
                   onChange={(value) => handleInputChange("coverage", value)}
                 /> */}
-                {/* <select
+              {/* <select
                   value={formData.coverage}
                   onChange={(e) =>
                     handleInputChange("coverage", e.target.value)
@@ -885,23 +906,26 @@ export default function ScholarshipApplicationForm({ packageData, session}: Pack
                   <option>Full Scholarship</option>
                   <option>Partial Scholarship</option>
                 </select> */}
-              </div>
+              {/* </div> */}
+              {session.user.userRole === "b2b" && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Service Fee <span className="text-red-600">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    readOnly
+                    value={packageData.serviceFee}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
+                  />
+                </div>
+              )}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Service Fee <span className="text-red-600">*</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  readOnly
-                  value={packageData.serviceFee}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tuition Free <span className="text-red-600">*</span>
+                  Application Fee (Non refundable){" "}
+                  <span className="text-red-600">*</span>
                 </label>
                 <input
                   type="text"
