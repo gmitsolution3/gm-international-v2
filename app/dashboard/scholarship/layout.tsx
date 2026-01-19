@@ -31,16 +31,16 @@ const menuItems = [
     icon: Package,
     href: "/dashboard/scholarship/admin/manage-student-packages",
   },
-  {
-    label: "Manage University",
-    icon: Building2,
-    href: "/dashboard/scholarship/admin/manage-student-university",
-  },
-  {
-    label: "Add University",
-    icon: Building2,
-    href: "/dashboard/scholarship/admin/add-university",
-  },
+  // {
+  //   label: "Manage University",
+  //   icon: Building2,
+  //   href: "/dashboard/scholarship/admin/manage-student-university",
+  // },
+  // {
+  //   label: "Add University",
+  //   icon: Building2,
+  //   href: "/dashboard/scholarship/admin/add-university",
+  // },
 ];
 
 const userMenuItems = [

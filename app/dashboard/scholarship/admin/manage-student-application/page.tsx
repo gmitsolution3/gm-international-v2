@@ -8,7 +8,7 @@ const ManageStudentApplication = async () => {
       cache: "no-store",
     }
   );
-  const applicaionData = await manageApplicationData.json();
+  const applicationData = await manageApplicationData.json();
 
   return (
     <main className="min-h-screen bg-background">
@@ -25,7 +25,7 @@ const ManageStudentApplication = async () => {
           <AddApplication />
         </div>
 
-        <ApplicationInAdminDashboard applicationData={applicaionData} />
+        <ApplicationInAdminDashboard applicationData={applicationData} />
       </div>
     </main>
   );

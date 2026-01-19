@@ -6,6 +6,7 @@ import "./globals.css";
 import SessionWrapper from "./SessionWrapper";
 import HidableNavbar from "./components/hideAbleNavBar/hideableNavbar";
 import HidableFooter from "./components/hideableFooter/hideableFooter";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,6 +35,16 @@ export default function RootLayout({
       >
         <SessionWrapper>
           <HidableNavbar />
+          <Toaster
+            closeButton
+            position="top-right"
+            toastOptions={{
+              style: {
+                backgroundColor: "#F88379",
+                color: "white",
+              },
+            }}
+          />
           {children}
           <HidableFooter />
         </SessionWrapper>

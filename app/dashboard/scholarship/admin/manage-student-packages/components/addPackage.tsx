@@ -42,6 +42,7 @@ export default function AddPackagePage() {
       serviceFee: "",
       description: "",
       universityDescription: "",
+      status: "active"
     },
   });
 

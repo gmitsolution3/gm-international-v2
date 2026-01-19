@@ -1,5 +1,4 @@
 import React from "react";
-import MainModal from "./mainModal";
 import { X } from "lucide-react";
 import { EducationMasterFormData } from "../../add-university/components/EducationMasterForm";
 import AddPackagePage from "./addPackage";
@@ -32,10 +31,6 @@ const StudentPackageModal: React.FC<StudentPackageModal> = ({
         <div className="w-full">
           <AddPackagePage />
         </div>
-
-        {/* <div className="w-full">
-          <MainModal onClose = {onClose} universityData={universityData}/>
-        </div> */}
       </div>
     </div>
   );

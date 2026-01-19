@@ -15,6 +15,7 @@ import {
   DollarSign,
 } from "lucide-react";
 import Swal from "sweetalert2";
+import { toast } from "sonner";
 
 // Types
 interface Documents {
@@ -100,7 +101,7 @@ const ApplicationInAdminDashboard: React.FC<{
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ applicationStatus: newStatus }),
-        }
+        },
       );
 
       const resOfData = await response.json();
@@ -113,30 +114,13 @@ const ApplicationInAdminDashboard: React.FC<{
         });
       }
 
-      Swal.fire({
-        title: "Status Updated Successfully",
-        showClass: {
-          popup: `
-      animate__animated
-      animate__fadeInUp
-      animate__faster
-    `,
-        },
-        hideClass: {
-          popup: `
-      animate__animated
-      animate__fadeOutDown
-      animate__faster
-    `,
-        },
-      });
-
       setApplications((prev) =>
         prev.map((app) =>
-          app._id === id ? { ...app, applicationStatus: newStatus } : app
-        )
+          app._id === id ? { ...app, applicationStatus: newStatus } : app,
+        ),
       );
       setSelectedApp(null);
+      toast.success("Status updated successfully");
     } catch (error) {
       console.error("Error updating application status:", error);
     }
@@ -157,7 +141,7 @@ const ApplicationInAdminDashboard: React.FC<{
           // TODO: Add your API call here
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/delete-application/${id}`,
-            { method: "DELETE" }
+            { method: "DELETE" },
           );
 
           const resultOfRes = await response.json();
@@ -171,11 +155,7 @@ const ApplicationInAdminDashboard: React.FC<{
           }
           setApplications((prev) => prev.filter((app) => app._id !== id));
           setSelectedApp(null);
-          Swal.fire({
-            title: "Deleted!",
-            text: "Your file has been deleted.",
-            icon: "success",
-          });
+          toast.success("Application deleted successfully");
         }
       });
     } catch (error) {
@@ -258,7 +238,7 @@ const ApplicationInAdminDashboard: React.FC<{
                     <td className="px-6 py-4">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
-                          app.applicationStatus
+                          app.applicationStatus,
                         )}`}
                       >
                         {app.applicationStatus}
@@ -267,7 +247,7 @@ const ApplicationInAdminDashboard: React.FC<{
                     <td className="px-6 py-4">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
-                          app.paymentStatus
+                          app.paymentStatus,
                         )}`}
                       >
                         {app.paymentStatus}
@@ -276,7 +256,7 @@ const ApplicationInAdminDashboard: React.FC<{
                     <td className="px-6 py-4">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
-                          app.paymentStatus
+                          app.paymentStatus,
                         )}`}
                       >
                         {app.source}
@@ -473,7 +453,7 @@ const ApplicationInAdminDashboard: React.FC<{
                     <p className="text-xs text-gray-500 mb-1">Payment Status</p>
                     <span
                       className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(
-                        selectedApp.paymentStatus
+                        selectedApp.paymentStatus,
                       )}`}
                     >
                       {selectedApp.paymentStatus}
@@ -545,7 +525,7 @@ const ApplicationInAdminDashboard: React.FC<{
                   {(
                     Object.entries(selectedApp.documents) as [
                       keyof Documents,
-                      string
+                      string,
                     ][]
                   ).map(([key, url]) => (
                     <button
@@ -570,24 +550,30 @@ const ApplicationInAdminDashboard: React.FC<{
 
               {/* Action Buttons */}
               <div className="flex flex-wrap gap-4 justify-end pt-4 border-t border-gray-200">
-                <button
-                  onClick={() =>
-                    handleStatusChange(selectedApp._id, "Approved")
-                  }
-                  className="flex items-center gap-2 px-6 py-3 bg-linear-to-r from-emerald-500 to-green-500 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200"
-                >
-                  <Check className="w-5 h-5" />
-                  Approve
-                </button>
-                <button
-                  onClick={() =>
-                    handleStatusChange(selectedApp._id, "Rejected")
-                  }
-                  className="flex items-center gap-2 px-6 py-3 bg-linear-to-r from-rose-500 to-red-500 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200"
-                >
-                  <XCircle className="w-5 h-5" />
-                  Reject
-                </button>
+                {selectedApp.applicationStatus !== "Approved" && (
+                  <button
+                    onClick={() =>
+                      handleStatusChange(selectedApp._id, "Approved")
+                    }
+                    className="flex items-center gap-2 px-6 py-3 bg-linear-to-r from-emerald-500 to-green-500 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200"
+                  >
+                    <Check className="w-5 h-5" />
+                    Approve
+                  </button>
+                )}
+
+                {selectedApp.applicationStatus !== "Rejected" && (
+                  <button
+                    onClick={() =>
+                      handleStatusChange(selectedApp._id, "Rejected")
+                    }
+                    className="flex items-center gap-2 px-6 py-3 bg-linear-to-r from-rose-500 to-red-500 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200"
+                  >
+                    <XCircle className="w-5 h-5" />
+                    Reject
+                  </button>
+                )}
+
                 <button
                   onClick={() => handleDelete(selectedApp._id)}
                   className="flex items-center gap-2 px-6 py-3 bg-linear-to-r from-gray-600 to-gray-700 text-white rounded-lg font-semibold hover:shadow-lg hover:scale-105 transition-all duration-200"

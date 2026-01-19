@@ -1,6 +1,6 @@
 import AddScholarshipPackage from "./components/addScholarshipPackage";
-import ScholarshipPackageInAdminDashboard from "./components/scholarShipPackageTable";
-import ScholarshipPackageTable from "./components/scholarShipPackageTable";
+import { ScholarshipPackageWrapper } from "./components/scholarshipPackageWrapper";
+
 
 const ManageStudentPackage = async () => {
   const manageScholarShipPackage = await fetch(
@@ -10,9 +10,6 @@ const ManageStudentPackage = async () => {
     }
   );
   const scholarShipData = await manageScholarShipPackage.json();
-
-
-
   return (
     <main className="min-h-screen bg-background">
       <div className="w-full">
@@ -29,11 +26,7 @@ const ManageStudentPackage = async () => {
             universityData={scholarShipData.universityData}
           />
         </div>
-
-        {/* <ScholarshipPackageTable scholarShipData={scholarShipData}/> */}
-        <ScholarshipPackageInAdminDashboard
-          scholarshipPackage={scholarShipData.data}
-        />
+        <ScholarshipPackageWrapper scholarshipPackage={scholarShipData.data} />
       </div>
     </main>
   );

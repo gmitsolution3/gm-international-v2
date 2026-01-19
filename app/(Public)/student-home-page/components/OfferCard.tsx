@@ -20,6 +20,7 @@ export interface ScholarshipCardProps {
   serviceFee: string;
   universityName: string;
   universityURL: string;
+  status: string;
 }
 
 interface OfferCardProps {

@@ -177,7 +177,7 @@ export function PackageDetailsSection({ form }: any) {
           {/* Starting Date */}
           <div className="space-y-2">
             <Label>Starting Date *</Label>
-            <Input type="date" {...register("startingDate",{required: true})} />
+            <Input placeholder="Enter starting date" type="text" {...register("startingDate",{required: true})} />
           </div>
 
           {/* Deadline */}
