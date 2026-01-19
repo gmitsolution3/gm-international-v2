@@ -14,8 +14,7 @@ const B2BScholarshipPackage = async () => {
     return <div>No Data found</div>;
   }
 
-  console.log({ b2bResult: data.data });
-  console.log({session: session})
+
 
   return (
     <div className="px-4 py-12 sm:px-6 md:px-8 lg:px-12 bg-background">
