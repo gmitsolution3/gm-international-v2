@@ -44,7 +44,7 @@ export default async function UniversitySection() {
         </div>
 
         {/* View More Button */}
-        {universities.length > 3 && (
+        {/* {universities.length > 3 && (
           <div className="flex justify-center">
             <Button
               asChild
@@ -53,7 +53,7 @@ export default async function UniversitySection() {
               <Link href="/universities">View More</Link>
             </Button>
           </div>
-        )}
+        )} */}
       </div>
       <div className="text-center">
         <Link href="/student-home-page/universities">
