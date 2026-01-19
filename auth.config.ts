@@ -194,6 +194,8 @@ export const authConfig: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user, account }) {
+
+       console.log("JWT CALLBACK:", { token, user, account });
       if (account && user) {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
@@ -205,6 +207,7 @@ export const authConfig: NextAuthOptions = {
         token.name = user.name;
         token.username = (user as any).username;
         token.phone = (user as any).phone;
+        token.userRole = (user as any).userRole;
 
         return token;
       }
@@ -257,6 +260,7 @@ export const authConfig: NextAuthOptions = {
         session.user.email = (token as any).email;
         (session.user as any).phone = (token as any).phone;
         (session.user as any).username = (token as any).username;
+        (session.user as any).userRole = (token as any).userRole;
       }
       return session;
     },

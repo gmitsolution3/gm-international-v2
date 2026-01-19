@@ -1,13 +1,12 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react';
-import { Calendar, Globe, Clock, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
-
-
+import React, { useState } from "react";
+import { Calendar, Globe, Clock, ArrowRight } from "lucide-react";
+import { TbCoinTakaFilled } from "react-icons/tb";
+import Link from "next/link";
 
 export interface ScholarshipCardProps {
-  _id: string,
+  _id: string;
   city: string;
   country: string;
   deadline: string;
@@ -88,6 +87,13 @@ const OfferCard = ({ offer, form }: OfferCardProps) => {
             label="Deadline"
             value={formatDate(offer.deadline)}
           />
+          {form === "b2b" && (
+            <DetailRow
+              icon={<TbCoinTakaFilled size={22} />}
+              label="B2B Price"
+              value={offer.serviceFee}
+            />
+          )}
         </div>
 
         {/* Button */}
@@ -114,7 +120,7 @@ interface DetailRowProps {
 
 const DetailRow: React.FC<DetailRowProps> = ({ icon, label, value }) => (
   <div className="flex items-center gap-3">
-    <div style={{ color: '#CA2328' }}>{icon}</div>
+    <div style={{ color: "#CA2328" }}>{icon}</div>
     <div className="flex-1">
       <p className="text-xs text-gray-500">{label}</p>
       <p className="text-sm font-medium text-gray-800">{value}</p>

@@ -228,15 +228,11 @@ interface Package {
 
 interface PackageProps {
   packageData: ScholarshipCardProps;
+  session: any
 }
 
-export default function ScholarshipApplicationForm({
-  packageData,
-}: PackageProps) {
-  const { data: session } = useSession();
-  const searchParams = useSearchParams();
-  const source = searchParams.get("source");
-
+export default function ScholarshipApplicationForm({ packageData, session}: PackageProps) {
+ 
   const [formData, setFormData] = useState<FormData>({
     applicantId: `APP-${Date.now()}`,
     firstName: "",
@@ -269,17 +265,8 @@ export default function ScholarshipApplicationForm({
 
     createdAt: new Date(),
     createdBy: session?.user?.email,
-    source: source,
+    source: session.user.userRole,
   });
-
-  useEffect(() => {
-    if (session?.user?.email) {
-      setFormData((prev) => ({
-        ...prev,
-        createdBy: session.user?.email,
-      }));
-    }
-  }, [session]);
 
   const [documentDetails, setDocumentDetails] = useState<{
     [key: string]: DocumentUpload;
@@ -384,7 +371,7 @@ export default function ScholarshipApplicationForm({
 
   const handleDocumentChange = async (
     docKey: string,
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -403,7 +390,7 @@ export default function ScholarshipApplicationForm({
         {
           method: "POST",
           body: formData,
-        }
+        },
       );
 
       const result = await res.json();
@@ -520,7 +507,7 @@ export default function ScholarshipApplicationForm({
             "Content-Type": "application/json",
           },
           body: JSON.stringify(submissionData),
-        }
+        },
       );
 
       const resultOfApplicationForm = await addApplicationForm.json();
@@ -591,7 +578,7 @@ export default function ScholarshipApplicationForm({
 
       createdAt: new Date(),
       createdBy: session?.user?.email,
-      source: source,
+      source: session.user.userRole,
     });
 
     Object.keys(documentDetails).forEach((key) => {

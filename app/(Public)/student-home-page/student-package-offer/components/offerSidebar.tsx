@@ -2,16 +2,22 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { ScholarshipCardProps } from "../../components/OfferCard";
+import { getServerSession } from "next-auth";
+import { authConfig } from "@/auth.config";
 
 interface OfferSidebarProps {
   packageSidebarInfo: ScholarshipCardProps;
   source: string | undefined;
 }
 
-export function OfferSidebar({
+export async function OfferSidebar({
   packageSidebarInfo,
   source,
 }: OfferSidebarProps) {
+
+  const session:any =await getServerSession(authConfig)
+
+
   const {
     _id,
     city,
@@ -66,15 +72,16 @@ export function OfferSidebar({
             </span>
             <span className="font-medium">{applicationFee}</span>
           </div>
-
-          <div className="flex justify-between text-sm border-b border-border pb-3">
-            <span className="text-muted-foreground">Service Fee:</span>
-            <span className="font-medium">{serviceFee}</span>
-          </div>
+          {session?.user?.userRole === "b2b" && (
+              <div className="flex justify-between text-sm border-b border-border pb-3">
+                <span className="text-muted-foreground">Service Fee:</span>
+                <span className="font-medium">{serviceFee}</span>
+              </div>
+            )}
         </div>
         <div>
           <Link
-            href={`/student-home-page/student-package-offer/user_application_form/${_id}?source=${source}`}
+            href={`/student-home-page/student-package-offer/user_application_form/${_id}`}
             className="hover:cursor-pointer"
           >
             <Button className="w-full bg-destructive hover:bg-destructive/90 text-primary-foreground font-semibold h-11 hover:cursor-pointer">
