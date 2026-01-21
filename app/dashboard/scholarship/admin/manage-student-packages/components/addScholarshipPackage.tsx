@@ -10,7 +10,7 @@ export interface UniversityProps{
 
 
 
-const AddScholarshipPackage = ({universityData}:UniversityProps) => {
+const AddScholarshipPackage = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -25,7 +25,7 @@ const AddScholarshipPackage = ({universityData}:UniversityProps) => {
       
 
       {/* Modal */}
-      <StudentPackageModal isOpen={isOpen} onClose={() => setIsOpen(false)} universityData={universityData}/>
+      <StudentPackageModal isOpen={isOpen} onClose={() => setIsOpen(false)}/>
     </div>
   );
 };

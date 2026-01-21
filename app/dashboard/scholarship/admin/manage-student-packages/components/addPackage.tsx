@@ -41,8 +41,9 @@ export default function AddPackagePage() {
       applicationFee: "",
       serviceFee: "",
       description: "",
+      programs: [] as string[],
       universityDescription: "",
-      status: "active"
+      status: "active",
     },
   });
 
@@ -52,12 +53,13 @@ export default function AddPackagePage() {
     watch,
     reset,
     formState: { errors },
+    setValue,
+    getValues,
   } = form;
 
   const isInternationalStudent = watch("isInternationalStudent");
   const onSubmit = async (data: any) => {
-
-
+    const { programInput,program, ...submitData } = data;
     try {
       const addPackage = await fetch(
         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management`,
@@ -66,8 +68,8 @@ export default function AddPackagePage() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(data),
-        }
+          body: JSON.stringify(submitData),
+        },
       );
 
       const result = await addPackage.json();

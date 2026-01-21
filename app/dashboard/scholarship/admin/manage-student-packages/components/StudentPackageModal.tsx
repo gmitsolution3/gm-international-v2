@@ -6,13 +6,11 @@ import AddPackagePage from "./addPackage";
 interface StudentPackageModal {
   isOpen: boolean;
   onClose: () => void;
-  universityData: EducationMasterFormData[];
 }
 
 const StudentPackageModal: React.FC<StudentPackageModal> = ({
   isOpen,
   onClose,
-  universityData,
 }) => {
   if (!isOpen) return null;
 

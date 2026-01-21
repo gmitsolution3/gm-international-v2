@@ -23,7 +23,6 @@ const ManageStudentPackage = async () => {
             </p>
           </div>
           <AddScholarshipPackage
-            universityData={scholarShipData.universityData}
           />
         </div>
         <ScholarshipPackageWrapper scholarshipPackage={scholarShipData.data} />

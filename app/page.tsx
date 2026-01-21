@@ -9,8 +9,6 @@ import HSupport from "./components/HSupport/HSupport";
 import MapWrapper from "./components/MapWrapper/MapWrapper";
 
 
-
-
 const Home = () => {
   return (
     <div>

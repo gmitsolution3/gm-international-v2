@@ -104,13 +104,12 @@ interface Scholarship {
   city: string;
   deadline: string;
   isInternationalStudent: boolean;
+  programs?: string[];
 }
 
 const ScholarshipPackageInAdminDashboard: React.FC<{
   scholarshipPackage: Scholarship[];
 }> = ({ scholarshipPackage }) => {
-
-  
   const [scholarships, setScholarships] =
     useState<Scholarship[]>(scholarshipPackage);
   const [selectedScholarship, setSelectedScholarship] =
@@ -153,6 +152,41 @@ const ScholarshipPackageInAdminDashboard: React.FC<{
     }
   };
 
+  const handleProgramEdit = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number,
+  ) => {
+    if (!editData) return;
+
+    const updated = [...(editData.programs || [])];
+    updated[index] = e.target.value;
+
+    setEditData({
+      ...editData,
+      programs: updated,
+    });
+  };
+
+  const addProgram = () => {
+    if (!editData) return;
+
+    setEditData({
+      ...editData,
+      programs: [...(editData.programs || []), ""],
+    });
+  };
+
+  const removeProgram = (index: number) => {
+    if (!editData) return;
+
+    const updated = (editData.programs || []).filter((_, i) => i !== index);
+
+    setEditData({
+      ...editData,
+      programs: updated.length ? updated : [""],
+    });
+  };
+
   const handleDescriptionChange = (field: string, value: string) => {
     if (editData) {
       setEditData({ ...editData, [field]: value });
@@ -162,6 +196,9 @@ const ScholarshipPackageInAdminDashboard: React.FC<{
   const handleUpdate = async () => {
     if (!editData) return;
     setLoading(true);
+
+    console.log({ editData: editData });
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management/${editData._id}`,
@@ -192,7 +229,6 @@ const ScholarshipPackageInAdminDashboard: React.FC<{
   };
 
   const handleStatusChange = async (id: string, newStatus: string) => {
-
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management/status/${id}`,
@@ -229,35 +265,35 @@ const ScholarshipPackageInAdminDashboard: React.FC<{
   };
 
   const handleDelete = (id: string) => {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#CA2328",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Yes, delete it!",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          try {
-            const res = await fetch(
-              `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management/${id}`,
-              { method: "DELETE" },
-            );
-            const result: any = res.json();
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#CA2328",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management/${id}`,
+            { method: "DELETE" },
+          );
+          const result: any = res.json();
 
-            if (!res.ok) {
-              toast.error("Something was wrong! Try again letter");
-            }
-
-            setScholarships((prev) => prev.filter((s) => s._id !== id));
-            setSelectedScholarship(null);
-            toast.success("Package deleted successfully");
-          } catch (err) {
-            alert("Deletion failed");
+          if (!res.ok) {
+            toast.error("Something was wrong! Try again letter");
           }
+
+          setScholarships((prev) => prev.filter((s) => s._id !== id));
+          setSelectedScholarship(null);
+          toast.success("Package deleted successfully");
+        } catch (err) {
+          alert("Deletion failed");
         }
-      });
+      }
+    });
   };
 
   const formatCurrency = (amount: string) => {
@@ -546,6 +582,70 @@ const ScholarshipPackageInAdminDashboard: React.FC<{
                           className="w-full p-2 border rounded-lg focus:ring-2 ring-rose-500 outline-none"
                         />
                       </div>
+                      {/* <div>
+                        {editData.programs && (
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Programs
+                            </label>
+                            <div className="flex gap-4">
+                              {editData.programs.map((p, index) => (
+                                <input
+                                  key={index}
+                                  name="programs"
+                                  value={p}
+                                  onChange={(e) => handleProgramEdit(e, index)}
+                                  className="w-full p-2 border rounded-lg focus:ring-2 ring-rose-500 outline-none"
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div> */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Programs
+                        </label>
+
+                        <div>
+                          <div className="flex gap-3">
+                            {(editData.programs?.length
+                              ? editData.programs
+                              : [""]
+                            ).map((p, index) => (
+                              <div
+                                key={index}
+                                className="flex gap-2 items-center"
+                              >
+                                <input
+                                  value={p}
+                                  onChange={(e) => handleProgramEdit(e, index)}
+                                  className="p-2 border rounded-lg focus:ring-2 ring-red-700 outline-none"
+                                  placeholder={`Program ${index + 1}`}
+                                />
+
+                                {(editData.programs?.length || 1) > 1 && (
+                                  <button
+                                    type="button"
+                                    onClick={() => removeProgram(index)}
+                                    className="px-2 py-1 bg-red-700 text-white rounded-lg hover:cursor-pointer"
+                                  >
+                                    ✕
+                                  </button>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+
+                          <button
+                            type="button"
+                            onClick={addProgram}
+                            className="w-fit px-4 py-2 bg-red-700 text-white rounded-lg mt-4"
+                          >
+                            + Add Program
+                          </button>
+                        </div>
+                      </div>
                     </div>
 
                     {/* HTML Editors */}
@@ -702,6 +802,15 @@ const ScholarshipPackageInAdminDashboard: React.FC<{
                           <p className="font-bold text-base sm:text-lg text-gray-800">
                             {selectedScholarship.deadline}
                           </p>
+                        </div>
+                        <div className="bg-linear-to-br from-rose-50 to-red-50 p-3 sm:p-4 rounded-lg border border-red-100">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Languages className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />
+                            <p className="text-xs text-gray-500">programs</p>
+                          </div>
+                          <div className="font-bold text-base sm:text-lg text-gray-800">
+                            {selectedScholarship.programs?.join(", ")}
+                          </div>
                         </div>
                         {selectedScholarship.isInternationalStudent && (
                           <div className="bg-linear-to-br from-rose-50 to-red-50 p-3 sm:p-4 rounded-lg border border-red-100">
