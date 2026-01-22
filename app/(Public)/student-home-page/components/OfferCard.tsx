@@ -6,6 +6,7 @@ import { TbCoinTakaFilled } from "react-icons/tb";
 import Link from "next/link";
 
 export interface ScholarshipCardProps {
+  programs: any;
   _id: string;
   city: string;
   country: string;

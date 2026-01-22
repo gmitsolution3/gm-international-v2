@@ -14,10 +14,11 @@ export default async function UniversitiesPage() {
 
   return (
     <main className="min-h-screen bg-background">
-      <UniversitiesHeader
+      {/* <UniversitiesHeader
         country={"Australia"}
         totalCount={allUniversitiesList.length}
-      />
+      /> */}
+      
       <UniversitiesList
         universities={allUniversitiesList}
         country={"Australia"}

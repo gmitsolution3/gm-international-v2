@@ -18,6 +18,8 @@ export default function FilterTag({ label, onRemove }: FilterTagProps) {
       >
         <X size={14} className="stroke-3" />
       </button>
+
+      
     </div>
-  )
+  );
 }

@@ -7,9 +7,18 @@ const ScholarshipPackageList = async () => {
   );
   const data = await response.json();
 
+  const fData = await fetch(
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-filtered-data`,
+  );
+
+  const filterData = await fData.json();
+
+
+
+
   return (
     <div className="min-h-screen">
-      <ScholarshipPackage packageData={data}/>
+      <ScholarshipPackage packageData={data} filterData={filterData} />
     </div>
   );
 };
