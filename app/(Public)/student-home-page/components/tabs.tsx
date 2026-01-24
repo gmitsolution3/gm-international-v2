@@ -193,7 +193,7 @@ export function TabsSection({
             >
               <button
                 // onClick={handleSearch}
-                disabled={!selectedCountry || !selectedCity || !selectedProgram}
+                // disabled={!selectedCountry}
                 className="group flex items-center gap-3 bg-linear-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg min-w-50 justify-center"
               >
                 <Search className="w-5 h-5" />

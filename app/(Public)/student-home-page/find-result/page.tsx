@@ -2,6 +2,7 @@
 import React from "react";
 import { Search, MapPin, Globe, GraduationCap, Filter } from "lucide-react";
 import OfferCard from "../components/OfferCard";
+import Link from "next/link";
 
 interface PageProps {
   searchParams: {
@@ -173,13 +174,13 @@ const FindSearchResult = async ({ searchParams }: PageProps) => {
               We couldn't find any scholarships matching your current filters.
               Try adjusting your search criteria.
             </p>
-            <a
-              href="/scholarships"
+            <Link
+              href="/student-home-page"
               className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors"
             >
               <Filter className="w-4 h-4" />
               Adjust Filters
-            </a>
+            </Link>
           </div>
         )}
 

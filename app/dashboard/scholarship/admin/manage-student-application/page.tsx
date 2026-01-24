@@ -1,5 +1,5 @@
-import ApplicationInAdminDashboard from "./components/applicationTable";
 import AddApplication from "./components/addApplication";
+import UserApplication from "./components/userApplication";
 
 const ManageStudentApplication = async () => {
   const manageApplicationData = await fetch(
@@ -24,8 +24,7 @@ const ManageStudentApplication = async () => {
           </div>
           <AddApplication />
         </div>
-
-        <ApplicationInAdminDashboard applicationData={applicationData} />
+        <UserApplication applicationData={applicationData} />
       </div>
     </main>
   );
