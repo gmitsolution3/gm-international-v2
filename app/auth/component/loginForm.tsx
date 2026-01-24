@@ -10,6 +10,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Loader from "@/components/ui/loader";
 import Swal from "sweetalert2";
+import { toast } from "sonner";
 
 type Inputs = {
   password: string;
@@ -61,6 +62,7 @@ export default function LoginForm() {
       .then((result) => {
         if (result?.error) {
           setError(result?.error);
+          toast.error("Something was wrong!!")
           
         } else {
           Swal.fire({
@@ -70,7 +72,7 @@ export default function LoginForm() {
             showConfirmButton: false,
             timer: 1500,
           });
-          router.push(callbackUrl);
+          window.location.href = callbackUrl;
         }
       })
       .catch(() => setError("An unexpected error occurred"))
