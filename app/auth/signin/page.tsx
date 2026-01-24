@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { signIn, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Loader from "@/components/ui/loader";
 import Swal from "sweetalert2";
 
@@ -23,10 +23,12 @@ export default function LoginPage() {
   const [mounted, setMounted] = useState(false);
   const [error, setError] = useState("");
   const {data:session} = useSession();
+  const searchParams:any = useSearchParams();
 
-  if(session?.user?.email){
-    router.push("/")
-  }
+ 
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
+
+
 
   const { register, handleSubmit, control, watch, formState } = useForm<Inputs>(
     {
@@ -35,6 +37,14 @@ export default function LoginPage() {
       },
     }
   );
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      router.push(callbackUrl);
+    }
+  }, [session, callbackUrl, router]);
+
+
 
   useEffect(() => {
     setMounted(true);
@@ -60,7 +70,7 @@ export default function LoginPage() {
             showConfirmButton: false,
             timer: 1500,
           });
-          router.push("/");
+          router.push(callbackUrl);
         }
       })
       .catch(() => setError("An unexpected error occurred"))

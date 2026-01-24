@@ -13,16 +13,16 @@ const Application = async ({ params }: ParamsProps) => {
   const { id } = await params;
   const session: any = await getServerSession(authConfig);
 
-  if (!session.user) {
-    redirect("/auth/signin");
-  }
-
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management/${id}`,
     {
       next: { revalidate: 300 },
     },
   );
+
+  // if (!session?.user) {
+  //   redirect("/auth/signin");
+  // }
 
   const result = await res.json();
 

@@ -54,9 +54,9 @@ export default function MyMap() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {branches.map((branch) => (
+        {branches.map((branch, index) => (
           <Marker
-            key={branch.id}
+            key={index}
             position={branch.position as any}
             icon={markerIcon}
             eventHandlers={{

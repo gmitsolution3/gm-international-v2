@@ -19,8 +19,9 @@ import {
 import Swal from "sweetalert2";
 import Dropdown from "../components/dropDown";
 import { useSession } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ScholarshipCardProps } from "../../../components/OfferCard";
+import { toast } from "sonner";
 
 interface DocumentUpload {
   name: string;
@@ -228,7 +229,7 @@ interface Package {
 
 interface PackageProps {
   packageData: ScholarshipCardProps;
-  session: any;
+  session?: any;
 }
 
 export default function ScholarshipApplicationForm({
@@ -267,9 +268,9 @@ export default function ScholarshipApplicationForm({
 
     createdAt: new Date(),
     createdBy: session?.user?.email,
-    source: session.user.userRole,
+    source: session?.user?.userRole,
   });
-
+ 
   const [documentDetails, setDocumentDetails] = useState<{
     [key: string]: DocumentUpload;
   }>({
@@ -362,6 +363,8 @@ export default function ScholarshipApplicationForm({
     cv: { name: "CV", file: null, url: "", type: "pdf", required: true },
   });
 
+  
+
   const [uploadingDocId, setUploadingDocId] = useState<string | null>(null);
 
   const handleInputChange = (field: string, value: string | boolean) => {
@@ -451,7 +454,7 @@ export default function ScholarshipApplicationForm({
     e.preventDefault();
 
     if (!session?.user?.email) {
-      return alert("You must be logged in to submit the application.");
+      return toast.error("You must be logged in to submit the application.");
     }
     // Validate required fields
     const requiredDocs = Object.entries(documentDetails)
@@ -580,7 +583,7 @@ export default function ScholarshipApplicationForm({
 
       createdAt: new Date(),
       createdBy: session?.user?.email,
-      source: session.user.userRole,
+      source: session?.user?.userRole,
     });
 
     Object.keys(documentDetails).forEach((key) => {
@@ -907,7 +910,7 @@ export default function ScholarshipApplicationForm({
                   <option>Partial Scholarship</option>
                 </select> */}
               {/* </div> */}
-              {session.user.userRole === "b2b" && (
+              {session?.user?.userRole === "b2b" && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
                     Service Fee <span className="text-red-600">*</span>

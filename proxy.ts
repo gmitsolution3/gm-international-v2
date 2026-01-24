@@ -26,6 +26,7 @@ export async function proxy(req: NextRequest) {
     "/tourist-home-page/package/booking-form",
     "/business-home-page/business-submit-form",
     "/visa/visa_apply",
+    "/student-home-page/student-package-offer/user_application_form",
   ];
 
   const isProtectedPath = protectedPaths.some((path) =>
@@ -34,7 +35,13 @@ export async function proxy(req: NextRequest) {
 
   // Block unauthenticated users from protected routes
   if (isProtectedPath && !token) {
-    return NextResponse.redirect(new URL("/auth/signin", req.url));
+    // Attach callbackUrl = current path
+    const loginUrl = new URL("/auth/signin", req.url);
+    loginUrl.searchParams.set(
+      "callbackUrl",
+      req.nextUrl.pathname + req.nextUrl.search,
+    );
+    return NextResponse.redirect(loginUrl);
   }
 
   // Otherwise continue
@@ -52,6 +59,7 @@ export const config = {
     "/tourist-home-page/package/booking-form/:path*",
     "/business-home-page/business-submit-form/:path*",
     "/visa/visa_apply/:path*",
+    "/student-home-page/student-package-offer/user_application_form/:path*",
   ],
 };
 
