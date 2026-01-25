@@ -134,11 +134,13 @@ export function TabsSection({
                         {prog}
                       </option>
                     ))
-                : filterData.programs.map((prog) => (
-                    <option key={prog} value={prog}>
-                      {prog}
-                    </option>
-                  ))}
+                : filterData.programs
+                    .filter((p) => p)
+                    .map((prog) => (
+                      <option key={prog} value={prog}>
+                        {prog}
+                      </option>
+                    ))}
             </select>
           </div>
         </div>
