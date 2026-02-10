@@ -129,7 +129,7 @@ export default function RegistrationForm() {
           icon: "error",
           draggable: false,
           showConfirmButton: false,
-          timer: 3000,
+          timer: 2000,
         });
         return;
       }
