@@ -24,7 +24,6 @@ export async function proxy(req: NextRequest) {
     "/user_application_form",
     "/medical-home-page/user-submit-form",
     "/tourist-home-page/package/booking-form",
-    "/business-home-page/business-submit-form",
     "/visa/visa_apply",
     "/student-home-page/student-package-offer/user_application_form",
   ];
