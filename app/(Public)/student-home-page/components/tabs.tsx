@@ -32,8 +32,7 @@ export function TabsSection({
       city: selectedCity,
       program: selectedProgram,
     };
-    console.log("Search payload:", query);
-    // API call here
+
   };
 
   const resetCityAndProgram = () => {

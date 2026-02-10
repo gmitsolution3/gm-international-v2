@@ -116,7 +116,7 @@ const UniversityApplications = ({
       setMessage(
         `✓ Successfully saved ${selectedIds.length} university selection(s)`,
       );
-      console.log("Saved data:", dataToSave);
+
     } catch (error) {
       setMessage("Error saving to database. Check console for details.");
       console.error("Error:", error);

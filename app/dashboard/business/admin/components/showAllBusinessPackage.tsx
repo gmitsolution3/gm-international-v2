@@ -15,6 +15,7 @@ import {
   CheckCircle,
 } from "lucide-react";
 import Swal from "sweetalert2";
+import Image from "next/image";
 
 // Types
 interface PhaseItem {
@@ -39,10 +40,11 @@ interface TourPackage {
   includes: IncludeItem[];
   hotelName: string;
   hotelRating: string;
-  customerPrice: number;
-  paxPrice: number;
+  // customerPrice: number;
+  maxPrice: number;
   minimumPax: number;
   description: string;
+  image: string;
   createdAt: string;
   createdBy: string;
   packageStatus?: "active" | "inactive" | "pending";
@@ -55,9 +57,10 @@ interface TourPackageProps {
 const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
   const [packages, setPackages] = useState<TourPackage[]>(initialData);
   const [selectedPackage, setSelectedPackage] = useState<TourPackage | null>(
-    null
+    null,
   );
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
 
   const handleDelete = (id: string): void => {
     Swal.fire({
@@ -68,8 +71,21 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
       confirmButtonColor: "#dc2626",
       cancelButtonColor: "#6b7280",
       confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-package-delete/${id}`,
+          {
+            method: "DELETE",
+          },
+        );
+
+        const result = await res.json();
+
+        if (!result) {
+          Swal.fire("Package not deleted yet!!!", "error");
+        }
+
         setPackages(packages.filter((pkg) => pkg._id !== id));
         Swal.fire("Deleted!", "Package has been deleted.", "success");
       }
@@ -109,7 +125,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
           `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/toggle-business-package-status/${id}`,
           {
             method: "PATCH",
-          }
+          },
         );
 
         const data = await res.json();
@@ -129,8 +145,8 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
         // Update frontend state
         setPackages((prev) =>
           prev.map((item) =>
-            item._id === id ? { ...item, packageStatus: newStatus } : item
-          )
+            item._id === id ? { ...item, packageStatus: newStatus } : item,
+          ),
         );
 
         if (selectedPackage && selectedPackage._id === id) {
@@ -229,7 +245,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                       {pkg.duration}
                     </td>
                     <td className="px-6 py-4 text-sm font-semibold text-red-600">
-                      ৳{pkg.paxPrice.toLocaleString()}
+                      ৳{pkg.maxPrice}
                     </td>
                     <td className="px-6 py-4 text-sm text-black">
                       {pkg.minimumPax}
@@ -240,7 +256,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                     <td className="px-6 py-4 text-sm">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                          pkg.packageStatus || "active"
+                          pkg.packageStatus || "active",
                         )}`}
                       >
                         {(pkg.packageStatus || "active")
@@ -296,9 +312,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                 </div>
                 <div className="flex items-center gap-2">
                   <DollarSign size={16} className="text-red-600" />
-                  <span className="font-bold">
-                    ৳{pkg.paxPrice.toLocaleString()}
-                  </span>
+                  <span className="font-bold">৳{pkg.maxPrice}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Users size={16} className="text-red-600" />
@@ -307,7 +321,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                 <div className="mt-3">
                   <span
                     className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(
-                      pkg.packageStatus || "active"
+                      pkg.packageStatus || "active",
                     )}`}
                   >
                     {(pkg.packageStatus || "active").charAt(0).toUpperCase() +
@@ -375,7 +389,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                   </p>
                   <span
                     className={`px-4 py-2 rounded-full text-sm font-semibold ${getStatusColor(
-                      selectedPackage.packageStatus || "active"
+                      selectedPackage.packageStatus || "active",
                     )}`}
                   >
                     {(selectedPackage.packageStatus || "active")
@@ -390,6 +404,15 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                 >
                   Toggle Status
                 </button>
+              </div>
+              <div className="flex items-center justify-center overflow-hidden rounded-xl shadow-lg bg-gray-100 hover:shadow-2xl transition-shadow duration-300">
+                <Image
+                  src={selectedPackage.image}
+                  alt={selectedPackage.eventName}
+                  width={680}
+                  height={350}
+                  className="object-contain w-96 h-90 transition-transform duration-500 ease-in-out"
+                />
               </div>
 
               {/* Basic Information */}
@@ -483,25 +506,6 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
               </div>
 
               {/* Package Includes */}
-              <div>
-                <h3 className="text-lg font-semibold text-red-900 mb-4 flex items-center gap-2">
-                  <CheckCircle size={20} className="text-red-600" />
-                  Package Includes
-                </h3>
-                <div className="space-y-2">
-                  {selectedPackage.includes.map((item) => (
-                    <div
-                      key={item.id}
-                      className="p-3 bg-green-50 rounded-lg border-l-4 border-green-600 flex items-center gap-2"
-                    >
-                      <CheckCircle size={16} className="text-green-600" />
-                      <span className="text-black font-medium">
-                        {item.title}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
 
               {/* Pricing Information */}
               <div>
@@ -511,21 +515,15 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                   <div className="p-3 bg-yellow-50 rounded-lg">
+                    <p className="text-yellow-700 font-medium">Price/Person</p>
+                    <p className="text-black font-bold text-lg">
+                      ৳{selectedPackage.maxPrice}
+                    </p>
+                  </div>
+                  <div className="p-3 bg-yellow-50 rounded-lg">
                     <p className="text-yellow-700 font-medium">
-                      Customer Price
+                      Minimum Person
                     </p>
-                    <p className="text-black font-bold text-lg">
-                      ৳{selectedPackage.customerPrice.toLocaleString()}
-                    </p>
-                  </div>
-                  <div className="p-3 bg-yellow-50 rounded-lg">
-                    <p className="text-yellow-700 font-medium">Pax Price</p>
-                    <p className="text-black font-bold text-lg">
-                      ৳{selectedPackage.paxPrice.toLocaleString()}
-                    </p>
-                  </div>
-                  <div className="p-3 bg-yellow-50 rounded-lg">
-                    <p className="text-yellow-700 font-medium">Minimum Pax</p>
                     <p className="text-black font-bold text-lg">
                       {selectedPackage.minimumPax}
                     </p>

@@ -197,7 +197,7 @@ const ScholarshipPackageInAdminDashboard: React.FC<{
     if (!editData) return;
     setLoading(true);
 
-    console.log({ editData: editData });
+  
 
     try {
       const res = await fetch(

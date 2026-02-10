@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { Upload, Loader, Loader2 } from "lucide-react";
+import { Upload, Loader, Loader2, CheckCircle } from "lucide-react";
 import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
+import { fbEvent } from "@/lib/fbPixel";
 
 export default function RegistrationForm() {
   const { data: session } = useSession();
@@ -17,14 +18,12 @@ export default function RegistrationForm() {
     lastName: "",
     phone: "",
     gender: "Male",
-    dateOfBirth: "",
-    designation: "",
-    companyType: "",
     officeLocation: "",
-    travelPurpose: "",
     email: "",
-    travelPlan: "",
     paymentMethod: "",
+    tradeLicense: "",
+    passportFile: "",
+    photo: "",
     createdAt: new Date(),
     createdBy: session?.user?.email,
     paymentStatus: "pending",
@@ -34,13 +33,20 @@ export default function RegistrationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploaded, setUploaded] = useState(false);
   const [cardUploaded, setCardUploaded] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
+  const [uploading, setUploading] = useState({
+    passport: false,
+    card: false,
+    trade: false,
+    photo: false,
+  });
 
-  const passport = "passport";
-  const card = "card";
+  const [passportUploaded, setPassportUploaded] = useState(false);
+  const [tradeUploaded, setTradeUploaded] = useState(false);
+  const [visitingUploaded, setVisitingUploaded] = useState(false);
+  const [photo, setPhoto] = useState(false);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -49,13 +55,14 @@ export default function RegistrationForm() {
     }));
   };
 
-  const handleFileUpload = async (e: any, value: string) => {
+  const handleFileUpload = async (
+    e: any,
+    value: "passport" | "card" | "trade" | "photo",
+  ) => {
     const file = e.target.files[0];
-    
     if (!file) return;
-    setIsUploading(true);
-    setUploaded(false);
-    setCardUploaded(false);
+
+    setUploading((p) => ({ ...p, [value]: true }));
 
     const data = new FormData();
     data.append("file", file);
@@ -68,43 +75,41 @@ export default function RegistrationForm() {
         {
           method: "POST",
           body: data,
-        }
+        },
       );
 
       const result = await res.json();
 
-      if (!result.secure_url) {
-        
-      }
-      if (value === passport) {
-        setFormData((prev) => ({
-          ...prev,
+      if (!result.secure_url) return;
 
-          passport: result.secure_url,
-        }));
-        setUploaded(true);
+      if (value === "passport") {
+        setFormData((p) => ({ ...p, passport: result.secure_url }));
+        setPassportUploaded(true);
       }
 
-      if (value === card) {
-        setFormData((prev) => ({
-          ...prev,
-
-          visitingCard: result.secure_url,
-        }));
-        setCardUploaded(true);
+      if (value === "card") {
+        setFormData((p) => ({ ...p, visitingCard: result.secure_url }));
+        setVisitingUploaded(true);
       }
 
-      setIsUploading(false);
+      if (value === "trade") {
+        setFormData((p) => ({ ...p, tradeLicense: result.secure_url }));
+        setTradeUploaded(true);
+      }
+      if (value === "photo") {
+        setFormData((p) => ({ ...p, photo: result.secure_url }));
+        setPhoto(true);
+      }
     } catch (err) {
-      console.error("Upload failed:", err);
+      console.error(err);
+    } finally {
+      setUploading((p) => ({ ...p, [value]: false }));
     }
   };
+
   const handleSubmit = async () => {
     try {
       setIsSubmitting(true);
-
-      
-
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-submit-form`,
         {
@@ -113,24 +118,31 @@ export default function RegistrationForm() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
-        }
+        },
       );
 
       const result = await res.json();
-     
 
-      if (!result.insertedId) {
+      if (!result.success) {
         Swal.fire({
           title: "Something was wrong!! try again",
           icon: "error",
           draggable: false,
           showConfirmButton: false,
-          timer: 2000,
+          timer: 3000,
         });
         return;
       }
 
-      if (result.insertedId) {
+      fbEvent("BusinessForm", {
+        content_company: [formData.companyName],
+        content_type: "business",
+        email: formData.email,
+        currency: "BDT",
+      });
+      
+
+      if (result.success) {
         Swal.fire({
           title: "Your Form has been submitted",
           icon: "success",
@@ -157,20 +169,24 @@ export default function RegistrationForm() {
       lastName: "",
       phone: "",
       gender: "Male",
-      dateOfBirth: "",
-      designation: "",
-      companyType: "",
       officeLocation: "",
-      travelPurpose: "",
       email: "info@gmail.com",
-      travelPlan: "",
       paymentMethod: "",
+      tradeLicense: "",
+      passportFile: "",
+      photo: "",
       createdAt: new Date(),
       createdBy: session?.user?.email,
       paymentStatus: "pending",
       applicationStatus: "pending",
     });
+    setVisitingUploaded(false);
+    setPassportUploaded(false);
+    setTradeUploaded(false);
+    setPhoto(false);
   };
+
+
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 py-8 px-4 sm:py-12 sm:px-6">
@@ -227,23 +243,23 @@ export default function RegistrationForm() {
                 />
               </div>
 
-              {/* Passport Upload */}
+              {/* visiting card */}
               <div
-                className="animate-fade-in"
+                className="animate-fade-in my-4"
                 style={{ animationDelay: "200ms" }}
               >
                 <label className="block text-xs sm:text-sm font-medium text-gray-600 mb-2">
-                  Photo of the passport
+                  Visiting Card <span className="text-red-400">*</span>
                 </label>
                 <label
-                  htmlFor="fileUpload"
-                  className={`cursor-pointer w-full py-3 px-4 border-2 ${
-                    uploaded
+                  htmlFor="card"
+                  className={`cursor-pointer py-3 px-4 border-2 ${
+                    visitingUploaded
                       ? "border-green-600 text-green-600"
                       : "border-red-600 text-red-600"
                   } border-solid rounded-lg font-medium text-sm hover:bg-red-50 transition-all duration-300 flex items-center justify-center gap-2 group hover:shadow-md`}
                 >
-                  {isUploading ? (
+                  {uploading.card ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
                       Uploading...
@@ -251,127 +267,140 @@ export default function RegistrationForm() {
                   ) : (
                     <>
                       <Upload className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                      Photo/PDF
+                      Visiting/PDF
                     </>
                   )}
                 </label>
 
                 <input
-                  id="fileUpload"
+                  id="card"
                   type="file"
-                  onChange={(e) => handleFileUpload(e, passport)}
+                  onChange={(e) => handleFileUpload(e, "card")}
                   className="hidden"
                 />
-                {uploaded && (
-                  <span className="text-sm text-green-500">
-                    Image uploaded successfully
-                  </span>
+
+                {visitingUploaded && (
+                  <span>Card is uploaded uploaded successfully</span>
                 )}
               </div>
-              {/* <div className="relative group">
-                <div className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-red-600 rounded-full p-3 transition-all duration-300 group-hover:scale-110 z-10">
-                  <Upload className="w-6 h-6 text-white" />
-                </div>
-                <div className="relative">
-                  <input
-                    type="file"
-                    onChange={(e) => handleFileUpload(e, passport)}
-                    className="opacity-0 absolute inset-0 w-full h-full cursor-pointer"
-                  />
-                  <div className="w-full pl-20 pr-4 py-3 rounded-full border-2 border-red-300 focus:border-red-600 placeholder-gray-400 text-slate-700 transition-all duration-300 hover:border-red-400 bg-white cursor-pointer flex items-center">
-                    <span
-                      className={
-                        formData.passport
-                          ? "text-slate-700 truncate"
-                          : "text-gray-400"
-                      }
-                    >
-                      {formData.passport
-                        ? formData.passport
-                        : "Upload Document"}
-                    </span>
-                  </div>
-                </div>
-                {uploaded && (
-                  <span className="text-sm text-green-500">
-                    Image uploaded successfully
-                  </span>
-                )}
-              </div> */}
             </div>
 
-            {/* Visiting Card */}
-            <div
-              className="animate-fade-in my-4"
-              style={{ animationDelay: "200ms" }}
-            >
-              <label className="block text-xs sm:text-sm font-medium text-gray-600 mb-2">
-                Photo of the visitingCard
-              </label>
-              <label
-                htmlFor="visitingCard"
-                className={`cursor-pointer py-3 px-4 border-2 ${
-                  cardUploaded
-                    ? "border-green-600 text-green-600"
-                    : "border-red-600 text-red-600"
-                } border-solid rounded-lg font-medium text-sm hover:bg-red-50 transition-all duration-300 flex items-center justify-center gap-2 group hover:shadow-md`}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div
+                className="animate-fade-in my-4"
+                style={{ animationDelay: "200ms" }}
               >
-                {isUploading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    Uploading...
-                  </>
-                ) : (
-                  <>
-                    <Upload className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                    Photo/PDF
-                  </>
-                )}
-              </label>
+                <label className="block text-xs sm:text-sm font-medium text-gray-600 mb-2">
+                  Passport <span className="text-red-400">*</span>
+                </label>
+                <label
+                  htmlFor="passport"
+                  className={`cursor-pointer py-3 px-4 border-2 ${
+                    passportUploaded
+                      ? "border-green-600 text-green-600"
+                      : "border-red-600 text-red-600"
+                  } border-solid rounded-lg font-medium text-sm hover:bg-red-50 transition-all duration-300 flex items-center justify-center gap-2 group hover:shadow-md`}
+                >
+                  {uploading.passport ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Uploading...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                      Passport/PDF
+                    </>
+                  )}
+                </label>
 
-              <input
-                id="visitingCard"
-                type="file"
-                onChange={(e) => handleFileUpload(e, card)}
-                className="hidden"
-              />
-              {cardUploaded && (
-                <span className="text-sm text-green-500">
-                  Image uploaded successfully
-                </span>
-              )}
-            </div>
-
-            {/* <div className="form-group mt-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Visiting card
-              </label>
-              <div className="relative">
                 <input
+                  id="passport"
                   type="file"
-                  onChange={(e) => handleFileUpload(e, card)}
-                  className="opacity-0 absolute inset-0 w-full h-full cursor-pointer"
+                  onChange={(e) => handleFileUpload(e, "passport")}
+                  className="hidden"
                 />
-                <div className="w-full pl-20 pr-4 py-3 rounded-full border-2 border-red-300 focus:border-red-600 placeholder-gray-400 text-slate-700 transition-all duration-300 hover:border-red-400 bg-white cursor-pointer flex items-center">
-                  <span
-                    className={
-                      formData.visitingCard
-                        ? "text-slate-700 truncate"
-                        : "text-gray-400"
-                    }
-                  >
-                    {formData.visitingCard
-                      ? formData.visitingCard
-                      : "Upload Document"}
-                  </span>
-                </div>
+
+                {passportUploaded && (
+                  <span>Passport uploaded successfully</span>
+                )}
               </div>
-              {uploaded && (
-                <span className="text-sm text-green-500">
-                  Image uploaded successfully
-                </span>
-              )}
-            </div> */}
+
+              <div
+                className="animate-fade-in my-4"
+                style={{ animationDelay: "200ms" }}
+              >
+                <label className="block text-xs sm:text-sm font-medium text-gray-600 mb-2">
+                  Trade License
+                </label>
+                <label
+                  htmlFor="tradeLicense"
+                  className={`cursor-pointer py-3 px-4 border-2 ${
+                    tradeUploaded
+                      ? "border-green-600 text-green-600"
+                      : "border-red-600 text-red-600"
+                  } border-solid rounded-lg font-medium text-sm hover:bg-red-50 transition-all duration-300 flex items-center justify-center gap-2 group hover:shadow-md`}
+                >
+                  {uploading.trade ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Uploading...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                      Trade/PDF
+                    </>
+                  )}
+                </label>
+
+                <input
+                  id="tradeLicense"
+                  type="file"
+                  onChange={(e) => handleFileUpload(e, "trade")}
+                  className="hidden"
+                />
+                {tradeUploaded && (
+                  <span>Trade License uploaded successfully</span>
+                )}
+              </div>
+              <div
+                className="animate-fade-in my-4"
+                style={{ animationDelay: "200ms" }}
+              >
+                <label className="block text-xs sm:text-sm font-medium text-gray-600 mb-2">
+                  Passport Size Photo<span className="text-red-400">*</span>
+                </label>
+                <label
+                  htmlFor="photo"
+                  className={`cursor-pointer py-3 px-4 border-2 ${
+                    photo
+                      ? "border-green-600 text-green-600"
+                      : "border-red-600 text-red-600"
+                  } border-solid rounded-lg font-medium text-sm hover:bg-red-50 transition-all duration-300 flex items-center justify-center gap-2 group hover:shadow-md`}
+                >
+                  {uploading.photo ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Uploading...
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                      Photo
+                    </>
+                  )}
+                </label>
+
+                <input
+                  id="photo"
+                  type="file"
+                  onChange={(e) => handleFileUpload(e, "photo")}
+                  className="hidden"
+                />
+                {photo && <span>Photo uploaded successfully</span>}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -417,10 +446,7 @@ export default function RegistrationForm() {
                 className="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
               />
             </div>
-          </div>
 
-          {/* Row 2: Gender, DOB, Designation */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Gender
@@ -436,47 +462,6 @@ export default function RegistrationForm() {
                 <option>Other</option>
               </select>
             </div>
-
-            <div className="form-group">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Date of Birth
-              </label>
-              <input
-                name="dateOfBirth"
-                value={formData.dateOfBirth}
-                onChange={handleInputChange}
-                type="date"
-                className="select-field w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Your designation
-              </label>
-              <input
-                name="designation"
-                value={formData.designation}
-                onChange={handleInputChange}
-                className="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-              />
-            </div>
-          </div>
-
-          {/* Row 3: Company Type, Office, Travel Purpose */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="form-group">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Company Type
-              </label>
-              <input
-                name="companyType"
-                value={formData.companyType}
-                onChange={handleInputChange}
-                className="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-              />
-            </div>
-
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Office Location
@@ -488,28 +473,9 @@ export default function RegistrationForm() {
                 className="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
               />
             </div>
-
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Travel purpose
-              </label>
-              <select
-                name="travelPurpose"
-                value={formData.travelPurpose}
-                onChange={handleInputChange}
-                className="select-field w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-              >
-                <option>Select</option>
-                <option>Business</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Row 4: Email, Travel Plan, Payment */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="form-group">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Email Address
+                Company Email Address
               </label>
               <input
                 type="email"
@@ -519,23 +485,6 @@ export default function RegistrationForm() {
                 className="input-field w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
               />
             </div>
-
-            <div className="form-group">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Travel Plan
-              </label>
-              <select
-                name="travelPlan"
-                value={formData.travelPlan}
-                onChange={handleInputChange}
-                className="select-field w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-              >
-                <option>Full</option>
-                <option>Partial</option>
-                <option>Custom</option>
-              </select>
-            </div>
-
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Payment method
