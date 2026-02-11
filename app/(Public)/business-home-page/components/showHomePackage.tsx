@@ -2,7 +2,7 @@ import { TourPackage } from "@/app/dashboard/business/admin/components/makePacka
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { Calendar, MapPin, Users } from "lucide-react";
+import { Calendar, MapPin, TimerIcon, Users } from "lucide-react";
 
 interface TourPackageCardsProps {
   packages: TourPackage[];
@@ -120,13 +120,28 @@ const ShowHomePackage: React.FC<TourPackageCardsProps> = ({
                       <span className="text-sm text-gray-600">Group Size</span>
                     </div>
                     <span className="text-sm font-bold text-gray-900">
-                      15-20 People
+                      {pkg.minimumPax} People
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="flex items-center gap-2">
+                      <TimerIcon className="w-4 h-4 text-gray-600" />
+                      <span className="text-sm text-gray-600">Duration</span>
+                    </div>
+                    <span className="text-sm font-bold text-red-900">
+                      {pkg.duration}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-gray-600">
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                     <span>Limited slots available</span>
                   </div>
+                  {pkg.sold && (
+                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span>Sold : {pkg.sold}</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* View Details Button */}

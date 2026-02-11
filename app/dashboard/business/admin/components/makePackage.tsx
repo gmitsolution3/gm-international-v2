@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState, useEffect, useRef } from "react";
 import {
@@ -39,6 +39,7 @@ export interface TourPackage {
   minimumPax: number;
   photo: string;
   image: string;
+  sold?: number;
   description: string;
   createdAt: string | Date;
   createdBy: string | null | undefined;
@@ -193,7 +194,7 @@ const MakePackage = () => {
 
     hotelName: "",
     hotelRating: "",
-    maxPrice: 128900,
+    maxPrice: 0,
     minimumPax: 2,
     description: "",
     image: "",
@@ -206,8 +207,6 @@ const MakePackage = () => {
   const [expandedSections, setExpandedSections] = useState({
     basic: true,
     phases: true,
-    includes: false,
-    hotel: false,
     pricing: true,
   });
   const [uploading, setUploading] = useState(false);
@@ -258,7 +257,7 @@ const MakePackage = () => {
     setFormData((prev) => ({
       ...prev,
       [name]:
-        name === "customerPrice" || name === "paxPrice" || name === "minimumPax"
+        name === "customerPrice" || name === "maxPrice" || name === "minimumPax"
           ? Number(value)
           : value,
     }));
@@ -329,6 +328,7 @@ const MakePackage = () => {
         showConfirmButton: false,
         timer: 2000,
       });
+
     }
   };
 
@@ -675,7 +675,7 @@ const MakePackage = () => {
                         </span>
                         <input
                           type="number"
-                          name="paxPrice"
+                          name="maxPrice"
                           required
                           value={formData.maxPrice}
                           onChange={handleInputChange}

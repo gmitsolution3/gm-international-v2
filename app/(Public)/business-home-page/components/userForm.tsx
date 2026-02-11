@@ -6,8 +6,10 @@ import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
 import { fbEvent } from "@/lib/fbPixel";
 
-export default function RegistrationForm() {
+export default function RegistrationForm({ packageId }: { packageId : string}) {
   const { data: session } = useSession();
+
+  console.log({ packageId: packageId });
 
   const [formData, setFormData] = useState({
     country: "",
@@ -28,6 +30,7 @@ export default function RegistrationForm() {
     createdBy: session?.user?.email,
     paymentStatus: "pending",
     applicationStatus: "pending",
+    packageId: packageId,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -140,7 +143,6 @@ export default function RegistrationForm() {
         email: formData.email,
         currency: "BDT",
       });
-      
 
       if (result.success) {
         Swal.fire({
@@ -179,14 +181,13 @@ export default function RegistrationForm() {
       createdBy: session?.user?.email,
       paymentStatus: "pending",
       applicationStatus: "pending",
+      packageId: packageId,
     });
     setVisitingUploaded(false);
     setPassportUploaded(false);
     setTradeUploaded(false);
     setPhoto(false);
   };
-
-
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 py-8 px-4 sm:py-12 sm:px-6">

@@ -140,7 +140,7 @@ const BusinessPackageDetails = async ({ params }: BusinessDetailsProps) => {
 
             {/* Quick Action Button */}
             <Link
-              href="/business-home-page/business-submit-form"
+              href={`/business-home-page/business-submit-form?id=${id}`}
               className="block mt-8"
             >
               <button className="w-full bg-linear-to-r from-red-700 to-red-800 hover:from-red-800 hover:to-red-900 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 active:scale-[0.98]">
@@ -254,7 +254,7 @@ const BusinessPackageDetails = async ({ params }: BusinessDetailsProps) => {
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            href="/business-home-page/business-submit-form"
+            href={`/business-home-page/business-submit-form?id=${id}`}
             className="flex-1 sm:flex-none"
           >
             <button className="w-full sm:w-auto bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300">
