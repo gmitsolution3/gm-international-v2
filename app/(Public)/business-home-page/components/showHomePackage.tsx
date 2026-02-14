@@ -144,7 +144,7 @@ const ShowHomePackage: React.FC<TourPackageCardsProps> = ({
                   <div className="flex items-center gap-4 mb-4">
                     <div className="flex items-center gap-2">
                       <Users className="w-4 h-4 text-gray-600" />
-                      <span className="text-sm text-gray-600">Group Size</span>
+                      <span className="text-sm text-gray-600">Minimum Group Size :</span>
                     </div>
                     <span className="text-sm font-bold text-gray-900">
                       {pkg.minimumPax} People
