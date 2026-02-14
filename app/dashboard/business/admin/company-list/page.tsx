@@ -1,6 +1,6 @@
 import React from "react";
 import { AddBusinessComponents } from "../components/addBusinessComponents";
-import { ShowAllCompanies } from "./components/showAllCompanies";
+// import { ShowAllCompanies } from "./components/showAllCompanies";
 
 const CompanyList = () => {
   const value = "companyList";
@@ -19,9 +19,9 @@ const CompanyList = () => {
           <AddBusinessComponents value={value} />
         </div>
       </div>
-      <div>
+      {/* <div>
         <ShowAllCompanies />
-      </div>
+      </div> */}
     </div>
   );
 };
