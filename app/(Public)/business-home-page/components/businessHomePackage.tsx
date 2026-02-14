@@ -11,7 +11,7 @@ export const BusinessHomePackage = async () => {
   return (
     <div className="bg-gray-100 p-4 md:p-10">
       <div>
-        <ShowHomePackage packages={homePackage} />
+        <ShowHomePackage packages={homePackage} from={"withVisa"} />
       </div>
       <div className="flex justify-center">
         <Link href="/business-home-page/business-packages">

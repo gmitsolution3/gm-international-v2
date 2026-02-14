@@ -26,6 +26,7 @@ export const AddBusinessComponents = ({ value }: Value) => {
           Add Package <Plus className="text-current" />
         </button>
       )}
+
       {value === "companyList" && (
         <button
           onClick={() => setIsOpen(true)}
@@ -56,7 +57,7 @@ export const AddBusinessComponents = ({ value }: Value) => {
               )}
               {value === "businessPackage" && (
                 <div>
-                  <MakePackage />
+                  <MakePackage closeModal={() => setIsOpen(false)} />
                 </div>
               )}
             </div>

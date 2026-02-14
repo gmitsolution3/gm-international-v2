@@ -1,6 +1,6 @@
 import React from "react";
 import BusinessHeroSection from "./components/headerSection";
-import { Companies } from "./components/companies";
+import { PackageWithoutVisa } from "./components/packageWithoutVisa";
 import ServicesComponent from "./components/weOffer";
 import { BusinessHomePackage } from "./components/businessHomePackage";
 import { ServicesSkeleton } from "@/app/components/skeleton/ServicesSkeleton";
@@ -12,13 +12,13 @@ const BusinessHomePage = () => {
         <BusinessHeroSection />
       </div>
       <div>
-        <BusinessHomePackage/>
+        <BusinessHomePackage />
       </div>
       <div>
-        <Companies/>
+        <PackageWithoutVisa/>
       </div>
       <div>
-        <ServicesComponent/>
+        <ServicesComponent />
       </div>
     </div>
   );

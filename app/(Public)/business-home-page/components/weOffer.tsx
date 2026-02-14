@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import {
@@ -22,6 +22,7 @@ interface Service {
   description: string;
   details: string[];
   isOpen: boolean;
+  action: string;
 }
 
 const ServicesComponent = () => {
@@ -40,6 +41,7 @@ const ServicesComponent = () => {
         "Registration of Branch Office",
       ],
       isOpen: false,
+      action: "Open Company",
     },
     {
       id: "change-info",
@@ -58,6 +60,7 @@ const ServicesComponent = () => {
         "Extend Business License",
       ],
       isOpen: false,
+      action: "Apply now",
     },
     {
       id: "license-cert",
@@ -74,6 +77,7 @@ const ServicesComponent = () => {
         "Labor Dispatch Permit",
       ],
       isOpen: false,
+      action: "Apply now",
     },
     {
       id: "tax",
@@ -88,6 +92,17 @@ const ServicesComponent = () => {
         "Tax planning consulting (VAT, EIT, PIT)",
       ],
       isOpen: false,
+      action: "Apply now",
+    },
+    {
+      id: "accounting",
+      title: "Accounting",
+      icon: <Scale size={40} className="text-white" />,
+      description:
+        "Professional bookkeeping, financial reporting, and automation solutions.",
+      details: ["Account solutions", "Software and automation"],
+      isOpen: false,
+      action: "Apply now",
     },
     {
       id: "legal-advice",
@@ -101,14 +116,15 @@ const ServicesComponent = () => {
         "What not to do in China",
       ],
       isOpen: false,
+      action: "Apply now",
     },
   ]);
 
   const toggleDetails = (id: string) => {
     setServices(
       services.map((service) =>
-        service.id === id ? { ...service, isOpen: !service.isOpen } : service
-      )
+        service.id === id ? { ...service, isOpen: !service.isOpen } : service,
+      ),
     );
   };
 
@@ -137,7 +153,7 @@ const ServicesComponent = () => {
               {/* Card Container */}
               <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden h-full flex flex-col hover:scale-105">
                 {/* Colored Header with Icon */}
-                <div className="bg-[#CA2328] p-8 flex flex-col items-center justify-center min-h-[180px] relative overflow-hidden group">
+                <div className="bg-[#CA2328] p-8 flex flex-col items-center justify-center min-h-45 relative overflow-hidden group">
                   {/* Animated background element */}
                   <div className="absolute inset-0 bg-red-500 opacity-0 group-hover:opacity-20 transition-opacity duration-300"></div>
 
@@ -198,6 +214,14 @@ const ServicesComponent = () => {
                           </li>
                         ))}
                       </ul>
+                      <div className="my-2 flex justify-end">
+                        <Link
+                          href={"/business-home-page/business-deal"}
+                          className="text-red-700 hover:text-red-800 animate-slideDown"
+                        >
+                          {service.action}
+                        </Link>
+                      </div>
                     </div>
                   )}
                 </div>

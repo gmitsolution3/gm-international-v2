@@ -44,6 +44,7 @@ export interface TourPackage {
   createdAt: string | Date;
   createdBy: string | null | undefined;
   packageStatus: string;
+  isWithVisaAndAirTicket: boolean;
 }
 
 // const DescriptionEditor = ({
@@ -176,7 +177,7 @@ const DescriptionEditor = ({
   );
 };
 
-const MakePackage = () => {
+const MakePackage = ({ closeModal }: { closeModal: () => void }) => {
   const { data: session } = useSession();
   const [formData, setFormData] = useState<TourPackage>({
     packageName: "",
@@ -202,6 +203,7 @@ const MakePackage = () => {
     createdAt: new Date(),
     createdBy: session?.user?.email,
     packageStatus: "active",
+    isWithVisaAndAirTicket: false,
   });
 
   const [expandedSections, setExpandedSections] = useState({
@@ -211,6 +213,7 @@ const MakePackage = () => {
   });
   const [uploading, setUploading] = useState(false);
   const [imgURL, setImageURL] = useState<string | null>(null);
+  const [isAirTicket, setIsAirTicket] = useState(false);
 
   const toggleSection = (section: keyof typeof expandedSections) => {
     setExpandedSections((prev) => ({
@@ -294,7 +297,7 @@ const MakePackage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const finalPayload = { ...formData, image: imgURL };
+    const finalPayload = { ...formData, image: imgURL, isWithVisaAndAirTicket: isAirTicket };
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/post-business-package`,
@@ -328,9 +331,11 @@ const MakePackage = () => {
         showConfirmButton: false,
         timer: 2000,
       });
-
+      closeModal();
     }
   };
+
+  console.log({isAirTicket : isAirTicket})
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-blue-50 p-4 md:p-8">
@@ -699,6 +704,20 @@ const MakePackage = () => {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-2xl p-4 border border-gray-200 max-w-6xl mx-auto">
+            <div className="flex items-center gap-4">
+              <input
+                type="checkbox"
+                onChange={(e) => setIsAirTicket(e.target.checked)}
+                className="h-5 w-5"
+              />
+              <label className="text-sm font-semibold text-gray-600">
+                This package include visa and air ticket{" "}
+                <span className="text-red-700">(by default false)</span>
+              </label>
             </div>
           </div>
 

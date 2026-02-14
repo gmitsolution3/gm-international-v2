@@ -1,6 +1,6 @@
-export const getHomeCompany = async () => {
+export const getPackageWithoutVisa = async () => {
   const res = await fetch(
-    `${process.env.NEXT_EXPRESS_BASE_URL}/home-page-company`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/home-page-package-without-visa-air-ticket`,
     {
       cache: "no-store",
     }
@@ -11,8 +11,8 @@ export const getHomeCompany = async () => {
   return res.json();
 };
 
-export const getAllCompanies = async () => {
-  const res = await fetch(`${process.env.NEXT_EXPRESS_BASE_URL}/all-company`, {
+export const getAllPackageWithoutVisa = async () => {
+  const res = await fetch(`${process.env.NEXT_EXPRESS_BASE_URL}/all-package-without-visa-and-air-ticket`, {
     cache: "no-store",
   });
 

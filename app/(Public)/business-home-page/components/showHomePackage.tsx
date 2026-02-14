@@ -6,34 +6,52 @@ import { Calendar, MapPin, TimerIcon, Users } from "lucide-react";
 
 interface TourPackageCardsProps {
   packages: TourPackage[];
+  from?: string;
 }
 
 const ShowHomePackage: React.FC<TourPackageCardsProps> = ({
   packages = [],
+  from,
 }) => {
   return (
     <div className="py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header - Modernized */}
         <div className="mb-16 text-center">
-          <div className="inline-flex items-center justify-center gap-2 mb-4">
-            <div className="w-12 h-1 bg-red-700 rounded-full"></div>
-            <span className="text-red-700 font-semibold tracking-wider uppercase text-sm">
-              Premium Business Tours
-            </span>
-            <div className="w-12 h-1 bg-red-700 rounded-full"></div>
-          </div>
+          {from === "withVisa" && (
+            <div className="inline-flex items-center justify-center gap-2 mb-4">
+              <div className="w-12 h-1 bg-red-700 rounded-full"></div>
+              <span className="text-red-700 font-semibold tracking-wider uppercase text-sm">
+                Premium Business Tours
+              </span>
+              <div className="w-12 h-1 bg-red-700 rounded-full"></div>
+            </div>
+          )}
 
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-            Exclusive <span className="text-red-700">Business Tour</span>
-            <br />
-            Packages
-          </h1>
+          {from === "withVisa" && (
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              Business Tour <span className="text-red-700">Packages</span>
+              <br />
+              <span className="text-red-700">With</span> <br />
+              Visa <span className="text-red-700">&</span> Air Ticket
+            </h1>
+          )}
+          {from === "withoutVisa" && (
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+              Business Tour <span className="text-red-700">Packages</span>
+              <br />
+              <span className="text-red-700">Without</span> <br />
+              Visa <span className="text-red-700">&</span> Air Ticket
+            </h1>
+          )}
 
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
-            Curated business experiences designed to expand your professional
-            network and accelerate global growth opportunities.
-          </p>
+          {from === "withoutVisa" ||
+            (from === "withVisa" && (
+              <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+                Curated business experiences designed to expand your
+                professional network and accelerate global growth opportunities.
+              </p>
+            ))}
         </div>
 
         {/* Cards Grid - Modernized */}
@@ -59,9 +77,18 @@ const ShowHomePackage: React.FC<TourPackageCardsProps> = ({
                   <p className="text-xs text-gray-600 font-medium">
                     Starting from
                   </p>
-                  <p className="text-xl font-bold text-red-700">
-                    BDT {pkg.maxPrice}
+                  <p className="text-lg font-bold text-red-700">
+                    BDT {pkg.maxPrice} BDT
                   </p>
+                  {pkg.isWithVisaAndAirTicket ? (
+                    <p className="text-xs font-bold text-green-800">
+                      Include visa and air ticket
+                    </p>
+                  ) : (
+                    <p className="text-xs font-bold text-green-800">
+                      Without visa and air ticket
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -104,7 +131,7 @@ const ShowHomePackage: React.FC<TourPackageCardsProps> = ({
                             {p.startDate} - {p.endDate}
                           </p>
                         </div>
-                        <div className="bg-red-50 text-red-700 text-xs font-bold px-3 py-1 rounded-full">
+                        <div className="bg-green-200 text-green-700 text-xs font-bold px-3 py-1 rounded-full">
                           Active
                         </div>
                       </div>

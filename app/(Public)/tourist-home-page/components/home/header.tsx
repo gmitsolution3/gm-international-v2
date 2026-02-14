@@ -39,7 +39,7 @@ const TouristHomeHeader = () => {
           </div>
         </div>
         {/* Search bar (bottom) */}
-        <div className="absolute max-w-full w-full mx-auto -translate-x-1/2 md:left-auto md:translate-x-0">
+        {/* <div className="absolute max-w-full w-full mx-auto -translate-x-1/2 md:left-auto md:translate-x-0">
           <div className="w-6xl mx-auto shadow-xl">
             <div className="relative">
               <input
@@ -52,7 +52,7 @@ const TouristHomeHeader = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );

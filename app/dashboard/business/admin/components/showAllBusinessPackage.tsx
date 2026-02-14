@@ -1846,10 +1846,7 @@ interface PhaseItem {
   returnCity: string;
 }
 
-interface IncludeItem {
-  id: string;
-  title: string;
-}
+
 
 interface TourPackage {
   _id: string;
@@ -1858,9 +1855,6 @@ interface TourPackage {
   duration: string;
   country: string;
   phases: PhaseItem[];
-  includes: IncludeItem[];
-  hotelName: string;
-  hotelRating: string;
   maxPrice: number;
   minimumPax: number;
   description: string;
@@ -1903,9 +1897,6 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
       duration: "",
       country: "",
       phases: [],
-      includes: [],
-      hotelName: "",
-      hotelRating: "",
       maxPrice: 0,
       minimumPax: 0,
       description: "",
@@ -1923,14 +1914,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
     name: "phases",
   });
 
-  const {
-    fields: includeFields,
-    append: appendInclude,
-    remove: removeInclude,
-  } = useFieldArray({
-    control,
-    name: "includes",
-  });
+ 
 
   const handleDelete = (id: string): void => {
     Swal.fire({
@@ -1979,9 +1963,6 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
       duration: pkg.duration,
       country: pkg.country,
       phases: pkg.phases,
-      includes: pkg.includes || [],
-      hotelName: pkg.hotelName,
-      hotelRating: pkg.hotelRating,
       maxPrice: pkg.maxPrice,
       minimumPax: pkg.minimumPax,
       description: pkg.description,
@@ -2002,17 +1983,6 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
     setImagePreview(null);
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setSelectedImage(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
   const handleFileUpload = async (e: any) => {
     const file = e.target.files[0];
@@ -2128,6 +2098,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
         });
 
         setIsEditMode(false);
+        setIsModalOpen(false)
       } else {
         throw new Error(result.message || "Failed to update package");
       }
@@ -2255,9 +2226,6 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                     Min Pax
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold">
-                    Hotel
-                  </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold">
                     Status
                   </th>
                   <th className="px-6 py-4 text-center text-sm font-semibold">
@@ -2285,9 +2253,6 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                     </td>
                     <td className="px-6 py-4 text-sm text-black">
                       {pkg.minimumPax}
-                    </td>
-                    <td className="px-6 py-4 text-sm text-black">
-                      {pkg.hotelName}
                     </td>
                     <td className="px-6 py-4 text-sm">
                       <span
@@ -2685,16 +2650,17 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                               </button>
                             </div>
                             <div className="grid grid-cols-3 gap-2">
+                              {/* .${index} as const*/}
                               <div>
                                 <label className="block text-xs text-blue-700 font-medium mb-1">
                                   Start Date
                                 </label>
                                 <input
                                   {...register(
-                                    `phases.${index}.startDate` as const,
+                                    `phases.${index}.startDate`,
                                     { required: "Start date is required" },
                                   )}
-                                  type="date"
+                                  type="text"
                                   className="w-full px-2 py-1 text-sm border border-blue-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                 />
                               </div>
@@ -2704,10 +2670,10 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                                 </label>
                                 <input
                                   {...register(
-                                    `phases.${index}.endDate` as const,
+                                    `phases.${index}.endDate`,
                                     { required: "End date is required" },
                                   )}
-                                  type="date"
+                                  type="text"
                                   className="w-full px-2 py-1 text-sm border border-blue-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                                 />
                               </div>
@@ -2756,135 +2722,6 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                         ))}
                   </div>
                 </div>
-
-                {/* Includes Section */}
-                {/* <div>
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold text-red-900 flex items-center gap-2">
-                      <CheckCircle size={20} className="text-red-600" />
-                      Package Includes
-                    </h3>
-                    {isEditMode && (
-                      <button
-                        type="button"
-                        onClick={() =>
-                          appendInclude({
-                            id: Date.now().toString(),
-                            title: "",
-                          })
-                        }
-                        className="px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700 flex items-center gap-1"
-                      >
-                        <Plus size={16} /> Add Item
-                      </button>
-                    )}
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {isEditMode
-                      ? includeFields.map((field, index) => (
-                          <div
-                            key={field.id}
-                            className="flex items-center gap-2"
-                          >
-                            <input
-                              {...register(`includes.${index}.title` as const, {
-                                required: "Include item is required",
-                              })}
-                              className="flex-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500"
-                              placeholder="e.g., Breakfast"
-                            />
-                            <button
-                              type="button"
-                              onClick={() => removeInclude(index)}
-                              className="p-2 text-red-600 hover:bg-red-100 rounded-lg"
-                            >
-                              <Trash2 size={16} />
-                            </button>
-                          </div>
-                        ))
-                      : selectedPackage.includes?.map((item) => (
-                          <div
-                            key={item.id}
-                            className="flex items-center gap-2 p-3 bg-green-50 rounded-lg"
-                          >
-                            <CheckCircle
-                              size={16}
-                              className="text-green-600 shrink-0"
-                            />
-                            <span className="text-black text-sm">
-                              {item.title}
-                            </span>
-                          </div>
-                        ))}
-                  </div>
-                </div> */}
-
-                {/* Hotel Information */}
-                {/* <div>
-                  <h3 className="text-lg font-semibold text-red-900 mb-4 flex items-center gap-2">
-                    <Hotel size={20} className="text-red-600" />
-                    Hotel Information
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {isEditMode ? (
-                      <>
-                        <div className="space-y-2">
-                          <label className="block text-sm font-medium text-gray-700">
-                            Hotel Name
-                          </label>
-                          <input
-                            {...register("hotelName", {
-                              required: "Hotel name is required",
-                            })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500"
-                          />
-                          {errors.hotelName && (
-                            <p className="text-red-600 text-xs">
-                              {errors.hotelName.message}
-                            </p>
-                          )}
-                        </div>
-                        <div className="space-y-2">
-                          <label className="block text-sm font-medium text-gray-700">
-                            Hotel Rating
-                          </label>
-                          <select
-                            {...register("hotelRating", {
-                              required: "Hotel rating is required",
-                            })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500"
-                          >
-                            <option value="">Select Rating</option>
-                            <option value="3 Star">3 Star</option>
-                            <option value="4 Star">4 Star</option>
-                            <option value="5 Star">5 Star</option>
-                            <option value="Luxury">Luxury</option>
-                          </select>
-                          {errors.hotelRating && (
-                            <p className="text-red-600 text-xs">
-                              {errors.hotelRating.message}
-                            </p>
-                          )}
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="p-3 bg-red-50 rounded-lg">
-                          <p className="text-red-700 font-medium">Hotel Name</p>
-                          <p className="text-black font-semibold">
-                            {selectedPackage.hotelName}
-                          </p>
-                        </div>
-                        <div className="p-3 bg-red-50 rounded-lg">
-                          <p className="text-red-700 font-medium">Rating</p>
-                          <p className="text-black font-semibold">
-                            {selectedPackage.hotelRating}
-                          </p>
-                        </div>
-                      </>
-                    )}
-                  </div>
-                </div> */}
 
                 {/* Pricing Information */}
                 <div>
