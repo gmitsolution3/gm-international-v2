@@ -214,10 +214,10 @@ const ServicesComponent = () => {
                           </li>
                         ))}
                       </ul>
-                      <div className="my-2 flex justify-end">
+                      <div className="my-4 flex justify-end ">
                         <Link
-                          href={"/business-home-page/business-deal"}
-                          className="text-red-700 hover:text-red-800 animate-slideDown"
+                          href={`/business-home-page/business-deal/${service.id}`}
+                          className="animate-slideDown px-3 py-2 bg-red-700 border border-red-700 text-white rounded-lg hover:bg-white hover:text-red-700 font-bold"
                         >
                           {service.action}
                         </Link>
@@ -229,7 +229,7 @@ const ServicesComponent = () => {
             </div>
           ))}
         </div>
-        <div className="my-15 flex justify-center">
+        {/* <div className="my-15 flex justify-center">
           <Link href="/business-home-page/business-deal">
             <Button
               className="group relative inline-flex h-12 items-center justify-center overflow-hidden 
@@ -243,7 +243,7 @@ const ServicesComponent = () => {
               </div>
             </Button>
           </Link>
-        </div>
+        </div> */}
       </div>
 
       <style jsx>{`

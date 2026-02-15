@@ -29,18 +29,16 @@ const ShowHomePackage: React.FC<TourPackageCardsProps> = ({
           )}
 
           {from === "withVisa" && (
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              Business Tour <span className="text-red-700">Packages</span>
-              <br />
+            <h1 className="text-4xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-6 leading-tight">
+              Business Tour <span className="text-red-700">Packages</span>{" "}
               <span className="text-red-700">With</span> <br />
               Visa <span className="text-red-700">&</span> Air Ticket
             </h1>
           )}
           {from === "withoutVisa" && (
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              Business Tour <span className="text-red-700">Packages</span>
-              <br />
-              <span className="text-red-700">Without</span> <br />
+            <h1 className="text-4xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-6 leading-tight">
+              Business Tour <span className="text-red-700">Packages</span>{" "}
+              <span className="text-red-700">With</span> <br />
               Visa <span className="text-red-700">&</span> Air Ticket
             </h1>
           )}
@@ -144,7 +142,9 @@ const ShowHomePackage: React.FC<TourPackageCardsProps> = ({
                   <div className="flex items-center gap-4 mb-4">
                     <div className="flex items-center gap-2">
                       <Users className="w-4 h-4 text-gray-600" />
-                      <span className="text-sm text-gray-600">Minimum Group Size :</span>
+                      <span className="text-sm text-gray-600">
+                        Minimum Group Size :
+                      </span>
                     </div>
                     <span className="text-sm font-bold text-gray-900">
                       {pkg.minimumPax} People
