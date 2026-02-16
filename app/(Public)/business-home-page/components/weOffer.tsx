@@ -32,7 +32,7 @@ const ServicesComponent = () => {
       title: "Company Setup",
       icon: <Building size={40} className="text-white" />,
       description:
-        "Complete business registration and incorporation services for foreign companies in China.",
+        "Complete business incorporation services for foreign companies in China.",
       details: [
         "Registration of Wholly Foreign Owned Enterprise (including HK/Macau/Taiwan)",
         "Registration of Joint Venture",
@@ -143,7 +143,7 @@ const ServicesComponent = () => {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 items-start">
           {services.map((service, index) => (
             <div
               key={service.id}
@@ -229,21 +229,7 @@ const ServicesComponent = () => {
             </div>
           ))}
         </div>
-        {/* <div className="my-15 flex justify-center">
-          <Link href="/business-home-page/business-deal">
-            <Button
-              className="group relative inline-flex h-12 items-center justify-center overflow-hidden 
-          bg-linear-to-b from-[#CA2328] via-[#FF5E63] to-[#FF5E63] px-15 font-medium text-neutral-200 transition hover:scale-110 hover:cursor-pointer rounded-full text-lg"
-            >
-              <span className="flex gap-2 items-center">
-                Apply Now <ArrowRight />
-              </span>
-              <div className="absolute inset-0 flex h-full w-full justify-center transform-[skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:transform-[skew(-12deg)_translateX(100%)]">
-                <div className="relative h-full w-8 bg-white/20"></div>
-              </div>
-            </Button>
-          </Link>
-        </div> */}
+        
       </div>
 
       <style jsx>{`

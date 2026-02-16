@@ -2,15 +2,11 @@
 
 import React from "react";
 import { useFormContext } from "react-hook-form";
-import { FieldConfig } from "../types/form.types";
+import { FieldConfig, ServiceConfig } from "../types/form.types";
 
 interface FormFieldsProps {
-  fields: FieldConfig[];
+  fields: ServiceConfig;
 }
-
-
-
-
 
 const FormFields: React.FC<FormFieldsProps> = ({ fields }) => {
   const {
@@ -93,15 +89,6 @@ const FormFields: React.FC<FormFieldsProps> = ({ fields }) => {
           </div>
         );
 
-      //   case "file":
-      //     return (
-      //       <input
-      //         type="file"
-      //         {...register(field.name, { required: field.required })}
-      //         className={`${baseClassName} file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 cursor-pointer`}
-      //       />
-      //     );
-
       case "file":
         return (
           <div className="space-y-2">
@@ -133,7 +120,7 @@ const FormFields: React.FC<FormFieldsProps> = ({ fields }) => {
 
   return (
     <>
-      {fields.map((field) => (
+      {fields.fields.map((field) => (
         <div key={field.name} className="space-y-1">
           <label className="block text-sm font-medium text-gray-700">
             {field.label}

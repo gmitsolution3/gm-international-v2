@@ -16,7 +16,7 @@ const FindSearchResult = async ({ searchParams }: PageProps) => {
   const { country, city, program } = await searchParams;
   const hotlineNumber = "+8801896042360";
 
-  console.log(country, city, program);
+
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-search-result?country=${country}&city=${city}&program=${program}`,

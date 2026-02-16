@@ -6,12 +6,13 @@
 //   )
 // }
 
+
 // export default ServiceComponent;
 import { notFound } from "next/navigation";
 
 import Link from "next/link";
 import { getAllServices, getServiceConfig } from "../utils/formConfig";
-import DynamicForm from "../components/DynamicForm";
+import DealController from "../components/DealController";
 
 interface ServicePageProps {
   params: {
@@ -36,6 +37,10 @@ export default async function ServicePage({ params }: ServicePageProps) {
   if (!serviceConfig) {
     notFound();
   }
+
+
+
+  
 
   return (
     <div className="min-h-screen bg-linear-to-br from-red-50 via-indigo-50 to-purple-50">
@@ -65,25 +70,12 @@ export default async function ServicePage({ params }: ServicePageProps) {
       </nav>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto py-6 sm:py-8 lg:py-12 px-4 sm:px-6 lg:px-8">
+      {/* <div className="max-w-7xl mx-auto py-6 sm:py-8 lg:py-12 px-4 sm:px-6 lg:px-8">
         <DynamicForm serviceConfig={serviceConfig} />
+      </div> */}
+      <div className="min-h-screen bg-gray-100 py-8">
+        <DealController serviceConfig={serviceConfig} />
       </div>
     </div>
   );
 }
-
-// Generate metadata for SEO
-// export async function generateMetadata({ params }: ServicePageProps) {
-//   const serviceConfig = getServiceConfig(params.service);
-
-//   if (!serviceConfig) {
-//     return {
-//       title: "Service Not Found",
-//     };
-//   }
-
-//   return {
-//     title: `${serviceConfig.title} | Service Portal`,
-//     description: serviceConfig.description,
-//   };
-// }

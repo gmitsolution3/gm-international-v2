@@ -335,7 +335,6 @@ const MakePackage = ({ closeModal }: { closeModal: () => void }) => {
     }
   };
 
-  console.log({isAirTicket : isAirTicket})
 
   return (
     <div className="min-h-screen bg-linear-to-br from-gray-50 to-blue-50 p-4 md:p-8">

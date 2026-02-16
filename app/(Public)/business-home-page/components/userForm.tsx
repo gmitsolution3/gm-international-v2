@@ -9,7 +9,7 @@ import { fbEvent } from "@/lib/fbPixel";
 export default function RegistrationForm({ packageId }: { packageId : string}) {
   const { data: session } = useSession();
 
-  console.log({ packageId: packageId });
+
 
   const [formData, setFormData] = useState({
     country: "",
