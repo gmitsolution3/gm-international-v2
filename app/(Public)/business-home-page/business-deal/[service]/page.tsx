@@ -13,6 +13,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getAllServices, getServiceConfig } from "../utils/formConfig";
 import DealController from "../components/DealController";
+import { getServerSession } from "next-auth";
+import { authConfig } from "@/auth.config";
 
 interface ServicePageProps {
   params: {
@@ -30,6 +32,10 @@ export async function generateStaticParams() {
 export default async function ServicePage({ params }: ServicePageProps) {
 
   const { service } = await params
+
+  const session = await getServerSession(authConfig);
+  console.log({ session: session?.user?.email });
+  const userEmail = session?.user?.email; 
 
   const serviceConfig = getServiceConfig(service);
 
@@ -74,7 +80,11 @@ export default async function ServicePage({ params }: ServicePageProps) {
         <DynamicForm serviceConfig={serviceConfig} />
       </div> */}
       <div className="min-h-screen bg-gray-100 py-8">
-        <DealController serviceConfig={serviceConfig} />
+        <DealController
+          serviceConfig={serviceConfig}
+          service={service}
+          userEmail={userEmail}
+        />
       </div>
     </div>
   );

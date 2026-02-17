@@ -33,7 +33,7 @@ export const getAllBusinessDeal = async () => {
     {
       cache: "no-store",
     }
-  );
+  ); 
 
   if (!res.ok) throw new Error("Data not found");
 

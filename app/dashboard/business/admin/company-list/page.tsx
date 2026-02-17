@@ -1,6 +1,5 @@
 import React from "react";
 import { AddBusinessComponents } from "../components/addBusinessComponents";
-// import { ShowAllCompanies } from "./components/showAllCompanies";
 
 const CompanyList = () => {
   const value = "companyList";

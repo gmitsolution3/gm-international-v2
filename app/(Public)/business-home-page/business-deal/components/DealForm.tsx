@@ -26,6 +26,29 @@ import FormFields from "./FormFields";
 import { toast } from "sonner";
 import Image from "next/image";
 import Swal from "sweetalert2";
+import { ServiceForPricing } from "./service";
+
+interface PriceItem {
+  duration: string;
+  price: number;
+  currency: string;
+}
+
+export function parsePricing(text: string): PriceItem[] {
+  const matches = text.match(/\d+\s*hour\s*-\s*\d+\s*CNY/gi);
+
+  if (!matches) return [];
+
+  return matches.map((item) => {
+    const [durationPart, pricePart] = item.split("-");
+
+    const duration = durationPart.trim();
+    const price = parseInt(pricePart.replace(/[^\d]/g, ""));
+    const currency = "CNY";
+
+    return { duration, price, currency };
+  });
+}
 
 // Form validation schema using zod
 const formSchema = z
@@ -69,9 +92,15 @@ type FormData = z.infer<typeof formSchema>;
 interface PaymentFormProps {
   //   onSubmit: (data: FormData) => void;
   serviceConfig: ServiceConfig;
+  service: string;
+  userEmail: string | null | undefined
 }
 
-const DealForm: React.FC<PaymentFormProps> = ({ serviceConfig }) => {
+const DealForm: React.FC<PaymentFormProps> = ({
+  serviceConfig,
+  service,
+  userEmail,
+}) => {
   const [showPaymentProof, setShowPaymentProof] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -100,8 +129,6 @@ const DealForm: React.FC<PaymentFormProps> = ({ serviceConfig }) => {
 
   const selectedGateway = watch("payment_gateway");
   const paymentProofType = watch("payment_proof_type");
-
-
 
   React.useEffect(() => {
     if (
@@ -199,9 +226,17 @@ const DealForm: React.FC<PaymentFormProps> = ({ serviceConfig }) => {
     }
   };
 
-  
   const onSubmit = async (data: any) => {
     const allFormData = methods.getValues();
+
+    const finalData = {
+      ...allFormData,
+      service: service,
+      serviceTitle: serviceConfig.title,
+      createdBy: userEmail,
+      createdAt: new Date(),
+      applicationStatus: "pending"
+    };
 
     try {
       const response = await fetch(
@@ -211,7 +246,7 @@ const DealForm: React.FC<PaymentFormProps> = ({ serviceConfig }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(allFormData),
+          body: JSON.stringify(finalData),
         },
       );
 
@@ -233,7 +268,13 @@ const DealForm: React.FC<PaymentFormProps> = ({ serviceConfig }) => {
     }
   };
 
+  console.log({ service: service });
+
+  const prices = parsePricing(serviceConfig.title);
+
   const [before, after] = serviceConfig.title.split("-");
+
+  console.log({ serviceConfig: prices });
 
   return (
     <FormProvider {...methods}>
@@ -575,7 +616,7 @@ const DealForm: React.FC<PaymentFormProps> = ({ serviceConfig }) => {
                   {selectedGateway === "2" && (
                     <div>
                       <Image
-                        src="https://i.postimg.cc/1zyC52p1/Whats-App-Image-2026-02-15-at-7-41-02-PM.jpg"
+                        src="https://i.postimg.cc/7LgnxQT3/qr-code-jpg.jpg"
                         width={320}
                         height={320}
                         alt="Payment Image"
@@ -626,6 +667,17 @@ const DealForm: React.FC<PaymentFormProps> = ({ serviceConfig }) => {
                   )}
 
                   <div>
+                    {service === "legal-advice" ? (
+                      <ServiceForPricing
+                        service={service}
+                        title={serviceConfig.title}
+                      />
+                    ) : (
+                      <div className="text-lg text-green-800 p-4 bg-green-200 rounded-2xl my-4 font-bold max-">
+                        {after}
+                      </div>
+                    )}
+
                     <h4 className="text-md font-semibold text-gray-700 mb-4">
                       Payment Proof for{" "}
                       {selectedGateway === "1" ? "WeChat Pay" : "Alipay"}
