@@ -38,7 +38,8 @@ export const BusinessDeal = () => {
 
   return (
     <div>
-      <DealTable initialData={initialData} />
+      {/* <DealTable initialData={initialData} /> */}
+      No data found right now
     </div>
   );
 };
