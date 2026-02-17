@@ -33,3 +33,35 @@ export const UploadToCloudinary = async (file: File) => {
     return null;
   }
 };
+
+
+export const handleFileUpload = async (file: File) => {
+    if (!file) return;
+
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "pcakge_img_uploade");
+    data.append("cloud_name", "dqyfwfeed");
+
+    try {
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dqyfwfeed/image/upload",
+        {
+          method: "POST",
+          body: data,
+        },
+      );
+
+      const result = await res.json();
+
+      if (result.secure_url) {
+        return result.secure_url;
+      } else {
+        console.error("Cloudinary API Response Error:", result);
+        throw new Error(result.error?.message || "Upload failed");
+      }
+    } catch (err) {
+      console.error(err);
+      throw new Error("Upload failed");
+    }
+  };

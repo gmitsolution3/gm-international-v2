@@ -6,7 +6,7 @@ import useUserRole from "../../useContext/useUserRole";
 import UserSidebar from "./user/components/user-sidebar";
 import { UserProvider } from "../../useContext/useUserData";
 import { useSession } from "next-auth/react";
-import { Building2, FileText, LayoutDashboard, Package } from "lucide-react";
+import { Building2, FileText, LayoutDashboard, Package, SquareActivity } from "lucide-react";
 import DashboardHeader from "../components/header";
 import Loader from "@/components/ui/loader";
 import { Toaster } from "sonner";
@@ -30,6 +30,11 @@ const menuItems = [
     label: "Manage Packages",
     icon: Package,
     href: "/dashboard/scholarship/admin/manage-student-packages",
+  },
+  {
+    label: "Activities",
+    icon: SquareActivity,
+    href: "/dashboard/scholarship/admin/activities",
   },
   // {
   //   label: "Manage University",

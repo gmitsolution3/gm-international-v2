@@ -22,7 +22,6 @@ export const BusinessDeal = () => {
         console.error("Error fetching business deal:", error);
       }
     };
-
     businessDeal();
   }, [session]);
 
