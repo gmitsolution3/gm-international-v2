@@ -27,7 +27,7 @@ import Loader from "@/components/ui/loader";
 
 const components: { title: string; href: string; description: string }[] = [
   {
-    title: "Scholarship",
+    title: "Student",
     href: "/student-home-page",
     description:
       "Empowering students with advanced training, global exposure, and the right resources to build confidence, grow faster, and achieve their dreams with clarity and purpose.",

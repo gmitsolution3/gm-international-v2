@@ -89,9 +89,9 @@ export const serviceConfigs: Record<string, ServiceConfig> = {
       },
       {
         name: "trade_license",
-        label: "Trade License",
+        label: "Trade License-(If Any)",
         type: "file",
-        required: true,
+        required: false,
       },
     ],
   },
