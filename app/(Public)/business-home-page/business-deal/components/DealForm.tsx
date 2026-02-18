@@ -268,13 +268,11 @@ const DealForm: React.FC<PaymentFormProps> = ({
     }
   };
 
-  console.log({ service: service });
 
   const prices = parsePricing(serviceConfig.title);
 
   const [before, after] = serviceConfig.title.split("-");
 
-  console.log({ serviceConfig: prices });
 
   return (
     <FormProvider {...methods}>

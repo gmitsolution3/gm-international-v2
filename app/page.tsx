@@ -7,9 +7,30 @@ import HomePageAboutUs from "./components/aboutus/AboutUs";
 import { HFAQ } from "./components/HFAQ/HeroFAQ";
 import HSupport from "./components/HSupport/HSupport";
 import MapWrapper from "./components/MapWrapper/MapWrapper";
+import VideoGalleryComponent from "./components/video/videoComponent";
+import GalleryComponent from "./components/gallery/GalleryComponents";
 
+async function getVideoAndGallery() {
+  // Fetch videos from your API
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/media-activities/dashboard`,
+    {
+      cache: "no-store",
+    },
+  );
 
-const Home = () => {
+  if (!res.ok) {
+    return [];
+  }
+
+  return res.json();
+}
+
+const Home = async () => {
+  const result = await getVideoAndGallery();
+  const { resultGallery, resultVideo } = result.data;
+  
+
   return (
     <div>
       <div>
@@ -31,6 +52,12 @@ const Home = () => {
       </div>
       <div>
         <HFAQ />
+      </div>
+      <div>
+        <VideoGalleryComponent resultVideo={resultVideo} />
+      </div>
+      <div>
+        <GalleryComponent images={resultGallery} />
       </div>
       <div>
         <HSupport />

@@ -4,28 +4,33 @@ import MediaManager from "./components/MediaManager";
 
 
 
+const getActivities = async () => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/media-activities/dashboard`,
+      { cache: "no-store" },
+    );
 
-const getActivities = async()=>{
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/media-activities/dashboard`,
-    {
-      cache: "no-store",
-    },
-  );
-  if (!res.ok) {
-    return [];
+    const json = await res.json();
+
+    return (
+      json ?? {
+        data: { resultVideo: [], resultGallery: [] },
+      }
+    );
+  } catch {
+    return {
+      data: { resultVideo: [], resultGallery: [] },
+    };
   }
-
-  return res.json();
-}
+};
 
 export default async function MediaPage() {
  
-  const result = await getActivities()
+    const result = await getActivities();
 
-  const { resultVideo, resultGallery } = result.data;
-
-  console.log({resultVideo: resultVideo, resultGallery: resultGallery})
+    const resultVideo = result?.data?.resultVideo ?? [];
+    const resultGallery = result?.data?.resultGallery ?? [];
 
   return (
     <div className="min-h-screen bg-gray-50">

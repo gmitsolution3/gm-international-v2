@@ -260,6 +260,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
     setIsEditMode(false);
     setSelectedImage(null);
     setImagePreview(null);
+    setImageURL(null);
   };
 
 
@@ -285,7 +286,13 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
       const result = await res.json();
 
       if (!result.secure_url) toast.error("Image not uploaded");
-      setImageURL(result.secure_url);
+
+      if (result.secure_url) {
+        setImageURL(result.secure_url);
+        setImagePreview(result.secure_url);
+        toast.success("Image uploaded");
+      }
+      // setImageURL(result.secure_url);
     } catch (err) {
       console.error(err);
       setImageURL(null);
@@ -293,6 +300,8 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
       setUploading(false);
     }
   };
+
+
 
   const onSubmit = async (data: EditFormData) => {
     if (!selectedPackage) return;
@@ -306,32 +315,11 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
           Swal.showLoading();
         },
       });
-
-      // let imageUrl = data.image;
-
-      // Upload new image if selected
-      // if (selectedImage) {
-      //   const formData = new FormData();
-      //   formData.append("image", selectedImage);
-
-      //   const uploadRes = await fetch(
-      //     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/upload`,
-      //     {
-      //       method: "POST",
-      //       body: formData,
-      //     },
-      //   );
-
-      //   const uploadData = await uploadRes.json();
-      //   if (uploadData.url) {
-      //     imageUrl = uploadData.url;
-      //   }
-      // }
-
+     
       // Update package
       const updateData = {
         ...data,
-        image: imageURL ?imageURL:selectedImage,
+        image: imageURL || selectedPackage.image,
       };
 
       const res = await fetch(

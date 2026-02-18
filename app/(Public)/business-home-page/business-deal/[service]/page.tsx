@@ -34,7 +34,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
   const { service } = await params
 
   const session = await getServerSession(authConfig);
-  console.log({ session: session?.user?.email });
+
   const userEmail = session?.user?.email; 
 
   const serviceConfig = getServiceConfig(service);

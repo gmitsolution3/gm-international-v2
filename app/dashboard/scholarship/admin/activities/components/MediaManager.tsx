@@ -24,6 +24,7 @@ import {
 import { GalleryImage, TabType, Video } from "./types/media";
 import { toast } from "sonner";
 import { handleFileUpload } from "@/app/components/uploadPdf/uploadToCloudinary";
+import Swal from "sweetalert2";
 
 interface MediaManagerProps {
   initialVideos?: Video[];
@@ -125,8 +126,6 @@ const MediaManager: React.FC<MediaManagerProps> = ({
 
       const result = await res.json();
 
-   
-
       if (!result.success) {
         return toast.error(
           result.message || "Something was wrong Try again letter!!",
@@ -160,7 +159,7 @@ const MediaManager: React.FC<MediaManagerProps> = ({
     setThumbnailUploading(true);
     try {
       const result = await handleFileUpload(file);
-      
+
       setVideoThumbnail(file);
       setThumbnailPreview(result);
     } catch (err: any) {
@@ -219,10 +218,6 @@ const MediaManager: React.FC<MediaManagerProps> = ({
 
       const result = await response.json();
 
-     
-
-     
-
       // single state update (important for performance)
       setGallery((prev) => [...prev, ...uploadedImages]);
     } catch (error) {
@@ -243,16 +238,52 @@ const MediaManager: React.FC<MediaManagerProps> = ({
     setShowDeleteConfirm(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (!itemToDelete) return;
 
     if (itemToDelete.type === "video") {
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/activities/single-delete-video/${itemToDelete.id}`,
+        {
+          method: "DELETE",
+        },
+      );
+      const data = await res.json();
+
+      if (!data.success) {
+        Swal.fire({
+          title: data.message || "Something went wrong",
+          icon: "error",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        return;
+      }
       setVideos((prev) => prev.filter((v) => v.id !== itemToDelete.id));
+      toast.success(`${data.message}`);
     } else {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/activities/single-delete-gallery/${itemToDelete.id}`,
+        {
+          method: "DELETE",
+        },
+      );
+      const data = await res.json();
+
+      if (!data.success) {
+        Swal.fire({
+          title: data.message || "Something went wrong",
+          icon: "error",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+        return;
+      }
       setGallery((prev) => prev.filter((g) => g.id !== itemToDelete.id));
       setSelectedImages((prev) => prev.filter((id) => id !== itemToDelete.id));
+      toast.success(`${data.message}`);
     }
-
     setShowDeleteConfirm(false);
     setItemToDelete(null);
   };
@@ -260,11 +291,46 @@ const MediaManager: React.FC<MediaManagerProps> = ({
   // Handle bulk delete
   const handleBulkDelete = () => {
     if (selectedImages.length === 0) return;
-    setGallery((prev) => prev.filter((g) => !selectedImages.includes(g._id!)));
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/activities/bulk-delete-gallery`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(selectedImages),
+          },
+        );
+        const data = await res.json();
 
-    console.log({ selectedImages: selectedImages });
+        if (!data.success) {
+          Swal.fire({
+            title: data.message || "Something went wrong",
+            icon: "error",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+          return;
+        }
 
-    setSelectedImages([]);
+        toast.success(`${data.message}`);
+
+        setGallery((prev) =>
+          prev.filter((g) => !selectedImages.includes(g._id!)),
+        );
+        setSelectedImages([]);
+      }
+    });
   };
 
   // Toggle image selection
@@ -295,7 +361,7 @@ const MediaManager: React.FC<MediaManagerProps> = ({
 
   // Delete Confirmation Modal
   const DeleteConfirmModal = () => (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-white/30 backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-md w-full">
         <div className="bg-red-600 text-white p-4 rounded-t-lg flex justify-between items-center">
           <h3 className="font-semibold">Confirm Delete</h3>
@@ -549,7 +615,7 @@ const MediaManager: React.FC<MediaManagerProps> = ({
                               <VideoIcon size={18} />
                             </button>
                             <button
-                              onClick={() => handleDelete("video", video.id)}
+                              onClick={() => handleDelete("video", video._id)}
                               className="p-2 bg-red-600 text-white rounded-full hover:bg-red-700"
                               title="Delete"
                             >
@@ -728,14 +794,12 @@ const MediaManager: React.FC<MediaManagerProps> = ({
               {/* Gallery Content */}
               {currentItems.length > 0 ? (
                 viewMode === "grid" ? (
-                
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
-                    {currentItems.map((image:any) => (
+                    {currentItems.map((image: any) => (
                       <div
                         key={image.id}
                         className="group relative aspect-square bg-gray-100 rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
                       >
-                       
                         <div className="absolute top-2 left-2 z-10">
                           <input
                             type="checkbox"
@@ -745,7 +809,6 @@ const MediaManager: React.FC<MediaManagerProps> = ({
                           />
                         </div>
 
-                        
                         <Image
                           src={image.url}
                           alt={image.alt}
@@ -753,7 +816,6 @@ const MediaManager: React.FC<MediaManagerProps> = ({
                           className="object-cover"
                         />
 
-                        
                         <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
                           <button
                             onClick={() => handleDelete("gallery", image._id)}
@@ -764,7 +826,6 @@ const MediaManager: React.FC<MediaManagerProps> = ({
                           </button>
                         </div>
 
-                        
                         <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black to-transparent p-2 opacity-0 group-hover:opacity-100 transition-opacity">
                           <p className="text-white text-xs truncate">
                             {image.title || image.alt}
@@ -774,9 +835,8 @@ const MediaManager: React.FC<MediaManagerProps> = ({
                     ))}
                   </div>
                 ) : (
-                 
                   <div className="space-y-2">
-                    {currentItems.map((image :any) => (
+                    {currentItems.map((image: any) => (
                       <div
                         key={image.id}
                         className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group"
@@ -788,7 +848,6 @@ const MediaManager: React.FC<MediaManagerProps> = ({
                           className="w-4 h-4 text-red-600 rounded focus:ring-red-500"
                         />
 
-                        
                         <div className="relative w-16 h-16 bg-gray-200 rounded overflow-hidden shrink-0">
                           <Image
                             src={image.url}
@@ -798,7 +857,6 @@ const MediaManager: React.FC<MediaManagerProps> = ({
                           />
                         </div>
 
-                       
                         <div className="flex-1 min-w-0">
                           <h3 className="font-medium text-gray-900 truncate">
                             {image.title || image.alt}
@@ -814,7 +872,6 @@ const MediaManager: React.FC<MediaManagerProps> = ({
                           )}
                         </div>
 
-                        
                         <button
                           onClick={() => handleDelete("gallery", image.id)}
                           className="p-2 text-red-600 hover:bg-red-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
@@ -831,10 +888,10 @@ const MediaManager: React.FC<MediaManagerProps> = ({
                   <ImageIcon size={48} className="mx-auto text-gray-400 mb-3" />
                   <p className="text-gray-500">No images found</p>
                 </div>
-              )} 
+              )}
 
               {/* Pagination */}
-               {totalPages > 1 && (
+              {totalPages > 1 && (
                 <div className="flex justify-center items-center gap-2 mt-6">
                   <button
                     onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}

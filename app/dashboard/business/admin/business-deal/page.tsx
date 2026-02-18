@@ -8,7 +8,6 @@ const BusinessDeal = async() => {
     const businessDeal = await getAllBusinessDeal();
     
 
-    console.log({businessDeal: businessDeal})
 
   return (
     <div>
