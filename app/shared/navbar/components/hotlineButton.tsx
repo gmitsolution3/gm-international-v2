@@ -1,7 +1,8 @@
 import { Phone } from "lucide-react";
+export const hotlineNumber = "+8801896042360";
 
 const HotlineButton = () => {
-  const hotlineNumber = "+8801896042360";
+  
 
   return (
     <div>

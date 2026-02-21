@@ -1,6 +1,6 @@
 import React from "react";
 import { getMedicalDetails } from "../../components/fetches";
-import HospitalDetailPage from "../components/details";
+import HospitalDetailsPage from "../../components/HospitalDetailsPage";
 
 interface MedicalDetailsParams {
   params: { id: string };
@@ -13,7 +13,7 @@ const MedicalDetails = async ({ params }: MedicalDetailsParams) => {
   return (
     <div className="p-8">
       <div>
-        <HospitalDetailPage hospital={data} />
+        <HospitalDetailsPage hospital={data} />
       </div>
     </div>
   );

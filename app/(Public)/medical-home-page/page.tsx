@@ -11,9 +11,9 @@ const MedicalHomePage = () => {
       <div>
         <MedicalHero />
       </div>
-      <div>
+      {/* <div>
         <HomePackage />
-      </div>
+      </div> */}
       <div>
         <HomeMedicalList/>
       </div>

@@ -27,7 +27,7 @@ const touristMenuItems = [
     href: "/dashboard/medical/admin/manage-application-package",
   },
   {
-    label: "Manage Packages",
+    label: "Manage Medical",
     icon: Package,
     href: "/dashboard/medical/admin/manage-medical",
   },
@@ -80,9 +80,9 @@ export default function DashboardLayout({
 
   const avatar = userAvatar?.avatar;
 
-  if (loading) {
-    return <Loader />;
-  }
+  // if (loading) {
+  //   return <Loader />;
+  // }
 
   return (
     <div className="flex min-h-screen overflow-auto">

@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import ManagePackageForm from "./packageForm";
 import HospitalForm from "./addMedical";
 import { useSession } from "next-auth/react";
+import MedicalForm from "./MedicalForm";
 
 interface Value {
   value: string
@@ -61,10 +62,11 @@ export const AddMedicalPackage = ({value}:Value) => {
               )}
               {value === "medicalList" && (
                 <div>
-                  <HospitalForm
+                  {/* <HospitalForm
                     onClose={() => setIsOpen(false)}
                     email={email}
-                  />
+                  /> */}
+                  <MedicalForm onClose={() => setIsOpen(false)} email={email}/>
                 </div>
               )}
             </div>
