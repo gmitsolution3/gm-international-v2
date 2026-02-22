@@ -15,9 +15,9 @@ import {
   Hospital,
   ShieldPlus,
 } from "lucide-react";
-import { HospitalListProps } from "../../medical-list/components/type";
 import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
+import { MedicalFormData } from "@/app/dashboard/medical/admin/manage-application-package/components/type/type";
 
 interface FormData {
   country: string;
@@ -47,10 +47,8 @@ interface Option {
   label: string;
 }
 
-export default function AppointmentForm({ hospitals }: HospitalListProps) {
+export default function AppointmentForm({ hospitals }: { hospitals : MedicalFormData}) {
   const { data: session } = useSession();
-
-  
 
   const [uploaded, setUploaded] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -74,46 +72,6 @@ export default function AppointmentForm({ hospitals }: HospitalListProps) {
 
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus | null>(null);
 
-  // ===== Unique Country List =====
-  const countries = useMemo(() => {
-    const setData = new Set();
-    hospitals.forEach((item) => setData.add(item.country));
-    return [...setData];
-  }, [hospitals]);
-
-  // ===== Filter Hospitals By Country =====
-  const filteredHospitals = useMemo(() => {
-    return formData.country
-      ? hospitals.filter((item) => item.country === formData.country)
-      : [];
-  }, [formData.country, hospitals]);
-
-  // ===== Unique Departments from Selected Hospital =====
-  const departments = useMemo(() => {
-    if (!formData.hospital) return [];
-
-    const hospitalObj = filteredHospitals.find(
-      (h) => h.hospitalName === formData.hospital
-    );
-    if (!hospitalObj) return [];
-
-    const deptSet = new Set(hospitalObj.doctors.map((doc) => doc.expertise));
-    return [...deptSet];
-  }, [formData.hospital, filteredHospitals]);
-
-  // ===== Doctors by Selected Department =====
-  const filteredDoctors = useMemo(() => {
-    if (!formData.hospital || !formData.department) return [];
-
-    const hospitalObj = filteredHospitals.find(
-      (h) => h.hospitalName === formData.hospital
-    );
-    if (!hospitalObj) return [];
-
-    return hospitalObj.doctors.filter(
-      (doc) => doc.expertise === formData.department
-    );
-  }, [formData.department, formData.hospital, filteredHospitals]);
 
   const paymentMethods: string[] = [
     "Card",
@@ -144,7 +102,7 @@ export default function AppointmentForm({ hospitals }: HospitalListProps) {
   ];
 
   const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ): void => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -155,7 +113,7 @@ export default function AppointmentForm({ hospitals }: HospitalListProps) {
 
   const handleFileUpload = async (e: any) => {
     const file = e.target.files[0];
-    
+
     if (!file) return;
     setIsUploading(true);
     setUploaded(false);
@@ -171,7 +129,7 @@ export default function AppointmentForm({ hospitals }: HospitalListProps) {
         {
           method: "POST",
           body: data,
-        }
+        },
       );
 
       const result = await res.json();
@@ -231,7 +189,7 @@ export default function AppointmentForm({ hospitals }: HospitalListProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      }
+      },
     );
 
     const isSubmitSuccess = await submitData.json();
@@ -329,16 +287,14 @@ export default function AppointmentForm({ hospitals }: HospitalListProps) {
                   className="w-full pl-20 pr-4 py-3 rounded-full border-2 border-red-300 focus:border-red-600 focus:outline-none placeholder-gray-400 text-slate-700 transition-all duration-300 hover:border-red-400"
                 >
                   <option value="">Select country</option>
-                  {countries.map((dept: any) => (
-                    <option key={dept} value={dept}>
-                      {dept}
+                    <option value={hospitals.country_name}>
+                      {hospitals.country_name}
                     </option>
-                  ))}
                 </select>
               </div>
 
               {/* hospital */}
-              <div className="relative group">
+              {/* <div className="relative group">
                 <div className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-red-600 rounded-full p-3 transition-all duration-300 group-hover:scale-110">
                   <Hospital className="w-6 h-6 text-white" />
                 </div>
@@ -362,7 +318,7 @@ export default function AppointmentForm({ hospitals }: HospitalListProps) {
                     </option>
                   ))}
                 </select>
-              </div>
+              </div> */}
 
               {/* Department */}
               <div className="relative group">
@@ -382,7 +338,7 @@ export default function AppointmentForm({ hospitals }: HospitalListProps) {
                   className="w-full pl-20 pr-4 py-3 rounded-full border-2 border-red-300 focus:border-red-600 focus:outline-none placeholder-gray-400 text-slate-700 transition-all duration-300 hover:border-red-400"
                 >
                   <option>Select Department</option>
-                  {departments.map((d, i) => (
+                  {hospitals.department.map((d, i) => (
                     <option key={i} value={d}>
                       {d}
                     </option>
@@ -391,7 +347,7 @@ export default function AppointmentForm({ hospitals }: HospitalListProps) {
               </div>
 
               {/* Doctor */}
-              <div className="relative group">
+              {/* <div className="relative group">
                 <div className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-red-600 rounded-full p-3 transition-all duration-300 group-hover:scale-110">
                   <Stethoscope className="w-6 h-6 text-white" />
                 </div>
@@ -410,7 +366,7 @@ export default function AppointmentForm({ hospitals }: HospitalListProps) {
                     </option>
                   ))}
                 </select>
-              </div>
+              </div> */}
             </div>
 
             {/* Row 2: Patient Name (Full Width) */}

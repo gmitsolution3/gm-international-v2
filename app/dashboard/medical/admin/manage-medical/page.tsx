@@ -1,18 +1,14 @@
 import React from "react";
 import { AddMedicalPackage } from "../manage-application-package/components/addMedicalPackage";
-import AdminMedicalPackage from "../manage-application-package/components/medicalPackage";
-import { Trash2 } from "lucide-react";
 import { DashboardErrorHandler } from "@/app/dashboard/components/emtryHandaller";
+import { getAllMedicalData } from "@/app/(Public)/medical-home-page/components/fetches";
+import HospitalTable from "../manage-application-package/components/HospitalTable";
 
 const ManageMedical = async () => {
   const value: string = "medicalList";
-  const medicalPackages = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-medical-all-package`,
-    {
-      cache: "no-store",
-    }
-  );
-  const medicalPackageData = await medicalPackages.json();
+
+  const medicalData = await getAllMedicalData();
+
 
   return (
     <div>
@@ -29,9 +25,10 @@ const ManageMedical = async () => {
         <AddMedicalPackage value={value} />
       </div>
 
-      {medicalPackageData.length > 0 ? (
+      {medicalData.length > 0 ? (
         <div>
-          <AdminMedicalPackage treatments={medicalPackageData} />
+          {/* <AdminMedicalPackage treatments={medicalPackageData} /> */}
+          <HospitalTable initialHospitals={medicalData} />
         </div>
       ) : (
         <DashboardErrorHandler />

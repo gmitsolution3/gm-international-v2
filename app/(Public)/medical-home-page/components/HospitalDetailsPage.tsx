@@ -50,7 +50,7 @@ const HospitalDetailsPage = ({
     "details" | "departments" | "reviews"
   >("details");
 
-  // ইমেজ সোর্স হ্যান্ডলিং
+
   const getImageSource = () => {
     if (hospital.photo && !imageError) {
       return hospital.photo;
@@ -60,7 +60,7 @@ const HospitalDetailsPage = ({
       : "/images/default-private-hospital.jpg";
   };
 
-  // রেটিং রেন্ডার
+
   const renderRating = (rating: number, showText: boolean = true) => {
     const fullStars = Math.floor(rating);
     const hasHalfStar = rating % 1 >= 0.5;
@@ -99,7 +99,7 @@ const HospitalDetailsPage = ({
     );
   };
 
-  // ডিপার্টমেন্ট আইকন ম্যাপিং
+
   const getDepartmentIcon = (dept: string) => {
     const iconMap: { [key: string]: React.ReactNode } = {
       cardiology: <FaHeartbeat className="w-4 h-4" />,
@@ -365,9 +365,9 @@ const HospitalDetailsPage = ({
                   <Link
                     href={`/medical-home-page/user-submit-form?id=${hospital._id}`}
                   >
-                    <button className="flex items-center gap-2 border border-red-200 text-red-600 px-4 py-2.5 rounded-xl hover:bg-red-50 transition-colors text-sm md:text-base">
+                    <button className="flex items-center gap-2 border border-red-200 text-red-600 px-4 py-2.5 rounded-xl hover:bg-red-50 transition-colors text-sm md:text-base hover:cursor-pointer">
                       <FaCalendarAlt className="w-4 h-4" />
-                      <span>Appointment Now</span>
+                      <span>Request for invitation</span>
                     </button>
                   </Link>
                 </div>
@@ -400,7 +400,7 @@ const HospitalDetailsPage = ({
         {relatedHospitals.length > 0 && (
           <div className="mt-8">
             <h2 className="text-xl md:text-2xl font-bold text-gray-800 mb-4">
-              আরও দেখুন
+              See more
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {relatedHospitals.map((relatedHospital, index) => (

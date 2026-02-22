@@ -1,21 +1,23 @@
-import React from 'react'
-import AppointmentForm from './components/submitForm';
-import { getAllMedicalData } from '../components/fetches';
+import React from "react";
+import AppointmentForm from "./components/submitForm";
+import { getAllMedicalData, getMedicalDetails } from "../components/fetches";
 
+interface PageProps {
+  searchParams: {
+    id: string;
+  };
+}
 
-const UserSubmitForm = async() => {
+const UserSubmitForm = async ({ searchParams }: PageProps) => {
+  const { id } = await searchParams;
 
-  const hospitals = await getAllMedicalData();
-
+  const packageData = await getMedicalDetails(id)
 
   return (
     <div>
-      
-      
-      <AppointmentForm hospitals = {hospitals}/>
-    
-      </div>
-  )
-}
+      <AppointmentForm hospitals={packageData} />
+    </div>
+  );
+};
 
 export default UserSubmitForm;

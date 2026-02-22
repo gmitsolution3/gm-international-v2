@@ -45,8 +45,6 @@ export const fetchMedicalList = async () => {
     }
   );
 
-  if (!res.ok) throw new Error("Failed to fetch package");
-
   return res.json();
 };
 
@@ -57,9 +55,7 @@ export const getAllMedicalData = async () => {
       cache: "no-store",
     }
   );
-
-  if (!res.ok) throw new Error("failed to fetch all medical list");
-
+  
   return res.json();
 };
 

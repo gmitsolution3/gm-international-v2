@@ -12,9 +12,9 @@ export interface MedicalFormData {
   description: string;
   total_view: number;
   total_sell: number;
-  createdAt: Date;
+  createdAt: Date | string;
   createdBy: string;
-  updatedAt: Date;
+  updatedAt: Date | string;
   rating: number;
 }
 
