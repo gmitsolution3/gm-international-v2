@@ -1,38 +1,3 @@
-// import React from "react";
-
-// interface PageProps {
-//   searchParams: {
-//     id: string;
-//   };
-// }
-
-// type Payment = "Nagad" | "Bkash" | "Bank";
-
-// const appointmentFound = async (id: string) => {
-//   const res = await fetch(
-//     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-single-medical-appointment/${id}`,
-//   );
-//   if (!res.ok) {
-//     return { success: false, message: "Something was wrong!!" };
-//   }
-
-//   return res.json();
-// };
-
-// const PaymentPage = async ({ searchParams }: PageProps) => {
-//   const { id } = await searchParams;
-
-//   const result = await appointmentFound(id);
-
-//   const paymentMethod: Payment = result?.data?.payment;
-
-//   console.log({ paymentMethod: paymentMethod });
-
-//   return <div className="min-h-screen">PaymentPage</div>;
-// };
-
-// export default PaymentPage;
-
 import React from "react";
 import PaymentClient from "../components/PaymentClient";
 

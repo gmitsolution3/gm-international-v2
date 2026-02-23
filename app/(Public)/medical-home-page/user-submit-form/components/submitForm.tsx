@@ -29,7 +29,7 @@ import { FaDisease, FaHospitalSymbol, FaPassport } from "react-icons/fa";
 import { MdManageAccounts } from "react-icons/md";
 import { GiDuration } from "react-icons/gi";
 import { useRouter } from "next/navigation";
-
+import { toast } from "sonner";
 
 interface FormData {
   country: string;
@@ -42,8 +42,8 @@ interface FormData {
   disease_duration: string;
   contactNumber: string;
   email: string;
-  appointmentDate: string;
-  appointmentTime: string;
+  // appointmentDate: string;
+  // appointmentTime: string;
   medical_report: string[];
   recent_photo: string | null;
   passport_copy: string | null;
@@ -93,8 +93,8 @@ export default function AppointmentForm({
     disease_duration: "",
     contactNumber: "",
     email: "",
-    appointmentDate: "",
-    appointmentTime: "",
+    // appointmentDate: "",
+    // appointmentTime: "",
     medical_report: [],
     recent_photo: null,
     passport_copy: null,
@@ -109,13 +109,9 @@ export default function AppointmentForm({
   });
 
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus | null>(null);
-  const router = useRouter()
+  const router = useRouter();
 
-  const paymentMethods: string[] = [
-    "Bkash",
-    "Nagad",
-    "Bank",
-  ];
+  const paymentMethods: string[] = ["Bkash", "Nagad", "Bank"];
 
   const timeSlots: string[] = [
     "09:00",
@@ -214,19 +210,9 @@ export default function AppointmentForm({
           medical_report: true,
         }));
 
-        Swal.fire({
-          title: "Uploaded Successfully!",
-          icon: "success",
-          timer: 1500,
-          showConfirmButton: false,
-        });
+        toast.success("File uploaded successfully");
       } catch (error) {
-        Swal.fire({
-          title: "Upload failed",
-          icon: "error",
-          timer: 2000,
-          showConfirmButton: false,
-        });
+        toast.error("file uploaded failed!!");
       } finally {
         setUploadingFor(null);
       }
@@ -243,25 +229,13 @@ export default function AppointmentForm({
     ];
 
     if (!allowedTypes.includes(files[0].type)) {
-      Swal.fire({
-        title: "Invalid file type",
-        text: "Please upload only JPG, PNG, or PDF files",
-        icon: "error",
-        timer: 2000,
-        showConfirmButton: false,
-      });
+      toast.error("Invalid file Type!!Allow only JPG,PNG, Or PDF!!");
       return;
     }
 
     // Validate file size (max 5MB)
     if (files[0].size > 5 * 1024 * 1024) {
-      Swal.fire({
-        title: "File too large",
-        text: "Please upload file less than 5MB",
-        icon: "error",
-        timer: 2000,
-        showConfirmButton: false,
-      });
+      toast.error("File too large!! Please upload file less than 5MB");
       return;
     }
 
@@ -290,7 +264,7 @@ export default function AppointmentForm({
       const result = await res.json();
 
       if (!result.secure_url) {
-        throw new Error("Upload failed: No URL returned");
+        return toast.error("File not uploaded yet! Try again");
       }
 
       setFormData((prev) => ({
@@ -303,13 +277,7 @@ export default function AppointmentForm({
         [fieldName]: true,
       }));
 
-      Swal.fire({
-        title: "Success!",
-        text: "File uploaded successfully",
-        icon: "success",
-        timer: 1500,
-        showConfirmButton: false,
-      });
+      toast.success("FFile uploaded successffully");
     } catch (err) {
       console.error("Upload failed:", err);
       Swal.fire({
@@ -354,8 +322,7 @@ export default function AppointmentForm({
       "patient_disease",
       "disease_duration",
       "contactNumber",
-      "appointmentDate",
-      "appointmentTime",
+      
       "payment",
       "medical_report",
       "recent_photo",
@@ -377,13 +344,8 @@ export default function AppointmentForm({
         message: "Please fill all required fields and upload all documents",
       });
 
-      Swal.fire({
-        title: "Missing Fields",
-        text: "Please complete all required fields and upload all documents",
-        icon: "error",
-        timer: 2000,
-        showConfirmButton: false,
-      });
+      
+      toast.error("Please complete all required fields and upload all documents")
       return;
     }
 
@@ -421,7 +383,7 @@ export default function AppointmentForm({
 
       if (!isSubmitSuccess || !isSubmitSuccess.insertedId) {
         Swal.fire({
-          title: "Something went wrong!!",
+          title: isSubmitSuccess.message,
           text: "Please try again",
           icon: "error",
           timer: 2000,
@@ -430,20 +392,11 @@ export default function AppointmentForm({
         return;
       }
 
-      Swal.fire({
-        title: "Success!",
-        text: "Your appointment has been submitted successfully",
-        icon: "success",
-        timer: 2000,
-        showConfirmButton: false,
-      });
-
       setSubmitStatus({
         type: "success",
         message: "Appointment booked successfully!",
       });
 
-      // Reset upload status
       setUploadStatus({
         medical_report: false,
         recent_photo: false,
@@ -463,8 +416,8 @@ export default function AppointmentForm({
           disease_duration: "",
           contactNumber: "",
           email: "",
-          appointmentDate: "",
-          appointmentTime: "",
+          // appointmentDate: "",
+          // appointmentTime: "",
           medical_report: [],
           recent_photo: null,
           passport_copy: null,
@@ -481,7 +434,7 @@ export default function AppointmentForm({
         router.push(
           `/medical-home-page/payment?id=${isSubmitSuccess.insertedId}`,
         );
-      }, 2000);
+      }, 1000);
     } catch (error) {
       console.error("Submission error:", error);
       Swal.fire({
@@ -603,7 +556,7 @@ export default function AppointmentForm({
       <div className="max-w-4xl mx-auto">
         {/* Title */}
         <h1 className="text-4xl md:text-5xl font-bold text-center text-red-600 mb-8 animate-fade-in drop-shadow-lg">
-          Appointment Form
+          Invitation Form (Only 5000BDT)
         </h1>
 
         {/* Form Container */}
@@ -897,7 +850,7 @@ export default function AppointmentForm({
               </div>
 
               {/* Date & Time */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
                 <div>
                   <div className="mb-2">
                     <label className="text-md font-medium">
@@ -949,7 +902,7 @@ export default function AppointmentForm({
                     </select>
                   </div>
                 </div>
-              </div>
+              </div> */}
 
               {/* Document Uploads */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
@@ -1006,7 +959,7 @@ export default function AppointmentForm({
                 disabled={uploadingFor !== null}
                 className="px-12 py-3 bg-linear-to-r from-red-600 to-red-500 text-white font-bold rounded-full text-lg transition-all duration-300 hover:from-red-700 hover:to-red-600 hover:shadow-xl active:scale-95 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
               >
-                {uploadingFor ? "Uploading..." : "Submit Appointment"}
+                {uploadingFor ? "Uploading..." : "Next"}
               </button>
             </div>
           </div>

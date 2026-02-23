@@ -357,7 +357,7 @@ const HospitalDetailsPage = ({
                     href={`tel:${hotlineNumber}`}
                     aria-label={`Call our hotline at ${hotlineNumber}`}
                   >
-                    <button className="flex items-center gap-2 bg-red-600 text-white px-4 py-2.5 rounded-xl hover:bg-red-700 transition-colors text-sm md:text-base">
+                    <button className="flex items-center gap-2 border border-red-200 text-red-600 px-4 py-2.5 rounded-xl hover:bg-red-50 transition-colors text-sm md:text-base hover:cursor-pointer">
                       <FaPhone className="w-4 h-4" />
                       <span>Contact Us</span>
                     </button>
@@ -365,9 +365,9 @@ const HospitalDetailsPage = ({
                   <Link
                     href={`/medical-home-page/user-submit-form?id=${hospital._id}`}
                   >
-                    <button className="flex items-center gap-2 border border-red-200 text-red-600 px-4 py-2.5 rounded-xl hover:bg-red-50 transition-colors text-sm md:text-base hover:cursor-pointer">
+                    <button className="flex items-center gap-2 bg-red-600 text-white px-4 py-2.5 rounded-xl hover:bg-red-700 transition-colors text-sm md:text-base">
                       <FaCalendarAlt className="w-4 h-4" />
-                      <span>Request for invitation</span>
+                      <span>Request for invitation (5000TK)</span>
                     </button>
                   </Link>
                 </div>

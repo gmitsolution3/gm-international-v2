@@ -390,7 +390,7 @@ const NagadPayment = ({
       const updateRes = await fetch(
         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/update-medical-payment/${appointmentId}`,
         {
-          method: "PATCH",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
@@ -584,7 +584,7 @@ const BankPayment = ({
       const updateRes = await fetch(
         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/update-medical-payment/${appointmentId}`,
         {
-          method: "PATCH",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
@@ -736,13 +736,13 @@ const PaymentClient = ({
     });
   };
 
-  const formatTime = (timeString: string) => {
-    const [hours, minutes] = timeString.split(":");
-    const hour = parseInt(hours);
-    const ampm = hour >= 12 ? "PM" : "AM";
-    const hour12 = hour % 12 || 12;
-    return `${hour12}:${minutes} ${ampm}`;
-  };
+  // const formatTime = (timeString: string) => {
+  //   const [hours, minutes] = timeString.split(":");
+  //   const hour = parseInt(hours);
+  //   const ampm = hour >= 12 ? "PM" : "AM";
+  //   const hour12 = hour % 12 || 12;
+  //   return `${hour12}:${minutes} ${ampm}`;
+  // };
 
   if (paymentCompleted) {
     return (
@@ -814,7 +814,7 @@ const PaymentClient = ({
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3">
+                {/* <div className="flex items-start gap-3">
                   <Calendar className="w-5 h-5 text-red-600 mt-1" />
                   <div>
                     <p className="text-sm text-gray-500">Date & Time</p>
@@ -825,7 +825,7 @@ const PaymentClient = ({
                       {formatTime(appointmentData.appointmentTime)}
                     </p>
                   </div>
-                </div>
+                </div> */}
 
                 <div className="flex items-start gap-3">
                   <Phone className="w-5 h-5 text-red-600 mt-1" />
