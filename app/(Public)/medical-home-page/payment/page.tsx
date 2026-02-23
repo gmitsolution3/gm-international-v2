@@ -1,16 +1,85 @@
+// import React from "react";
+
+// interface PageProps {
+//   searchParams: {
+//     id: string;
+//   };
+// }
+
+// type Payment = "Nagad" | "Bkash" | "Bank";
+
+// const appointmentFound = async (id: string) => {
+//   const res = await fetch(
+//     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-single-medical-appointment/${id}`,
+//   );
+//   if (!res.ok) {
+//     return { success: false, message: "Something was wrong!!" };
+//   }
+
+//   return res.json();
+// };
+
+// const PaymentPage = async ({ searchParams }: PageProps) => {
+//   const { id } = await searchParams;
+
+//   const result = await appointmentFound(id);
+
+//   const paymentMethod: Payment = result?.data?.payment;
+
+//   console.log({ paymentMethod: paymentMethod });
+
+//   return <div className="min-h-screen">PaymentPage</div>;
+// };
+
+// export default PaymentPage;
+
 import React from "react";
+import PaymentClient from "../components/PaymentClient";
 
 interface PageProps {
-  searchParams: {
+  searchParams: Promise<{
     id: string;
-  };
+  }>;
 }
 
-const PaymentPage = async({ searchParams }: PageProps) => {
-    const {id}= await searchParams;
-    console.log({id:id})
+type Payment = "Nagad" | "Bkash" | "Bank";
 
-  return <div className="min-h-screen">PaymentPage</div>;
+const appointmentFound = async (id: string) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-single-medical-appointment/${id}`,
+    { cache: "no-store" },
+  );
+  if (!res.ok) {
+    return { success: false, message: "Something was wrong!!" };
+  }
+
+  return res.json();
+};
+
+const PaymentPage = async ({ searchParams }: PageProps) => {
+  const { id } = await searchParams;
+
+  const result = await appointmentFound(id);
+
+  if (!result?.success) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">Error</h1>
+          <p className="text-gray-600">Appointment not found or invalid ID</p>
+        </div>
+      </div>
+    );
+  }
+
+  const paymentMethod: Payment = result?.data?.payment;
+
+  return (
+    <PaymentClient
+      appointmentData={result.data}
+      paymentMethod={paymentMethod}
+    />
+  );
 };
 
 export default PaymentPage;
