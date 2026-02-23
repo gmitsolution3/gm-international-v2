@@ -277,7 +277,7 @@ export default function AppointmentForm({
         [fieldName]: true,
       }));
 
-      toast.success("FFile uploaded successffully");
+      toast.success("File uploaded successffully");
     } catch (err) {
       console.error("Upload failed:", err);
       Swal.fire({
