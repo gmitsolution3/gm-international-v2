@@ -22,6 +22,8 @@ const MedicalForm = ({ onClose, email }: onCloseProps) => {
     handleSubmit,
     control,
     formState: { errors },
+    watch,
+    setValue,
   } = useForm<MedicalFormData>({
     defaultValues: {
       hospital_name: "",
@@ -41,8 +43,29 @@ const MedicalForm = ({ onClose, email }: onCloseProps) => {
     },
   });
 
+  const departments = watch("department");
+
   const [imageUploading, setImageUploading] = useState(false);
   const [imageURL, setImageURL] = useState<string | null>(null);
+  const [departmentInput, setDepartmentInput] = useState("");
+
+
+  const handleAddDepartment = () => {
+    if (!departmentInput.trim()) return;
+
+    // duplicate prevent
+    if (departments.includes(departmentInput.trim())) return;
+
+    const updated = [...departments, departmentInput.trim()];
+    setValue("department", updated);
+
+    setDepartmentInput("");
+  };
+
+  const handleRemoveDepartment = (name: string) => {
+    const filtered = departments.filter((d) => d !== name);
+    setValue("department", filtered);
+  };
 
   const handlePhotoUpload = async (e: any) => {
     const file = e.target.files?.[0];
@@ -178,7 +201,6 @@ const MedicalForm = ({ onClose, email }: onCloseProps) => {
 
           {/* Province and Hospital Type */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
             {/* City Name */}
             <div>
               <label className="block text-sm font-medium text-red-800 mb-2">
@@ -315,7 +337,7 @@ const MedicalForm = ({ onClose, email }: onCloseProps) => {
           </div>
 
           {/* Departments */}
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-red-800 mb-2">
               Departments
             </label>
@@ -330,6 +352,48 @@ const MedicalForm = ({ onClose, email }: onCloseProps) => {
                   />
                   <span className="text-sm text-gray-700">{dept.name}</span>
                 </label>
+              ))}
+            </div>
+          </div> */}
+          <div>
+            <label className="block text-sm font-medium text-red-800 mb-2">
+              Departments
+            </label>
+
+            <div className="flex gap-2 mb-3">
+              <input
+                type="text"
+                value={departmentInput}
+                onChange={(e) => setDepartmentInput(e.target.value)}
+                placeholder="Enter department name"
+                className="flex-1 border rounded px-3 py-2 text-sm"
+              />
+
+              <button
+                type="button"
+                onClick={handleAddDepartment}
+                className="bg-red-600 text-white px-4 py-2 rounded text-sm"
+              >
+                Add
+              </button>
+            </div>
+
+            {/* Department List */}
+            <div className="flex flex-wrap gap-2">
+              {departments.map((dept, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-2 bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm"
+                >
+                  {dept}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveDepartment(dept)}
+                    className="text-red-600 font-bold"
+                  >
+                    ×
+                  </button>
+                </div>
               ))}
             </div>
           </div>
