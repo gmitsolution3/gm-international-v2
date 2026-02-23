@@ -111,7 +111,7 @@ export default function AppointmentForm({
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus | null>(null);
   const router = useRouter();
 
-  const paymentMethods: string[] = ["Bkash", "Nagad", "Bank"];
+  const paymentMethods: string[] = ["bKash", "Nagad", "Bank"];
 
   const timeSlots: string[] = [
     "09:00",
@@ -210,7 +210,12 @@ export default function AppointmentForm({
           medical_report: true,
         }));
 
-        toast.success("File uploaded successfully");
+        toast.success("File uploaded successfully", {
+        style: {
+          backgroundColor: "#22c55e", // green
+          color: "white",
+        },
+      });
       } catch (error) {
         toast.error("file uploaded failed!!");
       } finally {
@@ -277,7 +282,12 @@ export default function AppointmentForm({
         [fieldName]: true,
       }));
 
-      toast.success("File uploaded successffully");
+      toast.success("File uploaded successfully", {
+        style: {
+          backgroundColor: "#22c55e", // green
+          color: "white",
+        },
+      });
     } catch (err) {
       console.error("Upload failed:", err);
       Swal.fire({
@@ -322,7 +332,7 @@ export default function AppointmentForm({
       "patient_disease",
       "disease_duration",
       "contactNumber",
-      
+
       "payment",
       "medical_report",
       "recent_photo",
@@ -344,8 +354,9 @@ export default function AppointmentForm({
         message: "Please fill all required fields and upload all documents",
       });
 
-      
-      toast.error("Please complete all required fields and upload all documents")
+      toast.error(
+        "Please complete all required fields and upload all documents",
+      );
       return;
     }
 

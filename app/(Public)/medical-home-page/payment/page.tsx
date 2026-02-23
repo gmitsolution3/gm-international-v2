@@ -7,7 +7,7 @@ interface PageProps {
   }>;
 }
 
-type Payment = "Nagad" | "Bkash" | "Bank";
+type Payment = "Nagad" | "bKash" | "Bank";
 
 const appointmentFound = async (id: string) => {
   const res = await fetch(

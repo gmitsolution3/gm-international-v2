@@ -43,7 +43,7 @@ interface AppointmentData {
 
 interface PaymentClientProps {
   appointmentData: AppointmentData;
-  paymentMethod: "Bkash" | "Nagad" | "Bank";
+  paymentMethod: "bKash" | "Nagad" | "Bank";
 }
 
 // Bkash QR Code Component
@@ -880,7 +880,7 @@ const PaymentClient = ({
               </div>
 
               {/* Render appropriate payment component */}
-              {paymentMethod === "Bkash" && (
+              {paymentMethod === "bKash" && (
                 <BkashPayment
                   appointmentId={appointmentData._id}
                   amount={appointmentData.amount || 5000}
