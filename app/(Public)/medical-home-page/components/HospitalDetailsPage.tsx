@@ -344,7 +344,7 @@ const HospitalDetailsPage = ({
                     Patient Review/Feedback
                   </h2>
                   <div className="text-center py-8 text-gray-500">
-                    <p>Comming soon...</p>
+                    <p>Coming soon...</p>
                   </div>
                 </div>
               )}

@@ -11,7 +11,7 @@ const MedicalDetails = async ({ params }: MedicalDetailsParams) => {
   const data = await getMedicalDetails(id);
 
   return (
-    <div className="p-8">
+    <div className="lg:p-8">
       <div>
         <HospitalDetailsPage hospital={data} />
       </div>
