@@ -336,25 +336,7 @@ const MedicalForm = ({ onClose, email }: onCloseProps) => {
             </div>
           </div>
 
-          {/* Departments */}
-          {/* <div>
-            <label className="block text-sm font-medium text-red-800 mb-2">
-              Departments
-            </label>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 p-4 bg-red-50 rounded-lg">
-              {DEPARTMENT_OPTIONS.map((dept) => (
-                <label key={dept.id} className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    value={dept.name}
-                    {...register("department")}
-                    className="w-4 h-4 text-red-600 rounded focus:ring-red-500"
-                  />
-                  <span className="text-sm text-gray-700">{dept.name}</span>
-                </label>
-              ))}
-            </div>
-          </div> */}
+        
           <div>
             <label className="block text-sm font-medium text-red-800 mb-2">
               Departments
@@ -406,7 +388,7 @@ const MedicalForm = ({ onClose, email }: onCloseProps) => {
             <Controller
               name="description"
               control={control}
-              rules={{
+              rules={{ 
                 required: "Description is required",
                 minLength: {
                   value: 10,
