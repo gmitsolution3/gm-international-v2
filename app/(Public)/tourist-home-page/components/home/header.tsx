@@ -1,9 +1,26 @@
+"use client"
+
+import { CheckListModal } from "@/app/(Public)/medical-home-page/components/checkListModal";
 import { Button } from "@headlessui/react";
 import { ArrowRight, Search } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 const TouristHomeHeader = () => {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+     const checklistItems = [
+       "Recent photo",
+       "Passport scan copy",
+       "Invitation letter",
+       "Job ID (Job Holder)",
+       "NOC (Job Holder)",
+       "Business card",
+       "Trade license (If any)",
+       "Bank statement & solvency",
+     ];
+
   return (
     <>
       <div className="min-h-[70vh] h-full">
@@ -19,9 +36,13 @@ const TouristHomeHeader = () => {
               exceptional deals that make every trip smooth, enjoyable, and
               truly unforgettable.
             </p>
-            <Button className="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-md bg-linear-to-b from-[#CA2328] via-[#FF5E63] to-[#FF5E63] px-6 font-medium text-neutral-200 transition hover:scale-110 hover:cursor-pointer">
+            <Button
+              onClick={() => setIsModalOpen(true)}
+              className="group relative inline-flex h-12 items-center justify-center overflow-hidden 
+                      bg-linear-to-b from-[#CA2328] via-[#FF5E63] to-[#FF5E63] px-15 font-medium text-neutral-200 transition hover:scale-110 hover:cursor-pointer rounded-full mt-10"
+            >
               <span className="flex gap-2">
-                Book Now <ArrowRight />
+                Check List <ArrowRight />
               </span>
               <div className="absolute inset-0 flex h-full w-full justify-center transform-[skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:transform-[skew(-12deg)_translateX(100%)]">
                 <div className="relative h-full w-8 bg-white/20"></div>
@@ -38,21 +59,11 @@ const TouristHomeHeader = () => {
             />
           </div>
         </div>
-        {/* Search bar (bottom) */}
-        {/* <div className="absolute max-w-full w-full mx-auto -translate-x-1/2 md:left-auto md:translate-x-0">
-          <div className="w-6xl mx-auto shadow-xl">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search here"
-                className="w-full pl-10 pr-4 py-4 rounded-lg border border-gray-300 focus:border-red-500 focus:ring-1 focus:ring-red-500 outline-none shadow-sm"
-              />
-              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                <Search size={20} color="red" />
-              </div>
-            </div>
-          </div>
-        </div> */}
+        <CheckListModal
+          isOpen={isModalOpen}
+          setIsOpen={setIsModalOpen}
+          checklistItems={checklistItems}
+        />
       </div>
     </>
   );
