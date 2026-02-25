@@ -23,5 +23,12 @@ export default async function TouristPackageDetails({
 
   const resOfResult = await res.json();
 
-  return <PackageDetails packageData={resOfResult} source={source} />;
+
+  return (
+    <PackageDetails
+      packageData={resOfResult}
+      source={source}
+  
+    />
+  );
 }

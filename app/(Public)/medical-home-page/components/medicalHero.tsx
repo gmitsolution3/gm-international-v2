@@ -60,6 +60,7 @@ const MedicalHero = () => {
             isOpen={isModalOpen}
             setIsOpen={setIsModalOpen}
             checklistItems={checklistItems}
+            label="Medical Invitation Check List"
           />
         </div>
       </div>

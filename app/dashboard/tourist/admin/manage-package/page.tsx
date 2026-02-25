@@ -14,6 +14,8 @@ const TouristManagePackage = async () => {
 
   const resOfResult = await res.json();
 
+  console.log({resOfResult: resOfResult})
+
   return (
     <div>
       {/* Header */}

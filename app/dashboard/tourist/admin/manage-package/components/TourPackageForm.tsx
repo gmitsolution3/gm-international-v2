@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const DescriptionEditor = dynamic(
   () =>
@@ -31,7 +33,8 @@ interface TourPlan {
   sub_destination: string[];
 }
 
-interface TourPackageFormData {
+export interface TourPackageFormData {
+  _id?: string;
   p_title: string;
   p_price: number;
   number_of_member: number;
@@ -159,84 +162,97 @@ const TourPackageForm = () => {
     name: "tour_plan",
   });
   const [isUploading, setIsUploading] = useState(false);
+  const [isBulkUploading, setIsBulkUploading] = useState(false);
+
+  const router = useRouter();
 
   const isB2B = watch("isB2B");
   const isInternational = watch("isInternationalPackage");
 
- const uploadToCloudinary = async (file: File) => {
-   const data = new FormData();
-   data.append("file", file);
-   data.append("upload_preset", "pcakge_img_uploade");
-   data.append("cloud_name", "dqyfwfeed");
+  const uploadToCloudinary = async (file: File) => {
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "pcakge_img_uploade");
+    data.append("cloud_name", "dqyfwfeed");
 
-   const res = await fetch(
-     "https://api.cloudinary.com/v1_1/dqyfwfeed/image/upload",
-     {
-       method: "POST",
-       body: data,
-     },
-   );
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dqyfwfeed/image/upload",
+      {
+        method: "POST",
+        body: data,
+      },
+    );
 
-   const result = await res.json();
-   return result.secure_url;
- };
+    const result = await res.json();
+    return result.secure_url;
+  };
 
- const handleThumbnailUpload = async (
-   e: React.ChangeEvent<HTMLInputElement>,
- ) => {
-   const file = e.target.files?.[0];
-   if (!file) return;
+  const handleThumbnailUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-   try {
-     setIsUploading(true);
+    try {
+      setIsUploading(true);
 
-     const imageUrl = await uploadToCloudinary(file);
-    
-     console.log({imageUrl: imageUrl})
-     // react-hook-form value set
-     setValue("thumbnail", imageUrl);
-   } catch (error) {
-     console.error("Thumbnail upload failed:", error);
-   } finally {
-     setIsUploading(false);
-   }
- };
+      const imageUrl = await uploadToCloudinary(file);
 
- const handleGalleryUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-   const files = Array.from(e.target.files || []);
-   if (!files.length) return;
-   try {
-     setIsUploading(true);
-     const uploadedUrls = await Promise.all(
-       files.map((file) => uploadToCloudinary(file)),
-     );
-     const currentGallery = watch("gallery") || [];
-    console.log({uploadedUrls: uploadedUrls})
-     console.log({currentGallery: currentGallery})
-     setValue("gallery", [...currentGallery, ...uploadedUrls]);
-   } catch (error) {
-     console.error("Gallery upload failed:", error);
-   } finally {
-     setIsUploading(false);
-   }
- };
+      console.log({ imageUrl: imageUrl });
+      // react-hook-form value set
+      setValue("thumbnail", imageUrl);
+    } catch (error) {
+      console.error("Thumbnail upload failed:", error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
-  const onSubmit =async (data: TourPackageFormData) => {
+  const handleGalleryUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    try {
+      setIsBulkUploading(true);
+      const uploadedUrls = await Promise.all(
+        files.map((file) => uploadToCloudinary(file)),
+      );
+      const currentGallery = watch("gallery") || [];
+      console.log({ uploadedUrls: uploadedUrls });
+      console.log({ currentGallery: currentGallery });
+      setValue("gallery", [...currentGallery, ...uploadedUrls]);
+    } catch (error) {
+      console.error("Gallery upload failed:", error);
+    } finally {
+      setIsBulkUploading(false);
+    }
+  };
+
+  const onSubmit = async (data: TourPackageFormData) => {
     data.createdAt = new Date();
     data.updatedAt = new Date();
     console.log("Form Data:", data);
-    // Here you would typically send the data to your API
-
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
         },
-        body: JSON.stringify(data),
-      },
-    );
+      );
+      const result =await res.json();
+      if (!res.ok) {
+        return toast.error("Data not inserted yet!! try again");
+      }
+      toast.success("Data inserted successfully");
+      router.push("/dashboard/tourist/admin/manage-package");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -608,60 +624,7 @@ const TourPackageForm = () => {
 
           {/* Image Upload Section */}
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* <div>
-              <label className="block text-sm font-medium text-red-800 mb-2">
-                Thumbnail Image URL
-              </label>
-              
-              <div
-                className={`relative border-2 border-dashed ${watch("gallery")?.length > 0 ? "border-green-300 bg-green-50/40" : "border-red-300 bg-red-50/40"}  rounded-xl p-6 text-center hover:border-red-500 transition `}
-              >
-              
-                <input
-                  type="file"
-                  multiple
-                  accept="image/*"
-                  onChange={handleThumbnailUpload}
-                  disabled={isUploading}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                />
-
-               
-                <div className="flex flex-col items-center justify-center gap-3 pointer-events-none">
-                  
-                  <Upload
-                    size={36}
-                    className={`${watch("gallery")?.length > 0 ? "text-green-700" : "text-red-700"}`}
-                  />
-
-                  {!isUploading ? (
-                    <>
-                      <p className="text-sm text-gray-700 font-medium">
-                        Click or drag images to upload
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        PNG, JPG, JPEG supported
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                      
-                      <div className="w-8 h-8 border-4 border-red-300 border-t-red-600 rounded-full animate-spin"></div>
-                      <p className="text-sm text-red-600 font-medium">
-                        Uploading images...
-                      </p>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              
-              {watch("thumbnail")?.length > 0 && (
-                <p className="mt-2 text-sm text-green-600">
-                  {watch("thumbnail").length} image(s) uploaded
-                </p>
-              )}
-            </div> */}
+            
             <div>
               <label className="block text-sm font-medium text-red-800 mb-2">
                 Thumbnail Image
@@ -744,7 +707,7 @@ const TourPackageForm = () => {
                   multiple
                   accept="image/*"
                   onChange={handleGalleryUpload}
-                  disabled={isUploading}
+                  disabled={isBulkUploading}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
 
@@ -756,7 +719,7 @@ const TourPackageForm = () => {
                     className={`${watch("gallery")?.length > 0 ? "text-green-700" : "text-red-700"}`}
                   />
 
-                  {!isUploading ? (
+                  {!isBulkUploading ? (
                     <>
                       <p className="text-sm text-gray-700 font-medium">
                         Click or drag images to upload
@@ -802,6 +765,7 @@ const TourPackageForm = () => {
           <div className="mt-8 flex justify-end">
             <button
               type="submit"
+              onClick={() => console.log("clicked")}
               className="px-8 py-3 bg-linear-to-r from-red-600 to-red-700 text-white rounded-lg font-medium hover:from-red-700 hover:to-red-800 transition transform hover:scale-105 flex items-center gap-2 shadow-lg"
             >
               <Save size={20} />

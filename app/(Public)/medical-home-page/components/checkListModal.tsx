@@ -7,12 +7,14 @@ interface Props {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   checklistItems: string[];
+  label: string
 }
 
 export const CheckListModal = ({
   isOpen,
   setIsOpen,
   checklistItems,
+  label,
 }: Props) => {
   return (
     <Dialog
@@ -26,7 +28,7 @@ export const CheckListModal = ({
         <DialogPanel className="w-full max-w-md rounded-xl bg-white p-6">
           <div className="flex items-center justify-between mb-4">
             <DialogTitle className="text-2xl font-bold text-red-600">
-              Medical Invitation Checklist
+              {label}
             </DialogTitle>
 
             <button onClick={() => setIsOpen(false)}>

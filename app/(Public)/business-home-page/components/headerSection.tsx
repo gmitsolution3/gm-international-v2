@@ -64,6 +64,7 @@ const BusinessHeroSection = () => {
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
         checklistItems={checklistItems}
+        label="Business Canton Fair Booking check list"
       />
     </div>
   );

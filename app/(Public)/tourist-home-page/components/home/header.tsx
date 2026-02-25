@@ -63,6 +63,7 @@ const TouristHomeHeader = () => {
           isOpen={isModalOpen}
           setIsOpen={setIsModalOpen}
           checklistItems={checklistItems}
+          label="Tourist Package Booking Check List"
         />
       </div>
     </>
