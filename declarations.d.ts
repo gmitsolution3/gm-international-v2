@@ -7,3 +7,4 @@ declare module "swiper/css/navigation";
 declare module "swiper/css/free-mode";
 declare module "@/app/components/video/video-gallery.css";
 declare module "swiper/css/autoplay";
+declare module "swiper/css/effect-fade";

@@ -145,7 +145,7 @@ const HeroSection: React.FC = () => {
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 text-gray-800">
             {currentSlideData.title}
           </h1>
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent animate-gradient">
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-black mb-8 bg-linear-to-r from-red-500 to-orange-500 bg-clip-text text-transparent animate-gradient">
             {currentSlideData.highlight} <span className="text-gray-800">Deals</span>
           </h2>
           <p className="text-gray-600 text-base md:text-lg lg:text-xl mb-8 max-w-2xl mx-auto leading-relaxed px-4">
@@ -153,10 +153,10 @@ const HeroSection: React.FC = () => {
           </p>
 
           {/* CTA Button */}
-          <button className="group relative inline-flex items-center gap-2 bg-gradient-to-r from-red-500 to-orange-500 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden">
+          <button className="group relative inline-flex items-center gap-2 bg-linear-to-r from-red-500 to-orange-500 text-white px-8 py-4 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden">
             <span className="relative z-10">About Us</span>
             <ChevronRight className="relative z-10 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 bg-linear-to-r from-orange-500 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </button>
         </div>
 
@@ -174,7 +174,7 @@ const HeroSection: React.FC = () => {
               }}
               className={`h-2 rounded-full transition-all duration-300 ${
                 index === currentSlide
-                  ? 'w-12 bg-gradient-to-r from-red-500 to-orange-500'
+                  ? 'w-12 bg-linear-to-r from-red-500 to-orange-500'
                   : 'w-2 bg-gray-300 hover:bg-gray-400'
               }`}
               aria-label={`Go to slide ${index + 1}`}

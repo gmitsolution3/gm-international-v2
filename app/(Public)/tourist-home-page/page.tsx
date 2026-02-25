@@ -1,5 +1,4 @@
 import React from "react";
-import TouristHomeHeader from "./components/home/header";
 import { PackageCustomize } from "./components/home/packageCustomize";
 import WorkFlow from "./components/workFlow";
 import SupportSection from "@/app/components/HSupport/HSupport";
@@ -7,31 +6,61 @@ import TouristHomePackages from "./components/home/homePackage";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@headlessui/react";
 import Link from "next/link";
+import HeroSlider from "../student-home-page/components/HeroSlider";
 
 const TouristHomePage = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package`,
     {
       cache: "no-store",
-    }
+    },
   );
 
   const packageOfRes = await res.json();
 
-  if (packageOfRes.length === 0) {
-    return (
-      <div className="text-2xl min-h-screen flex justify-center items-center">
-        No data found
-      </div>
-    );
-  }
+  const slides = [
+    {
+      id: 1,
+      title: "Explore The World With Confidence",
+      subtitle: "Your Journey Begins Here",
+      description:
+        "Discover breathtaking destinations, exciting adventures, and unforgettable travel experiences with our expertly planned tour packages.",
+      image: "https://i.postimg.cc/8cQqs57y/5-jpg.jpg",
+      imageAlt: "International tourist destination",
+    },
+    {
+      id: 2,
+      title: "Make Every Trip Memorable",
+      subtitle: "Travel Without Worries",
+      description:
+        "From visa assistance to hotel booking and guided tours, we handle everything so you can enjoy your vacation stress-free.",
+      image: "https://i.postimg.cc/GtwZ924g/6-jpg.jpg",
+      imageAlt: "Happy tourists traveling",
+    },
+  ];
+
+  const checklistItems = [
+    "Recent photo",
+    "Passport scan copy",
+    "Invitation letter",
+    "Job ID (Job Holder)",
+    "NOC (Job Holder)",
+    "Business card",
+    "Trade license (If any)",
+    "Bank statement & solvency",
+  ];
 
   const from = "tourist";
+  const label = "Tourist document checklist";
 
   return (
     <div className="max-w-full">
       <div>
-        <TouristHomeHeader />
+        <HeroSlider
+          slides={slides}
+          checklistItems={checklistItems}
+          label={label}
+        />
       </div>
       <div>
         <TouristHomePackages packages={packageOfRes} from={from} />

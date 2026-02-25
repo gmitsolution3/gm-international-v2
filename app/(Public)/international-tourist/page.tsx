@@ -1,16 +1,16 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
-import TouristHomeHeader from "../tourist-home-page/components/home/header";
 import { ArrowRight, Calendar } from "lucide-react";
 import TouristHomePackages from "../tourist-home-page/components/home/homePackage";
+import HeroSlider from "../student-home-page/components/HeroSlider";
 
 const InternationalTourist = async () => {
   const res = await fetch(
     `${process.env.NEXT_EXPRESS_BASE_URL}/get-international-tourist-package`,
     {
       cache: "no-store",
-    }
+    },
   );
 
   const result = await res.json();
@@ -21,11 +21,48 @@ const InternationalTourist = async () => {
     </div>;
   }
 
+  const slides = [
+    {
+      id: 1,
+      title: "Explore The World With Confidence",
+      subtitle: "Your Journey Begins Here",
+      description:
+        "Discover breathtaking destinations, exciting adventures, and unforgettable travel experiences with our expertly planned tour packages.",
+      image: "https://i.postimg.cc/8cQqs57y/5-jpg.jpg",
+      imageAlt: "International tourist destination",
+    },
+    {
+      id: 2,
+      title: "Make Every Trip Memorable",
+      subtitle: "Travel Without Worries",
+      description:
+        "From visa assistance to hotel booking and guided tours, we handle everything so you can enjoy your vacation stress-free.",
+      image: "https://i.postimg.cc/GtwZ924g/6-jpg.jpg",
+      imageAlt: "Happy tourists traveling",
+    },
+  ];
+
+  const checklistItems = [
+    "Recent photo",
+    "Passport scan copy",
+    "Invitation letter",
+    "Job ID (Job Holder)",
+    "NOC (Job Holder)",
+    "Business card",
+    "Trade license (If any)",
+    "Bank statement & solvency",
+  ];
+  const label = "Tourist document checklist";
+
   const from = "international";
   return (
     <div>
       <div>
-        <TouristHomeHeader />
+        <HeroSlider
+          slides={slides}
+          checklistItems={checklistItems}
+          label={label}
+        />
       </div>
       <div>
         <TouristHomePackages packages={result} from={from} />
