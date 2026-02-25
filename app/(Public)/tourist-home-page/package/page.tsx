@@ -29,7 +29,7 @@ const TouristAllPackage = async () => {
         </p>
       </div>
       <div className="flex max-w-full w-full justify-center gap-10">
-        <div className="mt-10 p-8">
+        <div className="hidden md:block mt-10 p-8">
           {/* <TouristASide/> */}
           <TouristFilter allPackage={data} />
         </div>
