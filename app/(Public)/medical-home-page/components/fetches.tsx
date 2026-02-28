@@ -59,6 +59,17 @@ export const getAllMedicalData = async () => {
   return res.json();
 };
 
+export const getFilterInfo = async () => {
+  const res = await fetch(
+    `${process.env.NEXT_EXPRESS_BASE_URL}/hospital-filters`,
+    {
+      cache: "no-store",
+    },
+  );
+  
+  return res.json();
+};
+
 export const getMedicalDetails = async (id: string) => {
   const res = await fetch(
     `${process.env.NEXT_EXPRESS_BASE_URL}/get-medical-details/${id}`,

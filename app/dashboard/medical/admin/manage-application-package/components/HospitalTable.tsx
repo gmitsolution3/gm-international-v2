@@ -115,7 +115,7 @@ export default function HospitalTable({
 
         toast.error(result.message);
       } catch (err: any) {
-        console.log(err);
+        
         toast.error(err);
       }
     }

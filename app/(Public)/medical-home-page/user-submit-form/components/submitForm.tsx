@@ -346,7 +346,7 @@ export default function AppointmentForm({
       return !formData[field as keyof FormData];
     });
 
-    console.log({ missingFields: missingFields });
+
 
     if (missingFields.length > 0) {
       setSubmitStatus({
@@ -377,7 +377,7 @@ export default function AppointmentForm({
       });
       return;
     }
-    console.log({ formData: formData });
+  
     try {
       const submitData = await fetch(
         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical_appointment_form`,

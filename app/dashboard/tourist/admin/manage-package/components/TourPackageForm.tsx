@@ -198,7 +198,7 @@ const TourPackageForm = () => {
 
       const imageUrl = await uploadToCloudinary(file);
 
-      console.log({ imageUrl: imageUrl });
+  
       // react-hook-form value set
       setValue("thumbnail", imageUrl);
     } catch (error) {
@@ -219,8 +219,7 @@ const TourPackageForm = () => {
         files.map((file) => uploadToCloudinary(file)),
       );
       const currentGallery = watch("gallery") || [];
-      console.log({ uploadedUrls: uploadedUrls });
-      console.log({ currentGallery: currentGallery });
+  
       setValue("gallery", [...currentGallery, ...uploadedUrls]);
     } catch (error) {
       console.error("Gallery upload failed:", error);
@@ -232,7 +231,7 @@ const TourPackageForm = () => {
   const onSubmit = async (data: TourPackageFormData) => {
     data.createdAt = new Date();
     data.updatedAt = new Date();
-    console.log("Form Data:", data);
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package`,

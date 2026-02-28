@@ -50,7 +50,6 @@ const HospitalDetailsPage = ({
     "details" | "departments" | "reviews"
   >("details");
 
-
   const getImageSource = () => {
     if (hospital.photo && !imageError) {
       return hospital.photo;
@@ -59,7 +58,6 @@ const HospitalDetailsPage = ({
       ? "/images/default-public-hospital.jpg"
       : "/images/default-private-hospital.jpg";
   };
-
 
   const renderRating = (rating: number, showText: boolean = true) => {
     const fullStars = Math.floor(rating);
@@ -98,7 +96,6 @@ const HospitalDetailsPage = ({
       </div>
     );
   };
-
 
   const getDepartmentIcon = (dept: string) => {
     const iconMap: { [key: string]: React.ReactNode } = {
@@ -163,7 +160,7 @@ const HospitalDetailsPage = ({
               onError={() => setImageError(true)}
               priority
             />
-
+            
             <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
               <span
                 className={`px-4 py-2 rounded-xl text-sm font-semibold shadow-lg backdrop-blur-md ${

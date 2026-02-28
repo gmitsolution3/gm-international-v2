@@ -75,7 +75,7 @@ const MedicalForm = ({ onClose, email }: onCloseProps) => {
 
     try {
       const imgURL = await handleFileUpload(file);
-      // console.log({ imageUrl: imgURL });
+      
       if (!imgURL) {
         return toast.error("Image not uploaded! try again");
       }

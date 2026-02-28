@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-
 import SessionWrapper from "./SessionWrapper";
 import HidableNavbar from "./components/hideAbleNavBar/hideableNavbar";
 import HidableFooter from "./components/hideableFooter/hideableFooter";
 import { Toaster } from "sonner";
 import Script from "next/script";
+import CopyProtected from "@/app/components/CopyProtected";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -67,7 +67,7 @@ export default function RootLayout({
               },
             }}
           />
-          {children}
+          <CopyProtected>{children}</CopyProtected>
           <HidableFooter />
         </SessionWrapper>
       </body>

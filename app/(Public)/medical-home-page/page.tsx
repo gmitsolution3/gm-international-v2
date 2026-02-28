@@ -30,7 +30,7 @@ const MedicalHomePage = () => {
       subtitle: "Safe & Hassle-Free Medical Journey",
       description:
         "We connect patients with experienced doctors and modern hospitals to ensure quality treatment and comfortable recovery.",
-      image: "https://i.postimg.cc/mDGvgk1T/4-jpg.jpg",
+      image: "https://i.postimg.cc/DZFV50gz/8-jpg.jpg",
       imageAlt: "Medical tourism services",
     },
   ];
