@@ -36,12 +36,12 @@ const Home = async () => {
       <div>
         <Hero />
       </div>
-      <div>
+      <div id="offers">
         <ServicesSection />
       </div>
       <div className="mb-10 flex flex-col justify-center items-center">
         <h1 className="text-2xl max-w-117 font-bold my-6 text-center">
-          We are available{" "} <br />
+          We are available <br />
           <span className="text-red-500">all over the country</span>
         </h1>
         <MapWrapper />
@@ -49,10 +49,10 @@ const Home = async () => {
       <div id="hero" className="scroll-mt-20">
         <HomePageAboutUs />
       </div>
-      <div>
+      <div id="faq" className="scroll-mt-20">
         <HFAQ />
       </div>
-      <div>
+      <div id="testimonials">
         <VideoGalleryComponent resultVideo={resultVideo} />
       </div>
       <div>

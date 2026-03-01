@@ -12,10 +12,14 @@ import { AiOutlineYoutube } from "react-icons/ai";
 import Link from "next/link";
 import { useState } from "react";
 import { FaYoutube } from "react-icons/fa";
+import { usePathname, useRouter } from "next/navigation";
+
 
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+   const router = useRouter();
+   const pathname = usePathname();
 
   const handleSubmit = () => {
     if (email.trim()) {
@@ -33,15 +37,39 @@ export default function Footer() {
 
   const handleWeChatClick = (e: any) => {
     e.preventDefault();
-
-    // অ্যাপ ওপেন করার চেষ্টা করবে
     window.location.href = "weixin://dl/chat?apon_01";
-
-    // যদি ২ সেকেন্ডের মধ্যে অ্যাপ ওপেন না হয়, তবে ব্রাউজার লিংকে নিয়ে যাবে
     setTimeout(() => {
       window.open("https://www.wechat.com/", "_blank");
     }, 2000);
   };
+
+   const handleTestimonialsClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+     e.preventDefault();
+     if (pathname !== "/") {
+       router.push("/#testimonials");
+     } else {
+       const section = document.getElementById("testimonials");
+       section?.scrollIntoView({ behavior: "smooth" });
+     }
+   };
+   const handleOffer = (e: React.MouseEvent<HTMLAnchorElement>) => {
+     e.preventDefault();
+     if (pathname !== "/") {
+       router.push("/#offers");
+     } else {
+       const section = document.getElementById("offers");
+       section?.scrollIntoView({ behavior: "smooth" });
+     }
+   };
+   const handleFAQ = (e: React.MouseEvent<HTMLAnchorElement>) => {
+     e.preventDefault();
+     if (pathname !== "/") {
+       router.push("/#faq");
+     } else {
+       const section = document.getElementById("faq");
+       section?.scrollIntoView({ behavior: "smooth" });
+     }
+   };
 
   return (
     <footer className="relative mt-16 z-10">
@@ -101,8 +129,9 @@ export default function Footer() {
                 </a>{" "}
                 | Kunming
               </p>
+              <br />
               <p className="text-white text-center md:text-left text-sm leading-relaxed">
-                <strong>Our wirehouse address:</strong>{" "}
+                <strong>Our China Wirehouse Address:</strong>{" "}
                 广东省广州市白云区龙归街道南岭岗埔路三街2号厂房一楼（ 云采供应链
                 ）
               </p>
@@ -117,6 +146,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
+                    onClick={handleOffer}
                     className="text-white text-sm hover:text-green-200 hover:underline transition"
                   >
                     New offers
@@ -131,42 +161,44 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/student-home-page"
                     className="text-white text-sm hover:text-green-200 hover:underline transition"
                   >
-                    Scholarships
-                  </a>
+                    Student
+                  </Link>
                 </li>
-                <li>
+                {/* <li>
                   <a
                     href="#"
+                    onClick={handleService}
                     className="text-white text-sm hover:text-green-200 hover:underline transition"
                   >
                     Services
                   </a>
-                </li>
+                </li> */}
               </ul>
             </div>
 
             {/* About Us Section */}
             <div className="flex flex-col items-center md:items-start">
               <h3 className="text-white font-bold text-lg mb-4 md:mb-6">
-                About Us
+                About
               </h3>
               <ul className="space-y-3 text-center md:text-left">
                 <li>
-                  <a
-                    href="#"
+                  <Link
+                    href="/pages/about"
                     className="text-white text-sm hover:text-green-200 hover:underline transition"
                   >
                     About us
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <a
                     href="#"
                     className="text-white text-sm hover:text-green-200 hover:underline transition"
+                    onClick={handleTestimonialsClick}
                   >
                     Testimonials
                   </a>
@@ -174,6 +206,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#"
+                    onClick={handleFAQ}
                     className="text-white text-sm hover:text-green-200 hover:underline transition"
                   >
                     FAQ
@@ -195,8 +228,6 @@ export default function Footer() {
                   >
                     <IoLogoWechat size={20} className="text-black" />
                   </a>
-
-                  {/* HOVER IMAGE (layout er baire) */}
                   <div
                     className="absolute top-1/2 -left-47.5 -translate-y-1/2
                   opacity-0 group-hover:opacity-100
