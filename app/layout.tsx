@@ -8,6 +8,8 @@ import HidableFooter from "./components/hideableFooter/hideableFooter";
 import { Toaster } from "sonner";
 import Script from "next/script";
 import CopyProtected from "@/app/components/CopyProtected";
+import { getServerSession } from "next-auth";
+import { authConfig } from "@/auth.config";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,11 +26,22 @@ export const metadata: Metadata = {
   description: "Develop By GM IT Solution",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession(authConfig);
+  const email = session?.user?.email;
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/users/user-role?email=${email}`,
+  );
+
+  const result = await res.json();
+
+  const isAdmin = result.userRole === "admin";
+
   return (
     <html lang="en">
       <head>
@@ -67,7 +80,7 @@ export default function RootLayout({
               },
             }}
           />
-          <CopyProtected>{children}</CopyProtected>
+          {isAdmin ? children : <CopyProtected>{children}</CopyProtected>}
           <HidableFooter />
         </SessionWrapper>
       </body>
