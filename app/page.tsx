@@ -32,17 +32,16 @@ const Home = async () => {
   
 
   return (
-    <div>
+    <div className="min-h-screen">
       <div>
-        {/* <HeroSection/> */}
         <Hero />
       </div>
       <div>
         <ServicesSection />
       </div>
       <div className="mb-10 flex flex-col justify-center items-center">
-        <h1 className="text-4xl max-w-117 font-bold my-6 text-center">
-          We are available{" "}
+        <h1 className="text-2xl max-w-117 font-bold my-6 text-center">
+          We are available{" "} <br />
           <span className="text-red-500">all over the country</span>
         </h1>
         <MapWrapper />

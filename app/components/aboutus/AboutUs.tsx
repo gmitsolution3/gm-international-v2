@@ -5,10 +5,10 @@ const HomePageAboutUs = () => {
   return (
     <div className="flex flex-col-reverse md:flex-row max-w-7xl mx-auto justify-center gap-8">
       <div className="p-6">
-        <h1 className="text-4xl font-bold mb-8">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
           About <span className="text-red-500">Us</span>
         </h1>
-        <p className="max-w-172.5">
+        <p className="text-gray-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
           GM International is a trusted global service provider based in
           Bangladesh, working at the intersection of international education,
           medical tourism, China business sourcing, and global mobility
@@ -20,8 +20,7 @@ const HomePageAboutUs = () => {
           with the world — especially China.
         </p>
       </div>
-      <div>
-        {/* <img src="https://i.postimg.cc/d3T34bJP/Frame-27.png" alt="About_us_img" className='max-w-[456px] max-h-[456px]' /> */}
+      <div className="flex-1 flex justify-center">
         <WaveImage />
       </div>
     </div>

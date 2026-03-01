@@ -3,8 +3,14 @@ import HomePackage from "./components/homePackage";
 import HomeMedicalList from "./components/homeMedicalList";
 import SupportSection from "@/app/components/HSupport/HSupport";
 import HeroSlider from "../student-home-page/components/HeroSlider";
+import { getFilterInfo } from "./components/fetches";
+import { MedicalTabSection } from "./medical-list/components/MedicalTabSection";
 
-const MedicalHomePage = () => {
+const MedicalHomePage = async () => {
+  const res = await getFilterInfo();
+
+  console.log({ res: res });
+
   const checklistItems = [
     "Recent photo",
     "Passport scan copy",
@@ -45,6 +51,11 @@ const MedicalHomePage = () => {
           label={label}
         />
       </div>
+
+      <div>
+        <MedicalTabSection filterData={res} />
+      </div>
+
       {/* <div>
         <HomePackage />
       </div> */}

@@ -80,7 +80,6 @@ export default function ListCard({
 
     updateFilters(tempFilters);
     try {
-      
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/filtered-medical-list?city=${tempFilters.city}&country=${tempFilters.country}&provience=${tempFilters.province}&dept=${tempFilters.department}`,
       );
@@ -93,7 +92,6 @@ export default function ListCard({
       setSearchData(result.data);
       setSearchStatus(result.success);
 
-      
       setIsFilterOpen(false);
     } catch (err: any) {
       toast.error(err.message);
@@ -125,7 +123,6 @@ export default function ListCard({
   const handleSearch = async () => {
     if (!search) return;
     setIsSearching(true);
-   
 
     try {
       const res = await fetch(
@@ -135,8 +132,6 @@ export default function ListCard({
       const result = await res.json();
       setSearchData(result.data);
       setSearchStatus(result.success);
-
-      
     } catch (err: any) {
       toast.error(err.message);
     } finally {

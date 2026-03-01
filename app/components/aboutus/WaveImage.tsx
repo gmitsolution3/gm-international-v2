@@ -1,7 +1,5 @@
 "use client";
 
-
-
 import React from 'react';
 
 export default function WaveLogoSection() {
@@ -40,7 +38,6 @@ export default function WaveLogoSection() {
             className="w-20 h-20 object-contain"
           />
         </div>
-
       </div>
 
       {/* Wave Expansion Animation */}

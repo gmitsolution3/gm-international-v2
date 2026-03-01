@@ -17,6 +17,5 @@ export default async function DetailsPage({ params }: Params) {
   );
   const universityDetails = await data.json();
 
-
   return <UniversityDetailsPage university={universityDetails} />;
 }

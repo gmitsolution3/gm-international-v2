@@ -49,7 +49,7 @@ export default function Footer() {
       <div
         className="py-12 md:py-16 px-6 md:px-8 lg:px-12 rounded-t-4xl"
         style={{
-          background: "linear-gradient(180deg, #CA2328 0%, #301314 100%)",
+          background: "linear-gradient(180deg, #CA2328 0%, #301314 70%)",
         }}
       >
         <div className="max-w-7xl mx-auto">
@@ -82,30 +82,6 @@ export default function Footer() {
                 </a>{" "}
                 |
                 <a
-                  href="https://www.facebook.com/gminternationaldhanmondi"
-                  className="ml-2 hover:underline"
-                  target="_blank"
-                >
-                  Dhanmondi
-                </a>
-                {"  "}|{" "}
-                <a
-                  href="https://www.facebook.com/gminternationalctg"
-                  className="ml-2 hover:underline"
-                  target="_blank"
-                >
-                  Chattogram
-                </a>
-                {"  "}|{" "}
-                <a
-                  href="https://www.facebook.com/gminternationalsylhet"
-                  className="mx-2 hover:underline"
-                  target="_blank"
-                >
-                  Sylhet
-                </a>
-                |{" "}
-                <a
                   href="https://www.facebook.com/gminternationalbogura"
                   className="ml-2 hover:underline"
                   target="_blank"
@@ -124,6 +100,11 @@ export default function Footer() {
                   Guangzhou
                 </a>{" "}
                 | Kunming
+              </p>
+              <p className="text-white text-center md:text-left text-sm leading-relaxed">
+                <strong>Our wirehouse address:</strong>{" "}
+                广东省广州市白云区龙归街道南岭岗埔路三街2号厂房一楼（ 云采供应链
+                ）
               </p>
             </div>
 
@@ -209,9 +190,7 @@ export default function Footer() {
               <div className="flex gap-4 mb-6">
                 <div className="relative group w-10 h-10 flex items-center justify-center">
                   <a
-                    // href="weixin://contacts/profile/apon_01"
                     onClick={(e) => handleWeChatClick(e)}
-                    // target="_blank"
                     className="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-2 transition"
                   >
                     <IoLogoWechat size={20} className="text-black" />
@@ -282,6 +261,36 @@ export default function Footer() {
                   >
                     {submitted ? "✓ Submitted" : "Submit"}
                   </button>
+                </div>
+
+                {/* Powered by GM Group - Redesigned */}
+                <div className="mt-6 pt-4 border-t border-white border-opacity-20 text-center md:text-left">
+                  <a
+                    href="https://www.facebook.com/profile.php?id=61578361911412"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 group"
+                  >
+                    <span className="text-xs text-gray-300 group-hover:text-white transition-colors">
+                      Powered by
+                    </span>
+                    <span className="text-sm font-bold bg-linear-to-r from-white to-gray-200 bg-clip-text text-transparent group-hover:from-red-700 group-hover:to-red-400 transition-all duration-300">
+                      GM Group
+                    </span>
+                    <svg
+                      className="w-3 h-3 text-gray-400 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                      />
+                    </svg>
+                  </a>
                 </div>
               </div>
             </div>

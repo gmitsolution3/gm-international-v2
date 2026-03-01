@@ -22,6 +22,7 @@ export interface ScholarshipCardProps {
   universityName: string;
   universityURL: string;
   status: string;
+  universityVideoLink?: string
 }
 
 interface OfferCardProps {

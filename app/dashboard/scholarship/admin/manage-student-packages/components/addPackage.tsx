@@ -44,6 +44,7 @@ export default function AddPackagePage() {
       programs: [] as string[],
       universityDescription: "",
       status: "active",
+      universityVideoLink: "",
     },
   });
 
@@ -148,6 +149,25 @@ export default function AddPackagePage() {
             name="universityDescription"
             from="forUniversityDescription"
           />
+
+          <div>
+            <div className="space-y-2 max-w-xs">
+              <Label htmlFor="b2bPrice">University Video Link</Label>
+              <Input
+                id="universityVideoLink"
+                type="text"
+                placeholder="Youtube video link"
+                {...register("universityVideoLink", {
+                  required: isInternationalStudent,
+                })}
+              />
+              {errors.isInternationalStudent && (
+                <p className="text-sm text-red-500">
+                  International student package price is required
+                </p>
+              )}
+            </div>
+          </div>
 
           <div className="space-y-4">
             {/* International Student Checkbox */}
