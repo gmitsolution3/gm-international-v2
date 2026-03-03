@@ -35,6 +35,12 @@ export function TabsSection({
 
   };
 
+  function capitalize(word: string): string {
+    if (!word) return "";
+
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  }
+
   const resetCityAndProgram = () => {
     setSelectedCity("");
     setSelectedProgram("");
@@ -77,7 +83,8 @@ export function TabsSection({
               <option value="">Choose a country</option>
               {filterData.countryInfo.map((c) => (
                 <option key={c.country} value={c.country}>
-                  {c.country}
+                  {/* {c.country} */}
+                  {capitalize(c.country)}
                 </option>
               ))}
             </select>

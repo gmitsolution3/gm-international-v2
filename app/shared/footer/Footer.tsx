@@ -6,6 +6,7 @@ import {
   Music2,
   Github,
   MessageCircleMore,
+  PhoneCall,
 } from "lucide-react";
 import { IoLogoWechat } from "react-icons/io5";
 import { AiOutlineYoutube } from "react-icons/ai";
@@ -13,6 +14,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { FaYoutube } from "react-icons/fa";
 import { usePathname, useRouter } from "next/navigation";
+import { hotlineNumber } from "../navbar/components/hotlineButton";
 
 export default function Footer() {
   const [email, setEmail] = useState("");
@@ -147,7 +149,7 @@ export default function Footer() {
                     onClick={handleOffer}
                     className="text-white text-sm hover:text-green-200 hover:underline transition"
                   >
-                    New offers
+                    News letter
                   </a>
                 </li>
                 <li>
@@ -183,6 +185,15 @@ export default function Footer() {
                     className="text-white text-sm hover:text-green-200 hover:underline transition"
                   >
                     Chinese Government Scholarship
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.qschina.cn/en"
+                    target="_blank"
+                    className="text-white text-sm hover:text-green-200 hover:underline transition"
+                  >
+                    QS University Ranking
                   </a>
                 </li>
               </ul>
@@ -234,13 +245,18 @@ export default function Footer() {
                   <Link
                     href="./pages/refund-policy"
                     target="_blank"
-                    
                     className="text-white text-sm hover:text-green-200 hover:underline transition"
                   >
                     Refund Policy
                   </Link>
                 </li>
-                
+                <li>
+                  <button
+                    className="text-white text-sm flex gap-2 hover:text-green-200 hover:underline transition"
+                  >
+                    <PhoneCall size={20} /> : {hotlineNumber}
+                  </button>
+                </li>
               </ul>
             </div>
 

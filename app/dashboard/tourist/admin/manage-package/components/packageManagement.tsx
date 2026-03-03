@@ -143,62 +143,6 @@ export default function TourPackagesAdmin({
 
   const subDest = selectedPackage?.tour_plan.map((t) => t.sub_destination);
 
-  // const EditableField = ({
-  //   label,
-  //   value,
-  //   fieldName,
-  //   id,
-  // }: {
-  //   label: string;
-  //   value: string;
-  //   fieldName: string;
-  //   id: string;
-  // }) => (
-  //   <div className="space-y-2">
-  //     <div className="flex items-center justify-between">
-  //       <p className="text-xs font-semibold text-gray-600">{label}</p>
-  //       {editingField !== fieldName && (
-  //         <button
-  //           onClick={() => handleEditStart(fieldName, value)}
-  //           className="p-1 text-blue-500 hover:bg-blue-50 rounded transition-colors"
-  //           title="Edit"
-  //         >
-  //           <Edit2 className="w-4 h-4" />
-  //         </button>
-  //       )}
-  //     </div>
-  //     {editingField === fieldName ? (
-  //       <div className="flex flex-col gap-2">
-  //         <input
-  //           type="text"
-  //           value={editValue}
-  //           onChange={(e) => setEditValue(e.target.value)}
-  //           className="flex-1 px-3 py-2 border border-rose-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
-  //           autoFocus
-  //         />
-  //         <div className="flex gap-2">
-  //           <button
-  //             onClick={() => handleEditSave(id, fieldName)}
-  //             className="px-3 py-2 bg-green-500 text-white rounded-lg font-semibold text-xs hover:bg-green-600 transition-colors"
-  //           >
-  //             Save
-  //           </button>
-  //           <button
-  //             onClick={() => setEditingField(null)}
-  //             className="px-3 py-2 bg-gray-300 text-gray-700 rounded-lg font-semibold text-xs hover:bg-gray-400 transition-colors"
-  //           >
-  //             Cancel
-  //           </button>
-  //         </div>
-  //       </div>
-  //     ) : (
-  //       <p className="text-gray-900 font-semibold text-sm bg-rose-50 p-3 rounded-lg border border-rose-200">
-  //         {value}
-  //       </p>
-  //     )}
-  //   </div>
-  // );
-
   const EditableField = ({
     label,
     value,
@@ -261,7 +205,7 @@ export default function TourPackagesAdmin({
     <div className="min-h-screen p-3 sm:p-6 font-sans">
       <div className="max-w-7xl mx-auto">
         {/* Mobile View - Stacked Cards */}
-        <div className="md:hidden space-y-4">
+        <div className="lg:hidden space-y-4">
           {packages.map((pkg) => (
             <div
               key={pkg._id}
@@ -330,47 +274,48 @@ export default function TourPackagesAdmin({
         </div>
 
         {/* Tablet & Desktop View - Table */}
-        <div className="hidden md:block bg-white rounded-lg sm:rounded-2xl shadow-md sm:shadow-xl border border-red-100 overflow-hidden">
+       
+        <div className="hidden lg:block bg-white rounded-lg sm:rounded-2xl shadow-md sm:shadow-xl border border-red-100 overflow-x-auto">
           <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-linear-to-r from-rose-500 to-red-500 text-white sticky top-0 z-10">
+            <table className="w-full min-w-200 lg:min-w-full table-auto">
+              <thead className="bg-linear-to-r from-rose-500 to-red-500 text-white">
                 <tr>
-                  <th className="px-3 sm:px-6 py-3 sm:py-4 text-left font-semibold text-xs sm:text-base">
-                    Package Name
+                  <th className="px-3 sm:px-4 py-3 sm:py-4 text-left font-semibold text-xs sm:text-sm">
+                    Package
                   </th>
-                  <th className="px-3 sm:px-6 py-3 sm:py-4 text-left font-semibold text-xs sm:text-base">
-                    City
+                  <th className="px-3 sm:px-4 py-3 sm:py-4 text-left font-semibold text-xs sm:text-sm">
+                    Dest.
                   </th>
-                  <th className="px-3 sm:px-6 py-3 sm:py-4 text-left font-semibold text-xs sm:text-base">
+                  <th className="px-3 sm:px-4 py-3 sm:py-4 text-left font-semibold text-xs sm:text-sm">
                     Country
                   </th>
-                  <th className="px-3 sm:px-6 py-3 sm:py-4 text-left font-semibold text-xs sm:text-base">
-                    Created At
+                  <th className="px-3 sm:px-4 py-3 sm:py-4 text-left font-semibold text-xs sm:text-sm">
+                    Created
                   </th>
-                  <th className="px-3 sm:px-6 py-3 sm:py-4 text-left font-semibold text-xs sm:text-base">
-                    International PKG
+                  <th className="hidden lg:table-cell px-4 py-4 text-left font-semibold text-sm">
+                    International
                   </th>
-                  <th className="px-3 sm:px-6 py-3 sm:py-4 text-left font-semibold text-xs sm:text-base">
+                  <th className="px-3 sm:px-4 py-3 sm:py-4 text-left font-semibold text-xs sm:text-sm">
                     Price
                   </th>
-                  <th className="hidden lg:table-cell px-6 py-4 text-left font-semibold">
+                  <th className="hidden xl:table-cell px-4 py-4 text-left font-semibold text-sm">
                     Duration
                   </th>
-                  <th className="px-3 sm:px-6 py-3 sm:py-4 text-center font-semibold text-xs sm:text-base">
-                    Action
+                  <th className="px-3 sm:px-4 py-3 sm:py-4 text-center font-semibold text-xs sm:text-sm">
+                    Actions
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {packages.map((pkg, idx) => (
+                {packages.map((pkg) => (
                   <tr
                     key={pkg._id}
                     className="hover:bg-rose-50 transition-colors"
                   >
-                    <td className="px-3 sm:px-6 py-3 sm:py-4">
-                      <div className="flex items-center gap-2">
+                    <td className="px-3 sm:px-4 py-3 sm:py-4">
+                      <div className="flex items-center gap-2 max-w-50">
                         {pkg.thumbnail && (
-                          <div className="relative w-10 h-10 shrink-0 hidden sm:block">
+                          <div className="relative w-8 h-8 shrink-0 hidden sm:block">
                             <Image
                               src={pkg.thumbnail || "/placeholder.svg"}
                               alt={pkg.p_title}
@@ -383,44 +328,67 @@ export default function TourPackagesAdmin({
                           <p className="font-semibold text-gray-800 text-xs sm:text-sm truncate">
                             {pkg.p_title}
                           </p>
-                          <p className="text-gray-500 text-xs">{pkg._id}</p>
+                          <p className="text-gray-500 text-xs truncate">
+                            {pkg._id?.slice(-8)}
+                          </p>
                         </div>
                       </div>
                     </td>
-                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-gray-700 text-xs sm:text-sm truncate">
-                      {pkg.tour_plan.map((t) => t.destination)}
+                    <td className="px-3 sm:px-4 py-3 sm:py-4">
+                      <p className="text-gray-700 text-xs sm:text-sm truncate max-w-25">
+                        {pkg.tour_plan[0]?.destination || "N/A"}
+                      </p>
                     </td>
-                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-gray-700 text-xs sm:text-sm font-medium">
-                      {pkg.country}
+                    <td className="px-3 sm:px-4 py-3 sm:py-4">
+                      <p className="text-gray-700 text-xs sm:text-sm truncate max-w-25">
+                        {pkg.country}
+                      </p>
                     </td>
-                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-gray-700 text-xs sm:text-sm">
-                      {formatDate(pkg.createdAt)}
+                    <td className="px-3 sm:px-4 py-3 sm:py-4">
+                      <p className="text-gray-700 text-xs sm:text-sm whitespace-nowrap">
+                        {formatDate(pkg.createdAt)}
+                      </p>
                     </td>
-                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-gray-700 text-xs sm:text-sm">
-                      {pkg.isInternationalPackage ? "True" : "False"}
-                    </td>
-                    <td className="px-3 sm:px-6 py-3 sm:py-4 text-gray-800 font-bold text-xs sm:text-sm flex items-center gap-1">
-                      <DollarSign className="w-3 h-3 sm:w-4 sm:h-4 text-rose-500 shrink-0" />
-                      {pkg.p_price}
-                    </td>
-                    <td className="hidden lg:table-cell px-6 py-4 text-gray-700 items-center gap-1">
-                      <Calendar className="w-4 h-4 text-rose-500" />
-                      {pkg.duration}
-                    </td>
-                    <td className="flex gap-2 px-3 sm:px-6 py-3 sm:py-4 text-center">
-                      <button
-                        onClick={() => setSelectedPackage(pkg)}
-                        className="p-1.5 sm:p-2 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors inline-flex"
-                        title="Manage"
+                    <td className="hidden lg:table-cell px-4 py-4">
+                      <span
+                        className={`text-xs sm:text-sm px-2 py-1 rounded-full ${
+                          pkg.isInternationalPackage
+                            ? "bg-green-100 text-green-700"
+                            : "bg-gray-100 text-gray-700"
+                        }`}
                       >
-                        <Eye className="w-4 h-4 sm:w-5 sm:h-5" />
-                      </button>
-                      <button
-                        onClick={() => setShowDeleteConfirm(pkg._id!)}
-                        className="flex-1 py-2 text-red-700 rounded-lg font-semibold text-xs hover:shadow-lg transition-all flex items-center justify-center gap-1"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                        {pkg.isInternationalPackage ? "Yes" : "No"}
+                      </span>
+                    </td>
+                    <td className="px-3 sm:px-4 py-3 sm:py-4">
+                      <p className="text-gray-800 font-bold text-xs sm:text-sm flex items-center gap-1 whitespace-nowrap">
+                        <DollarSign className="w-3 h-3 text-rose-500 shrink-0" />
+                        <span className="truncate">{pkg.p_price}</span>
+                      </p>
+                    </td>
+                    <td className="hidden xl:table-cell px-4 py-4">
+                      <p className="text-gray-700 text-sm flex items-center gap-1 whitespace-nowrap">
+                        <Calendar className="w-4 h-4 text-rose-500 shrink-0" />
+                        <span className="truncate">{pkg.duration}</span>
+                      </p>
+                    </td>
+                    <td className="px-3 sm:px-4 py-3 sm:py-4">
+                      <div className="flex items-center justify-center gap-1">
+                        <button
+                          onClick={() => setSelectedPackage(pkg)}
+                          className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors"
+                          title="View Details"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => setShowDeleteConfirm(pkg._id!)}
+                          className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Delete"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -430,7 +398,7 @@ export default function TourPackagesAdmin({
         </div>
 
         {/* Details Modal with Editable Fields */}
-        
+
         {selectedPackage && (
           <div className="fixed inset-0 backdrop-blur-xl bg-gray-900/10 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4">
             <div className="bg-white rounded-t-2xl sm:rounded-2xl w-full sm:w-full max-w-5xl max-h-[90vh] overflow-y-auto shadow-2xl">
