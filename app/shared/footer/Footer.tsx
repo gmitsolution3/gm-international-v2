@@ -149,7 +149,7 @@ export default function Footer() {
                     onClick={handleOffer}
                     className="text-white text-sm hover:text-green-200 hover:underline transition"
                   >
-                    News letter
+                    Newsletter
                   </a>
                 </li>
                 <li>
@@ -251,11 +251,14 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <button
-                    className="text-white text-sm flex gap-2 hover:text-green-200 hover:underline transition"
+                  <a
+                    href={`tel:${hotlineNumber}`}
+                    aria-label={`Call our hotline at ${hotlineNumber}`}
                   >
-                    <PhoneCall size={20} /> : {hotlineNumber}
-                  </button>
+                    <button className="text-white text-sm flex gap-2 hover:text-green-200 hover:underline transition">
+                      <PhoneCall size={20} /> : +880 1896042360
+                    </button>
+                  </a>
                 </li>
               </ul>
             </div>
