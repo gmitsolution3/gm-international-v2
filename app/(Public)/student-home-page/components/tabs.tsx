@@ -26,14 +26,14 @@ export function TabsSection({
 
   const hotlineNumber = "+8801896042360";
 
-  const handleSearch = () => {
-    const query: SearchFilters = {
-      country: selectedCountry,
-      city: selectedCity,
-      program: selectedProgram,
-    };
+  // const handleSearch = () => {
+  //   const query: SearchFilters = {
+  //     country: selectedCountry,
+  //     city: selectedCity,
+  //     program: selectedProgram,
+  //   };
 
-  };
+  // };
 
   function capitalize(word: string): string {
     if (!word) return "";
