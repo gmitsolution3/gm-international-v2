@@ -28,7 +28,8 @@ const ManageApplication = async () => {
       </div>
       {resultOfRes.length > 0 ? (
         <div>
-          <TravelPackagesTable initialPackages={resultOfRes} />
+          {/* <TravelPackagesTable initialPackages={resultOfRes} /> */}
+          "Coming soon"
         </div>
       ) : (
         <DashboardErrorHandler />

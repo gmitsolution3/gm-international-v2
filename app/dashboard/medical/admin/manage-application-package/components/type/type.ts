@@ -1,5 +1,15 @@
 export type HospitalType = 'public' | 'private';
 
+interface Review {
+  id: string;
+  userId: string;
+  userName: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+  userAvatar?: string;
+}
+
 export interface MedicalFormData {
   _id?: string;
   hospital_name: string;
@@ -16,6 +26,7 @@ export interface MedicalFormData {
   createdBy: string;
   updatedAt: Date | string;
   rating: number;
+  reviews?: Review[];
 }
 
 export interface Department {

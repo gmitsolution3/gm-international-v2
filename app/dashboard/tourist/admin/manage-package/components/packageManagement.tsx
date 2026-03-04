@@ -205,7 +205,7 @@ export default function TourPackagesAdmin({
     <div className="min-h-screen p-3 sm:p-6 font-sans">
       <div className="max-w-7xl mx-auto">
         {/* Mobile View - Stacked Cards */}
-        <div className="lg:hidden space-y-4">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 space-y-4">
           {packages.map((pkg) => (
             <div
               key={pkg._id}
@@ -275,7 +275,7 @@ export default function TourPackagesAdmin({
 
         {/* Tablet & Desktop View - Table */}
        
-        <div className="hidden lg:block bg-white rounded-lg sm:rounded-2xl shadow-md sm:shadow-xl border border-red-100 overflow-x-auto">
+        <div className="hidden bg-white rounded-lg sm:rounded-2xl shadow-md sm:shadow-xl border border-red-100 overflow-x-auto">
           <div className="overflow-x-auto">
             <table className="w-full min-w-200 lg:min-w-full table-auto">
               <thead className="bg-linear-to-r from-rose-500 to-red-500 text-white">

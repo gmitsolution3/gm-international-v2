@@ -6,7 +6,7 @@ import { hotlineNumber } from "@/app/shared/navbar/components/hotlineButton";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaHospital,
   FaMapMarkerAlt,
@@ -31,12 +31,28 @@ import {
   FaCalendarAlt,
   FaRegClock,
   FaCheckCircle,
+  FaUser,
+  FaTrash,
+  FaEdit,
 } from "react-icons/fa";
 import { MdLocalHospital, MdEmail, MdLocationOn } from "react-icons/md";
+import { toast } from "sonner";
 
 interface HospitalDetailsPageProps {
   hospital: MedicalFormData;
   relatedHospitals?: MedicalFormData[];
+}
+
+// Review interface
+interface Review {
+  _id?: string;
+  id: string;
+  userId: string;
+  userName: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+  userAvatar?: string;
 }
 
 const HospitalDetailsPage = ({
@@ -49,6 +65,61 @@ const HospitalDetailsPage = ({
   const [activeTab, setActiveTab] = useState<
     "details" | "departments" | "reviews"
   >("details");
+
+  // Review states
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [newReview, setNewReview] = useState({
+    rating: 5,
+    comment: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [editingReviewId, setEditingReviewId] = useState<string | null>(null);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [loading, setIsLoading] = useState(false);
+
+  // Mock user data (replace with actual auth user)
+  const currentUser = {
+    id: "user123",
+    name: "John Doe",
+    avatar: "/images/default-avatar.jpg",
+  };
+
+  useEffect(() => {
+    async function fetchReviews() {
+      setIsLoading(true);
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-hospital-review/${hospital._id}`,
+        );
+
+        const result = await res.json();
+        if (!result.success) {
+          setReviews([]);
+        } else {
+          // setReviews(Array.isArray(result.data) ? result.data : []);
+
+          setReviews(
+            Array.isArray(result.data)
+              ? result.data.map((r: any) => ({
+                  ...r,
+                  id: r._id, 
+                }))
+              : [],
+          );
+        }
+      } catch (err: any) {
+        console.log(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    if (activeTab === "reviews") {
+      fetchReviews();
+    }
+  }, [activeTab]);
+
+  console.log({ reviews: reviews });
 
   const getImageSource = () => {
     if (hospital.photo && !imageError) {
@@ -90,9 +161,171 @@ const HospitalDetailsPage = ({
         </div>
         {showText && (
           <span className="text-sm font-medium text-gray-700">
-            {rating.toFixed(1)} ({hospital.total_view} reviews)
+            {rating.toFixed(1)} ({reviews.length} reviews)
           </span>
         )}
+      </div>
+    );
+  };
+
+  const handleReviewSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!newReview.comment.trim()) {
+      toast.error("Please write a review comment");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      // Prepare review data
+      const reviewData = {
+        packageId: hospital._id,
+        userId: currentUser.id,
+        userName: currentUser.name,
+        userAvatar: currentUser.avatar,
+        rating: newReview.rating,
+        comment: newReview.comment.trim(),
+        ...(editingReviewId && { reviewId: editingReviewId }), // Include if editing
+      };
+
+      // Determine API endpoint based on edit or create
+      const url = editingReviewId
+        ? `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/hospital/reviews/${editingReviewId}`
+        : `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/hospital/reviews`;
+
+      const method = editingReviewId ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reviewData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit review");
+      }
+
+      const savedReview = await response.json();
+
+      // Update local state
+      if (editingReviewId) {
+        // Update existing review
+        setReviews((prev) =>
+          prev.map((review) =>
+            review.id === editingReviewId
+              ? {
+                  ...review,
+                  ...savedReview,
+                  comment: newReview.comment,
+                  rating: newReview.rating,
+                }
+              : review,
+          ),
+        );
+      } else {
+        // Add new review
+        const newReviewWithId: Review = {
+          id: savedReview.id || Date.now().toString(),
+          userId: currentUser.id,
+          userName: currentUser.name,
+          userAvatar: currentUser.avatar,
+          rating: newReview.rating,
+          comment: newReview.comment,
+          createdAt: new Date().toISOString(),
+        };
+        setReviews((prev) => [newReviewWithId, ...prev]);
+      }
+
+      // Reset form
+      setNewReview({ rating: 5, comment: "" });
+      setEditingReviewId(null);
+
+      // Show success message
+      setShowSuccessMessage(true);
+      setTimeout(() => setShowSuccessMessage(false), 3000);
+    } catch (error) {
+      console.error("Error submitting review:", error);
+      alert("Failed to submit review. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleEditReview = (review: Review) => {
+
+    setEditingReviewId(review?._id!);
+    setNewReview({
+      rating: review.rating,
+      comment: review.comment,
+    });
+    // Scroll to review form
+    document
+      .getElementById("review-form")
+      ?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  // const handleDeleteReview = async (reviewId: string) => {
+  //   if (!confirm("Are you sure you want to delete this review?")) {
+  //     return;
+  //   }
+
+  //   try {
+  //     // API call to delete review
+  //     const response = await fetch(
+  //       `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/hospital/reviews/${reviewId}`,
+  //       {
+  //         method: "DELETE",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({ packageId: hospital._id }),
+  //       },
+  //     );
+
+  //     if (!response.ok) {
+  //       throw new Error("Failed to delete review");
+  //     }
+
+  //     // Update local state
+  //     setReviews((prev) => prev.filter((review) => review.id !== reviewId));
+
+  //     // If deleted review was being edited, reset form
+  //     if (editingReviewId === reviewId) {
+  //       setEditingReviewId(null);
+  //       setNewReview({ rating: 5, comment: "" });
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting review:", error);
+  //     alert("Failed to delete review. Please try again.");
+  //   }
+  // };
+
+  const renderRatingInput = () => {
+    return (
+      <div className="flex items-center gap-2 mb-3">
+        <span className="text-sm font-medium text-gray-700">Your Rating:</span>
+        <div className="flex gap-1">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <button
+              key={star}
+              type="button"
+              onClick={() => setNewReview({ ...newReview, rating: star })}
+              className="focus:outline-none"
+            >
+              <FaStar
+                className={`w-6 h-6 ${
+                  star <= newReview.rating
+                    ? "text-yellow-400 fill-current"
+                    : "text-gray-300"
+                } hover:scale-110 transition-transform`}
+              />
+            </button>
+          ))}
+        </div>
       </div>
     );
   };
@@ -117,6 +350,16 @@ const HospitalDetailsPage = ({
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Success Message Toast */}
+      {showSuccessMessage && (
+        <div className="fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2 animate-slide-down">
+          <FaCheckCircle className="w-5 h-5" />
+          <span>
+            Review {editingReviewId ? "updated" : "submitted"} successfully!
+          </span>
+        </div>
+      )}
+
       <div
         className="bg-linear-to-r from-red-600 to-red-500 h-48 md:h-64 relative"
         style={{
@@ -142,9 +385,6 @@ const HospitalDetailsPage = ({
               className={`w-4 h-4 md:w-5 md:h-5 ${isBookmarked ? "fill-current" : ""}`}
             />
           </button>
-          {/* <button className="bg-white/20 backdrop-blur-md text-white p-2 md:p-3 rounded-xl hover:bg-white/30 transition-all duration-300">
-            <FaShare className="w-4 h-4 md:w-5 md:h-5" />
-          </button> */}
         </div>
       </div>
 
@@ -160,7 +400,7 @@ const HospitalDetailsPage = ({
               onError={() => setImageError(true)}
               priority
             />
-            
+
             <div className="absolute bottom-4 left-4 flex flex-wrap gap-2">
               <span
                 className={`px-4 py-2 rounded-xl text-sm font-semibold shadow-lg backdrop-blur-md ${
@@ -204,7 +444,12 @@ const HospitalDetailsPage = ({
               </div>
 
               <div className="flex flex-col items-start lg:items-end gap-2">
-                {renderRating(hospital.rating || 0)}
+                {renderRating(
+                  reviews?.length > 0
+                    ? reviews.reduce((acc, rev) => acc + rev.rating, 0) /
+                        reviews.length
+                    : hospital.rating || 0,
+                )}
                 <div className="flex items-center gap-4 text-sm text-gray-500">
                   <span className="flex items-center gap-1">
                     <FaEye className="w-4 h-4" />
@@ -247,7 +492,7 @@ const HospitalDetailsPage = ({
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
-                Review & Rating
+                Review & Rating ({reviews.length})
               </button>
             </div>
 
@@ -291,7 +536,7 @@ const HospitalDetailsPage = ({
                           Emergency Service
                         </p>
                         <p className="text-sm font-semibold text-gray-800">
-                          24/7 Ambulance{" "}
+                          24/7 Ambulance
                         </p>
                       </div>
                     </div>
@@ -338,11 +583,156 @@ const HospitalDetailsPage = ({
               {activeTab === "reviews" && (
                 <div className="bg-gray-50 rounded-xl p-4 md:p-6">
                   <h2 className="text-lg md:text-xl font-semibold text-gray-800 mb-4">
-                    Patient Review/Feedback
+                    Patient Reviews & Feedback
                   </h2>
-                  <div className="text-center py-8 text-gray-500">
-                    <p>Coming soon...</p>
+
+                  {/* Review Form */}
+                  <div
+                    id="review-form"
+                    className="mb-8 bg-white rounded-xl p-4 md:p-6 border border-gray-200"
+                  >
+                    <h3 className="text-md font-semibold text-gray-700 mb-4">
+                      {editingReviewId ? "Edit Your Review" : "Write a Review"}
+                    </h3>
+                    <form onSubmit={handleReviewSubmit}>
+                      {renderRatingInput()}
+                      <textarea
+                        value={newReview.comment}
+                        onChange={(e) =>
+                          setNewReview({
+                            ...newReview,
+                            comment: e.target.value,
+                          })
+                        }
+                        placeholder="Share your experience with this hospital..."
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
+                        rows={4}
+                        required
+                      />
+                      <div className="flex gap-2 mt-3">
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                              <span>Submitting...</span>
+                            </>
+                          ) : (
+                            <span>
+                              {editingReviewId
+                                ? "Update Review"
+                                : "Submit Review"}
+                            </span>
+                          )}
+                        </button>
+                        {editingReviewId && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setEditingReviewId(null);
+                              setNewReview({ rating: 5, comment: "" });
+                            }}
+                            className="px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
+                          >
+                            Cancel
+                          </button>
+                        )}
+                      </div>
+                    </form>
                   </div>
+
+                  {/* Reviews List */}
+                  {loading ? (
+                    <div>loading... </div>
+                  ) : (
+                    <div>
+                      {reviews.length > 0 ? (
+                        <div className="space-y-4">
+                          {reviews.map((review) => (
+                            <div
+                              key={review.id}
+                              className="bg-white rounded-xl p-4 border border-gray-100 hover:shadow-md transition-shadow"
+                            >
+                              <div className="flex items-start justify-between mb-3">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
+                                    {review.userAvatar ? (
+                                      <Image
+                                        src={review.userAvatar}
+                                        alt={review.userName}
+                                        width={40}
+                                        height={40}
+                                        className="object-cover"
+                                      />
+                                    ) : (
+                                      <FaUser className="w-5 h-5 text-gray-500" />
+                                    )}
+                                  </div>
+                                  <div>
+                                    <h4 className="font-semibold text-gray-800">
+                                      {review.userName}
+                                    </h4>
+                                    <div className="flex items-center gap-2">
+                                      <div className="flex">
+                                        {[...Array(5)].map((_, i) => (
+                                          <FaStar
+                                            key={i}
+                                            className={`w-4 h-4 ${
+                                              i < review.rating
+                                                ? "text-yellow-400 fill-current"
+                                                : "text-gray-300"
+                                            }`}
+                                          />
+                                        ))}
+                                      </div>
+                                      <span className="text-xs text-gray-400">
+                                        {new Date(
+                                          review.createdAt,
+                                        ).toLocaleDateString()}
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Action buttons for user's own reviews */}
+                                {review.userId === currentUser.id && (
+                                  <div className="flex gap-2">
+                                    {/* <button
+                                      onClick={() => handleEditReview(review)}
+                                      className="text-blue-500 hover:text-blue-700 transition-colors"
+                                      title="Edit review"
+                                    >
+                                      <FaEdit className="w-4 h-4" />
+                                    </button> */}
+                                    {/* <button
+                                  onClick={() => handleDeleteReview(review.id)}
+                                  className="text-red-500 hover:text-red-700 transition-colors"
+                                  title="Delete review"
+                                >
+                                  <FaTrash className="w-4 h-4" />
+                                </button> */}
+                                  </div>
+                                )}
+                              </div>
+                              <p className="text-gray-600 text-sm ml-13">
+                                {review.comment}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-8 text-gray-500">
+                          <p>
+                            No reviews yet. Be the first to share your
+                            experience!
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -447,12 +837,30 @@ const HospitalDetailsPage = ({
           </div>
         )}
       </div>
+
+      {/* Add custom animation styles */}
+      <style jsx>{`
+        @keyframes slideDown {
+          from {
+            transform: translateY(-100%);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+        .animate-slide-down {
+          animation: slideDown 0.3s ease-out;
+        }
+      `}</style>
     </div>
   );
 };
 
 export default HospitalDetailsPage;
 
+// Keep your existing icon components
 const FaBrain = (props: any) => (
   <svg {...props} viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" />

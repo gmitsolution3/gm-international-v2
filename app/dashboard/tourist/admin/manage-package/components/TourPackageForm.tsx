@@ -85,7 +85,7 @@ const ArrayInput = ({
   return (
     <div className="space-y-3">
       <label className="block text-sm font-medium text-red-800">{label}</label>
-      <div className="flex gap-2">
+      <div className="flex flex-col gap-2">
         <input
           type="text"
           value={inputValue}
@@ -99,7 +99,7 @@ const ArrayInput = ({
         <button
           type="button"
           onClick={addItem}
-          className="px-2 py-1 bg-red-700 text-white rounded-lg hover:bg-red-900 transition flex items-center gap-2"
+          className="w-10 px-2 py-1 bg-red-700 text-white rounded-lg hover:bg-red-900 transition flex items-center justify-center gap-2"
         >
           <Plus size={18} />
         </button>

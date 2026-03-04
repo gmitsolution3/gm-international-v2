@@ -102,20 +102,24 @@ export default function TravelPackagesTable({
 }: {
   initialPackages: TravelPackage[];
 }) {
-  const [packages, setPackages] = useState<TravelPackage[]>(initialPackages);
+  const [packages, setPackages] = useState<TravelPackage[]>(
+    initialPackages || [],
+  );
   const [selectedPackage, setSelectedPackage] = useState<TravelPackage | null>(
-    null
+    null,
   );
   const [editingPackage, setEditingPackage] = useState<TravelPackage | null>(
-    null
+    null,
   );
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(
-    null
+    null,
   );
+
+  console.log({ packages: packages });
 
   const handleStatusChange = async (
     id: string,
-    newStatus: "pending" | "approved" | "rejected"
+    newStatus: "pending" | "approved" | "rejected",
   ) => {
     try {
       const res = await fetch(
@@ -124,7 +128,7 @@ export default function TravelPackagesTable({
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ applicationStatus: newStatus }),
-        }
+        },
       );
 
       const data = await res.json();
@@ -142,8 +146,8 @@ export default function TravelPackagesTable({
 
       setPackages((prev) =>
         prev.map((pkg) =>
-          pkg._id === id ? { ...pkg, applicationStatus: newStatus } : pkg
-        )
+          pkg._id === id ? { ...pkg, applicationStatus: newStatus } : pkg,
+        ),
       );
       setEditingPackage(null);
     } catch (error) {
@@ -167,7 +171,7 @@ export default function TravelPackagesTable({
             `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/delete-tourist-booking/${id}`,
             {
               method: "DELETE",
-            }
+            },
           );
           const data = await res.json();
           if (!res.ok) throw new Error(data.message || "Delete failed");
@@ -183,6 +187,12 @@ export default function TravelPackagesTable({
     }
   };
 
+  function capitalize(word: string): string {
+    if (!word) return "";
+
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  }
+
   return (
     <div className="w-full max-w-7xl mx-auto p-4 sm:p-6 rounded-2xl">
       {/* Mobile View - Stacked Cards */}
@@ -197,7 +207,7 @@ export default function TravelPackagesTable({
                 <h3 className="font-bold text-base">{pkg.fullName}</h3>
                 <p className="text-rose-100 text-xs mt-1 flex items-center gap-1">
                   <MapPin className="w-3 h-3" />
-                  {pkg.destinationCountry.toUpperCase()}
+                  {capitalize(pkg.destinationCountry)}
                 </p>
               </div>
               <StatusBadge status={pkg.applicationStatus} />
@@ -208,8 +218,16 @@ export default function TravelPackagesTable({
                   <p className="text-gray-500 text-xs font-semibold">
                     Destination
                   </p>
+                  {/* <p className="text-gray-800 font-medium truncate">
+                    {pkg.destinationPlace.length > 1
+                      ? pkg.destinationPlace.join(", ")
+                      : pkg.destinationPlace[0]}
+                      
+                  </p> */}
                   <p className="text-gray-800 font-medium truncate">
-                    {pkg.destinationPlace.join(", ")}
+                    {Array.isArray(pkg.destinationPlace)
+                      ? pkg.destinationPlace.join(", ")
+                      : pkg.destinationPlace}
                   </p>
                 </div>
                 <div>
@@ -233,8 +251,11 @@ export default function TravelPackagesTable({
                   <p className="text-gray-500 text-xs font-semibold">
                     Duration
                   </p>
-                  <p className="text-gray-800 font-medium">
+                  {/* <p className="text-gray-800 font-medium">
                     {pkg.duration.days}D/{pkg.duration.nights}N
+                  </p> */}
+                  <p className="text-gray-800 font-medium">
+                    {pkg.duration?.days ?? 0}D/{pkg.duration?.nights ?? 0}N
                   </p>
                 </div>
                 <div className="col-span-2">
@@ -677,8 +698,8 @@ export default function TravelPackagesTable({
                             ? status === "pending"
                               ? "bg-amber-500 text-white"
                               : status === "approved"
-                              ? "bg-emerald-500 text-white"
-                              : "bg-red-500 text-white"
+                                ? "bg-emerald-500 text-white"
+                                : "bg-red-500 text-white"
                             : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                         }`}
                       >
@@ -693,7 +714,7 @@ export default function TravelPackagesTable({
                         )}
                         {status.charAt(0).toUpperCase() + status.slice(1)}
                       </button>
-                    )
+                    ),
                   )}
                 </div>
               </div>
