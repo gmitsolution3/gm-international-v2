@@ -3,6 +3,9 @@
 import React, { useState } from "react";
 import { Upload, ChevronDown } from "lucide-react";
 import { Checkbox, Label } from "@headlessui/react";
+import { UploadToCloudinary } from "@/app/components/uploadPdf/uploadToCloudinary";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface FormData {
   fullName: string;
@@ -19,7 +22,7 @@ interface FormData {
   transportation: string;
   dateFrom: string;
   dateTo: string;
-  hotelCategory : string;
+  hotelCategory: string;
 }
 
 const CustomPackage = () => {
@@ -42,18 +45,34 @@ const CustomPackage = () => {
   });
 
   const [uploadedFile, setUploadedFile] = useState<string>("");
+  const [fileUrl, setFileUrl] = useState("");
+  const router = useRouter()
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files?.[0];
+  //   if (file) {
+  //     setUploadedFile(file.name);
+  //   }
+  // };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setUploadedFile(file.name);
+
+    if (!file) return;
+
+    setUploadedFile(file.name);
+
+    const url = await UploadToCloudinary(file);
+
+    if (url) {
+      setFileUrl(url);
     }
   };
 
@@ -67,8 +86,39 @@ const CustomPackage = () => {
     });
   };
 
-  const handleSubmit = () => {
-    alert("Form submitted! Check console for data.");
+  // const handleSubmit = () => {
+  //   alert("Form submitted! Check console for data.");
+
+  //   console.log({ formData: formData });
+  // };
+
+  const handleSubmit = async () => {
+    const payload = {
+      ...formData,
+      passportVisaFile: fileUrl,
+    };
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/custom-tourist-package`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      },
+    );
+
+    const data = await res.json();
+
+    if (data.success) {
+      toast.success(data.message);
+      console.log(data);
+      router.push("/tourist-home-page");
+      return
+    }
+
+    toast.error("Something was wrong!! try again")
   };
 
   return (
@@ -154,7 +204,7 @@ const CustomPackage = () => {
                 </div>
 
                 {/* Upload PDF/Doc */}
-                <div className="md:col-span-1 flex flex-col">
+                {/* <div className="md:col-span-1 flex flex-col">
                   <label className="w-full mb-1">
                     <span>Upload passport & visa</span>
                   </label>
@@ -170,7 +220,20 @@ const CustomPackage = () => {
                     className="hidden"
                     accept=".pdf,.doc,.docx"
                   />
-                </div>
+                </div> */}
+                <label className="flex items-center justify-center gap-2 px-4 py-2 border-2 border-red-400 rounded-lg cursor-pointer hover:bg-red-50 transition-colors duration-200 transform hover:scale-105">
+                  <Upload className="w-5 h-5 text-red-500" />
+                  <span className="text-red-500 font-medium text-sm">
+                    Upload PDF/Doc
+                  </span>
+
+                  <input
+                    type="file"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                    accept=".pdf,.doc,.docx"
+                  />
+                </label>
 
                 {/* Gender */}
                 <div className="transform hover:scale-105 transition-transform duration-200">
@@ -221,7 +284,6 @@ const CustomPackage = () => {
                       <option value="">Select air ticket</option>
                       <option>Economy</option>
                       <option>Business</option>
-                      <option>First Class</option>
                     </select>
                     <ChevronDown className="absolute right-3 top-3 w-5 h-5 text-slate-400 pointer-events-none" />
                   </div>

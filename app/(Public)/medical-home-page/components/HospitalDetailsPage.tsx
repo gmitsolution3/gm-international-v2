@@ -41,6 +41,7 @@ import { toast } from "sonner";
 interface HospitalDetailsPageProps {
   hospital: MedicalFormData;
   relatedHospitals?: MedicalFormData[];
+  session?: any;
 }
 
 // Review interface
@@ -58,6 +59,7 @@ interface Review {
 const HospitalDetailsPage = ({
   hospital,
   relatedHospitals = [],
+  session,
 }: HospitalDetailsPageProps) => {
   const router = useRouter();
   const [imageError, setImageError] = useState(false);
@@ -79,9 +81,9 @@ const HospitalDetailsPage = ({
 
   // Mock user data (replace with actual auth user)
   const currentUser = {
-    id: "user123",
-    name: "John Doe",
-    avatar: "/images/default-avatar.jpg",
+    id: session?.id,
+    name: session?.name,
+    avatar: session?.image,
   };
 
   useEffect(() => {
@@ -102,7 +104,7 @@ const HospitalDetailsPage = ({
             Array.isArray(result.data)
               ? result.data.map((r: any) => ({
                   ...r,
-                  id: r._id, 
+                  id: r._id,
                 }))
               : [],
           );
@@ -170,6 +172,12 @@ const HospitalDetailsPage = ({
 
   const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!session) {
+      toast.error("Need to login");
+      router.push("/auth/signin");
+      return;
+    }
 
     if (!newReview.comment.trim()) {
       toast.error("Please write a review comment");
@@ -256,7 +264,6 @@ const HospitalDetailsPage = ({
   };
 
   const handleEditReview = (review: Review) => {
-
     setEditingReviewId(review?._id!);
     setNewReview({
       rating: review.rating,
@@ -660,13 +667,21 @@ const HospitalDetailsPage = ({
                                 <div className="flex items-center gap-3">
                                   <div className="w-10 h-10 rounded-full bg-gray-200 overflow-hidden flex items-center justify-center">
                                     {review.userAvatar ? (
-                                      <Image
-                                        src={review.userAvatar}
-                                        alt={review.userName}
-                                        width={40}
-                                        height={40}
-                                        className="object-cover"
-                                      />
+                                      <div>
+                                        {review.userAvatar ? (
+                                          <Image
+                                            src={review.userAvatar}
+                                            alt={review.userName}
+                                            width={40}
+                                            height={40}
+                                            className="object-cover"
+                                          />
+                                        ) : (
+                                          <div className="p-2 rounded-full">
+                                            {session.name.char(1)}
+                                          </div>
+                                        )}
+                                      </div>
                                     ) : (
                                       <FaUser className="w-5 h-5 text-gray-500" />
                                     )}
