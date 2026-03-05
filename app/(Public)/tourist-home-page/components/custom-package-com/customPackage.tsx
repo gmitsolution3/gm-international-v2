@@ -86,12 +86,7 @@ const CustomPackage = () => {
     });
   };
 
-  // const handleSubmit = () => {
-  //   alert("Form submitted! Check console for data.");
-
-  //   console.log({ formData: formData });
-  // };
-
+ 
   const handleSubmit = async () => {
     const payload = {
       ...formData,
