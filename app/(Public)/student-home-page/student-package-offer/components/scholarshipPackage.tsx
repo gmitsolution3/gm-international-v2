@@ -61,6 +61,7 @@ export default function ScholarshipPackage({
   );
 
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState("");
 
   const [offers, setOffers] = useState<ScholarshipCardProps[]>(
     packageData || [],
@@ -107,23 +108,31 @@ export default function ScholarshipPackage({
   };
 
   useEffect(() => {
-    if (!filterResult) return;
-
-    let result = [...filterResult];
+    let result = filterResult ? [...filterResult] : [...packageData];
 
     if (selectedCity) {
       result = result.filter(
         (o) =>
           o.city?.split(",")[0].trim().toLowerCase() ===
-          selectedCity.trim().toLowerCase(),
+          selectedCity?.trim().toLowerCase(),
       );
     }
+
     if (selectedProgram) {
       result = result.filter((o) => o.programs?.includes(selectedProgram));
     }
 
+    if (search) {
+      result = result.filter((o) =>
+        [o.universityName, o.city, o.country, o.programs?.join(" ")]
+          .join(" ")
+          .toLowerCase()
+          .includes(search.toLowerCase()),
+      );
+    }
+
     setVisibleOffers(result);
-  }, [selectedCity, selectedProgram, filterResult]);
+  }, [selectedCity, selectedProgram, filterResult, search]);
 
   const selectCity = (city: string) => {
     setSelectedCity(city);
@@ -165,8 +174,10 @@ export default function ScholarshipPackage({
       setFilters(filters.filter((f) => f !== filter));
     }
   };
-
-
+  function capitalize(text: string): string {
+    if (!text) return "";
+    return text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+  }
 
   const form = "student";
 
@@ -190,26 +201,37 @@ export default function ScholarshipPackage({
 
           <div className="mt-6 space-y-6">
             {/* 1. Country List */}
-            <div className="flex flex-wrap items-center gap-3">
-              <button className="inline-flex items-center border-2 gap-2 hover:bg-red-700 hover:text-white font-semibold px-4 py-2 rounded-md transition-all">
-                <Filter size={18} />
-                Filter Scholarship &gt;
-              </button>
+            <div className="flex justify-between">
+              <div className="flex flex-wrap items-center gap-3">
+                <button className="inline-flex items-center border-2 gap-2 hover:bg-red-700 hover:text-white font-semibold px-4 py-2 rounded-md transition-all">
+                  <Filter size={18} />
+                  Filter Scholarship &gt;
+                </button>
 
-              <div className="flex flex-wrap gap-2">
-                {filterData.countryInfo.map((c) => (
-                  <button
-                    key={c.country}
-                    onClick={() => selectCountry(c.country)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                      selectedCountry === c.country
-                        ? "bg-red-600 text-white shadow-md"
-                        : "bg-white border border-gray-300 hover:bg-gray-100"
-                    }`}
-                  >
-                    {c.country}
-                  </button>
-                ))}
+                <div className="flex flex-wrap gap-2">
+                  {filterData.countryInfo.map((c) => (
+                    <button
+                      key={c.country}
+                      onClick={() => selectCountry(c.country)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                        selectedCountry === c.country
+                          ? "bg-red-600 text-white shadow-md"
+                          : "bg-white border border-gray-300 hover:bg-gray-100"
+                      }`}
+                    >
+                      {capitalize(c.country)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-3 mt-4">
+                <input
+                  type="text"
+                  placeholder="Search scholarship, university..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="border border-gray-300 px-4 py-2 rounded-md w-full sm:w-80 focus:outline-none focus:ring-2 focus:ring-red-500"
+                />
               </div>
             </div>
 

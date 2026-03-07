@@ -9,7 +9,7 @@ import { MedicalTabSection } from "./medical-list/components/MedicalTabSection";
 const MedicalHomePage = async () => {
   const res = await getFilterInfo();
 
-  console.log({ res: res });
+
 
   const checklistItems = [
     "Recent photo",

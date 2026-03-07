@@ -108,7 +108,7 @@ const CustomPackage = () => {
 
     if (data.success) {
       toast.success(data.message);
-      console.log(data);
+      
       router.push("/tourist-home-page");
       return
     }

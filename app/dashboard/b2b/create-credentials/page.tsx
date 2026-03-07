@@ -175,7 +175,6 @@ const CreateCredential = () => {
       });
 
       if (res.ok) {
-        
         Swal.fire({
           position: "top-end",
           icon: "success",

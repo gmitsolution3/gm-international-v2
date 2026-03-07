@@ -115,7 +115,6 @@ export default function TravelPackagesTable({
     null,
   );
 
-  console.log({ packages: packages });
 
   const handleStatusChange = async (
     id: string,

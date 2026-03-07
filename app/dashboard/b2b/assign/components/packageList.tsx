@@ -9,6 +9,7 @@ import {
   ExternalLink,
   Loader2,
 } from "lucide-react";
+import { toast } from "sonner";
 
 // Types
 interface University {
@@ -31,9 +32,9 @@ interface SelectedUniversities {
   packageId: string[];
   packageCount: number;
   createdAt: string;
-  b2bUserId: string;
-  b2bUserName: string;
-  b2bUserEmail: string;
+  // b2bUserId: string;
+  // b2bUserName: string;
+  // b2bUserEmail: string;
 }
 
 // Utility Functions
@@ -93,9 +94,6 @@ const UniversityApplications = ({
       packageId: selectedIds,
       packageCount: selectedIds.length,
       createdAt: new Date().toISOString(),
-      b2bUserId: aUser.b2bProfileId,
-      b2bUserName: aUser.userName,
-      b2bUserEmail: aUser.email,
     };
     try {
       const response = await fetch(
@@ -116,6 +114,7 @@ const UniversityApplications = ({
       setMessage(
         `✓ Successfully saved ${selectedIds.length} university selection(s)`,
       );
+      toast.success(`${dataToSave.packageCount} assign to b2b user`)
 
     } catch (error) {
       setMessage("Error saving to database. Check console for details.");

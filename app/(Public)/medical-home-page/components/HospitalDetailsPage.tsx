@@ -121,7 +121,7 @@ const HospitalDetailsPage = ({
     }
   }, [activeTab]);
 
-  console.log({ reviews: reviews });
+
 
   const getImageSource = () => {
     if (hospital.photo && !imageError) {

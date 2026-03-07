@@ -15,7 +15,7 @@ const MedicalDetails = async ({ params }: MedicalDetailsParams) => {
   const session = await getServerSession(authConfig);
 
 
-  console.log({session: session?.user})
+
 
   return (
     <div className="lg:p-8">

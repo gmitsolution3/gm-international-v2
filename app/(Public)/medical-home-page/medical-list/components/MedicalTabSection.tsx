@@ -35,7 +35,7 @@ export function MedicalTabSection({ filterData }: { filterData: FilterInfo }) {
       provience: selectedProvience,
       city: selectedCity,
     };
-    console.log("Search filters:", query);
+    
   };
 
   const resetAll = () => {
