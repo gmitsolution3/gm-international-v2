@@ -128,7 +128,7 @@ export default function Footer() {
                     Guangzhou
                   </a>{" "}
                   | Kunming
-                </p> 
+                </p>
                 <p className="text-white text-center md:text-left text-sm leading-relaxed">
                   <strong>Our China Wirehouse Address:</strong>{" "}
                   广东省广州市白云区龙归街道南岭岗埔路三街2号厂房一楼（
@@ -138,19 +138,19 @@ export default function Footer() {
             </div>
 
             {/* Explore Section */}
-            <div className="flex flex-col items-center md:items-start"> 
+            <div className="flex flex-col items-center md:items-start">
               <h3 className="text-white font-bold text-lg mb-4 md:mb-6">
                 Explore
               </h3>
               <ul className="space-y-3 text-center md:text-left">
                 <li>
-                  <a
-                    href="#"
-                    onClick={handleOffer}
+                  <Link
+                    href="/pages/newsletter"
+                    // onClick={handleOffer}
                     className="text-white text-sm hover:text-green-200 hover:underline transition"
                   >
                     Newsletter
-                  </a>
+                  </Link>
                 </li>
                 <li>
                   <Link

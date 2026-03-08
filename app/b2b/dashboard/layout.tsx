@@ -31,6 +31,16 @@ const userMenuItems = [
     icon: Package,
     href: "/b2b/dashboard/b2b-tourist-package",
   },
+  {
+    label: "Medical Package",
+    icon: Package,
+    href: "/b2b/dashboard/b2b-medical-package",
+  },
+  {
+    label: "business Package",
+    icon: Package,
+    href: "/b2b/dashboard/b2b-business-package",
+  },
 ];
 
 export default function DashboardLayout({

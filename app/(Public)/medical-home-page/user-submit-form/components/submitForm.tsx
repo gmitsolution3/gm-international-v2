@@ -55,6 +55,7 @@ interface FormData {
   paymentStatus: string;
   appointmentStatus: string;
   package_id: string | undefined;
+  b2bId?: string | undefined 
 }
 
 interface SubmitStatus {
@@ -70,8 +71,10 @@ interface UploadStatus {
 
 export default function AppointmentForm({
   hospitals,
+  b2bId,
 }: {
   hospitals: MedicalFormData;
+  b2bId?: string ;
 }) {
   const { data: session } = useSession();
 
@@ -106,6 +109,7 @@ export default function AppointmentForm({
     paymentStatus: "pending",
     appointmentStatus: "pending",
     package_id: hospitals._id,
+    b2bId: b2bId,
   });
 
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus | null>(null);
@@ -211,11 +215,11 @@ export default function AppointmentForm({
         }));
 
         toast.success("File uploaded successfully", {
-        style: {
-          backgroundColor: "#22c55e", // green
-          color: "white",
-        },
-      });
+          style: {
+            backgroundColor: "#22c55e", // green
+            color: "white",
+          },
+        });
       } catch (error) {
         toast.error("file uploaded failed!!");
       } finally {
@@ -346,8 +350,6 @@ export default function AppointmentForm({
       return !formData[field as keyof FormData];
     });
 
-
-
     if (missingFields.length > 0) {
       setSubmitStatus({
         type: "error",
@@ -377,7 +379,7 @@ export default function AppointmentForm({
       });
       return;
     }
-  
+
     try {
       const submitData = await fetch(
         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical_appointment_form`,

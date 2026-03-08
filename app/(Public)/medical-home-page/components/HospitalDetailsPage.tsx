@@ -42,6 +42,7 @@ interface HospitalDetailsPageProps {
   hospital: MedicalFormData;
   relatedHospitals?: MedicalFormData[];
   session?: any;
+  b2bId?: string;
 }
 
 // Review interface
@@ -60,6 +61,7 @@ const HospitalDetailsPage = ({
   hospital,
   relatedHospitals = [],
   session,
+  b2bId,
 }: HospitalDetailsPageProps) => {
   const router = useRouter();
   const [imageError, setImageError] = useState(false);
@@ -120,8 +122,6 @@ const HospitalDetailsPage = ({
       fetchReviews();
     }
   }, [activeTab]);
-
-
 
   const getImageSource = () => {
     if (hospital.photo && !imageError) {
@@ -764,14 +764,25 @@ const HospitalDetailsPage = ({
                       <span>Contact Us</span>
                     </button>
                   </a>
-                  <Link
-                    href={`/medical-home-page/user-submit-form?id=${hospital._id}`}
-                  >
-                    <button className="flex items-center gap-2 bg-red-600 text-white px-4 py-2.5 rounded-xl hover:bg-red-700 transition-colors text-sm md:text-base">
-                      <FaCalendarAlt className="w-4 h-4" />
-                      <span>Request for invitation (5000TK)</span>
-                    </button>
-                  </Link>
+                  {b2bId ? (
+                    <Link
+                      href={`/medical-home-page/user-submit-form?id=${hospital._id}&b2bId=${b2bId}`}
+                    >
+                      <button className="flex items-center gap-2 bg-red-600 text-white px-4 py-2.5 rounded-xl hover:bg-red-700 transition-colors text-sm md:text-base">
+                        <FaCalendarAlt className="w-4 h-4" />
+                        <span>Request for invitation (5000TK)</span>
+                      </button>
+                    </Link>
+                  ) : (
+                    <Link
+                      href={`/medical-home-page/user-submit-form?id=${hospital._id}`}
+                    >
+                      <button className="flex items-center gap-2 bg-red-600 text-white px-4 py-2.5 rounded-xl hover:bg-red-700 transition-colors text-sm md:text-base">
+                        <FaCalendarAlt className="w-4 h-4" />
+                        <span>Request for invitation (5000TK)</span>
+                      </button>
+                    </Link>
+                  )}
                 </div>
 
                 <div className="flex gap-2">

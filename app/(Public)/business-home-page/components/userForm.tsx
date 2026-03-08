@@ -6,10 +6,14 @@ import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
 import { fbEvent } from "@/lib/fbPixel";
 
-export default function RegistrationForm({ packageId }: { packageId : string}) {
+export default function RegistrationForm({
+  packageId,
+  b2bid,
+}: {
+  packageId: string;
+  b2bid?: string;
+}) {
   const { data: session } = useSession();
-
-
 
   const [formData, setFormData] = useState({
     country: "",
@@ -31,6 +35,7 @@ export default function RegistrationForm({ packageId }: { packageId : string}) {
     paymentStatus: "pending",
     applicationStatus: "pending",
     packageId: packageId,
+    b2bid: b2bid || null,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -182,6 +187,7 @@ export default function RegistrationForm({ packageId }: { packageId : string}) {
       paymentStatus: "pending",
       applicationStatus: "pending",
       packageId: packageId,
+      b2bid: b2bid || null,
     });
     setVisitingUploaded(false);
     setPassportUploaded(false);

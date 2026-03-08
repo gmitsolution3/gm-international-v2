@@ -4,11 +4,14 @@ import RegistrationForm from "../components/userForm";
 type PageProps = {
   searchParams: {
     id?: string;
+    b2bid?:string
   };
 };
 
 const BusinessSubmitForm = async ({ searchParams }: PageProps) => {
-  const { id } = await searchParams;
+  const { id,b2bid } = await searchParams;
+
+ 
 
   if (!id) {
     return (
@@ -18,9 +21,11 @@ const BusinessSubmitForm = async ({ searchParams }: PageProps) => {
     );
   }
 
+
+
   return (
     <div>
-      <RegistrationForm packageId={id} />
+      <RegistrationForm packageId={id} b2bid={b2bid} />
     </div>
   );
 };

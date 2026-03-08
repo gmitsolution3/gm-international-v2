@@ -7,11 +7,13 @@ import { Calendar, MapPin, TimerIcon, Users } from "lucide-react";
 interface TourPackageCardsProps {
   packages: TourPackage[];
   from?: string;
+  id?:string;
 }
 
 const ShowHomePackage: React.FC<TourPackageCardsProps> = ({
   packages = [],
   from,
+  id,
 }) => {
   return (
     <div className="py-12">
@@ -38,7 +40,7 @@ const ShowHomePackage: React.FC<TourPackageCardsProps> = ({
           {from === "withoutVisa" && (
             <h1 className="text-4xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-6 leading-tight">
               Business Tour <span className="text-red-700">Packages</span>{" "}
-              <span className="text-red-700">With</span> <br />
+              <span className="text-red-700">Without</span> <br />
               Visa <span className="text-red-700">&</span> Air Ticket
             </h1>
           )}
@@ -172,14 +174,29 @@ const ShowHomePackage: React.FC<TourPackageCardsProps> = ({
                 </div>
 
                 {/* View Details Button */}
-                <Link href={`/business-home-page/business-packages/${pkg._id}`}>
-                  <button className="w-full bg-linear-to-r from-red-700 to-red-800 hover:from-red-800 hover:to-red-900 text-white py-4 rounded-xl font-bold transition-all duration-300 shadow-md hover:shadow-xl group-hover:shadow-red-200 active:scale-[0.98]">
-                    View Package Details
-                    <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">
-                      →
-                    </span>
-                  </button>
-                </Link>
+                {id ? (
+                  <Link
+                    href={`/business-home-page/business-packages/${pkg._id}?b2bid=${id}`}
+                  >
+                    <button className="w-full bg-linear-to-r from-red-700 to-red-800 hover:from-red-800 hover:to-red-900 text-white py-4 rounded-xl font-bold transition-all duration-300 shadow-md hover:shadow-xl group-hover:shadow-red-200 active:scale-[0.98]">
+                      View Package Details
+                      <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">
+                        →
+                      </span>
+                    </button>
+                  </Link>
+                ) : (
+                  <Link
+                    href={`/business-home-page/business-packages/${pkg._id}`}
+                  >
+                    <button className="w-full bg-linear-to-r from-red-700 to-red-800 hover:from-red-800 hover:to-red-900 text-white py-4 rounded-xl font-bold transition-all duration-300 shadow-md hover:shadow-xl group-hover:shadow-red-200 active:scale-[0.98]">
+                      View Package Details
+                      <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">
+                        →
+                      </span>
+                    </button>
+                  </Link>
+                )}
               </div>
             </div>
           ))}

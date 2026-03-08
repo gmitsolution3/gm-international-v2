@@ -7,10 +7,18 @@ import { Calendar, Users, MapPin, DollarSign, Clock } from "lucide-react";
 
 interface BusinessDetailsProps {
   params: { id: string };
+  searchParams: { b2bid: string };
 }
 
-const BusinessPackageDetails = async ({ params }: BusinessDetailsProps) => {
+const BusinessPackageDetails = async ({
+  params,
+  searchParams,
+}: BusinessDetailsProps) => {
   const { id } = await params;
+  const { b2bid } = await searchParams;
+
+  
+
   const packageDetails = await getBusinessDetails(id);
 
   if (!packageDetails) {
@@ -139,17 +147,31 @@ const BusinessPackageDetails = async ({ params }: BusinessDetailsProps) => {
             </div>
 
             {/* Quick Action Button */}
-            <Link
-              href={`/business-home-page/business-submit-form?id=${id}`}
-              className="block mt-8"
-            >
-              <button className="w-full bg-linear-to-r from-red-700 to-red-800 hover:from-red-800 hover:to-red-900 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 active:scale-[0.98]">
-                Book This Package
-                <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">
-                  →
-                </span>
-              </button>
-            </Link>
+            {b2bid ? (
+              <Link
+                href={`/business-home-page/business-submit-form?id=${id}&b2bid=${b2bid}`}
+                className="block mt-8"
+              >
+                <button className="w-full bg-linear-to-r from-red-700 to-red-800 hover:from-red-800 hover:to-red-900 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 active:scale-[0.98]">
+                  Book This Package
+                  <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">
+                    →
+                  </span>
+                </button>
+              </Link>
+            ) : (
+              <Link
+                href={`/business-home-page/business-submit-form?id=${id}`}
+                className="block mt-8"
+              >
+                <button className="w-full bg-linear-to-r from-red-700 to-red-800 hover:from-red-800 hover:to-red-900 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300 active:scale-[0.98]">
+                  Book This Package
+                  <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform">
+                    →
+                  </span>
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -253,14 +275,26 @@ const BusinessPackageDetails = async ({ params }: BusinessDetailsProps) => {
           network globally.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link
-            href={`/business-home-page/business-submit-form?id=${id}`}
-            className="flex-1 sm:flex-none"
-          >
-            <button className="w-full sm:w-auto bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300">
-              Book Now →
-            </button>
-          </Link>
+          {b2bid ? (
+            <Link
+              href={`/business-home-page/business-submit-form?id=${id}&b2bid=${b2bid}`}
+              className="flex-1 sm:flex-none"
+            >
+              <button className="w-full sm:w-auto bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                Book Now →
+              </button>
+            </Link>
+          ) : (
+            <Link
+              href={`/business-home-page/business-submit-form?id=${id}`}
+              className="flex-1 sm:flex-none"
+            >
+              <button className="w-full sm:w-auto bg-red-700 hover:bg-red-800 text-white px-8 py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300">
+                Book Now →
+              </button>
+            </Link>
+          )}
+
           <Link
             href="/business-home-page/business-packages"
             className="flex-1 sm:flex-none"

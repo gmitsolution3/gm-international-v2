@@ -5,17 +5,19 @@ import { getAllMedicalData, getMedicalDetails } from "../components/fetches";
 interface PageProps {
   searchParams: {
     id: string;
+    b2bId?: string;
   };
 }
 
 const UserSubmitForm = async ({ searchParams }: PageProps) => {
-  const { id } = await searchParams;
+  const { id, b2bId } = await searchParams;
+ 
 
-  const packageData = await getMedicalDetails(id)
+  const packageData = await getMedicalDetails(id);
 
   return (
     <div>
-      <AppointmentForm hospitals={packageData} />
+      <AppointmentForm hospitals={packageData} b2bId={b2bId} />
     </div>
   );
 };

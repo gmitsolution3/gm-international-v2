@@ -14,7 +14,13 @@ import {
 } from "react-icons/fa";
 import { MdLocalHospital } from "react-icons/md";
 
-const HospitalCard = ({ hospital }: { hospital: MedicalFormData }) => {
+const HospitalCard = ({
+  hospital,
+  b2bId,
+}: {
+  hospital: MedicalFormData;
+  b2bId?: string;
+}) => {
   const [imageError, setImageError] = useState(false);
 
   const getImageSource = () => {
@@ -157,16 +163,31 @@ const HospitalCard = ({ hospital }: { hospital: MedicalFormData }) => {
               {renderDepartments()}
             </div>
           )}
-
-          <Link href={`/medical-home-page/medical-list/${hospital._id}`}>
-            <button className="w-full group/btn relative inline-flex items-center justify-center hover:cursor-pointer px-4 py-2.5 overflow-hidden font-medium text-red-600 transition-all duration-300 ease-out bg-red-50 rounded-xl hover:bg-red-600 hover:text-white border border-red-200 hover:border-red-600">
-              <span className="flex items-center gap-2">
-                <MdLocalHospital className="w-4 h-4" />
-                <span>View Details</span>
-                <FaChevronRight className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
-              </span>
-            </button>
-          </Link>
+          {b2bId ? (
+            <Link
+              href={`/medical-home-page/medical-list/${hospital._id}?b2bId=${b2bId}`}
+            >
+              <button className="w-full group/btn relative inline-flex items-center justify-center hover:cursor-pointer px-4 py-2.5 overflow-hidden font-medium text-red-600 transition-all duration-300 ease-out bg-red-50 rounded-xl hover:bg-red-600 hover:text-white border border-red-200 hover:border-red-600">
+                <span className="flex items-center gap-2">
+                  <MdLocalHospital className="w-4 h-4" />
+                  <span>View Details</span>
+                  <FaChevronRight className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
+                </span>
+              </button>
+            </Link>
+          ) : (
+            <Link
+              href={`/medical-home-page/medical-list/${hospital._id}`}
+            >
+              <button className="w-full group/btn relative inline-flex items-center justify-center hover:cursor-pointer px-4 py-2.5 overflow-hidden font-medium text-red-600 transition-all duration-300 ease-out bg-red-50 rounded-xl hover:bg-red-600 hover:text-white border border-red-200 hover:border-red-600">
+                <span className="flex items-center gap-2">
+                  <MdLocalHospital className="w-4 h-4" />
+                  <span>View Details</span>
+                  <FaChevronRight className="w-3 h-3 group-hover/btn:translate-x-1 transition-transform" />
+                </span>
+              </button>
+            </Link>
+          )}
         </div>
 
         <div className="flex justify-around">

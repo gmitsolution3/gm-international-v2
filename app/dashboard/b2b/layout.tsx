@@ -30,6 +30,26 @@ const menuItems = [
     icon: Package,
     href: "/dashboard/b2b/create-credentials",
   },
+  // {
+  //   label: "Assign student package",
+  //   icon: Package,
+  //   href: "/dashboard/b2b/users",
+  // },
+  // {
+  //   label: "Assign tourist package",
+  //   icon: Package,
+  //   href: "/dashboard/b2b/users",
+  // },
+  {
+    label: "Assign medical",
+    icon: Package,
+    href: "/dashboard/b2b/assign/m-package",
+  },
+  {
+    label: "Assign business",
+    icon: Package,
+    href: "/dashboard/b2b/assign/b-package",
+  },
   {
     label: "Approved users",
     icon: Package,
