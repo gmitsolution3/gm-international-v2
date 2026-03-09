@@ -490,7 +490,7 @@ export default function TouristHomePackages({
                     <div className="w-full h-px bg-linear-to-r from-transparent via-red-200 to-transparent my-4" />
 
                     {/* Price Section */}
-                    <div className="flex items-end justify-between mb-4">
+                    <div className="grid grid-cols-2 items-center">
                       <div>
                         <p className="text-gray-500 text-xs mb-1">
                           Starting from

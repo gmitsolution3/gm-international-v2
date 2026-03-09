@@ -16,7 +16,7 @@ import Swal from "sweetalert2";
 
 const DescriptionEditorRHF = dynamic(
   () => import("./description-editor").then((mod) => mod.DescriptionEditorRHF),
-  { ssr: false }
+  { ssr: false },
 );
 
 export default function AddPackagePage() {
@@ -45,6 +45,9 @@ export default function AddPackagePage() {
       universityDescription: "",
       status: "active",
       universityVideoLink: "",
+      b2b: false,
+      b2bPrice: "",
+      isCSCARequired: false
     },
   });
 
@@ -59,8 +62,12 @@ export default function AddPackagePage() {
   } = form;
 
   const isInternationalStudent = watch("isInternationalStudent");
+  const isB2B = watch("b2b");
+  const b2bPrice = watch("b2bPrice");
+
   const onSubmit = async (data: any) => {
-    const { programInput,program, ...submitData } = data;
+    const { programInput, program, ...submitData } = data;
+
     try {
       const addPackage = await fetch(
         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management`,
@@ -149,6 +156,21 @@ export default function AddPackagePage() {
             name="universityDescription"
             from="forUniversityDescription"
           />
+          <div>
+            <label className="flex items-center gap-3 text-sm cursor-pointer">
+              <Controller
+                name="isCSCARequired"
+                control={control}
+                render={({ field }) => (
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                )}
+              />
+              Is this package CSCA required?
+            </label>
+          </div>
 
           <div>
             <div className="space-y-2 max-w-xs">
@@ -169,6 +191,42 @@ export default function AddPackagePage() {
             </div>
           </div>
 
+          <div className="space-y-4">
+            {/* International Student Checkbox */}
+            <label className="flex items-center gap-3 text-sm cursor-pointer">
+              <Controller
+                name="b2b"
+                control={control}
+                render={({ field }) => (
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                )}
+              />
+              Is this package for b2b?
+            </label>
+
+            {/* Conditional B2B Price */}
+            {isB2B && (
+              <div className="space-y-2 max-w-xs">
+                <Label htmlFor="b2bPrice">B2B Price</Label>
+                <Input
+                  id="b2bPrice"
+                  type="number"
+                  placeholder="Enter b2b package price"
+                  {...register("b2bPrice", {
+                    required: b2bPrice,
+                  })}
+                />
+                {errors.b2bPrice && (
+                  <p className="text-sm text-red-500">
+                    b2b student package price is required
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
           <div className="space-y-4">
             {/* International Student Checkbox */}
             <label className="flex items-center gap-3 text-sm cursor-pointer">

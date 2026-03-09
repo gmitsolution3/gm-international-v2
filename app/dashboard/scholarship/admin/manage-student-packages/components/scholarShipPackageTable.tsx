@@ -106,6 +106,9 @@ interface Scholarship {
   city: string;
   deadline: string;
   isInternationalStudent: boolean;
+  b2b?: boolean;
+  b2bPrice?: "";
+  isCSCARequired?: boolean;
   programs?: string[];
   universityVideoLink?: string;
 }
@@ -198,6 +201,7 @@ const ScholarshipPackageInAdminDashboard: React.FC<{
 
   const handleUpdate = async () => {
     if (!editData) return;
+
     setLoading(true);
 
     try {
@@ -583,26 +587,7 @@ const ScholarshipPackageInAdminDashboard: React.FC<{
                           className="w-full p-2 border rounded-lg focus:ring-2 ring-rose-500 outline-none"
                         />
                       </div>
-                      {/* <div>
-                        {editData.programs && (
-                          <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                              Programs
-                            </label>
-                            <div className="flex gap-4">
-                              {editData.programs.map((p, index) => (
-                                <input
-                                  key={index}
-                                  name="programs"
-                                  value={p}
-                                  onChange={(e) => handleProgramEdit(e, index)}
-                                  className="w-full p-2 border rounded-lg focus:ring-2 ring-rose-500 outline-none"
-                                />
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div> */}
+
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">
                           Programs
@@ -646,6 +631,54 @@ const ScholarshipPackageInAdminDashboard: React.FC<{
                             + Add Program
                           </button>
                         </div>
+                      </div>
+                    </div>
+                    {/* B2B & CSCA Settings */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div className="flex flex-col">
+                        {/* B2B Enable */}
+                        <div className="flex items-center gap-3 border p-3 rounded-lg">
+                          <input
+                            type="checkbox"
+                            name="b2b"
+                            checked={editData.b2b || false}
+                            onChange={handleInputChange}
+                            className="w-4 h-4"
+                          />
+                          <label className="text-sm font-medium text-gray-700">
+                            Enable B2B
+                          </label>
+                        </div>
+
+                        {/* B2B Price */}
+                        {editData.b2b && (
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              B2B Price ($)
+                            </label>
+                            <input
+                              type="number"
+                              name="b2bPrice"
+                              value={editData.b2bPrice || ""}
+                              onChange={handleInputChange}
+                              className="w-full p-2 border rounded-lg focus:ring-2 ring-rose-500 outline-none"
+                            />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* CSCA Required */}
+                      <div className="flex items-center gap-3 border p-3 rounded-lg">
+                        <input
+                          type="checkbox"
+                          name="isCSCARequired"
+                          checked={editData.isCSCARequired || false}
+                          onChange={handleInputChange}
+                          className="w-4 h-4"
+                        />
+                        <label className="text-sm font-medium text-gray-700">
+                          CSCA Required
+                        </label>
                       </div>
                     </div>
 
@@ -836,6 +869,34 @@ const ScholarshipPackageInAdminDashboard: React.FC<{
                             </div>
                             <p className="font-bold text-base sm:text-lg text-gray-800">
                               This Package for international student
+                            </p>
+                          </div>
+                        )}
+
+                        {selectedScholarship.b2b && (
+                          <div className="bg-linear-to-br from-rose-50 to-red-50 p-3 sm:p-4 rounded-lg border border-red-100">
+                            <div className="flex items-center gap-2 mb-2">
+                              <DollarSign className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />
+                              <p className="text-xs text-gray-500">B2B Price</p>
+                            </div>
+                            <p className="font-bold text-base sm:text-lg text-gray-800">
+                              {formatCurrency(
+                                selectedScholarship.b2bPrice || "0",
+                              )}
+                            </p>
+                          </div>
+                        )}
+
+                        {selectedScholarship.isCSCARequired && (
+                          <div className="bg-linear-to-br from-rose-50 to-red-50 p-3 sm:p-4 rounded-lg border border-red-100">
+                            <div className="flex items-center gap-2 mb-2">
+                              <Award className="w-4 h-4 sm:w-5 sm:h-5 text-rose-500" />
+                              <p className="text-xs text-gray-500">
+                                CSCA Requirement
+                              </p>
+                            </div>
+                            <p className="font-bold text-base sm:text-lg text-gray-800">
+                              CSCA Required
                             </p>
                           </div>
                         )}

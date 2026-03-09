@@ -22,7 +22,10 @@ export interface ScholarshipCardProps {
   universityName: string;
   universityURL: string;
   status: string;
-  universityVideoLink?: string
+  universityVideoLink?: string;
+  b2b?: boolean;
+  b2bPrice?: "";
+  isCSCARequired?: boolean;
 }
 
 interface OfferCardProps {
@@ -57,6 +60,15 @@ const OfferCard = ({ offer, form }: OfferCardProps) => {
             transform: isHovered ? "scale(1.05)" : "scale(1)",
           }}
         />
+
+        {/* CSCA Badge */}
+        <span
+          className={`absolute bottom-3 right-2 text-white text-xs font-semibold px-3 py-1 rounded shadow
+      ${offer.isCSCARequired ? "bg-red-700" : "bg-red-700"}
+    `}
+        >
+          {offer.isCSCARequired ? "CSCA Required" : "CSCA Not Required"}
+        </span>
       </div>
 
       {/* Content */}

@@ -16,9 +16,6 @@ const B2BTouristPackage = async () => {
 
   return (
     <div className="px-4 py-12 sm:px-6 md:px-8 lg:px-12 bg-background">
-      <h1 className="text-2xl md:text-3xl lg:text-4xl mb-6 font-bold text-red-700">
-        Explore all B2B tourist Package
-      </h1>
       {data.data.length > 0 ? (
         <div className="max-w-7xl mx-auto">
           <TouristHomePackages packages={data.data} from={from} />
@@ -31,3 +28,4 @@ const B2BTouristPackage = async () => {
 };
 
 export default B2BTouristPackage;
+ 
