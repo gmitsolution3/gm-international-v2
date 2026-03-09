@@ -57,6 +57,8 @@ const CreateCredential = () => {
     setIsLoading(false);
   }, []);
 
+  console.log({returnUserData: returnUserData})
+
   const generateB2BProfileId = () => {
     return (
       "B2B-" + crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase()
@@ -83,7 +85,7 @@ const CreateCredential = () => {
     }
 
     const found = Applications?.find(
-      (app) => app.createdBy?.toLowerCase() === searchEmail.toLowerCase()
+      (app) => app.email?.toLowerCase() === searchEmail.toLowerCase()
     );
 
     setMatchedApplication(found || null);
@@ -158,6 +160,8 @@ const CreateCredential = () => {
     setIsLoading(false);
   };
 
+  console.log({previewData: previewData})
+
   const handleEmailSend = async () => {
     setEmailSending(true);
     try {
@@ -167,10 +171,10 @@ const CreateCredential = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: "arjsabbir88@gmail.com",
-          name: "Sabbir",
+          email: previewData.email,
+          name: previewData.userName,
           b2bProfileId: b2bProfileId,
-          b2bProfilePassword: generatedPassword
+          b2bProfilePassword: generatedPassword,
         }),
       });
 

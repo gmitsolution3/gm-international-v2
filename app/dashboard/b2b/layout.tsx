@@ -30,16 +30,6 @@ const menuItems = [
     icon: Package,
     href: "/dashboard/b2b/create-credentials",
   },
-  // {
-  //   label: "Assign student package",
-  //   icon: Package,
-  //   href: "/dashboard/b2b/users",
-  // },
-  // {
-  //   label: "Assign tourist package",
-  //   icon: Package,
-  //   href: "/dashboard/b2b/users",
-  // },
   {
     label: "Assign medical",
     icon: Package,
@@ -49,6 +39,11 @@ const menuItems = [
     label: "Assign business",
     icon: Package,
     href: "/dashboard/b2b/assign/b-package",
+  },
+  {
+    label: "B2B Visa Rate",
+    icon: Package,
+    href: "/dashboard/b2b/visa-rate",
   },
   {
     label: "Approved users",
