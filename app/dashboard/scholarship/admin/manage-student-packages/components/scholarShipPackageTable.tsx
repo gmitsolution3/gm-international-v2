@@ -633,6 +633,33 @@ const ScholarshipPackageInAdminDashboard: React.FC<{
                         </div>
                       </div>
                     </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Application Starting Date
+                        </label>
+                        <input
+                          type="input"
+                          name="startingDate"
+                          value={editData.startingDate}
+                          onChange={handleInputChange}
+                          className="w-full p-2 border rounded-lg focus:ring-2 ring-rose-500 outline-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Application Ending Date
+                        </label>
+                        <input
+                          type="date"
+                          name="deadline"
+                          value={editData.deadline}
+                          onChange={handleInputChange}
+                          className="w-full p-2 border rounded-lg focus:ring-2 ring-rose-500 outline-none"
+                        />
+                      </div>
+                    </div>
                     {/* B2B & CSCA Settings */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="flex flex-col">

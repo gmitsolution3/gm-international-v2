@@ -23,9 +23,9 @@ export const getAllB2BUsers = async () => {
 };
 
 
-export const getSingleB2BUser = async(id:string)=>{
+export const getB2BStudentPackage = async()=>{
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b-user/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b/get-student-package`,
   );
 
   return res.json()

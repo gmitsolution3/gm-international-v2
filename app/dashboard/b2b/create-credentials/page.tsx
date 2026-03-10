@@ -33,7 +33,7 @@ const CreateCredential = () => {
   const [generatedPassword, setGeneratedPassword] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [returnUserData, setReturnUserData] = useState<ReturnB2BData | null>(
-    null
+    null,
   );
   const [emailSending, setEmailSending] = useState(false);
   const [isEmailConfirm, setIsEmailConfirm] = useState(false);
@@ -57,7 +57,7 @@ const CreateCredential = () => {
     setIsLoading(false);
   }, []);
 
-  console.log({returnUserData: returnUserData})
+
 
   const generateB2BProfileId = () => {
     return (
@@ -85,7 +85,7 @@ const CreateCredential = () => {
     }
 
     const found = Applications?.find(
-      (app) => app.email?.toLowerCase() === searchEmail.toLowerCase()
+      (app) => app.email?.toLowerCase() === searchEmail.toLowerCase(),
     );
 
     setMatchedApplication(found || null);
@@ -114,9 +114,6 @@ const CreateCredential = () => {
     }
 
     setIsLoading(true);
-   
-
-
 
     const response = await fetch("/api/auth/b2b-register", {
       method: "POST",
@@ -160,7 +157,7 @@ const CreateCredential = () => {
     setIsLoading(false);
   };
 
-  console.log({previewData: previewData})
+
 
   const handleEmailSend = async () => {
     setEmailSending(true);
@@ -182,14 +179,14 @@ const CreateCredential = () => {
         Swal.fire({
           position: "top-end",
           icon: "success",
-          title: "Email send succfully",
+          title: "Email send successfully",
           showConfirmButton: false,
           timer: 1500,
         });
         setIsEmailConfirm(true);
       }
     } catch (error) {
-      
+      console.log(error);
     } finally {
       setEmailSending(false);
     }

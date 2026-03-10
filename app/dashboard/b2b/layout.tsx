@@ -31,6 +31,11 @@ const menuItems = [
     href: "/dashboard/b2b/create-credentials",
   },
   {
+    label: "Assign Student",
+    icon: Package,
+    href: "/dashboard/b2b/assign/s-package",
+  },
+  {
     label: "Assign medical",
     icon: Package,
     href: "/dashboard/b2b/assign/m-package",

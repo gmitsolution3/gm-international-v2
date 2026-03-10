@@ -9,10 +9,12 @@ export const sendEmail = async ({
   subject: string;
   html: string;
 }) => {
+   
   await transporter.sendMail({
-    from: `"My App" <${process.env.EMAIL_USER}>`,
+    from: `"GM International" <${process.env.EMAIL_USER}>`,
     to,
     subject,
     html,
   });
+
 };

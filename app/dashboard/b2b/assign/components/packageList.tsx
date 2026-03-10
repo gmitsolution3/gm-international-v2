@@ -57,11 +57,9 @@ const formatCurrency = (amount: string): string => {
 // Main Component
 const UniversityApplications = ({
   universities,
-  aUser,
+ 
 }: {
-  universities: University[];
-  aUser: any
-}) => {
+  universities: University[]}) => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");

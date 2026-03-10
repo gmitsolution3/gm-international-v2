@@ -1,9 +1,10 @@
 "use client"
 
 import React, { useState } from 'react';
-import { Users, Mail, Phone, Shield, CheckCircle, XCircle, Calendar, User } from 'lucide-react';
+import { Users, Mail, Phone, Shield, CheckCircle, XCircle, Calendar, User, DeleteIcon, Trash2 } from 'lucide-react';
 import { GoPackageDependencies } from "react-icons/go";
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 interface Users {
     _id: string;
@@ -31,6 +32,16 @@ const formatDate = (dateString: string) => {
     minute: "2-digit",
   });
 };
+
+
+const handleDelete = async(id:string)=>{
+  const res = await fetch(`${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b/user-application/${id}`);
+
+  const result = await res.json();
+  if(result.success){
+    toast.success("Application deleted successfully")
+  }
+}
 
 export default function UsersTable({allUsers}:UsersProps) {
   const [users] = useState<Users[]>(allUsers);
@@ -133,20 +144,12 @@ export default function UsersTable({allUsers}:UsersProps) {
                   </div>
                 </div>
                 <div className="px-6 py-4 flex gap-2">
-                  <Link
-                    href={`/dashboard/b2b/assign/s-package?user=${user.b2bProfileId}`}
-                    className="flex items-center gap-2 border px-3 py-2 rounded-lg hover:bg-red-700 hover:text-white font-semibold hover:cursor-pointer"
+                  <button
+                    onClick={() => handleDelete(user._id)}
+                    className="p-2 bg-red-300 text-red-700"
                   >
-                    <GoPackageDependencies className="group-hover:scale-110 transition-transform" />
-                    <span className="text-xs">ASP</span>
-                  </Link>
-                  <Link
-                    href={`/dashboard/b2b/assign/t-package?user=${user.b2bProfileId}`}
-                    className="flex items-center gap-2 border px-3 py-2 rounded-lg hover:bg-red-700 hover:text-white font-semibold hover:cursor-pointer"
-                  >
-                    <GoPackageDependencies className="group-hover:scale-110 transition-transform" />
-                    <span className="text-xs">ATP</span>
-                  </Link>
+                    <Trash2 />
+                  </button>
                 </div>
               </div>
             </div>
@@ -253,20 +256,12 @@ export default function UsersTable({allUsers}:UsersProps) {
                     </div>
                   </td>
                   <td className="px-6 py-4 flex gap-2">
-                    <Link
-                      href={`/dashboard/b2b/assign/s-package?user=${user.b2bProfileId}`}
-                      className="flex items-center gap-2 border px-3 py-2 rounded-lg hover:bg-red-700 hover:text-white font-semibold hover:cursor-pointer"
+                    <button
+                      onClick={() => handleDelete(user._id)}
+                      className="p-2 bg-red-100 text-red-700 rounded-lg"
                     >
-                      <GoPackageDependencies className="group-hover:scale-110 transition-transform" />
-                      <span className="text-xs">ASP</span>
-                    </Link>
-                    <Link
-                      href={`/dashboard/b2b/assign/t-package?user=${user.b2bProfileId}`}
-                      className="flex items-center gap-2 border px-3 py-2 rounded-lg hover:bg-red-700 hover:text-white font-semibold hover:cursor-pointer"
-                    >
-                      <GoPackageDependencies className="group-hover:scale-110 transition-transform" />
-                      <span className="text-xs">ATP</span>
-                    </Link>
+                      <Trash2 />
+                    </button>
                   </td>
                 </tr>
               ))}
