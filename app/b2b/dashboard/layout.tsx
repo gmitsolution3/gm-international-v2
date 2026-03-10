@@ -37,9 +37,14 @@ const userMenuItems = [
     href: "/b2b/dashboard/b2b-medical-package",
   },
   {
-    label: "business Package",
+    label: "Business Package",
     icon: Package,
     href: "/b2b/dashboard/b2b-business-package",
+  },
+  {
+    label: "Visa Rate",
+    icon: Package,
+    href: "/b2b/dashboard/visa-rate",
   },
 ];
 

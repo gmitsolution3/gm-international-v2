@@ -2,21 +2,44 @@
 
 import { useEffect, useRef } from "react";
 import Quill from "quill";
+import "quill/dist/quill.snow.css";
 
-export default function Editor({ onChange }: any) {
-  const editorRef = useRef<HTMLDivElement>(null);
+type EditorProps = {
+  value?: string;
+  onChange?: (value: string) => void;
+};
+
+export default function Editor({ value = "", onChange }: EditorProps) {
+  const editorRef = useRef<HTMLDivElement | null>(null);
+  const quillRef = useRef<Quill | null>(null);
 
   useEffect(() => {
-    if (editorRef.current) {
-      const quill = new Quill(editorRef.current, {
-        theme: "snow",
-      });
+    if (!editorRef.current) return;
 
-      quill.on("text-change", () => {
-        onChange(quill.root.innerHTML);
-      });
+    quillRef.current = new Quill(editorRef.current, {
+      theme: "snow",
+      modules: {
+        toolbar: [
+          ["bold", "italic", "underline"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          ["link"],
+        ],
+      },
+    });
+
+    if (value) {
+      quillRef.current.root.innerHTML = value;
     }
+
+    quillRef.current.on("text-change", () => {
+      const html = quillRef.current?.root.innerHTML || "";
+      onChange?.(html);
+    });
+
+    return () => {
+      quillRef.current = null;
+    };
   }, []);
 
-  return <div ref={editorRef} style={{ height: "200px" }} />;
+  return <div ref={editorRef} className="min-h-50" />;
 }

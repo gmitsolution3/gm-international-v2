@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import useUserRole from "../../useContext/useUserRole";
 import { UserProvider } from "../../useContext/useUserData";
 import { useSession } from "next-auth/react";
-import { Building2, FileText, LayoutDashboard, Package } from "lucide-react";
+import { BookOpen, Building2, FileText, Handshake, HousePlus, LayoutDashboard, Package, PlaneTakeoff, Split } from "lucide-react";
 import DashboardHeader from "../components/header";
 import Loader from "@/components/ui/loader";
 import Sidebar from "../scholarship/components/sidebar";
@@ -32,22 +32,27 @@ const menuItems = [
   },
   {
     label: "Assign Student",
-    icon: Package,
+    icon: BookOpen,
     href: "/dashboard/b2b/assign/s-package",
   },
   {
+    label: "Assign Tourist",
+    icon: PlaneTakeoff,
+    href: "/dashboard/b2b/assign/t-package",
+  },
+  {
     label: "Assign medical",
-    icon: Package,
+    icon: HousePlus,
     href: "/dashboard/b2b/assign/m-package",
   },
   {
     label: "Assign business",
-    icon: Package,
+    icon: Handshake,
     href: "/dashboard/b2b/assign/b-package",
   },
   {
     label: "B2B Visa Rate",
-    icon: Package,
+    icon: Split,
     href: "/dashboard/b2b/visa-rate",
   },
   {

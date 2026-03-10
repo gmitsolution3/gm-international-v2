@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import dynamic from "next/dynamic";
 import { X, Plus, Save, FileText } from "lucide-react";
 import Editor from "./Editor";
-
+import { toast } from "sonner";
 
 interface IVisaPackage {
   country: string;
@@ -42,13 +42,12 @@ interface ModalProps {
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
-
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex min-h-screen items-center justify-center p-4">
         {/* Backdrop */}
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"
+          className="fixed inset-0 bg-black/15 backdrop-blur-lg bg-opacity-50 transition-opacity"
           onClick={onClose}
         />
 
@@ -77,6 +76,7 @@ const VisaPackageForm: React.FC = () => {
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<VisaPackageFormData>({
     defaultValues: {
@@ -140,18 +140,45 @@ const VisaPackageForm: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const confirmSubmit = () => {
-    if (formData) {
-      console.log("Final Data:", formData);
-      // Here you would typically send the data to your API
+
+
+  const confirmSubmit = async () => {
+    if (!formData) return;
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b/visa-rate`,
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        },
+      );
+
+      const result = await res.json();
+
+      console.log(result);
+
+      if (!result.success) {
+        toast.error(result.message || "Something went wrong");
+        return;
+      }
+
+      toast.success(result.message || "Visa package created");
       setIsModalOpen(false);
-      // Show success message or redirect
+      setFormData(null);
+      reset()
+    } catch (error) {
+      console.error(error);
+      toast.error("Server error");
     }
   };
 
   return (
     <>
-      <div className="max-w-6xl mx-auto p-6 bg-linear-to-br from-red-50 to-white rounded-2xl shadow-xl border border-red-100">
+      <div className="max-w-7xl mx-auto p-6 rounded-2xl shadow-xl border my-6">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-red-900 border-b-3 border-red-600 pb-3 inline-block">
             Create Visa Package
@@ -188,16 +215,13 @@ const VisaPackageForm: React.FC = () => {
                 <label className="block text-sm font-medium text-red-800 mb-2">
                   Visa Type <span className="text-red-500">*</span>
                 </label>
-                <select
+                <input
                   {...register("visaType", {
-                    required: "Visa type is required",
+                    required: "visa type is required",
                   })}
+                  placeholder="e.g., 3-5 working days"
                   className="w-full px-4 py-2.5 rounded-lg border-2 border-red-200 focus:border-red-500 focus:ring-2 focus:ring-red-200 outline-none transition-all bg-red-50/30"
-                >
-                  <option value="">Select Type</option>
-                  <option value="Tourist">Tourist</option>
-                  <option value="Business">Business</option>
-                </select>
+                />
                 {errors.visaType && (
                   <p className="mt-1 text-sm text-red-600">
                     {errors.visaType.message}
@@ -392,7 +416,7 @@ const VisaPackageForm: React.FC = () => {
             </h2>
             <div className="quill-wrapper">
               <Editor
-                onChange={(value:any) => setValue("otherInformation", value)}
+                onChange={(value: any) => setValue("otherInformation", value)}
               />
             </div>
           </div>

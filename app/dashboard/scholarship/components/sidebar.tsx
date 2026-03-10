@@ -96,10 +96,10 @@ export default function Sidebar({ isOpen, onToggle, avatar, menuItems }: Sidebar
                 href={item.href}
                 onClick={() => setActiveItem(item.label)}
                 className={cn(
-                  "flex items-center gap-3 px-4 py-2 rounded-lg transition-colors",
+                  "flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ",
                   isActive
                     ? "bg-red-500 text-white"
-                    : "text-sidebar-foreground hover:bg-red-500"
+                    : "text-sidebar-foreground hover:bg-red-500 hover:text-white"
                 )}
               >
                 <Icon className="w-5 h-5" />
