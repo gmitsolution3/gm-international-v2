@@ -12,9 +12,7 @@ const B2BScholarshipPackage = async () => {
 
   const userId = (session?.user as any)?.id;
 
-
   const data = await getB2BScholarshipPackage(userId);
-
 
   if (!data.success) {
     return <div>No Data found</div>;
@@ -26,9 +24,19 @@ const B2BScholarshipPackage = async () => {
         <h1 className="text-2xl md:text-3xl lg:text-4xl mb-6 font-bold text-red-800">
           B2B scholarship package
         </h1>
-        <Link href={"/b2b/dashboard/services-pricing"}>
+        {/* <Link href={"/b2b/dashboard/services-pricing"}>
           <button className="text-2xl px-3 py-2 rounded-xl border border-red-700 bg-red-700 text-white font-bold">
-            Service Charge
+           B2B Service Charge
+          </button>
+        </Link> */}
+        <Link href="/b2b/dashboard/services-pricing">
+          <button
+            className="group relative overflow-hidden rounded-xl px-6 py-3 font-semibold text-white 
+  bg-linear-to-r from-red-600 to-red-700 
+  transition-all duration-300 ease-in-out 
+  hover:scale-105 hover:shadow-xl hover:from-red-700 hover:to-red-800 hover:cursor-pointer"
+          >
+            <span className="relative z-10 text-lg">B2B Service Charge</span>
           </button>
         </Link>
       </div>

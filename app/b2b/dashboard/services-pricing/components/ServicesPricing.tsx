@@ -152,7 +152,7 @@ const ServicesPricing: React.FC = () => {
     "Thailand",
     "Malaysia",
     "Australia",
-    
+    "Singapore",
   ];
 
   return (
@@ -329,7 +329,7 @@ const ServicesPricing: React.FC = () => {
         </div>
 
         {/* Partner Section */}
-        <div className="mb-12">
+        {/* <div className="mb-12">
           <div
             className="rounded-2xl p-6 md:p-8 text-white"
             style={{
@@ -351,7 +351,7 @@ const ServicesPricing: React.FC = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Regional Offices */}
         <div className="bg-white rounded-xl shadow-sm p-6">
