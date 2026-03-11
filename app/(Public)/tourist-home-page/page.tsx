@@ -63,7 +63,7 @@ const TouristHomePage = async () => {
         />
       </div>
       <div>
-        <TouristHomePackages packages={packageOfRes} from={from} />
+        <TouristHomePackages packages={packageOfRes} />
         {/* View More Button */}
         <div className="flex justify-center mt-8">
           <Link href="/tourist-home-page/package">

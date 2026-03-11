@@ -33,7 +33,7 @@ const InternationalPackage = async () => {
           <TouristFilter allPackage={result} />
         </div>
         <div>
-          <TouristHomePackages packages={result} from={from} />
+          <TouristHomePackages packages={result} />
         </div>
       </div>
     </div>

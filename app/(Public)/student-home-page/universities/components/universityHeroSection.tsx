@@ -16,8 +16,10 @@ interface UniversityHeroSectionProps {
 
 export default function UniversityHeroSection({
   university,
+  source,
 }: {
   university: ScholarshipCardProps;
+  source?: { from?: string; form: string; b2bId: string };
 }) {
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -110,30 +112,57 @@ export default function UniversityHeroSection({
         </div>
 
         {/* Apply Now Button - Right Aligned */}
-        <div className="flex gap-6 justify-end my-6 md:my-0">
-          <div
-            className={`flex justify-end transition-all duration-700 delay-400 ${isLoaded ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"}`}
-          >
-            <Link
-              href={`/student-home-page/student-package-offer/${university._id}`}
-              rel="noopener noreferrer"
-              className="bg-red-600 hover:bg-red-700 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 whitespace-nowrap text-xs md:text-lg flex justify-center items-center"
+        {source?.b2bId && source.form ? (
+          <div className="flex gap-6 justify-end my-6 md:my-0">
+            <div
+              className={`flex justify-end transition-all duration-700 delay-400 ${isLoaded ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"}`}
             >
-              View Package
-            </Link>
-          </div>
-          <div
-            className={`flex justify-end transition-all duration-700 delay-400 ${isLoaded ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"}`}
-          >
-            <Link
-              href={`/student-home-page/student-package-offer/user_application_form/${university._id}`}
-              rel="noopener noreferrer"
-              className="bg-red-600 hover:bg-red-700 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 text-xs md:text-lg flex justify-center items-center"
+              <Link
+                href={`/student-home-page/student-package-offer/${university._id}?b2bId=${source?.b2bId}&form=${source.form}`}
+                rel="noopener noreferrer"
+                className="bg-red-700 hover:bg-red-800 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 whitespace-nowrap text-xs md:text-lg flex justify-center items-center"
+              >
+                View Package
+              </Link>
+            </div>
+            <div
+              className={`flex justify-end transition-all duration-700 delay-400 ${isLoaded ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"}`}
             >
-              Apply now
-            </Link>
+              <Link
+                href={`/student-home-page/student-package-offer/user_application_form/${university._id}?b2bId=${source?.b2bId}&form=${source.form}`}
+                rel="noopener noreferrer"
+                className="bg-red-600 hover:bg-red-700 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 text-xs md:text-lg flex justify-center items-center"
+              >
+                Apply now
+              </Link>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex gap-6 justify-end my-6 md:my-0">
+            <div
+              className={`flex justify-end transition-all duration-700 delay-400 ${isLoaded ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"}`}
+            >
+              <Link
+                href={`/student-home-page/student-package-offer/${university._id}`}
+                rel="noopener noreferrer"
+                className="bg-red-700 hover:bg-red-800 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 whitespace-nowrap text-xs md:text-lg flex justify-center items-center"
+              >
+                View Package
+              </Link>
+            </div>
+            <div
+              className={`flex justify-end transition-all duration-700 delay-400 ${isLoaded ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"}`}
+            >
+              <Link
+                href={`/student-home-page/student-package-offer/user_application_form/${university._id}`}
+                rel="noopener noreferrer"
+                className="bg-red-600 hover:bg-red-700 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105 text-xs md:text-lg flex justify-center items-center"
+              >
+                Apply now
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

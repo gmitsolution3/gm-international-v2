@@ -6,11 +6,15 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
 interface ParamsProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ b2bId: string; form: string }>;
 }
 
-const Application = async ({ params }: ParamsProps) => {
+const Application = async ({ params, searchParams }: ParamsProps) => {
   const { id } = await params;
+  const { b2bId, form } = await searchParams;
+
+  const source = { b2bId, form };
   const session: any = await getServerSession(authConfig);
 
   const res = await fetch(
@@ -26,6 +30,8 @@ const Application = async ({ params }: ParamsProps) => {
 
   const result = await res.json();
 
+  console.log({source})
+
   return (
     <div>
       <Suspense
@@ -35,7 +41,11 @@ const Application = async ({ params }: ParamsProps) => {
           </div>
         }
       >
-        <ScholarshipApplicationForm packageData={result} session={session} />
+        <ScholarshipApplicationForm
+          packageData={result}
+          session={session}
+          source={source}
+        />
       </Suspense>
     </div>
   );

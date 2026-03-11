@@ -17,12 +17,17 @@ interface UniversityDetailsPageProps {
 
 export default function UniversityDetailsPage({
   university,
+  source,
 }: {
   university: ScholarshipCardProps;
+  source?: { from?: string; form: string; b2bId: string };
 }) {
+
+  console.log({source: source})
+
   return (
     <main className="min-h-screen bg-white">
-      <UniversityHeroSection university={university} />
+      <UniversityHeroSection university={university} source={source} />
 
       {/* Description Section */}
       <section className="px-6 md:px-10 lg:px-16 py-12">
@@ -47,7 +52,7 @@ export default function UniversityDetailsPage({
             <PackageDescriptionView html={university.universityDescription} />
           </div>
           <div className="my-6 p-8 border border-gray-200 rounded-2xl">
-            <YoutubeVideoPlayer url={university?.universityVideoLink}/>
+            <YoutubeVideoPlayer url={university?.universityVideoLink} />
           </div>
         </div>
       </section>

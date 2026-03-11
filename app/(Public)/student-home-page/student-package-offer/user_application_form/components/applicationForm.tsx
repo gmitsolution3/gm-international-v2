@@ -71,6 +71,7 @@ interface FormData {
   gradeOrGPA: string;
   majorSubject: string;
   source: string | null;
+  client?: { b2bId: string; form: string };
 }
 
 interface EducationDetails {
@@ -230,11 +231,13 @@ interface Package {
 interface PackageProps {
   packageData: ScholarshipCardProps;
   session?: any;
+  source: { b2bId: string; form: string };
 }
 
 export default function ScholarshipApplicationForm({
   packageData,
   session,
+  source,
 }: PackageProps) {
   const [formData, setFormData] = useState<FormData>({
     applicantId: `APP-${Date.now()}`,
@@ -259,7 +262,6 @@ export default function ScholarshipApplicationForm({
     jobLetterAvailable: false,
     studyPurpose: "",
     additionalInfo: "",
-
     highestQualification: "",
     passingYear: "",
     instituteName: "",
@@ -269,8 +271,9 @@ export default function ScholarshipApplicationForm({
     createdAt: new Date(),
     createdBy: session?.user?.email,
     source: session?.user?.userRole,
+    client: source,
   });
- 
+
   const [documentDetails, setDocumentDetails] = useState<{
     [key: string]: DocumentUpload;
   }>({
@@ -363,8 +366,6 @@ export default function ScholarshipApplicationForm({
     cv: { name: "CV", file: null, url: "", type: "pdf", required: true },
   });
 
-  
-
   const [uploadingDocId, setUploadingDocId] = useState<string | null>(null);
 
   const handleInputChange = (field: string, value: string | boolean) => {
@@ -446,9 +447,6 @@ export default function ScholarshipApplicationForm({
     }));
   };
 
-  // const packageSemesters: string[] = packageData.semester.map((s) => s.value);
-  // const language: string[] = packageData.languages.map((l) => l.value);
-  // const coverage: string[] = packageData.coverages.map((c) => c.value);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -486,7 +484,7 @@ export default function ScholarshipApplicationForm({
       const uploadedDocuments: { [key: string]: string } = {};
       Object.entries(documentDetails).forEach(([key, doc]) => {
         if (doc.file) {
-          uploadedDocuments[key] = doc.url; // Store Cloudinary URL
+          uploadedDocuments[key] = doc.url;
         }
       });
 

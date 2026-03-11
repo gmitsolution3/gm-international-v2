@@ -7,16 +7,16 @@ import { authConfig } from "@/auth.config";
 
 interface OfferSidebarProps {
   packageSidebarInfo: ScholarshipCardProps;
-  source: string | undefined;
+  source?: { form: string | undefined; b2bId: string | undefined };
 }
 
 export async function OfferSidebar({
   packageSidebarInfo,
   source,
 }: OfferSidebarProps) {
+  const session: any = await getServerSession(authConfig);
 
-  const session:any =await getServerSession(authConfig)
-
+  console.log({ source });
 
   const {
     _id,
@@ -73,30 +73,51 @@ export async function OfferSidebar({
             <span className="font-medium">{applicationFee}</span>
           </div>
           {session?.user?.userRole === "b2b" && (
-              <div className="flex justify-between text-sm border-b border-border pb-3">
-                <span className="text-muted-foreground">Service Fee:</span>
-                <span className="font-medium">{serviceFee}</span>
-              </div>
-            )}
+            <div className="flex justify-between text-sm border-b border-border pb-3">
+              <span className="text-muted-foreground">Service Fee:</span>
+              <span className="font-medium">{serviceFee}</span>
+            </div>
+          )}
         </div>
-        <div>
-          <Link
-            href={`/student-home-page/student-package-offer/user_application_form/${_id}`}
-            className="hover:cursor-pointer"
-          >
-            <Button className="w-full bg-destructive hover:bg-destructive/90 text-primary-foreground font-semibold h-11 hover:cursor-pointer">
-              Apply Now
-            </Button>
-          </Link>
-          <Link
-            href={`/student-home-page/universities/${_id}`}
-            className="hover:cursor-pointer"
-          >
-            <button className="w-full hover:bg-destructive/90 border-2 hover:text-white rounded-lg font-semibold h-11 hover:cursor-pointer mt-5">
-              View University Details
-            </button>
-          </Link>
-        </div>
+        {source?.form && source.b2bId ? (
+          <div>
+            <Link
+              href={`/student-home-page/student-package-offer/user_application_form/${_id}?b2bId=${source.b2bId}&form=${source.form}`}
+              className="hover:cursor-pointer"
+            >
+              <Button className="w-full bg-destructive hover:bg-destructive/90 text-primary-foreground font-semibold h-11 hover:cursor-pointer">
+                Apply Now
+              </Button>
+            </Link>
+            <Link
+              href={`/student-home-page/universities/${_id}?b2bId=${source.b2bId}&form=${source.form}`}
+              className="hover:cursor-pointer"
+            >
+              <button className="w-full hover:bg-destructive/90 border-2 hover:text-white rounded-lg font-semibold h-11 hover:cursor-pointer mt-5">
+                View University Details
+              </button>
+            </Link>
+          </div>
+        ) : (
+          <div>
+            <Link
+              href={`/student-home-page/student-package-offer/user_application_form/${_id}`}
+              className="hover:cursor-pointer"
+            >
+              <Button className="w-full bg-destructive hover:bg-destructive/90 text-primary-foreground font-semibold h-11 hover:cursor-pointer">
+                Apply Now
+              </Button>
+            </Link>
+            <Link
+              href={`/student-home-page/universities/${_id}`}
+              className="hover:cursor-pointer"
+            >
+              <button className="w-full hover:bg-destructive/90 border-2 hover:text-white rounded-lg font-semibold h-11 hover:cursor-pointer mt-5">
+                View University Details
+              </button>
+            </Link>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

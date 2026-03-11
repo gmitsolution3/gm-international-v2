@@ -2,25 +2,22 @@ import React, { Suspense } from "react";
 import { TouristUserForm } from "./components/touristUserForm";
 import Loader from "@/components/ui/loader";
 
-interface Params {
-  id: string;
-  source: string;
-}
-
 interface ParamsProps {
-  searchParams: Params;
+  searchParams: { id: string; b2bId: string; form: string };
 }
 
 const BookingForm = async ({ searchParams }: ParamsProps) => {
-  const params = await searchParams;
+  const { id, b2bId, form } = await searchParams;
 
-  const id = params.id;
+  const source = { b2bId, form };
+
+  console.log({source: source})
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/details/${id}`,
     {
       next: { revalidate: 300 },
-    }
+    },
   );
 
   const result = await res.json();
@@ -34,7 +31,7 @@ const BookingForm = async ({ searchParams }: ParamsProps) => {
           </div>
         }
       >
-        <TouristUserForm touristPackage={result} />
+        <TouristUserForm touristPackage={result} source={source} />
       </Suspense>
     </div>
   );

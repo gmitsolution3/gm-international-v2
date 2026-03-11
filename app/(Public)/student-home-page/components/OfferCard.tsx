@@ -31,9 +31,10 @@ export interface ScholarshipCardProps {
 interface OfferCardProps {
   offer: ScholarshipCardProps;
   form?: string;
+  b2bId?:string;
 }
 
-const OfferCard = ({ offer, form }: OfferCardProps) => {
+const OfferCard = ({ offer, form, b2bId }: OfferCardProps) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   const formatDate = (dateString: string): string => {
@@ -102,7 +103,7 @@ const OfferCard = ({ offer, form }: OfferCardProps) => {
             label="Deadline"
             value={formatDate(offer.deadline)}
           />
-          {form === "b2b" && (
+          {form === "b2b" && b2bId && (
             <DetailRow
               icon={<TbCoinTakaFilled size={22} />}
               label="B2B Price"
@@ -110,18 +111,40 @@ const OfferCard = ({ offer, form }: OfferCardProps) => {
             />
           )}
         </div>
+        {b2bId ? (
+          <Link href={`/student-home-page/student-package-offer/${offer._id}?b2bId=${b2bId}&form=${form}`}>
+            <button
+              // onClick={onApply}
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-white text-sm font-semibold transition-all duration-300 hover:shadow-md transform hover:scale-105"
+              style={{ backgroundColor: "#CA2328" }}
+            >
+              View Details
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </Link>
+        ) : (
+          <Link href={`/student-home-page/student-package-offer/${offer._id}`}>
+            <button
+              // onClick={onApply}
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-white text-sm font-semibold transition-all duration-300 hover:shadow-md transform hover:scale-105"
+              style={{ backgroundColor: "#CA2328" }}
+            >
+              View Details
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </Link>
+        )}
 
         {/* Button */}
-        <Link href={`/student-home-page/student-package-offer/${offer._id}`}>
+        {/* <Link href={`/student-home-page/student-package-offer/${offer._id}`}>
           <button
-            // onClick={onApply}
             className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-white text-sm font-semibold transition-all duration-300 hover:shadow-md transform hover:scale-105"
             style={{ backgroundColor: "#CA2328" }}
           >
             View Details
             <ArrowRight className="w-4 h-4" />
           </button>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

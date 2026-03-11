@@ -271,7 +271,7 @@ import SimilarPackageCard from "../../../components/home/SimilarPackageCard";
 
 interface PackageDetailsProps {
   packageData: TourPackageFormData;
-  source: string | undefined;
+  source?: { b2bId?: string; form?: string };
 }
 
 const PackageDetails = ({ packageData, source }: PackageDetailsProps) => {
@@ -330,6 +330,8 @@ const PackageDetails = ({ packageData, source }: PackageDetailsProps) => {
   const getDestinationCount = () => {
     return packageData.tour_plan.length;
   };
+
+  // console.log({source: source})
 
   return (
     <div className="min-h-screen bg-linear-to-b from-gray-50 to-white">
@@ -511,7 +513,7 @@ const PackageDetails = ({ packageData, source }: PackageDetailsProps) => {
                 </span>
                 <span className="text-gray-500">/ person</span>
               </div>
-              {source === "b2b" &&
+              {source?.form === "b2b" &&
                 packageData.isB2B &&
                 packageData.b2b_price > 0 && (
                   <div className="mt-2">
@@ -525,21 +527,39 @@ const PackageDetails = ({ packageData, source }: PackageDetailsProps) => {
                 )}
             </div>
             <div className="flex gap-3">
-              <Link
-                href={`/tourist-home-page/package/booking-form?id=${packageData._id}&source=${source}`}
-              >
-                <Button
-                  className="group relative inline-flex h-14 items-center justify-center overflow-hidden 
+              {source?.b2bId && source.form ? (
+                <Link
+                  href={`/tourist-home-page/package/booking-form?id=${packageData._id}&b2bId=${source.b2bId}&form=${source.form}`}
+                >
+                  <Button
+                    className="group relative inline-flex h-14 items-center justify-center overflow-hidden 
                     bg-linear-to-r from-red-600 to-red-500 px-8 font-medium text-white 
                     transition-all hover:from-red-700 hover:to-red-600 hover:scale-105 
                     hover:cursor-pointer rounded-xl shadow-lg hover:shadow-xl text-lg"
+                  >
+                    <span className="flex items-center gap-2">
+                      Book Now
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Button>
+                </Link>
+              ) : (
+                <Link
+                  href={`/tourist-home-page/package/booking-form?id=${packageData._id}`}
                 >
-                  <span className="flex items-center gap-2">
-                    Book Now
-                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </span>
-                </Button>
-              </Link>
+                  <Button
+                    className="group relative inline-flex h-14 items-center justify-center overflow-hidden 
+                    bg-linear-to-r from-red-600 to-red-500 px-8 font-medium text-white 
+                    transition-all hover:from-red-700 hover:to-red-600 hover:scale-105 
+                    hover:cursor-pointer rounded-xl shadow-lg hover:shadow-xl text-lg"
+                  >
+                    <span className="flex items-center gap-2">
+                      Book Now
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Button>
+                </Link>
+              )}
               <Button
                 className="h-14 px-8 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all font-medium"
                 variant="outline"
@@ -789,15 +809,30 @@ const PackageDetails = ({ packageData, source }: PackageDetailsProps) => {
                 </div>
               ) : similarPackages.length > 0 ? (
                 <div className="space-y-3">
-                  {similarPackages.map((pkg) => (
-                    <Link href={`tourist-home-page/package/${pkg._id}`}>
-                      <SimilarPackageCard
-                        key={pkg._id}
-                        packageData={pkg}
-                        source={source}
-                      />
-                    </Link>
-                  ))}
+                  {source?.b2bId && source.form ? (
+                    <div>
+                      {similarPackages.map((pkg) => (
+                        // <Link href={`tourist-home-page/package/${pkg._id}?b2bId=${source.b2bId}&form=${source.form}`}>
+                          <SimilarPackageCard
+                            key={pkg._id}
+                            packageData={pkg}
+                            source={source}
+                          />
+                        //  </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <div>
+                      {similarPackages.map((pkg) => (
+                        // <Link href={`tourist-home-page/package/${pkg._id}`}>
+                          <SimilarPackageCard
+                            key={pkg._id}
+                            packageData={pkg} 
+                          />
+                        // </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ) : (
                 <p className="text-gray-500 text-sm text-center py-4">

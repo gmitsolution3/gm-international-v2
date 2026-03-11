@@ -622,46 +622,88 @@ const DealForm: React.FC<PaymentFormProps> = ({
                     </div>
                   )}
                   {selectedGateway === "3" && (
-                    <div className="w-full md:w-105 bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
-                      <h4 className="text-lg font-semibold text-gray-800 mb-4">
-                        Bank Transfer Details
-                      </h4>
+                    <>
+                      <div className="w-full md:w-105 bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                        <h4 className="text-lg font-semibold text-gray-800 mb-4">
+                          Bank Transfer Details
+                        </h4>
 
-                      <div className="space-y-3 text-sm">
-                        <div className="flex justify-between border-b pb-2">
-                          <span className="text-gray-500">Bank Name</span>
-                          <span className="font-medium text-gray-800">
-                            BANK OF CHINA
-                          </span>
+                        <div className="space-y-3 text-sm">
+                          <div className="flex justify-between border-b pb-2">
+                            <span className="text-gray-500">Bank Name</span>
+                            <span className="font-medium text-gray-800">
+                              BANK OF CHINA
+                            </span>
+                          </div>
+
+                          <div className="flex justify-between border-b pb-2">
+                            <span className="text-gray-500">Account Name</span>
+                            <span className="font-medium text-gray-800">
+                              ISLAM MD ASHRAFUL
+                            </span>
+                          </div>
+
+                          <div className="flex justify-between border-b pb-2">
+                            <span className="text-gray-500">Account No</span>
+                            <span className="font-medium text-gray-800">
+                              275287115044
+                            </span>
+                          </div>
+
+                          <div className="flex justify-between">
+                            <span className="text-gray-500">Card No</span>
+                            <span className="font-medium text-gray-800">
+                              6216610200020867143
+                            </span>
+                          </div>
                         </div>
 
-                        <div className="flex justify-between border-b pb-2">
-                          <span className="text-gray-500">Account Name</span>
-                          <span className="font-medium text-gray-800">
-                            ISLAM MD ASHRAFUL
-                          </span>
-                        </div>
-
-                        <div className="flex justify-between border-b pb-2">
-                          <span className="text-gray-500">Account No</span>
-                          <span className="font-medium text-gray-800">
-                            275287115044
-                          </span>
-                        </div>
-
-                        <div className="flex justify-between">
-                          <span className="text-gray-500">Card No</span>
-                          <span className="font-medium text-gray-800">
-                            6216610200020867143
-                          </span>
+                        <div className="mt-4 text-xs text-gray-500 bg-gray-50 p-3 rounded-lg">
+                          After sending payment, our team will verify and
+                          activate your service.
                         </div>
                       </div>
+                      <div className="w-full md:w-105 bg-white border border-gray-200 rounded-xl p-6 shadow-sm">
+                        <h4 className="text-lg font-semibold text-gray-800 mb-4">
+                          Bangladesh Bank Transfer Details
+                        </h4>
 
-                      <div className="mt-4 text-xs text-gray-500 bg-gray-50 p-3 rounded-lg">
-                        After sending payment, our team will verify and activate
-                        your service.
+                        <div className="space-y-3 text-sm">
+                          <div className="flex justify-between border-b pb-2">
+                            <span className="text-gray-500">Bank Name</span>
+                            <span className="font-medium text-gray-800">
+                              BRAC Bank PLC
+                            </span>
+                          </div>
+
+                          <div className="flex justify-between border-b pb-2">
+                            <span className="text-gray-500">Account Name</span>
+                            <span className="font-medium text-gray-800">
+                              GM International
+                            </span>
+                          </div>
+
+                          <div className="flex justify-between border-b pb-2">
+                            <span className="text-gray-500">Account No</span>
+                            <span className="font-medium text-gray-800">
+                              2074848480001
+                            </span>
+                          </div>
+
+                          <div className="flex justify-between">
+                            <span className="text-gray-500">Branch</span>
+                            <span className="font-medium text-gray-800">
+                              Mirpur
+                            </span>
+                          </div>
+                        </div>
+
+                        <div className="mt-4 text-xs text-gray-500 bg-gray-50 p-3 rounded-lg">
+                          After sending payment, our team will verify and
+                          activate your service.
+                        </div>
                       </div>
-                    </div>
+                    </>
                   )}
 
                   <div>

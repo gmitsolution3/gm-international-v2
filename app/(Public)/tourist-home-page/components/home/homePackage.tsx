@@ -14,7 +14,6 @@
 // import { Button } from "@headlessui/react";
 // import { TourPackageFormData } from "@/app/dashboard/tourist/admin/manage-package/components/TourPackageForm";
 
-
 // interface TouristHomePackagesProps {
 //   packages: TourPackageFormData[];
 //   from: string;
@@ -192,7 +191,7 @@
 //                       href={`/tourist-home-page/package/${pkg._id}?from=${from}`}
 //                     >
 //                       <Button
-//                         className="w-full group relative flex-1 inline-flex h-12 items-center justify-center overflow-hidden 
+//                         className="w-full group relative flex-1 inline-flex h-12 items-center justify-center overflow-hidden
 //           bg-linear-to-b from-[#CA2328] via-[#FF5E63] to-[#FF5E63] px-15 font-medium text-neutral-200 transition hover:scale-105 hover:cursor-pointer rounded-2xl"
 //                       >
 //                         <span className="flex gap-2">
@@ -238,7 +237,6 @@
 //   );
 // }
 
-
 "use client";
 
 import React, { useEffect, useState, useRef } from "react";
@@ -266,16 +264,14 @@ import "swiper/css/pagination";
 import "swiper/css/autoplay";
 import { TourPackageFormData } from "@/app/dashboard/tourist/admin/manage-package/components/TourPackageForm";
 
-
-
 interface TouristHomePackagesProps {
   packages: TourPackageFormData[];
-  from?: string;
+  source?: { b2bId: string; form: string };
 }
 
 export default function TouristHomePackages({
   packages,
-  from,
+  source,
 }: TouristHomePackagesProps) {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState<{
@@ -333,7 +329,9 @@ export default function TouristHomePackages({
       <div className="max-w-7xl mx-auto mb-8">
         <div className="text-center md:text-left">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
-            {from === "b2b" ? "B2B Travel Packages" : "Exclusive Tour Packages"}
+            {source?.form === "b2b"
+              ? "B2B Travel Packages"
+              : "Exclusive Tour Packages"}
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto md:mx-0">
             Discover amazing destinations with our carefully curated packages
@@ -502,34 +500,54 @@ export default function TouristHomePackages({
                           <span className="text-gray-500 text-xs">/person</span>
                         </div>
                       </div>
-                      {pkg.isB2B && pkg.b2b_price > 0 && from === "b2b" && (
-                        <div className="text-right">
-                          <p className="text-xs text-emerald-600 font-semibold">
-                            B2B Price
-                          </p>
-                          <p className="text-emerald-600 font-bold">
-                            {formatPrice(pkg.b2b_price)}
-                          </p>
-                        </div>
-                      )}
+                      {pkg.isB2B &&
+                        pkg.b2b_price > 0 &&
+                        source?.form === "b2b" && (
+                          <div className="text-right">
+                            <p className="text-xs text-emerald-600 font-semibold">
+                              B2B Price
+                            </p>
+                            <p className="text-emerald-600 font-bold">
+                              {formatPrice(pkg.b2b_price)}
+                            </p>
+                          </div>
+                        )}
                     </div>
 
                     {/* View Details Button */}
-                    <Link
-                      href={`/tourist-home-page/package/${pkg._id}?from=${from}`}
-                    >
-                      <Button
-                        className="w-full group relative inline-flex h-12 items-center justify-center overflow-hidden 
+                    {source?.b2bId && source.form ? (
+                      <Link
+                        href={`/tourist-home-page/package/${pkg._id}?b2bId=${source?.b2bId}&form=${source?.form}`}
+                      >
+                        <Button
+                          className="w-full group relative inline-flex h-12 items-center justify-center overflow-hidden 
                           bg-linear-to-r from-red-600 to-red-500 px-6 font-medium text-white 
                           transition-all hover:from-red-700 hover:to-red-600 hover:scale-[1.02] 
                           hover:cursor-pointer rounded-xl shadow-lg hover:shadow-xl"
+                        >
+                          <span className="flex items-center gap-2">
+                            View Details
+                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          </span>
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Link
+                        href={`/tourist-home-page/package/${pkg._id}`}
                       >
-                        <span className="flex items-center gap-2">
-                          View Details
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </span>
-                      </Button>
-                    </Link>
+                        <Button
+                          className="w-full group relative inline-flex h-12 items-center justify-center overflow-hidden 
+                          bg-linear-to-r from-red-600 to-red-500 px-6 font-medium text-white 
+                          transition-all hover:from-red-700 hover:to-red-600 hover:scale-[1.02] 
+                          hover:cursor-pointer rounded-xl shadow-lg hover:shadow-xl"
+                        >
+                          <span className="flex items-center gap-2">
+                            View Details
+                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          </span>
+                        </Button>
+                      </Link>
+                    )}
 
                     {/* Rating (Static for now - can be dynamic later) */}
                     <div className="mt-3 flex items-center justify-between">

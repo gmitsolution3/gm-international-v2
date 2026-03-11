@@ -7,7 +7,7 @@ import { TourPackageFormData } from "@/app/dashboard/tourist/admin/manage-packag
 
 interface SimilarPackageCardProps {
   packageData: TourPackageFormData;
-  source: string | undefined;
+  source?: { b2bId?: string; form?: string };
 }
 
 const SimilarPackageCard = ({
@@ -22,9 +22,11 @@ const SimilarPackageCard = ({
     }).format(price);
   };
 
+  // console.log({source: source})
+
   return (
     <Link
-      href={`/tourist-home-page/package/${packageData._id}?from=${source}`}
+      href={`/tourist-home-page/package/${packageData._id}?${source && `b2bId=${source.b2bId}&form=${source.form}`}`}
       className="block group"
     >
       <div className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-red-200">
@@ -82,7 +84,7 @@ const SimilarPackageCard = ({
           </div>
 
           {/* B2B Price (if applicable) */}
-          {source === "b2b" &&
+          {source?.form === "b2b" &&
             packageData.isB2B &&
             packageData.b2b_price > 0 && (
               <div className="mt-2 pt-2 border-t border-gray-100">

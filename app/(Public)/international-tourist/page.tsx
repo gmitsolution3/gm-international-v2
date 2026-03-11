@@ -65,7 +65,7 @@ const InternationalTourist = async () => {
         />
       </div>
       <div>
-        <TouristHomePackages packages={result} from={from} />
+        <TouristHomePackages packages={result} />
         <div className="flex justify-center">
           <Link href="/international-tourist/international-tourist-package">
             <Button className="bg-red-600 hover:bg-red-700 text-white rounded-full px-6 py-2 md:px-8 md:py-3 font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95">

@@ -61,6 +61,7 @@ interface InternationalPackage {
 
 interface PackageProps {
   touristPackage: InternationalPackage;
+  source?: {b2bId: string; form: string};
 }
 
 // --- Zod Schema ---
@@ -107,16 +108,16 @@ const formSchema = z.object({
   cardCvc: z.string().optional(),
   createdAt: z.date().default(new Date()),
   createdBy: z.string().optional(),
-  source: z.string(),
+  client: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-export function TouristUserForm({ touristPackage }: PackageProps) {
+export function TouristUserForm({ touristPackage, source }: PackageProps) {
   const { data: session } = useSession();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const searchParams = useSearchParams();
-  const source = searchParams.get("source") || undefined;
+  // const source = searchParams.get("source") || undefined;
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema) as any,
@@ -126,7 +127,7 @@ export function TouristUserForm({ touristPackage }: PackageProps) {
       transportation: [],
       hotelCategory: [],
       visaStatus: "already-have",
-      source: source,
+      
     },
   });
 
@@ -162,6 +163,7 @@ export function TouristUserForm({ touristPackage }: PackageProps) {
       packageName: touristPackage.packageName,
       dateFrom: touristPackage.startDate,
       endTo: touristPackage.endDate,
+      client: source,
     };
 
     const formData = await fetch(
@@ -172,7 +174,7 @@ export function TouristUserForm({ touristPackage }: PackageProps) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
-      }
+      },
     );
 
     const result = await formData.json();
@@ -206,7 +208,7 @@ export function TouristUserForm({ touristPackage }: PackageProps) {
   const toggleSelection = (
     currentValues: string[],
     value: string,
-    field: keyof FormValues
+    field: keyof FormValues,
   ) => {
     const newValues = currentValues.includes(value)
       ? currentValues.filter((v) => v !== value)
@@ -506,7 +508,7 @@ export function TouristUserForm({ touristPackage }: PackageProps) {
                             toggleSelection(
                               transportation,
                               item,
-                              "transportation"
+                              "transportation",
                             )
                           }
                         />
@@ -620,7 +622,7 @@ export function TouristUserForm({ touristPackage }: PackageProps) {
                               toggleSelection(
                                 hotelCategory,
                                 item,
-                                "hotelCategory"
+                                "hotelCategory",
                               )
                             }
                           />
@@ -631,7 +633,7 @@ export function TouristUserForm({ touristPackage }: PackageProps) {
                             {item}
                           </Label>
                         </div>
-                      )
+                      ),
                     )}
                   </div>
                 </PopoverContent>

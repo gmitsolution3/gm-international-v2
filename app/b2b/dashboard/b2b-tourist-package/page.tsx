@@ -6,19 +6,15 @@ import { authConfig } from "@/auth.config";
 
 const B2BTouristPackage = async () => {
   const session = await getServerSession(authConfig);
-
   const userId = (session?.user as any)?.id;
-
   const data = await getB2BTouristPackage(userId);
-
-
-  const from = "b2b";
+  const source = { b2bId: userId, form: "b2b" };
 
   return (
     <div className="px-4 py-12 sm:px-6 md:px-8 lg:px-12 bg-background">
       {data.data.length > 0 ? (
         <div className="max-w-7xl mx-auto">
-          <TouristHomePackages packages={data.data} from={from} />
+          <TouristHomePackages packages={data.data} source={source} />
         </div>
       ) : (
         <div>No data found in db</div>

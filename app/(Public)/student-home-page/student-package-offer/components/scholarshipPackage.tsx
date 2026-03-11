@@ -47,6 +47,7 @@ export default function ScholarshipPackage({
 }: {
   packageData: ScholarshipCardProps[];
   filterData: ScholarshipFilterResponse;
+
 }) {
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
   const [selectedCity, setSelectedCity] = useState<string | null>(null);

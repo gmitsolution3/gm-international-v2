@@ -4,7 +4,7 @@ import { AiOutlineGlobal } from "react-icons/ai";
 
 interface OfferDetailsPageProps {
   params: { id: string };
-  searchParams: { from?: string };
+  searchParams: { from?: string; form: string; b2bId: string };
 }
 
 export default async function OfferDetailsPage({
@@ -12,37 +12,35 @@ export default async function OfferDetailsPage({
   searchParams,
 }: OfferDetailsPageProps) {
   const { id } = await params;
+  const { form, b2bId } = await searchParams;
+  const source = { form, b2bId };
 
-  const sParams = await searchParams;
-  const source = sParams.from;
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management/${id}`,
     {
       cache: "no-store",
-    }
+    },
   );
 
   const packageDetails = await res.json();
 
- const {
-   _id,
-   city,
-   country,
-   deadline,
-   language,
-   duration,
-   startingDate,
-   thumbnail,
-   applicationFee,
-   description,
-   universityDescription,
-   serviceFee,
-   universityName,
-   universityURL,
- } = packageDetails;
-
-
+  const {
+    _id,
+    city,
+    country,
+    deadline,
+    language,
+    duration,
+    startingDate,
+    thumbnail,
+    applicationFee,
+    description,
+    universityDescription,
+    serviceFee,
+    universityName,
+    universityURL,
+  } = packageDetails;
 
   return (
     <div className="min-h-screen bg-background">

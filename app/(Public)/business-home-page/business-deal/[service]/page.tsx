@@ -1,11 +1,3 @@
-// import React from 'react'
-
-// const ServiceComponent = () => {
-//   return (
-//     <div className='min-h-screen max-w-7xl mx-auto'>ServiceComponent</div>
-//   )
-// }
-
 
 // export default ServiceComponent;
 import { notFound } from "next/navigation";
@@ -43,10 +35,6 @@ export default async function ServicePage({ params }: ServicePageProps) {
   if (!serviceConfig) {
     notFound();
   }
-
-
-
-  
 
   return (
     <div className="min-h-screen bg-linear-to-br from-red-50 via-indigo-50 to-purple-50">

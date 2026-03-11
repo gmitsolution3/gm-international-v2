@@ -34,7 +34,7 @@ const TouristAllPackage = async () => {
           <TouristFilter allPackage={data} />
         </div>
         <div>
-          <TouristHomePackages packages={data} from={from} />
+          <TouristHomePackages packages={data} />
         </div>
       </div>
     </div>

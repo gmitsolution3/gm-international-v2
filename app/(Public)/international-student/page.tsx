@@ -78,7 +78,7 @@ const InternationalStudent = async () => {
         {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-10">
           {result.map((offer: any, index: number) => (
-            <OfferCard key={index} offer={offer} form={from} />
+            <OfferCard key={index} offer={offer} />
           ))}
         </div>
 

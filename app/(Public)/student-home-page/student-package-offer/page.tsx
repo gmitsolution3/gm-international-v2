@@ -1,20 +1,29 @@
 import React from "react";
 import ScholarshipPackage from "./components/scholarshipPackage";
 
-const ScholarshipPackageList = async () => {
+
+
+const ScholarshipPackageFetch = async () => {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/scholarship-package`,
   );
-  const data = await response.json();
+  return await response.json();
+};
 
+const FilteredData = async () => {
   const fData = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-filtered-data`,
   );
 
-  const filterData = await fData.json();
+  return await fData.json();
+};
 
-
-
+const ScholarshipPackageList = async () => {
+  
+  const [data, filterData] = await Promise.all([
+    ScholarshipPackageFetch(),
+    FilteredData(),
+  ]);
 
   return (
     <div className="min-h-screen">
