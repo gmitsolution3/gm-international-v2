@@ -84,7 +84,7 @@ const staggerContainer = {
 };
 
 const BusinessVisaB2BRate = [
-  "Single Entry: 9500 BDT
+  "Single Entry: 9500 BDT"
 "Single Entry Fresh: 10500 BDT"
 "Double Entry: 14500 BDT"
 "2 Year Multiple Entry: 16500 BDT",
