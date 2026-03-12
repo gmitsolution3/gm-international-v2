@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Calendar, Globe, Clock, ArrowRight } from "lucide-react";
+import { Calendar, Globe, Clock, ArrowRight, BadgeDollarSign } from "lucide-react";
 import { TbCoinTakaFilled } from "react-icons/tb";
 import Link from "next/link";
 
@@ -105,7 +105,7 @@ const OfferCard = ({ offer, form, b2bId }: OfferCardProps) => {
           />
           {form === "b2b" && b2bId && (
             <DetailRow
-              icon={<TbCoinTakaFilled size={22} />}
+              icon={<BadgeDollarSign size={22} />}
               label="B2B Price"
               value={offer.serviceFee}
             />
