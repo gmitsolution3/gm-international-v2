@@ -83,6 +83,12 @@ const staggerContainer = {
   },
 };
 
+const BusinessVisaB2BRate = [
+  "Single Entry 950 USD",
+  "Single Single Entry 950 USD",
+  "2 Year Multiple 950 USD",
+]
+
 export default function VisaPackages({ data }: VisaPackagesProps) {
   const [activeCountry, setActiveCountry] = useState<string>("all");
   const [activeDocumentSection, setActiveDocumentSection] = useState<
@@ -434,78 +440,98 @@ export default function VisaPackages({ data }: VisaPackagesProps) {
 
                   {/* Additional Information */}
                   {pkg.otherInformation && (
-                    <div className="border border-gray-200 rounded-lg overflow-hidden">
-                      <button
-                        onClick={() => toggleInfo(pkg._id)}
-                        className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
-                      >
-                        <div className="flex items-center gap-3">
-                          <Info className="w-5 h-5 text-red-600" />
-                          <span className="font-medium text-gray-900">
-                            Additional Information
-                          </span>
-                        </div>
-                        <ChevronDown
-                          className={`w-5 h-5 text-gray-500 transition-transform ${
-                            expandedInfo[pkg._id] ? "rotate-180" : ""
-                          }`}
-                        />
-                      </button>
+                    <>
+                      <div className="border border-gray-200 rounded-lg overflow-hidden">
+                        <button
+                          onClick={() => toggleInfo(pkg._id)}
+                          className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
+                        >
+                          <div className="flex items-center gap-3">
+                            <Info className="w-5 h-5 text-red-600" />
+                            <span className="font-medium text-gray-900">
+                              {pkg.country.toLocaleLowerCase() === "china"
+                                ? "Tourist visa B2B Rate"
+                                : "Additional Information"}
+                            </span>
+                          </div>
 
-                      <AnimatePresence>
-                        {expandedInfo[pkg._id] && (
-                          <motion.div
-                            initial={{ height: 0, opacity: 0 }}
-                            animate={{ height: "auto", opacity: 1 }}
-                            exit={{ height: 0, opacity: 0 }}
-                            transition={{ duration: 0.2 }}
-                            className="overflow-hidden"
+                          <ChevronDown
+                            className={`w-5 h-5 text-gray-500 transition-transform ${
+                              expandedInfo[pkg._id] ? "rotate-180" : ""
+                            }`}
+                          />
+                        </button>
+
+                        <AnimatePresence>
+                          {expandedInfo[pkg._id] && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.2 }}
+                              className="overflow-hidden"
+                            >
+                              <div
+                                className="p-4 bg-white prose prose-sm max-w-none"
+                                dangerouslySetInnerHTML={{
+                                  __html: pkg.otherInformation,
+                                }}
+                              />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+
+                      {pkg.country.toLowerCase() === "china" && (
+                        <div className="border border-gray-200 rounded-lg overflow-hidden">
+                          <button
+                            onClick={() => toggleInfo(pkg._id + "business")}
+                            className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
                           >
-                            <div
-                              className="p-4 bg-white prose prose-sm max-w-none"
-                              dangerouslySetInnerHTML={{
-                                __html: pkg.otherInformation,
-                              }}
+                            <div className="flex items-center gap-3">
+                              <Info className="w-5 h-5 text-red-600" />
+                              <span className="font-medium text-gray-900">
+                                Business Visa B2B Rate
+                              </span>
+                            </div>
+
+                            <ChevronDown
+                              className={`w-5 h-5 text-gray-500 transition-transform ${
+                                expandedInfo[pkg._id + "business"]
+                                  ? "rotate-180"
+                                  : ""
+                              }`}
                             />
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </div>
+                          </button>
+
+                          <AnimatePresence>
+                            {expandedInfo[pkg._id + "business"] && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                                className="overflow-hidden"
+                              >
+                                <div className="p-4 bg-white space-y-2">
+                                  {BusinessVisaB2BRate.map((rate, index) => (
+                                    <div
+                                      key={index}
+                                      className="flex items-start gap-2 text-sm text-gray-600"
+                                    >
+                                      <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
+                                      <span>{rate}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
-
-                {/* Footer with Actions */}
-                {/* <div className="p-6 bg-gray-50 border-t border-gray-100">
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <button
-                      onClick={() => handleApply(pkg.country, pkg.visaType)}
-                      className="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors flex items-center justify-center gap-2 group"
-                    >
-                      Apply Now
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </button>
-
-                    <div className="flex gap-2">
-                      <button
-                        className="p-3 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                        title="Download Requirements"
-                      >
-                        <Download className="w-5 h-5 text-gray-600" />
-                      </button>
-                      <button
-                        className="p-3 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                        title="Copy Package Info"
-                      >
-                        <Copy className="w-5 h-5 text-gray-600" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-gray-500 text-center mt-4">
-                    Package ID: {pkg._id} • Updated:{" "}
-                    {new Date(pkg.createdAt).toLocaleDateString()}
-                  </p>
-                </div> */}
               </motion.div>
             ))}
           </AnimatePresence>
