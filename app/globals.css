@@ -120,6 +120,11 @@ html {
   scroll-behavior: smooth;
 }
 
+html,
+body {
+  overflow-y: scroll;     
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

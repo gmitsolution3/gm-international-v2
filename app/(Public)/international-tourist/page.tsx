@@ -28,7 +28,8 @@ const InternationalTourist = async () => {
       subtitle: "Your Journey Begins Here",
       description:
         "Discover breathtaking destinations, exciting adventures, and unforgettable travel experiences with our expertly planned tour packages.",
-      image: "https://i.postimg.cc/8cQqs57y/5-jpg.jpg",
+      image:
+        "https://i.postimg.cc/hv9GnRbT/ashraful-pranto-l3Zg9-znzd-Y-unsplash.jpg",
       imageAlt: "International tourist destination",
     },
     {
@@ -37,7 +38,8 @@ const InternationalTourist = async () => {
       subtitle: "Travel Without Worries",
       description:
         "From visa assistance to hotel booking and guided tours, we handle everything so you can enjoy your vacation stress-free.",
-      image: "https://i.postimg.cc/GtwZ924g/6-jpg.jpg",
+      image:
+        "https://i.postimg.cc/Dfs0L1k0/masqurul-islam-Qqe-I36DL-x-A-unsplash.jpg",
       imageAlt: "Happy tourists traveling",
     },
   ];
@@ -54,7 +56,7 @@ const InternationalTourist = async () => {
   ];
   const label = "Tourist document checklist";
 
-  const from = "international";
+  const from = "international-home";
   return (
     <div>
       <div>
@@ -62,6 +64,7 @@ const InternationalTourist = async () => {
           slides={slides}
           checklistItems={checklistItems}
           label={label}
+          from={from}
         />
       </div>
       <div>

@@ -26,10 +26,12 @@ const HeroSlider = ({
   slides,
   checklistItems,
   label,
+  from,
 }: {
   slides: SlideData[];
   checklistItems: string[];
   label: string;
+  from?:string;
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -82,7 +84,9 @@ const HeroSlider = ({
               </div>
 
               {/* Content with improved mobile positioning */}
-              <div className="relative z-10 flex justify-end items-end md:items-center h-full px-4 sm:px-6 lg:px-8 pb-16 md:pb-0">
+              <div
+                className={`relative z-10 flex ${from === "international-home" ? `justify-start` : `justify-end`} items-end md:items-center h-full px-4 sm:px-6 lg:px-8 pb-16 md:pb-0`}
+              >
                 <div
                   className={`text-white max-w-2xl ${getAnimationClasses(
                     index,

@@ -1,7 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
-import { Calendar, Globe, Clock, ArrowRight, BadgeDollarSign } from "lucide-react";
+import {
+  Calendar,
+  Globe,
+  Clock,
+  ArrowRight,
+  BadgeDollarSign,
+} from "lucide-react";
 import { TbCoinTakaFilled } from "react-icons/tb";
 import Link from "next/link";
 
@@ -31,10 +37,11 @@ export interface ScholarshipCardProps {
 interface OfferCardProps {
   offer: ScholarshipCardProps;
   form?: string;
-  b2bId?:string;
+  b2bId?: string;
+  from?: string;
 }
 
-const OfferCard = ({ offer, form, b2bId }: OfferCardProps) => {
+const OfferCard = ({ offer, form, b2bId, from }: OfferCardProps) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   const formatDate = (dateString: string): string => {
@@ -107,12 +114,14 @@ const OfferCard = ({ offer, form, b2bId }: OfferCardProps) => {
             <DetailRow
               icon={<BadgeDollarSign size={22} />}
               label="B2B Price"
-              value={offer.serviceFee}
+              value={offer.b2bPrice as string}
             />
           )}
         </div>
         {b2bId ? (
-          <Link href={`/student-home-page/student-package-offer/${offer._id}?b2bId=${b2bId}&form=${form}`}>
+          <Link
+            href={`/student-home-page/student-package-offer/${offer._id}?b2bId=${b2bId}&form=${form}`}
+          >
             <button
               // onClick={onApply}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-white text-sm font-semibold transition-all duration-300 hover:shadow-md transform hover:scale-105"

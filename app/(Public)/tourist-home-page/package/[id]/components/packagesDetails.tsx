@@ -412,9 +412,9 @@ const PackageDetails = ({ packageData, source }: PackageDetailsProps) => {
             <div className="max-w-7xl mx-auto mb-6">
               <div className="flex flex-wrap gap-2 mb-3">
                 {packageData.isInternationalPackage && (
-                  <span className="px-3 py-1 bg-blue-500/90 backdrop-blur-sm rounded-full text-xs font-medium flex items-center gap-1">
+                  <span className="px-3 py-1 bg-green-800 backdrop-blur-sm rounded-full text-xs font-medium flex items-center gap-1">
                     <Globe className="w-3 h-3" />
-                    International
+                    Bangladesh
                   </span>
                 )}
                 {packageData.is_with_air_ticket && (
@@ -790,56 +790,55 @@ const PackageDetails = ({ packageData, source }: PackageDetailsProps) => {
             </div>
 
             {/* You Might Also Like */}
-            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-              <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
-                <span className="w-1 h-5 bg-red-500 rounded-full"></span>
-                You Might Also Like
-              </h3>
+            {!packageData.isInternationalPackage && (
+              <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+                <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
+                  <span className="w-1 h-5 bg-red-500 rounded-full"></span>
+                  You Might Also Like
+                </h3>
 
-              {loadingSimilar ? (
-                // Loading skeletons
-                <div className="space-y-3">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="animate-pulse">
-                      <div className="h-20 bg-gray-200 rounded-lg mb-2"></div>
-                      <div className="h-4 bg-gray-200 rounded w-3/4 mb-1"></div>
-                      <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                    </div>
-                  ))}
-                </div>
-              ) : similarPackages.length > 0 ? (
-                <div className="space-y-3">
-                  {source?.b2bId && source.form ? (
-                    <div>
-                      {similarPackages.map((pkg) => (
-                        // <Link href={`tourist-home-page/package/${pkg._id}?b2bId=${source.b2bId}&form=${source.form}`}>
+                {loadingSimilar ? (
+                  // Loading skeletons
+                  <div className="space-y-3">
+                    {[1, 2, 3].map((i) => (
+                      <div key={i} className="animate-pulse">
+                        <div className="h-20 bg-gray-200 rounded-lg mb-2"></div>
+                        <div className="h-4 bg-gray-200 rounded w-3/4 mb-1"></div>
+                        <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                      </div>
+                    ))}
+                  </div>
+                ) : similarPackages.length > 0 ? (
+                  <div className="space-y-3">
+                    {source?.b2bId && source.form ? (
+                      <div>
+                        {similarPackages.map((pkg) => (
+                          // <Link href={`tourist-home-page/package/${pkg._id}?b2bId=${source.b2bId}&form=${source.form}`}>
                           <SimilarPackageCard
                             key={pkg._id}
                             packageData={pkg}
                             source={source}
                           />
-                        //  </Link>
-                      ))}
-                    </div>
-                  ) : (
-                    <div>
-                      {similarPackages.map((pkg) => (
-                        // <Link href={`tourist-home-page/package/${pkg._id}`}>
-                          <SimilarPackageCard
-                            key={pkg._id}
-                            packageData={pkg} 
-                          />
-                        // </Link>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <p className="text-gray-500 text-sm text-center py-4">
-                  No similar packages found
-                </p>
-              )}
-            </div>
+                          //  </Link>
+                        ))}
+                      </div>
+                    ) : (
+                      <div>
+                        {similarPackages.map((pkg) => (
+                          // <Link href={`tourist-home-page/package/${pkg._id}`}>
+                          <SimilarPackageCard key={pkg._id} packageData={pkg} />
+                          // </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-sm text-center py-4">
+                    No similar packages found
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>

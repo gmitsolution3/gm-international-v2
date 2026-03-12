@@ -61,7 +61,7 @@ interface InternationalPackage {
 
 interface PackageProps {
   touristPackage: InternationalPackage;
-  source?: {b2bId: string; form: string};
+  source?: { b2bId: string; form: string };
 }
 
 // --- Zod Schema ---
@@ -127,7 +127,6 @@ export function TouristUserForm({ touristPackage, source }: PackageProps) {
       transportation: [],
       hotelCategory: [],
       visaStatus: "already-have",
-      
     },
   });
 
@@ -653,7 +652,7 @@ export function TouristUserForm({ touristPackage, source }: PackageProps) {
                 <SelectTrigger>
                   <SelectValue placeholder="Select method" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position="popper">
                   <SelectItem value="bkash">Bkash</SelectItem>
                   <SelectItem value="credit-card">
                     Credit / Debit Card
