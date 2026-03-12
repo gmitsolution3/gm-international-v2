@@ -35,6 +35,13 @@ interface Program {
   priceUSD: number;
 }
 
+export interface AdditionalService {
+  id: number;
+  service: string;
+  price: string;
+  note?: string;
+}
+
 const ServicesPricing: React.FC = () => {
   const [selectedRegion, setSelectedRegion] = useState<string>("general");
   const [showRegionalAlert, setShowRegionalAlert] = useState<boolean>(false);
@@ -144,6 +151,31 @@ const ServicesPricing: React.FC = () => {
       teachingLanguage: "English or Chinese",
       price: "500 USD",
       priceUSD: 500,
+    },
+  ];
+
+  const additionalServices: AdditionalService[] = [
+    {
+      id: 1,
+      service: "One to One Interview Training",
+      price: "100 USD",
+    },
+    {
+      id: 2,
+      service: "CSCA Exam Training",
+      price: "100 USD",
+      note: "Only for Bachelor Degree Students",
+    },
+    {
+      id: 3,
+      service: "Airport Pick up Service",
+      price: "60 - 100 USD",
+      note: "Depends on city and distance",
+    },
+    {
+      id: 4,
+      service: "Assisting for Registration after coming to China",
+      price: "100 USD",
     },
   ];
 
@@ -327,31 +359,90 @@ const ServicesPricing: React.FC = () => {
             </p>
           </div>
         </div>
+        <div className="mb-12 md:mb-16">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-6">
+            Additional Service and Charges
+          </h2>
 
-        {/* Partner Section */}
-        {/* <div className="mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+            {additionalServices.map((ser) => (
+              <div
+                key={ser.id}
+                className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all transform hover:-translate-y-1 border border-gray-100"
+              >
+                <div
+                  className="px-4 py-3"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, #301314 0%,#CA2328 100%)",
+                  }}
+                >
+                  <h3 className="text-white font-bold text-lg">
+                    {ser.service}
+                  </h3>
+                </div>
+
+                <div className="p-4">
+                  <div className="border-t border-gray-100 pt-3">
+                    <div className="text-xs text-gray-500 mb-1">
+                      Service Charge
+                    </div>
+                    <div className="flex items-baseline justify-between">
+                      <span className="text-2xl font-bold text-red-600">
+                        {ser.price}
+                      </span>
+                    </div>
+                  </div>
+                  {ser.note && (
+                    <div className="mt-4 p-4 bg-red-50 rounded-lg border border-red-100">
+                      <p className="text-sm text-red-800">
+                        <span className="font-bold">Note:</span> {ser.note}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Pricing Note */}
+        </div>
+
+        <div className="mb-12">
           <div
             className="rounded-2xl p-6 md:p-8 text-white"
             style={{
-              background: "linear-gradient(360deg, #301314 0%,#CA2328 100%)",
+              background: "linear-gradient(360deg, #301314 0%, #CA2328 100%)",
             }}
           >
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-              <div>
-                <h3 className="text-xl md:text-2xl font-bold mb-2">
-                  Become a Partner
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              {/* Text Section */}
+              <div className="max-w-3xl">
+                <h3 className="text-xl md:text-2xl font-bold mb-3">
+                  Payment Process
                 </h3>
-                <p className="text-red-100">
-                  For partnership opportunities, contact our team for more
-                  information
+                <p className="text-red-100 mb-3 leading-relaxed">
+                  At GM International, we offer multiple secure payment options
+                  to make the process smooth and convenient for our students.
+                </p>
+
+                <p className="text-red-100 mb-3 leading-relaxed">
+                  All students must make their payments through{" "}
+                  <span className="font-semibold text-white">
+                    GM International official payment channels
+                  </span>
+                  . This ensures your transaction is verified, secure, and
+                  properly recorded.
+                </p>
+
+                <p className="text-red-200 text-sm leading-relaxed">
+                  GM International will not be responsible for payments made
+                  through unofficial or third-party channels.
                 </p>
               </div>
-              <button className="bg-white text-red-600 px-6 py-3 rounded-lg font-semibold hover:bg-red-50 transition-colors whitespace-nowrap">
-                Contact Partner Team
-              </button>
             </div>
           </div>
-        </div> */}
+        </div>
 
         {/* Regional Offices */}
         <div className="bg-white rounded-xl shadow-sm p-6">
@@ -375,21 +466,61 @@ const ServicesPricing: React.FC = () => {
               </div>
             ))}
           </div>
+        </div>
 
-          <div className="mt-6 pt-6 border-t border-gray-100">
-            <p className="text-sm text-gray-500 text-center">
-              Students from these regions should contact local offices for
-              region-specific service charges
-            </p>
+        <div className="mb-12">
+          <div
+            className="rounded-2xl p-6 md:p-8 text-white"
+            style={{
+              background: "linear-gradient(180deg, #301314 0%, #CA2328 100%)",
+            }}
+          >
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+              {/* Text Section */}
+              <div className="max-w-3xl">
+                <h3 className="text-xl md:text-2xl font-bold mb-4">
+                  Payment Terms & Conditions
+                </h3>
+
+                <ul className="space-y-3 text-red-100 leading-relaxed mb-4">
+                  <li>
+                    <span className="font-semibold text-white">(1)</span> During
+                    sending your documents, you need to pay{" "}
+                    <span className="font-semibold text-white">
+                      $80 Application Deposit
+                    </span>{" "}
+                    to start the process.
+                  </li>
+
+                  <li>
+                    <span className="font-semibold text-white">(2)</span> After
+                    getting the{" "}
+                    <span className="font-semibold text-white">
+                      Admission Notice and JW202 copy
+                    </span>
+                    , you need to pay the remaining service charge.
+                  </li>
+                </ul>
+
+                <p className="text-red-200 text-sm leading-relaxed">
+                  <span className="font-semibold text-white">
+                    Refund Policy:
+                  </span>{" "}
+                  If you do not get any admission because of GM International,
+                  the full deposit amount will be refunded.
+                </p>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Floating Action Button for Mobile */}
-        <div className="fixed bottom-4 right-4 md:hidden">
-          <button className="bg-red-600 text-white p-4 rounded-full shadow-lg hover:bg-red-700 transition-colors">
-            <Phone className="w-6 h-6" />
-          </button>
+        <div className="mt-6 pt-6 border-t border-gray-100">
+          <p className="text-sm text-gray-500 text-center">
+            Students from these regions should contact local offices for
+            region-specific service charges
+          </p>
         </div>
+        
       </div>
     </div>
   );

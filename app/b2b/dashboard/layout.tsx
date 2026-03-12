@@ -4,12 +4,10 @@ import { useEffect, useState } from "react";
 import useUserRole from "../../useContext/useUserRole";
 import { UserProvider } from "../../useContext/useUserData";
 import { useSession } from "next-auth/react";
-import { Building2, FileText, LayoutDashboard, Package } from "lucide-react";
-import Loader from "@/components/ui/loader";
-import Sidebar from "@/app/dashboard/scholarship/components/sidebar";
+import { Award, BookUser, ClipboardPlus, Handshake, LayoutDashboard, Plane } from "lucide-react";
 import UserSidebar from "@/app/dashboard/scholarship/user/components/user-sidebar";
 import DashboardHeader from "@/app/dashboard/components/header";
-import { redirect } from "next/navigation";
+
 
 type UserAvatar = {
   avatar: string | undefined;
@@ -22,28 +20,28 @@ const userMenuItems = [
     href: "/b2b/dashboard",
   },
   {
-    label: "Scholarship Package",
-    icon: Package,
+    label: "Student Package",
+    icon: BookUser,
     href: "/b2b/dashboard/b2b-scholarship-package",
   },
   {
     label: "Tourist Package",
-    icon: Package,
+    icon: Plane,
     href: "/b2b/dashboard/b2b-tourist-package",
   },
   {
     label: "Medical Package",
-    icon: Package,
+    icon: ClipboardPlus,
     href: "/b2b/dashboard/b2b-medical-package",
   },
   {
     label: "Business Package",
-    icon: Package,
+    icon: Handshake,
     href: "/b2b/dashboard/b2b-business-package",
   },
   {
     label: "Visa Rate",
-    icon: Package,
+    icon: Award,
     href: "/b2b/dashboard/visa-rate",
   },
 ];

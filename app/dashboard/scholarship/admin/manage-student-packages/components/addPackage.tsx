@@ -29,6 +29,7 @@ export default function AddPackagePage() {
   const form = useForm({
     defaultValues: {
       isInternationalStudent: false,
+      internationalStudentPrice: "",
       universityName: "",
       country: "",
       city: "",
@@ -192,7 +193,7 @@ export default function AddPackagePage() {
           </div>
 
           <div className="space-y-4">
-            {/* International Student Checkbox */}
+            {/* b2b Student Checkbox */}
             <label className="flex items-center gap-3 text-sm cursor-pointer">
               <Controller
                 name="b2b"
@@ -246,14 +247,14 @@ export default function AddPackagePage() {
             {/* Conditional B2B Price */}
             {isInternationalStudent && (
               <div className="space-y-2 max-w-xs">
-                <Label htmlFor="b2bPrice">
+                <Label htmlFor="internationalStudentPrice">
                   International student package Price
                 </Label>
                 <Input
                   id="isInternationalStudent"
                   type="number"
                   placeholder="Enter International package price"
-                  {...register("isInternationalStudent", {
+                  {...register("internationalStudentPrice", {
                     required: isInternationalStudent,
                   })}
                 />

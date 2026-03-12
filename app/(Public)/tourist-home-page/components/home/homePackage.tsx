@@ -495,7 +495,9 @@ export default function TouristHomePackages({
                         </p>
                         <div className="flex items-baseline gap-1">
                           <span className="text-red-600 text-2xl md:text-xl lg:text-2xl font-bold">
-                            {formatPrice(pkg.p_price)}
+                            {pkg.international_package_price
+                              ? formatPrice(pkg.international_package_price)
+                              : formatPrice(pkg.p_price)}
                           </span>
                           <span className="text-gray-500 text-xs">/person</span>
                         </div>
@@ -532,9 +534,7 @@ export default function TouristHomePackages({
                         </Button>
                       </Link>
                     ) : (
-                      <Link
-                        href={`/tourist-home-page/package/${pkg._id}`}
-                      >
+                      <Link href={`/tourist-home-page/package/${pkg._id}`}>
                         <Button
                           className="w-full group relative inline-flex h-12 items-center justify-center overflow-hidden 
                           bg-linear-to-r from-red-600 to-red-500 px-6 font-medium text-white 

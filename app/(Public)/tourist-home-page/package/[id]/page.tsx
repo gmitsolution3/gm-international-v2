@@ -13,7 +13,7 @@ export default async function TouristPackageDetails({ params, searchParams }: Pa
   const { form, b2bId } = await searchParams;
   const source = { form, b2bId };
 
-  console.log({ source: source });
+
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/details/${id}`,

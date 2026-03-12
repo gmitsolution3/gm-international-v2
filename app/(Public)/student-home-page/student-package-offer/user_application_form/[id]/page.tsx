@@ -30,7 +30,7 @@ const Application = async ({ params, searchParams }: ParamsProps) => {
 
   const result = await res.json();
 
-  console.log({source})
+
 
   return (
     <div>

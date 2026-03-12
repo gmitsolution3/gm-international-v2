@@ -11,7 +11,7 @@ const BookingForm = async ({ searchParams }: ParamsProps) => {
 
   const source = { b2bId, form };
 
-  console.log({source: source})
+
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/details/${id}`,

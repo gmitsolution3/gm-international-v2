@@ -23,7 +23,7 @@ export default function UniversityDetailsPage({
   source?: { from?: string; form: string; b2bId: string };
 }) {
 
-  console.log({source: source})
+
 
   return (
     <main className="min-h-screen bg-white">

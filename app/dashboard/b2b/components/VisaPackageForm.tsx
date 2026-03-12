@@ -159,7 +159,7 @@ const VisaPackageForm: React.FC = () => {
 
       const result = await res.json();
 
-      console.log(result);
+ 
 
       if (!result.success) {
         toast.error(result.message || "Something went wrong");

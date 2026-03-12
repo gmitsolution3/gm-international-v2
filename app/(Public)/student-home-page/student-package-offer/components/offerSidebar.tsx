@@ -16,7 +16,7 @@ export async function OfferSidebar({
 }: OfferSidebarProps) {
   const session: any = await getServerSession(authConfig);
 
-  console.log({ source });
+
 
   const {
     _id,
