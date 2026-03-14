@@ -15,6 +15,7 @@ const DashboardHeader = ({
   userRole,
   onMenuToggle,
   sidebarOpen,
+
 }: SidebarProps) => {
   return (
     <div className="mb-10 sticky top-0">

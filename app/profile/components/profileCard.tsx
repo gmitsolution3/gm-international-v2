@@ -27,7 +27,6 @@ export function ProfileCard({ user }: { user: User }) {
     });
   };
 
-  console.log({user: user})
 
   const infoItems = [
     { icon: Mail, label: 'Email', value: user.email },

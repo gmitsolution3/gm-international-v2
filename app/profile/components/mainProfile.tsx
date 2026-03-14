@@ -23,39 +23,7 @@ const MainProfile = ({ userProfleData }: UserProfileData) => {
   const [user, setUser] = useState(userProfleData);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  //   const handleProfileUpdate =async (updatedData: any) => {
-  //
-  //     setUser((prevUser) => ({
-  //       ...prevUser,
-  //       ...updatedData,
-  //     }));
 
-  //     try {
-  //     const res = await fetch(`${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/updated-profile/${user._id}`, {
-  //       method: "PUT",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify(updatedData),
-  //     });
-
-  //     const result = await res.json();
-
-  //     if (result.success) {
-  //       // update local state
-  //       setUser((prev) => ({ ...prev, ...result.data }));
-
-  //       alert("Profile updated successfully!");
-  //       setIsEditModalOpen(false);
-  //     } else {
-  //       alert(result.message);
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     alert("Something went wrong!");
-  //   }
-
-  //
-  //     // setIsEditModalOpen(false);
-  //   };
 
   return (
     <div>

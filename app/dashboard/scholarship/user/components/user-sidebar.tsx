@@ -46,6 +46,7 @@ export default function UserSidebar({
             title: "Failed to log out",
             icon: "error",
           });
+          return
         }
         Swal.fire({
           title: "Logged out successfully",
