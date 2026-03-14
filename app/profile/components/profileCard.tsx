@@ -9,7 +9,7 @@ interface User {
   phone: string;
   userRole: string;
   createdAt: Date;
-  updateAt: Date;
+  updatedAt: Date;
 }
 
 export function ProfileCard({ user }: { user: User }) {
@@ -26,6 +26,8 @@ export function ProfileCard({ user }: { user: User }) {
       day: 'numeric',
     });
   };
+
+  console.log({user: user})
 
   const infoItems = [
     { icon: Mail, label: 'Email', value: user.email },

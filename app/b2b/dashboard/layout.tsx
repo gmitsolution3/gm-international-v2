@@ -4,10 +4,16 @@ import { useEffect, useState } from "react";
 import useUserRole from "../../useContext/useUserRole";
 import { UserProvider } from "../../useContext/useUserData";
 import { useSession } from "next-auth/react";
-import { Award, BookUser, ClipboardPlus, Handshake, LayoutDashboard, Plane } from "lucide-react";
+import {
+  Award,
+  BookUser,
+  ClipboardPlus,
+  Handshake,
+  LayoutDashboard,
+  Plane,
+} from "lucide-react";
 import UserSidebar from "@/app/dashboard/scholarship/user/components/user-sidebar";
 import DashboardHeader from "@/app/dashboard/components/header";
-
 
 type UserAvatar = {
   avatar: string | undefined;
@@ -63,7 +69,7 @@ export default function DashboardLayout({
         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/get-avatar?email=${session?.user?.email}`,
         {
           cache: "no-store",
-        }
+        },
       );
 
       const userUpdateData = await user.json();
@@ -75,21 +81,19 @@ export default function DashboardLayout({
 
   const avatar = userAvatar?.avatar;
 
- 
   return (
     <div className="flex min-h-screen overflow-auto">
       <UserProvider>
-        <div className="max-w-64 w-full">
-          {/* this sidebar for user */}
-          <UserSidebar
-            isOpen={sidebarOpen}
-            onToggle={() => setSidebarOpen(!sidebarOpen)}
-            avatar={avatar}
-            menuItems={userMenuItems}
-          />
-        </div>
+        {/* this sidebar for user */}
+        <UserSidebar
+          isOpen={sidebarOpen}
+          onToggle={() => setSidebarOpen(!sidebarOpen)}
+          avatar={avatar}
+          menuItems={userMenuItems}
+        />
+
         <main className="flex-1 p-6 ">
-          <div>
+          <div >
             <DashboardHeader
               userRole={userRole}
               avatar={avatar}

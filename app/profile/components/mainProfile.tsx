@@ -15,7 +15,7 @@ interface UserProfileData {
     userRole: string;
     avatar: string;
     createdAt: Date;
-    updateAt: Date;
+    updatedAt: Date;
   };
 }
 

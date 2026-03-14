@@ -6,7 +6,7 @@ import Header from "../scholarship/components/Header";
 interface SidebarProps {
   avatar: string | undefined;
   userRole: string;
-  onMenuToggle: () => void; 
+  onMenuToggle: () => void;
   sidebarOpen: boolean;
 }
 
@@ -16,9 +16,8 @@ const DashboardHeader = ({
   onMenuToggle,
   sidebarOpen,
 }: SidebarProps) => {
-
   return (
-    <div className="mb-10">
+    <div className="mb-10 sticky top-0">
       <Header
         onMenuToggle={onMenuToggle}
         sidebarOpen={sidebarOpen}

@@ -87,8 +87,8 @@ const DescriptionEditor = ({
 
   return (
     <div className="border border-gray-300 rounded-lg overflow-hidden">
-      <div className="bg-linear-to-r from-blue-50 to-gray-50 border-b border-gray-300 p-4">
-        <h3 className="font-semibold text-blue-700">Package Description</h3>
+      <div className="bg-linear-to-r from-red-50 to-gray-50 border-b border-gray-300 p-4">
+        <h3 className="font-semibold text-red-700">Package Description</h3>
         <p className="text-sm text-gray-600">
           Add detailed information about the package with formatting
         </p>
@@ -125,8 +125,6 @@ interface PhaseItem {
   returnCity: string;
 }
 
-
-
 interface TourPackage {
   _id: string;
   packageName: string;
@@ -141,6 +139,8 @@ interface TourPackage {
   createdAt: string;
   createdBy: string;
   packageStatus?: "active" | "inactive" | "pending";
+  isB2B?: boolean;
+  B2BPrice?: string;
 }
 
 interface TourPackageProps {
@@ -158,8 +158,8 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [uploading,setUploading] = useState(false)
-  const [imageURL, setImageURL]= useState<string | null>(null)
+  const [uploading, setUploading] = useState(false);
+  const [imageURL, setImageURL] = useState<string | null>(null);
 
   const {
     register,
@@ -192,8 +192,6 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
     control,
     name: "phases",
   });
-
- 
 
   const handleDelete = (id: string): void => {
     Swal.fire({
@@ -247,6 +245,8 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
       description: pkg.description,
       image: pkg.image,
       packageStatus: pkg.packageStatus || "active",
+      isB2B: pkg.isB2B || false,
+      B2BPrice: pkg.B2BPrice || "",
     });
 
     setImagePreview(pkg.image);
@@ -262,7 +262,6 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
     setImagePreview(null);
     setImageURL(null);
   };
-
 
   const handleFileUpload = async (e: any) => {
     const file = e.target.files[0];
@@ -301,8 +300,6 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
     }
   };
 
-
-
   const onSubmit = async (data: EditFormData) => {
     if (!selectedPackage) return;
 
@@ -315,7 +312,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
           Swal.showLoading();
         },
       });
-     
+
       // Update package
       const updateData = {
         ...data,
@@ -351,8 +348,6 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
         //   ),
         // );
 
-
-
         // setSelectedPackage((prev) =>
         //   prev ? { ...prev, ...updateData } : null,
         // );
@@ -365,7 +360,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
         });
 
         setIsEditMode(false);
-        setIsModalOpen(false)
+        setIsModalOpen(false);
       } else {
         throw new Error(result.message || "Failed to update package");
       }
@@ -468,6 +463,8 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
     });
   };
 
+  const isB2BSelected = watch("isB2B");
+
   return (
     <div className="min-h-screen p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
@@ -544,7 +541,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                         </button>
                         <button
                           onClick={() => handleEdit(pkg)}
-                          className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors shadow-md hover:shadow-lg"
+                          className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors shadow-md hover:shadow-lg"
                           title="Edit"
                         >
                           <Edit size={18} />
@@ -615,7 +612,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                 </button>
                 <button
                   onClick={() => handleEdit(pkg)}
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
+                  className="flex-1 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
                 >
                   <Edit size={16} />
                   Edit
@@ -722,45 +719,44 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                       // </div>
 
                       <div
-                      className="animate-fade-in my-4"
-                      style={{ animationDelay: "200ms" }}
-                    >
-                      <label className="block text-xs sm:text-sm font-medium text-gray-600 mb-2">
-                        Thumbnail<span className="text-red-400">*</span>
-                      </label>
-                      <label
-                        htmlFor="image"
-                        className={`cursor-pointer py-3 px-4 border-2 ${
-                          imageURL
-                            ? "border-green-600 text-green-600"
-                            : "border-red-600 text-red-600"
-                        } border-solid rounded-lg font-medium text-sm hover:bg-red-50 transition-all duration-300 flex items-center justify-center gap-2 group hover:shadow-md`}
+                        className="animate-fade-in my-4"
+                        style={{ animationDelay: "200ms" }}
                       >
-                        {uploading ? (
-                          <>
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                            Uploading...
-                          </>
-                        ) : (
-                          <>
-                            <Upload className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                            Thumbnail
-                          </>
+                        <label className="block text-xs sm:text-sm font-medium text-gray-600 mb-2">
+                          Thumbnail<span className="text-red-400">*</span>
+                        </label>
+                        <label
+                          htmlFor="image"
+                          className={`cursor-pointer py-3 px-4 border-2 ${
+                            imageURL
+                              ? "border-green-600 text-green-600"
+                              : "border-red-600 text-red-600"
+                          } border-solid rounded-lg font-medium text-sm hover:bg-red-50 transition-all duration-300 flex items-center justify-center gap-2 group hover:shadow-md`}
+                        >
+                          {uploading ? (
+                            <>
+                              <Loader2 className="w-4 h-4 animate-spin" />
+                              Uploading...
+                            </>
+                          ) : (
+                            <>
+                              <Upload className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                              Thumbnail
+                            </>
+                          )}
+                        </label>
+
+                        <input
+                          id="image"
+                          type="file"
+                          onChange={(e) => handleFileUpload(e)}
+                          className="hidden"
+                        />
+
+                        {imageURL && (
+                          <span>Card is uploaded uploaded successfully</span>
                         )}
-                      </label>
-
-                      <input
-                        id="image"
-                        type="file"
-                        onChange={(e) => handleFileUpload(e)}
-                        className="hidden"
-                      />
-
-                      {imageURL && (
-                        <span>Card is uploaded uploaded successfully</span>
-                      )}
-                    </div>
-
+                      </div>
                     )}
                   </div>
                 </div>
@@ -902,10 +898,10 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                       ? phaseFields.map((field, index) => (
                           <div
                             key={field.id}
-                            className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-600 relative"
+                            className="p-4 bg-red-50 rounded-lg border-l-4 border-red-600 relative"
                           >
                             <div className="flex justify-between items-start mb-2">
-                              <p className="font-semibold text-blue-900">
+                              <p className="font-semibold text-red-900">
                                 Phase {index + 1}
                               </p>
                               <button
@@ -919,33 +915,31 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                             <div className="grid grid-cols-3 gap-2">
                               {/* .${index} as const*/}
                               <div>
-                                <label className="block text-xs text-blue-700 font-medium mb-1">
+                                <label className="block text-xs text-red-700 font-medium mb-1">
                                   Start Date
                                 </label>
                                 <input
-                                  {...register(
-                                    `phases.${index}.startDate`,
-                                    { required: "Start date is required" },
-                                  )}
+                                  {...register(`phases.${index}.startDate`, {
+                                    required: "Start date is required",
+                                  })}
                                   type="text"
-                                  className="w-full px-2 py-1 text-sm border border-blue-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                  className="w-full px-2 py-1 text-sm border border-red-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500"
                                 />
                               </div>
                               <div>
-                                <label className="block text-xs text-blue-700 font-medium mb-1">
+                                <label className="block text-xs text-red-700 font-medium mb-1">
                                   End Date
                                 </label>
                                 <input
-                                  {...register(
-                                    `phases.${index}.endDate`,
-                                    { required: "End date is required" },
-                                  )}
+                                  {...register(`phases.${index}.endDate`, {
+                                    required: "End date is required",
+                                  })}
                                   type="text"
-                                  className="w-full px-2 py-1 text-sm border border-blue-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                  className="w-full px-2 py-1 text-sm border border-red-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500"
                                 />
                               </div>
                               <div>
-                                <label className="block text-xs text-blue-700 font-medium mb-1">
+                                <label className="block text-xs text-red-700 font-medium mb-1">
                                   Return City
                                 </label>
                                 <input
@@ -953,7 +947,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                                     `phases.${index}.returnCity` as const,
                                     { required: "Return city is required" },
                                   )}
-                                  className="w-full px-2 py-1 text-sm border border-blue-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                                  className="w-full px-2 py-1 text-sm border border-red-300 rounded-md focus:outline-none focus:ring-red-500 focus:border-red-500"
                                 />
                               </div>
                             </div>
@@ -962,24 +956,24 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                       : selectedPackage.phases.map((phase, index) => (
                           <div
                             key={index}
-                            className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-600"
+                            className="p-4 bg-red-50 rounded-lg border-l-4 border-red-600"
                           >
-                            <p className="font-semibold text-blue-900 mb-2">
+                            <p className="font-semibold text-red-900 mb-2">
                               Phase {phase.phaseNumber}
                             </p>
                             <div className="grid grid-cols-3 gap-2 text-sm text-black">
                               <div>
-                                <p className="text-blue-700 font-medium">
+                                <p className="text-red-700 font-medium">
                                   Start
                                 </p>
                                 <p>{phase.startDate}</p>
                               </div>
                               <div>
-                                <p className="text-blue-700 font-medium">End</p>
+                                <p className="text-red-700 font-medium">End</p>
                                 <p>{phase.endDate}</p>
                               </div>
                               <div>
-                                <p className="text-blue-700 font-medium">
+                                <p className="text-red-700 font-medium">
                                   Return
                                 </p>
                                 <p>{phase.returnCity}</p>
@@ -1043,6 +1037,67 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                             </p>
                           )}
                         </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="p-3 bg-yellow-50 rounded-lg">
+                          <p className="text-yellow-700 font-medium">
+                            Price/Person
+                          </p>
+                          <p className="text-black font-bold text-lg">
+                            ৳{selectedPackage.maxPrice}
+                          </p>
+                        </div>
+                        <div className="p-3 bg-yellow-50 rounded-lg">
+                          <p className="text-yellow-700 font-medium">
+                            Minimum Person
+                          </p>
+                          <p className="text-black font-bold text-lg">
+                            {selectedPackage.minimumPax}
+                          </p>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {isEditMode ? (
+                      <>
+                        <div className="space-y-2 flex gap-2 items-center min-h-30">
+                          <input
+                            type="checkbox"
+                            {...register("isB2B")}
+                            className="h-5 w-5"
+                          />
+                          <label className="block text-sm font-medium text-gray-700">
+                            Is This Package For B2B
+                          </label>
+                        </div>
+                        {isB2BSelected && (
+                          <div className="space-y-2">
+                            <label className="block text-sm font-medium text-gray-700">
+                              B2B Price
+                            </label>
+
+                            <input
+                              {...register("B2BPrice", {
+                                required: "B2B Price is required",
+                                valueAsNumber: true,
+                                min: {
+                                  value: 1,
+                                  message: "Minimum price must be at least 1",
+                                },
+                              })}
+                              type="number"
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-red-500 focus:border-red-500"
+                            />
+
+                            {errors.B2BPrice && (
+                              <p className="text-red-600 text-xs">
+                                {errors.B2BPrice.message}
+                              </p>
+                            )}
+                          </div>
+                        )}
                       </>
                     ) : (
                       <>

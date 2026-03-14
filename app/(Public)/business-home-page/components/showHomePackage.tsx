@@ -7,7 +7,7 @@ import { Calendar, MapPin, TimerIcon, Users } from "lucide-react";
 interface TourPackageCardsProps {
   packages: TourPackage[];
   from?: string;
-  id?:string;
+  id?: string;
 }
 
 const ShowHomePackage: React.FC<TourPackageCardsProps> = ({
@@ -165,6 +165,18 @@ const ShowHomePackage: React.FC<TourPackageCardsProps> = ({
                     <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                     <span>Limited slots available</span>
                   </div>
+                  {pkg.B2BPrice && from === "b2b" && (
+                    <div className="flex items-center gap-2 text-sm text-gray-600 p-3 border rounded-xl my-4 bg-red-100">
+                      <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                      <span className="font-bold">
+                        B2bPrice:{" "}
+                        <span className="px-2 py-1 bg-red-700 text-white rounded-lg">
+                          {pkg.B2BPrice} BDT
+                        </span>
+                      </span>
+                    </div>
+                  )}
+
                   {pkg.sold && (
                     <div className="flex items-center gap-2 text-sm text-gray-600">
                       <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>

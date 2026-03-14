@@ -123,6 +123,8 @@ export function EditProfileModal({
 
       const result = await res.json();
 
+      console.log({result: result})
+
       if (result.success) {
         Swal.fire({
           title: "User data updated successfully",

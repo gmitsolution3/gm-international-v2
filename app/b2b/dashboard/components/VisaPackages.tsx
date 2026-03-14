@@ -85,10 +85,22 @@ const staggerContainer = {
 
 const BusinessVisaB2BRate = [
   "Single Entry: 9500 BDT",
-"Single Entry Fresh: 10500 BDT",
-"Double Entry: 14500 BDT",
-"2 Year Multiple Entry: 16500 BDT",
-]
+  "Single Entry Fresh: 10500 BDT",
+  "Double Entry: 14500 BDT",
+  "2 Year Multiple Entry: 16500 BDT",
+];
+const MedicalVisaB2BRate = [
+  "Invitation Fee 5000 BDT (Private)",
+  "Embassy processing Fee 5000 BDT",
+  "Embassy Visa Fee 7500 BDT",
+];
+const ZVisaB2BRate = [
+  "Company Opening (Virtual)",
+  "License & Certificate",
+  "Tax & Accounting",
+  "Bank Opening (Bank Of China or ICBC)",
+  "Air Ticket & Airport Pickup",
+];
 
 export default function VisaPackages({ data }: VisaPackagesProps) {
   const [activeCountry, setActiveCountry] = useState<string>("all");
@@ -192,6 +204,7 @@ export default function VisaPackages({ data }: VisaPackagesProps) {
         {/* Country Tabs - Responsive Design */}
         <div className="mb-8">
           {/* Mobile Dropdown */}
+
           <div className="sm:hidden">
             <label
               htmlFor="country-select"
@@ -199,18 +212,27 @@ export default function VisaPackages({ data }: VisaPackagesProps) {
             >
               Select Country
             </label>
-            <select
-              id="country-select"
-              value={activeCountry}
-              onChange={(e) => setActiveCountry(e.target.value)}
-              className="block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-red-500 focus:border-red-500 rounded-lg shadow-sm"
-            >
-              {countries.map((country) => (
-                <option key={country} value={country}>
-                  {country === "all" ? "All Countries" : country}
-                </option>
-              ))}
-            </select>
+
+            <div className="relative">
+              <select
+                id="country-select"
+                value={activeCountry}
+                onChange={(e) => setActiveCountry(e.target.value)}
+                className="appearance-none block w-full pl-3 pr-10 py-3 text-base border-gray-300 focus:outline-none focus:ring-red-500 focus:border-red-500 rounded-lg shadow-sm border"
+              >
+                {countries.map((country) => (
+                  <option key={country} value={country}>
+                    {country === "all" ? "All Countries" : country}
+                  </option>
+                ))}
+              </select>
+
+              {/* dropdown icon */}
+              <ChevronDown
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none"
+                size={20}
+              />
+            </div>
           </div>
 
           {/* Desktop Tabs */}
@@ -484,51 +506,143 @@ export default function VisaPackages({ data }: VisaPackagesProps) {
                       </div>
 
                       {pkg.country.toLowerCase() === "china" && (
-                        <div className="border border-gray-200 rounded-lg overflow-hidden">
-                          <button
-                            onClick={() => toggleInfo(pkg._id + "business")}
-                            className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
-                          >
-                            <div className="flex items-center gap-3">
-                              <Info className="w-5 h-5 text-red-600" />
-                              <span className="font-medium text-gray-900">
-                                Business Visa B2B Rate
-                              </span>
-                            </div>
+                        <>
+                          <div className="border border-gray-200 rounded-lg overflow-hidden">
+                            <button
+                              onClick={() => toggleInfo(pkg._id + "business")}
+                              className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
+                            >
+                              <div className="flex items-center gap-3">
+                                <Info className="w-5 h-5 text-red-600" />
+                                <span className="font-medium text-gray-900">
+                                  Business Visa B2B Rate
+                                </span>
+                              </div>
 
-                            <ChevronDown
-                              className={`w-5 h-5 text-gray-500 transition-transform ${
-                                expandedInfo[pkg._id + "business"]
-                                  ? "rotate-180"
-                                  : ""
-                              }`}
-                            />
-                          </button>
+                              <ChevronDown
+                                className={`w-5 h-5 text-gray-500 transition-transform ${
+                                  expandedInfo[pkg._id + "business"]
+                                    ? "rotate-180"
+                                    : ""
+                                }`}
+                              />
+                            </button>
 
-                          <AnimatePresence>
-                            {expandedInfo[pkg._id + "business"] && (
-                              <motion.div
-                                initial={{ height: 0, opacity: 0 }}
-                                animate={{ height: "auto", opacity: 1 }}
-                                exit={{ height: 0, opacity: 0 }}
-                                transition={{ duration: 0.2 }}
-                                className="overflow-hidden"
-                              >
-                                <div className="p-4 bg-white space-y-2">
-                                  {BusinessVisaB2BRate.map((rate, index) => (
-                                    <div
-                                      key={index}
-                                      className="flex items-start gap-2 text-sm text-gray-600"
-                                    >
-                                      <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
-                                      <span>{rate}</span>
-                                    </div>
-                                  ))}
-                                </div>
-                              </motion.div>
-                            )}
-                          </AnimatePresence>
-                        </div>
+                            <AnimatePresence>
+                              {expandedInfo[pkg._id + "business"] && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: "auto", opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="overflow-hidden"
+                                >
+                                  <div className="p-4 bg-white space-y-2">
+                                    {BusinessVisaB2BRate.map((rate, index) => (
+                                      <div
+                                        key={index}
+                                        className="flex items-start gap-2 text-sm text-gray-600"
+                                      >
+                                        <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
+                                        <span>{rate}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                          <div className="border border-gray-200 rounded-lg overflow-hidden">
+                            <button
+                              onClick={() => toggleInfo(pkg._id + "medical")}
+                              className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
+                            >
+                              <div className="flex items-center gap-3">
+                                <Info className="w-5 h-5 text-red-600" />
+                                <span className="font-medium text-gray-900">
+                                  Medical Visa B2B Rate
+                                </span>
+                              </div>
+
+                              <ChevronDown
+                                className={`w-5 h-5 text-gray-500 transition-transform ${
+                                  expandedInfo[pkg._id + "medical"]
+                                    ? "rotate-180"
+                                    : ""
+                                }`}
+                              />
+                            </button>
+
+                            <AnimatePresence>
+                              {expandedInfo[pkg._id + "medical"] && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: "auto", opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="overflow-hidden"
+                                >
+                                  <div className="p-4 bg-white space-y-2">
+                                    {MedicalVisaB2BRate.map((rate, index) => (
+                                      <div
+                                        key={index}
+                                        className="flex items-start gap-2 text-sm text-gray-600"
+                                      >
+                                        <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
+                                        <span>{rate}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                          <div className="border border-gray-200 rounded-lg overflow-hidden">
+                            <button
+                              onClick={() => toggleInfo(pkg._id + "z_visa")}
+                              className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 transition-colors"
+                            >
+                              <div className="flex items-center gap-3">
+                                <Info className="w-5 h-5 text-red-600" />
+                                <span className="font-medium text-gray-900">
+                                  Z Visa(Work Visa) B2B Rate (500,000 BDT)
+                                </span>
+                              </div>
+
+                              <ChevronDown
+                                className={`w-5 h-5 text-gray-500 transition-transform ${
+                                  expandedInfo[pkg._id + "z_visa"]
+                                    ? "rotate-180"
+                                    : ""
+                                }`}
+                              />
+                            </button>
+
+                            <AnimatePresence>
+                              {expandedInfo[pkg._id + "z_visa"] && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: "auto", opacity: 1 }}
+                                  exit={{ height: 0, opacity: 0 }}
+                                  transition={{ duration: 0.2 }}
+                                  className="overflow-hidden"
+                                >
+                                  <div className="p-4 bg-white space-y-2">
+                                    {ZVisaB2BRate.map((rate, index) => (
+                                      <div
+                                        key={index}
+                                        className="flex items-start gap-2 text-sm text-gray-600"
+                                      >
+                                        <CheckCircle className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
+                                        <span>{rate}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </div>
+                        </>
                       )}
                     </>
                   )}

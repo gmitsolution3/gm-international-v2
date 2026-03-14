@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 interface User {
   createdAt: Date;
-  updateAt: Date;
+  updatedAt: Date;
 }
 
 export function ProfileStats({ user }: { user: User }) {
@@ -20,9 +20,12 @@ export function ProfileStats({ user }: { user: User }) {
   }, [user.createdAt]);
 
   const stats = [
-    { label: 'Days as Member', value: memberDays },
-    { label: 'Account Status', value: 'Active' },
-    { label: 'Last Updated', value: new Date(user.updateAt).toLocaleDateString() },
+    { label: "Days as Member", value: memberDays },
+    { label: "Account Status", value: "Active" },
+    {
+      label: "Last Updated",
+      value: new Date(user.updatedAt).toLocaleDateString(),
+    },
   ];
 
   return (

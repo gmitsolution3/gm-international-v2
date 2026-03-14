@@ -45,56 +45,10 @@ export interface TourPackage {
   createdBy: string | null | undefined;
   packageStatus: string;
   isWithVisaAndAirTicket: boolean;
+  isB2B?: boolean;
+  B2BPrice?: string;
 }
 
-// const DescriptionEditor = ({
-//   value,
-//   onChange,
-// }: {
-//   value: string;
-//   onChange: (value: string) => void;
-// }) => {
-//   const editorRef = useRef<HTMLDivElement>(null);
-//   const quillRef = useRef<Quill | null>(null);
-
-//   useEffect(() => {
-//     if (editorRef.current && !quillRef.current) {
-//       quillRef.current = new Quill(editorRef.current, {
-//         theme: "snow",
-//         placeholder: "Enter package description...",
-//         modules: {
-//           toolbar: [
-//             ["bold", "italic", "underline"],
-//             [{ list: "ordered" }, { list: "bullet" }],
-//             [{ header: [1, 2, 3, false] }],
-//             ["link"],
-//             ["clean"],
-//           ],
-//         },
-//         formats: ["bold", "italic", "underline", "list", "header", "link"],
-//       });
-
-//       // Set initial value
-//       if (value) {
-//         quillRef.current.root.innerHTML = value;
-//       }
-
-//       quillRef.current.on("text-change", () => {
-//         const html = quillRef.current?.root.innerHTML || "";
-//         onChange(html === "<p><br></p>" ? "" : html);
-//       });
-//     }
-//   }, []);
-
-//   useEffect(() => {
-//     if (
-//       quillRef.current &&
-//       value !== undefined &&
-//       quillRef.current.root.innerHTML !== value
-//     ) {
-//       quillRef.current.root.innerHTML = value || "";
-//     }
-//   }, [value]);
 
 const DescriptionEditor = ({
   value,
@@ -204,6 +158,8 @@ const MakePackage = ({ closeModal }: { closeModal: () => void }) => {
     createdBy: session?.user?.email,
     packageStatus: "active",
     isWithVisaAndAirTicket: false,
+    isB2B: false,
+    B2BPrice: "",
   });
 
   const [expandedSections, setExpandedSections] = useState({
@@ -718,6 +674,61 @@ const MakePackage = ({ closeModal }: { closeModal: () => void }) => {
                 <span className="text-red-700">(by default false)</span>
               </label>
             </div>
+          </div>
+          {/* <div className="bg-white rounded-xl shadow-2xl p-4 border border-gray-200 max-w-6xl mx-auto">
+            <div className="flex items-center gap-4">
+              <input
+                type="checkbox"
+                onChange={formData.isB2B}
+                className="h-5 w-5"
+              />
+              <label className="text-sm font-semibold text-gray-600">
+                Is this package for b2b{" "}
+                <span className="text-red-700">(by default false)</span>
+              </label>
+            </div>
+          </div> */}
+          <div className="bg-white rounded-xl shadow-2xl p-4 border border-gray-200 max-w-6xl mx-auto">
+            <div className="flex items-center gap-4">
+              <input
+                type="checkbox"
+                checked={formData.isB2B}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    isB2B: e.target.checked,
+                  })
+                }
+                className="h-5 w-5"
+              />
+
+              <label className="text-sm font-semibold text-gray-600">
+                Is this package for b2b{" "}
+                <span className="text-red-700">(by default false)</span>
+              </label>
+            </div>
+
+            {/* B2B Price Input */}
+            {formData.isB2B && (
+              <div className="mt-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  B2B Price
+                </label>
+
+                <input
+                  type="text"
+                  placeholder="Enter B2B Price"
+                  value={formData.B2BPrice}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      B2BPrice: e.target.value,
+                    })
+                  }
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+                />
+              </div>
+            )}
           </div>
 
           {/* Submit Button */}
