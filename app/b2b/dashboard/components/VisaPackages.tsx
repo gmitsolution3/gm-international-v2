@@ -517,6 +517,9 @@ export default function VisaPackages({ data }: VisaPackagesProps) {
                                 <span className="font-medium text-gray-900">
                                   Business Visa B2B Rate
                                 </span>
+                                <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
+                                  {BusinessVisaB2BRate.length}
+                                </span>
                               </div>
 
                               <ChevronDown
@@ -562,6 +565,9 @@ export default function VisaPackages({ data }: VisaPackagesProps) {
                                 <span className="font-medium text-gray-900">
                                   Medical Visa B2B Rate
                                 </span>
+                                <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
+                                  {MedicalVisaB2BRate.length}
+                                </span>
                               </div>
 
                               <ChevronDown
@@ -606,6 +612,9 @@ export default function VisaPackages({ data }: VisaPackagesProps) {
                                 <Info className="w-5 h-5 text-red-600" />
                                 <span className="font-medium text-gray-900">
                                   Z Visa(Work Visa) B2B Rate (500,000 BDT)
+                                </span>
+                                <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
+                                  {ZVisaB2BRate.length}
                                 </span>
                               </div>
 

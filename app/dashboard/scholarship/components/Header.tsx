@@ -76,18 +76,20 @@ export default function Header({
 
   const signOutFun = async () => {
     try {
-      await signOut();
+      // await signOut({ redirect: false });
+      await signOut({
+        redirect: true,
+        callbackUrl: "/b2b",
+      });
 
       Swal.fire({
         title: "Logged out successfully",
         icon: "success",
         confirmButtonText: "OK",
       });
-
       router.push("/b2b");
     } catch (err) {
       console.error("Find the error", err);
-
       Swal.fire({
         title: "Failed to log out",
         icon: "error",

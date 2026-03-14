@@ -26,10 +26,17 @@ export async function proxy(req: NextRequest) {
     "/tourist-home-page/package/booking-form",
     "/visa/visa_apply",
     "/student-home-page/student-package-offer/user_application_form",
+    "/b2b/dashboard",
+    "/b2b/dashboard/b2b-scholarship-package",
+    "/b2b/dashboard/b2b-tourist-package",
+    "/b2b/dashboard/b2b-medical-package",
+    "/b2b/dashboard/b2b-business-package",
+    "/b2b/dashboard/visa-rate",
+    "/b2b/dashboard/services-pricing",
   ];
 
   const isProtectedPath = protectedPaths.some((path) =>
-    pathname.startsWith(path)
+    pathname.startsWith(path),
   );
 
   // Block unauthenticated users from protected routes
@@ -59,6 +66,12 @@ export const config = {
     "/business-home-page/business-submit-form/:path*",
     "/visa/visa_apply/:path*",
     "/student-home-page/student-package-offer/user_application_form/:path*",
+    "/b2b/dashboard/:path*",
+    "/b2b/dashboard/b2b-scholarship-package/:path*",
+    "/b2b/dashboard/b2b-tourist-package/:path*",
+    "/b2b/dashboard/b2b-medical-package/:path*",
+    "/b2b/dashboard/b2b-business-package/:path*",
+    "/b2b/dashboard/visa-rate/:path*",
+    "/b2b/dashboard/services-pricing/:path*",
   ],
 };
-

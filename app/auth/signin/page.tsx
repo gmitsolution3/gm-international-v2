@@ -5,7 +5,7 @@ import Loader from "@/components/ui/loader";
 
 const LoginPage = () => {
   return (
-    <div>
+    <div className="min-h-screen">
       <Suspense
         fallback={
           <div>
