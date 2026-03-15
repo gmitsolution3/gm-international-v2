@@ -77,7 +77,7 @@ const ShowHomePackage: React.FC<TourPackageCardsProps> = ({
                   <p className="text-xs text-gray-600 font-medium">
                     Starting from
                   </p>
-                  <p className="text-lg font-bold text-red-700">
+                  <p className="text-sm font-bold text-red-700">
                     BDT {pkg.maxPrice} BDT
                   </p>
                   {pkg.isWithVisaAndAirTicket ? (
@@ -169,7 +169,7 @@ const ShowHomePackage: React.FC<TourPackageCardsProps> = ({
                     <div className="flex items-center gap-2 text-sm text-gray-600 p-3 border rounded-xl my-4 bg-red-100">
                       <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                       <span className="font-bold">
-                        B2bPrice:{" "}
+                        B2BPrice:{" "}
                         <span className="px-2 py-1 bg-red-700 text-white rounded-lg">
                           {pkg.B2BPrice} BDT
                         </span>
