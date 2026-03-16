@@ -7,7 +7,7 @@ interface Office {
   country: string;
   address: string[];
   email: string;
-  phone: string;
+  phone: string[];
   imageUrl: string;
 }
 
@@ -20,7 +20,7 @@ const offices: Office[] = [
       "Dhaka, Bangladesh, 1216",
     ],
     email: "gminternational.live@gmail.com",
-    phone: "+8801896042360",
+    phone: ["+880 189 6042360", "+880 198 796501"],
     imageUrl: "https://i.postimg.cc/K8QMpqnt/dhaka-01.png",
   },
   {
@@ -28,7 +28,7 @@ const offices: Office[] = [
     country: "Bogura, Bangladesh",
     address: ["Rakhi Manson (3rd Floor),Jalesharitola, bogura"],
     email: "gminternational.live@gmail.com",
-    phone: "+8801896042360",
+    phone: ["+880 189 6042360", "+880 1898 796505"],
     imageUrl: "https://i.postimg.cc/K8QMpqnt/dhaka-01.png",
   },
   // {
@@ -48,7 +48,7 @@ const offices: Office[] = [
     country: "Guangzhou, China",
     address: ["Sanyuanli, Guangzhou Shi, Guangzhou, China, 510000"],
     email: "gminternational.live@gmail.com",
-    phone: "+86 198 7564 7323",
+    phone: ["+86 198 7564 7323"],
     imageUrl: "https://i.postimg.cc/4xQ70LTX/Bogura.png",
   },
   {
@@ -56,7 +56,7 @@ const offices: Office[] = [
     country: "Malaysia",
     address: ["JALAN PJS 8/9 Mentari, Petaling Jaya."],
     email: "gminternational.live@gmail.com",
-    phone: "+60 16-357 3847",
+    phone: ["+60 16 357 3847"],
     imageUrl: "https://i.postimg.cc/J4ZgXJjg/1222222.png",
   },
   {
@@ -64,7 +64,7 @@ const offices: Office[] = [
     country: "Thailand",
     address: ["21/30 M5 Nongprue, Banglamung Chonburi 20150, Thailand"],
     email: "gminternational.live@gmail.com",
-    phone: "+66840860743",
+    phone: ["+66 840 860743"],
     imageUrl: "https://i.postimg.cc/pLJhSGMg/Thailand.png",
   },
 ];
@@ -85,7 +85,7 @@ const GlobalOffices: React.FC = () => {
         {offices.map((office) => (
           <div
             key={office.id}
-            className="flex flex-col sm:flex-row md:items-end gap-4 sm:gap-6 overflow-hidden transition-shadow duration-300 border md:border-none border-gray-500 p-2 rounded-2xl" 
+            className="flex flex-col sm:flex-row md:items-end gap-4 sm:gap-6 overflow-hidden transition-shadow duration-300 border md:border-none border-gray-500 p-2 rounded-2xl"
           >
             {/* Image Container - Left Side */}
             <div className="relative w-full sm:w-28 h-28 shrink-0">
@@ -141,26 +141,30 @@ const GlobalOffices: React.FC = () => {
 
                 {/* Phone */}
                 {office.phone && (
-                  <div className="flex items-center gap-2 text-sm">
-                    <svg
-                      className="w-4 h-4 text-gray-100 shrink-0"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                      />
-                    </svg>
-                    <a
-                      href={`tel:${office.phone.replace(/\s/g, "")}`}
-                      className="text-gray-200 hover:text-red-900"
-                    >   
-                      {office.phone}
-                    </a>
+                  <div className="flex gap-4">
+                    {office.phone.map((p) => (
+                      <div className="flex items-center gap-2 text-sm">
+                        <svg
+                          className="w-4 h-4 text-gray-100 shrink-0"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                          />
+                        </svg>
+                        <a
+                          href={`tel:${p.replace(/\s/g, "")}`}
+                          className="text-gray-200 hover:text-red-900"
+                        >
+                          {p}
+                        </a>
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>

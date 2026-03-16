@@ -90,6 +90,14 @@ const MainDashboard: React.FC = () => {
         titleColor: "text-red-600",
         page_link: "/dashboard/b2b",
       },
+      {
+        iconUrl: "https://i.postimg.cc/43JZ7Qym/user.png",
+        title: "User",
+        description: "Manage your user and employ",
+        color: "bg-green-500",
+        titleColor: "text-red-600",
+        page_link: `/dashboard/users/${userRole}`,
+      },
     ]);
   }, [userRole]);
 
