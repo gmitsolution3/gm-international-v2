@@ -24,13 +24,13 @@ const MainDashboard: React.FC = () => {
 
     setServices([
       {
-        iconUrl: "https://i.postimg.cc/y84YY3ng/famicons-school-sharp.png", // placeholder URL
+        iconUrl: "https://i.postimg.cc/y84YY3ng/famicons-school-sharp.png",
         title: "Student",
         description:
           "Empowering students with the skills, exposure, and resources to grow confidently and achieve their dreams.",
         color: "bg-gray-100",
         titleColor: "text-blue-700",
-        page_link: `/dashboard/scholarship/${userRole}`,
+        page_link: `/dashboard/scholarship`,
       },
       {
         iconUrl:

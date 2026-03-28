@@ -13,6 +13,10 @@ import {
   Mail,
   Phone,
   Image as ImageIcon,
+  Eye,
+  Edit,
+  RefreshCw,
+  Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
 import Swal from "sweetalert2";
@@ -37,10 +41,12 @@ interface User {
     | "developer"
     | "office_admin";
   avatar?: string;
+  branchName?: string;
 }
 
 interface UserTableProps {
   initialUsers: User[];
+  form?: string;
 }
 
 // Role options for dropdown
@@ -76,7 +82,7 @@ const roleOptions = [
   { value: "admin", label: "Admin", color: "bg-red-100 text-red-800" },
 ];
 
-const UserTable: React.FC<UserTableProps> = ({ initialUsers }) => {
+const UserTable: React.FC<UserTableProps> = ({ initialUsers, form }) => {
   const [users, setUsers] = useState<User[]>(initialUsers);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState<string | null>(null);
@@ -104,12 +110,20 @@ const UserTable: React.FC<UserTableProps> = ({ initialUsers }) => {
       Swal.fire({
         title: "Are you sure?",
         text: "Do you want to save the change",
+        input: "text",
+        inputPlaceholder: `Assign the role of ${newRole} for the branch!!`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, update it!",
+        inputValidator: (value) => {
+          if (!value) {
+            return "You need to write branch name!";
+          }
+        },
       }).then(async (result) => {
+        const inputValue = result.value;
         if (result.isConfirmed) {
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/users/updated-role/${userId}`,
@@ -118,14 +132,17 @@ const UserTable: React.FC<UserTableProps> = ({ initialUsers }) => {
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ userRole: newRole }),
+              body: JSON.stringify({
+                userRole: newRole,
+                branchName: inputValue,
+              }),
             },
           );
 
-          const result = await response.json();
+          const data = await response.json();
 
-          if (!result.success) {
-            toast.error(result.message || "User Role not updated!!");
+          if (!data.success) {
+            toast.error(data.message || "User Role not updated!!");
             return;
           }
 
@@ -138,10 +155,9 @@ const UserTable: React.FC<UserTableProps> = ({ initialUsers }) => {
             ),
           );
 
-
           Swal.fire({
             title: "Updated!",
-            text: `${result.message} and ${userId} is now ${newRole}`,
+            text: `${data.message} and ${userId} is now ${newRole}`,
             icon: "success",
           });
         }
@@ -176,18 +192,71 @@ const UserTable: React.FC<UserTableProps> = ({ initialUsers }) => {
     return option?.label || role;
   };
 
+  const handleDeleteUser = async (userId: string) => {
+    setLoading(userId);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed)
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/user-delete/${userId}`,
+            {
+              method: "DELETE",
+            },
+          );
+
+          const result = await response.json();
+          if (!result.success) {
+            toast.error(result.message);
+            return;
+          }
+
+          setUsers((prev) => prev.filter((user) => user._id !== userId));
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+        } catch (error) {
+          console.error("Error deleting user:", error);
+          alert("Failed to delete user. Please try again.");
+        } finally {
+          setLoading(null);
+        }
+    });
+  };
+
   return (
-    <div className="w-full bg-gray-50 min-h-screen p-3 sm:p-4 md:p-6">
+    <div className="w-full min-h-screen p-3 sm:p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-4 sm:mb-6">
-          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
-            User Management
-          </h1>
-          <p className="text-sm sm:text-base text-gray-600 mt-1">
-            Manage users and their roles within the organization
-          </p>
-        </div>
+
+        {form === "office_employ" ? (
+          <div className="mb-4 sm:mb-6">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
+              Employ Management
+            </h1>
+            <p className="text-sm sm:text-base text-gray-600 mt-1">
+              Manage your employ and their roles within the organization
+            </p>
+          </div>
+        ) : (
+          <div className="mb-4 sm:mb-6">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
+              User Management
+            </h1>
+            <p className="text-sm sm:text-base text-gray-600 mt-1">
+              Manage users and their roles within the organization
+            </p>
+          </div>
+        )}
 
         {/* Search and Filter Bar */}
         <div className="mb-4 sm:mb-6 flex flex-col sm:flex-row gap-3">
@@ -225,8 +294,14 @@ const UserTable: React.FC<UserTableProps> = ({ initialUsers }) => {
                   <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Role
                   </th>
+                  {form === "office_employ" && (
+                    <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Branch Name
+                    </th>
+                  )}
+
                   <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Actions
+                    Action
                   </th>
                 </tr>
               </thead>
@@ -311,11 +386,53 @@ const UserTable: React.FC<UserTableProps> = ({ initialUsers }) => {
                         </select>
                       )}
                     </td>
+                    {form === "office_employ" && (
+                      <td className="px-6 py-4">
+                        <div>
+                          {user.branchName && <div>{user.branchName}</div>}
+                        </div>
+                      </td>
+                    )}
+
                     <td className="px-6 py-4">
                       {loading === user._id && (
                         <div className="w-5 h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
                       )}
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleDeleteUser(user._id)}
+                          disabled={loading === user._id}
+                          className="p-1 hover:bg-red-100 rounded-lg transition-colors disabled:opacity-50"
+                        >
+                          {loading === user._id ? (
+                            <RefreshCw className="w-5 h-5 text-gray-400 animate-spin" />
+                          ) : (
+                            <Trash2 className="w-5 h-5 text-red-500" />
+                          )}
+                        </button>
+                      </div>
                     </td>
+                    {/* <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <button className="p-1 hover:bg-gray-100 rounded-lg transition-colors">
+                          <Eye className="w-5 h-5 text-gray-600" />
+                        </button>
+                        <button className="p-1 hover:bg-gray-100 rounded-lg transition-colors">
+                          <Edit className="w-5 h-5 text-gray-600" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteUser(user._id)}
+                          disabled={loading === user._id}
+                          className="p-1 hover:bg-red-100 rounded-lg transition-colors disabled:opacity-50"
+                        >
+                          {loading === user._id ? (
+                            <RefreshCw className="w-5 h-5 text-gray-400 animate-spin" />
+                          ) : (
+                            <Trash2 className="w-5 h-5 text-red-500" />
+                          )}
+                        </button>
+                      </div>
+                    </td> */}
                   </tr>
                 ))}
               </tbody>

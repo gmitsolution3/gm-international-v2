@@ -20,7 +20,7 @@ const OfficeEmploy = async () => {
 
   return (
     <div>
-      <UserTable initialUsers={employ.data} />
+      <UserTable initialUsers={employ.data} form={"office_employ"}/>
     </div>
   );
 };
