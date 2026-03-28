@@ -67,6 +67,14 @@ const offices: Office[] = [
     phone: ["+66 840 860743"],
     imageUrl: "https://i.postimg.cc/pLJhSGMg/Thailand.png",
   },
+  {
+    id: "australia",
+    country: "Australia",
+    address: ["8 Walz St Rockdale, NSW 2216, Australia"],
+    email: "gminternational.live@gmail.com",
+    phone: ["+61 4 2624 3477"],
+    imageUrl: "https://i.postimg.cc/QC4tnSk9/Australia.png",
+  },
 ];
 
 const GlobalOffices: React.FC = () => {
