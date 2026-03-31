@@ -1,89 +1,54 @@
 // app/dashboard/accounts/student/page.tsx
-import React from "react";
-import StudentApplicationTable from "../components/StudentApplicationTable";
+import { authConfig } from "@/auth.config";
+import { getServerSession } from "next-auth";
+import Link from "next/link";
+import AccountsTable from "../components/AccountsTable";
 
-
-interface ApplicationData {
-  _id: string;
-  applicantId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  gender: string;
-  admissionSemester: string;
-  courseName: string;
-  createdAt: string;
-  submittedAt: string;
-  packageId: string;
-  universityName: string;
-  serviceFee: string;
-  applicationFee: string;
-  b2bPrice: string;
-  deadline: string;
-  startingDate: string;
-}
-
-interface ApiResponse {
-  success: boolean;
-  message: string;
-  data: ApplicationData[];
-}
-
-const StudentAccountPage = async () => {
-  try {
-    const manageApplicationData = await fetch(
-      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/accounts/get-student-application`,
-      {
-        cache: "no-store",
-      }
-    );
-    
-    const applicationData: ApiResponse = await manageApplicationData.json();
-
-    console.log({ applicationData: applicationData });
-
-    
-    return (
-      <div className="p-4 md:p-6 lg:p-8 bg-gray-50 min-h-screen">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="mb-6">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-800">
-              Student Applications
-            </h1>
-            <p className="text-gray-600 mt-1">
-              Manage and track all student visa applications
-            </p>
-          </div>
-
-          {/* Table Component */}
-          {applicationData.success && applicationData.data ? (
-            <StudentApplicationTable
-              applications={applicationData.data}
-            />
-          ) : (
-            <div className="bg-white rounded-xl shadow-lg p-8 text-center">
-              <p className="text-gray-500">No application data available</p>
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  } catch (error) {
-    console.error("Error fetching applications:", error);
-    return (
-      <div className="p-4 md:p-6 lg:p-8 bg-gray-50 min-h-screen">
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
-          <h2 className="text-red-700 font-semibold text-lg mb-2">
-            Error Loading Data
-          </h2>
-          <p className="text-red-600">
-            There was an error fetching the application data. Please try again later.
-          </p>
-        </div>
-      </div>
-    );
-  }
+const fetchSAP = async (email: string | undefined | null) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/accounts/sap?email=${email}`,
+    {
+      cache: "no-store",
+      credentials: "include",
+    },
+  );
+  return res.json();
 };
 
-export default StudentAccountPage;
+const AccountStudentPage = async () => {
+  const session = await getServerSession(authConfig);
+  const sap = await fetchSAP(session?.user?.email);
+  const isAdmin = sap?.data?.accountHolder?.userRole === "admin";
+
+  console.log({sap: sap})
+
+  return (
+    <div className="min-h-screen p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
+              Student Accounts
+            </h1>
+            {sap?.data?.accountHolder && (
+              <p className="text-sm text-gray-600 mt-1">
+                Welcome back, {sap.data.accountHolder.email}
+              </p>
+            )}
+          </div>
+          <Link href="/dashboard/accounts/student/create-application">
+            <button className="bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-lg font-semibold transition-all duration-200 shadow-md hover:shadow-lg transform hover:scale-[1.02]">
+              + Create Application
+            </button>
+          </Link>
+        </div>
+
+        {/* Accounts Table */}
+        <AccountsTable data={isAdmin ? sap?.data?.result || [] :sap?.data || []} isAdmin={isAdmin} />
+      </div>
+    </div>
+  );
+};
+
+export default AccountStudentPage;

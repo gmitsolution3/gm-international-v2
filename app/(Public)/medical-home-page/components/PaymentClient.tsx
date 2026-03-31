@@ -125,22 +125,23 @@ const BkashPayment = ({
       }
 
       // Update payment status
-     const updateRes = await fetch(
-       `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/update-medical-payment/${appointmentId}`,
-       {
-         method: "PUT",
-         headers: {
-           "Content-Type": "application/json",
-         },
-         body: JSON.stringify({
-           paymentStatus: "Delivered",
-           transactionId: transactionId,
-           paymentScreenshot: uploadResult.secure_url,
-           paymentMethod: "Bkash",
-           paidAt: new Date(),
-         }),
-       },
-     );
+      const updateRes = await fetch(
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/update-medical-payment/${appointmentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            paymentStatus: "Delivered",
+            transactionId: transactionId,
+            paymentScreenshot: uploadResult.secure_url,
+            paymentMethod: "Bkash",
+            paidAt: new Date(),
+            paymentAmount: amount,
+          }),
+        },
+      );
 
       const result = await updateRes.json();
 
@@ -400,6 +401,7 @@ const NagadPayment = ({
             paymentScreenshot: uploadResult.secure_url,
             paymentMethod: "Nagad",
             paidAt: new Date(),
+            paymentAmount: amount,
           }),
         },
       );
@@ -592,6 +594,7 @@ const BankPayment = ({
             paymentStatus: "Delivered",
             paymentMethod: "Bank",
             paidAt: new Date(),
+            paymentAmount: amount,
           }),
         },
       );
