@@ -86,7 +86,7 @@ const FindSearchResult = async ({ searchParams }: PageProps) => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
               <div className="text-2xl font-bold">{resultsCount}</div>
-              <div className="text-sm text-white">Results Found</div>
+              <div className="text-sm text-white">University</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center">
               <div className="text-2xl font-bold">
@@ -99,7 +99,7 @@ const FindSearchResult = async ({ searchParams }: PageProps) => {
                 {new Set(searchResult.data?.map((d: any) => d.university))
                   .size || 0}
               </div>
-              <div className="text-sm text-white">Universities</div>
+              <div className="text-sm text-white">Country</div>
             </div>
           </div>
         </div>

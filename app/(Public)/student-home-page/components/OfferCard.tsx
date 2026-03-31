@@ -52,6 +52,7 @@ const OfferCard = ({ offer, form, b2bId, from }: OfferCardProps) => {
     });
   };
 
+
   return (
     <div
       className="w-full max-w-sm bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl"
@@ -68,15 +69,16 @@ const OfferCard = ({ offer, form, b2bId, from }: OfferCardProps) => {
             transform: isHovered ? "scale(1.05)" : "scale(1)",
           }}
         />
-
         {/* CSCA Badge */}
-        <span
-          className={`absolute bottom-3 right-2 text-white text-xs font-semibold px-3 py-1 rounded shadow
+        {offer.country.toLowerCase() === "china" && (
+          <span
+            className={`absolute bottom-3 right-2 text-white text-xs font-semibold px-3 py-1 rounded shadow
       ${offer.isCSCARequired ? "bg-red-700" : "bg-red-700"}
     `}
-        >
-          {offer.isCSCARequired ? "CSCA Required" : "CSCA Not Required"}
-        </span>
+          >
+            {offer.isCSCARequired ? "CSCA Required" : "CSCA Not Required"}
+          </span>
+        )}
       </div>
 
       {/* Content */}

@@ -15,7 +15,7 @@ type UserAvatar = {
   avatar: string | undefined;
 };
 
-const touristMenuItems = [
+const businessMenuItems = [
   {
     label: "Dashboard",
     icon: LayoutDashboard,
@@ -43,7 +43,7 @@ const touristMenuItems = [
   },
 ];
 
-const touristUserMenuItems = [
+const businessUserMenuItems = [
   {
     label: "Dashboard",
     icon: LayoutDashboard,
@@ -110,7 +110,7 @@ export default function DashboardLayout({
               isOpen={sidebarOpen}
               onToggle={() => setSidebarOpen(!sidebarOpen)}
               avatar={avatar}
-              menuItems={touristMenuItems}
+              menuItems={businessMenuItems}
             />
           )}
 
@@ -120,7 +120,7 @@ export default function DashboardLayout({
               isOpen={sidebarOpen}
               onToggle={() => setSidebarOpen(!sidebarOpen)}
               avatar={avatar}
-              menuItems={touristUserMenuItems}
+              menuItems={businessUserMenuItems}
             />
           )}
         </div>

@@ -38,7 +38,7 @@ const UserManagement = [
   },
 ];
 
-const touristUserMenuItems = [
+const UserMenuItems = [
   {
     label: "Dashboard",
     icon: LayoutDashboard,
@@ -110,7 +110,7 @@ export default function DashboardLayout({
               isOpen={sidebarOpen}
               onToggle={() => setSidebarOpen(!sidebarOpen)}
               avatar={avatar}
-              menuItems={touristUserMenuItems}
+              menuItems={UserMenuItems}
             />
           )}
         </div>

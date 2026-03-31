@@ -91,9 +91,7 @@ export default function DashboardLayout({
 
   const avatar = userAvatar?.avatar;
 
-  // if (loading) {
-  //   return <Loader />;
-  // }
+
 
   return (
     <div className="flex min-h-screen overflow-auto">
@@ -112,7 +110,6 @@ export default function DashboardLayout({
         </div>
         <main className="flex-1 p-6 ">
           <div>
-            {/* <DashboardHeader avatar={avatar} userRole={userRole} /> */}
             <Header
               onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
               sidebarOpen={sidebarOpen}

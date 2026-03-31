@@ -52,27 +52,6 @@ interface UserTableProps {
 // Role options for dropdown
 const roleOptions = [
   { value: "account", label: "Account", color: "bg-red-100 text-red-800" },
-  { value: "hr", label: "HR", color: "bg-green-100 text-green-800" },
-  {
-    value: "customer_rls",
-    label: "Customer Relations",
-    color: "bg-purple-100 text-purple-800",
-  },
-  {
-    value: "project_manager",
-    label: "Project Manager",
-    color: "bg-orange-100 text-orange-800",
-  },
-  {
-    value: "graphic_designer",
-    label: "Graphic Designer",
-    color: "bg-pink-100 text-pink-800",
-  },
-  {
-    value: "developer",
-    label: "Developer",
-    color: "bg-indigo-100 text-indigo-800",
-  },
   {
     value: "office_admin",
     label: "Office Admin",

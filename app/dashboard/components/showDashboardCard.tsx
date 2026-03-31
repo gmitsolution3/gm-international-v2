@@ -21,16 +21,15 @@ const MainDashboard: React.FC = () => {
 
   React.useEffect(() => {
     if (!userRole) return;
-
     setServices([
       {
-        iconUrl: "https://i.postimg.cc/y84YY3ng/famicons-school-sharp.png",
+        iconUrl: "https://i.postimg.cc/y84YY3ng/famicons-school-sharp.png", 
         title: "Student",
         description:
           "Empowering students with the skills, exposure, and resources to grow confidently and achieve their dreams.",
         color: "bg-gray-100",
         titleColor: "text-blue-700",
-        page_link: `/dashboard/scholarship`,
+        page_link: `/dashboard/scholarship/${userRole !== "admin" ? userRole : "admin"}`,
       },
       {
         iconUrl:
@@ -51,7 +50,7 @@ const MainDashboard: React.FC = () => {
           "Explore China, Malaysia, and Australia with trusted guidance, personalized support",
         color: "bg-sky-400",
         titleColor: "text-sky-300",
-        page_link: `/dashboard/tourist/${userRole}`,
+        page_link: `/dashboard/tourist/${userRole !== "admin" ? userRole : "admin"}`,
       },
       {
         iconUrl: "https://i.postimg.cc/5tPX0N6m/solar-pie-chart-3-bold.png",
@@ -60,7 +59,7 @@ const MainDashboard: React.FC = () => {
           "Helping businesses grow with trusted guidance, smart solutions, and reliable support for long-term success.",
         color: "bg-gray-800",
         titleColor: "text-black",
-        page_link: `/dashboard/business/${userRole}`,
+        page_link: `/dashboard/business/${userRole !== "admin" ? userRole : "admin"}`,
       },
       {
         iconUrl: "https://i.postimg.cc/5tPX0N6m/solar-pie-chart-3-bold.png",
@@ -69,7 +68,7 @@ const MainDashboard: React.FC = () => {
           "Simplifying your visa journey with support at every step—secure, stress-free",
         color: "bg-green-800",
         titleColor: "text-black",
-        page_link: `/dashboard/visa/${userRole}`,
+        page_link: `/dashboard/visa/${userRole !== "admin" ? userRole : "admin"}`,
       },
       {
         iconUrl:
@@ -96,7 +95,15 @@ const MainDashboard: React.FC = () => {
         description: "Manage your user and employ",
         color: "bg-green-500",
         titleColor: "text-red-600",
-        page_link: `/dashboard/users/${userRole}`,
+        page_link: `/dashboard/users/${userRole !== "admin" ? userRole : "admin"}`,
+      },
+      {
+        iconUrl: "https://i.postimg.cc/KYZXNxdW/fund.png",
+        title: "Accounts",
+        description: "Manage your user and employee accounts",
+        color: "bg-green-500",
+        titleColor: "text-black",
+        page_link: `/dashboard/accounts`,
       },
     ]);
   }, [userRole]);
@@ -133,7 +140,6 @@ const MainDashboard: React.FC = () => {
           <h3 className="text-2xl md:text-3xl font-extrabold text-gray-900">
             Select portal you want to access
           </h3>
-
           <div className="w-24 h-1 bg-red-500 mx-auto mt-4 rounded-full"></div>
         </div>
         <div className="max-w-7xl mx-auto">
@@ -150,10 +156,12 @@ const MainDashboard: React.FC = () => {
               <ServiceCard key={index + 4} {...service} />
             ))}
           </div>
-          {userRole === "admin" && (
-            <div className="grid gap-6 mt-6 lg:max-w-7xl lg:mx-auto hover:cursor-pointer">
-              {services.slice(6).map((service, index) => (
-                <ServiceCard key={index + 4} {...service} />
+          {(userRole === "admin" || userRole === "office_admin") && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 lg:max-w-7xl lg:mx-auto hover:cursor-pointer">
+              {userRole === "admin" ? services.slice(6, 9).map((service, index) => (
+                <ServiceCard key={index + 6} {...service} />
+              )) : services.slice(8, 9).map((service, index) => (
+                <ServiceCard key={index + 6} {...service} />
               ))}
             </div>
           )}

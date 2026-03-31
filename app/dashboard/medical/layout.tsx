@@ -33,7 +33,7 @@ const touristMenuItems = [
   },
 ];
 
-const touristUserMenuItems = [
+const medicalMenuItems = [
   {
     label: "Dashboard",
     icon: LayoutDashboard,
@@ -70,7 +70,6 @@ export default function DashboardLayout({
           cache: "no-store",
         }
       );
-
       const userUpdateData = await user.json();
       setUserAvatar(userUpdateData);
     };
@@ -105,7 +104,7 @@ export default function DashboardLayout({
               isOpen={sidebarOpen}
               onToggle={() => setSidebarOpen(!sidebarOpen)}
               avatar={avatar}
-              menuItems={touristUserMenuItems}
+              menuItems={medicalMenuItems}
             />
           )}
         </div>

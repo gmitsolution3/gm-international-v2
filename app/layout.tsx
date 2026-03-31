@@ -10,6 +10,7 @@ import Script from "next/script";
 import CopyProtected from "@/app/components/CopyProtected";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/auth.config";
+import { UserProvider } from "./useContext/useUserData";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -68,21 +69,24 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SessionWrapper>
-          <HidableNavbar />
-          <Toaster
-            closeButton
-            position="top-right"
-            toastOptions={{
-              style: {
-                backgroundColor: "#F88379",
-                color: "white",
-              },
-            }}
-          />
-          {isAdmin ? children : <CopyProtected>{children}</CopyProtected>}
-          <HidableFooter />
-        </SessionWrapper>
+        
+        <UserProvider>
+          <SessionWrapper>
+            <HidableNavbar />
+            <Toaster
+              closeButton
+              position="top-right"
+              toastOptions={{
+                style: {
+                  backgroundColor: "#F88379",
+                  color: "white",
+                },
+              }}
+            />
+            {isAdmin ? children : <CopyProtected>{children}</CopyProtected>}
+            <HidableFooter />
+          </SessionWrapper>
+        </UserProvider>
       </body>
     </html>
   );
