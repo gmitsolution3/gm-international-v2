@@ -22,7 +22,6 @@ const SimilarPackageCard = ({
     }).format(price);
   };
 
-  // console.log({source: source})
 
   return (
     <Link

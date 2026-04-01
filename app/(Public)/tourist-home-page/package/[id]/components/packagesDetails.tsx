@@ -331,7 +331,7 @@ const PackageDetails = ({ packageData, source }: PackageDetailsProps) => {
     return packageData.tour_plan.length;
   };
 
-  // console.log({source: source})
+ 
 
   return (
     <div className="min-h-screen bg-linear-to-b from-gray-50 to-white">

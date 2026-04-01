@@ -20,7 +20,7 @@ const AccountStudentPage = async () => {
   const sap = await fetchSAP(session?.user?.email);
   const isAdmin = sap?.data?.accountHolder?.userRole === "admin";
 
-  console.log({sap: sap})
+
 
   return (
     <div className="min-h-screen p-4 sm:p-6 lg:p-8">

@@ -145,7 +145,7 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
     { totalAmount: 0, totalAdvance: 0, totalDue: 0, totalProfit: 0 },
   );
 
-  console.log({ accounts: accounts, data: data, isAdmin });
+ 
 
   if (accounts.length === 0) {
     return (
