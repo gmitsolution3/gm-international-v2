@@ -3,6 +3,7 @@
 
 import { CheckIcon, MarsStrokeIcon, PencilIcon } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface Account {
   _id: string;
@@ -69,18 +70,19 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
     try {
       // API call to update account
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/accounts/${id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/accounts/sap-update/${id}`,
         {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(editData),
-          credentials: "include",
         },
       );
 
-      if (response.ok) {
+      const result = await response.json();
+
+      if (result.success) {
         // Update local state
         setAccounts(
           accounts.map((acc) =>
@@ -89,8 +91,12 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
         );
         setEditingId(null);
         setEditData({});
+
+        toast.success(result.message || "Account updated successfully");
+
       } else {
         console.error("Failed to update account");
+        toast.error(result.message || "Failed to update account");
       }
     } catch (error) {
       console.error("Error updating account:", error);
@@ -106,8 +112,24 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
   };
 
   // Handle input change
+  // const handleInputChange = (field: keyof Account, value: string | number) => {
+  //   setEditData((prev) => ({ ...prev, [field]: value }));
+  // };
+
   const handleInputChange = (field: keyof Account, value: string | number) => {
-    setEditData((prev) => ({ ...prev, [field]: value }));
+    setEditData((prev) => {
+      const updated = { ...prev, [field]: value };
+
+      // auto calculate due
+      if (field === "advance" || field === "totalAmount") {
+        const total = Number(updated.totalAmount || 0);
+        const advance = Number(updated.advance || 0);
+
+        updated.due = total - advance;
+      }
+
+      return updated;
+    });
   };
 
   // Calculate totals
@@ -167,11 +189,10 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
               <th className="px-6 py-4 text-right text-sm font-semibold text-gray-900">
                 Branch
               </th>
-              {isAdmin && (
-                <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
-                  Actions
-                </th>
-              )}
+
+              <th className="px-6 py-4 text-center text-sm font-semibold text-gray-900">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -189,7 +210,7 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
                   className="hover:bg-gray-50 transition-colors"
                 >
                   <td className="px-6 py-4 text-sm text-gray-900">
-                    {isEditing ? (
+                    {isEditing && isAdmin? (
                       <input
                         type="text"
                         value={editData.name || ""}
@@ -203,7 +224,7 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
                     )}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600">
-                    {isEditing ? (
+                    {isEditing && isAdmin? (
                       <input
                         type="text"
                         value={editData.degree || ""}
@@ -217,7 +238,7 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
                     )}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600">
-                    {isEditing ? (
+                    {isEditing && isAdmin? (
                       <input
                         type="text"
                         value={editData.university || ""}
@@ -231,7 +252,7 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
                     )}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-600">
-                    {isEditing ? (
+                    {isEditing && isAdmin? (
                       <input
                         type="text"
                         value={editData.intake || ""}
@@ -245,7 +266,7 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
                     )}
                   </td>
                   <td className="px-6 py-4 text-right text-sm font-medium text-gray-900">
-                    {isEditing ? (
+                    {isEditing && isAdmin ? (
                       <input
                         type="number"
                         value={editData.totalAmount || 0}
@@ -276,10 +297,10 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
                     )}
                   </td>
                   <td className="px-6 py-4 text-right text-sm font-medium text-red-600">
-                    {isEditing ? (
+                    {isEditing && isAdmin ? (
                       <input
                         type="number"
-                        value={editData.due || 0}
+                        value={editData.due ?? account.due}
                         onChange={(e) =>
                           handleInputChange("due", Number(e.target.value))
                         }
@@ -297,34 +318,32 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
                     </p>
                   </td>
                   <td className="px-6 py-4 text-center">
-                    {isAdmin && (
-                      <>
-                        {isEditing ? (
-                          <div className="flex items-center justify-center gap-2">
-                            <button
-                              onClick={() => handleSave(account._id)}
-                              disabled={loading}
-                              className="p-1 text-green-600 hover:text-green-700 transition-colors"
-                            >
-                              <CheckIcon className="w-5 h-5" />
-                            </button>
-                            <button
-                              onClick={handleCancel}
-                              className="p-1 text-red-600 hover:text-red-700 transition-colors"
-                            >
-                              <MarsStrokeIcon className="w-5 h-5" />
-                            </button>
-                          </div>
-                        ) : (
+                    <>
+                      {isEditing ? (
+                        <div className="flex items-center justify-center gap-2">
                           <button
-                            onClick={() => handleEdit(account)}
-                            className="p-1 text-gray-600 hover:text-red-600 transition-colors"
+                            onClick={() => handleSave(account._id)}
+                            disabled={loading}
+                            className="p-1 text-green-600 hover:text-green-700 transition-colors"
                           >
-                            <PencilIcon className="w-5 h-5" />
+                            <CheckIcon className="w-5 h-5" />
                           </button>
-                        )}
-                      </>
-                    )}
+                          <button
+                            onClick={handleCancel}
+                            className="p-1 text-red-600 hover:text-red-700 transition-colors"
+                          >
+                            <MarsStrokeIcon className="w-5 h-5" />
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => handleEdit(account)}
+                          className="p-1 text-gray-600 hover:text-red-600 transition-colors"
+                        >
+                          <PencilIcon className="w-5 h-5" />
+                        </button>
+                      )}
+                    </>
                   </td>
                 </tr>
               );
@@ -370,7 +389,7 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
             <div key={account._id} className="p-4 space-y-3">
               <div className="flex justify-between items-start">
                 <div className="flex-1">
-                  {isEditing ? (
+                  {isEditing && isAdmin ? (
                     <input
                       type="text"
                       value={editData.name || ""}
@@ -399,7 +418,7 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
               <div className="grid grid-cols-2 gap-3 text-sm">
                 <div>
                   <p className="text-gray-500 text-xs">Degree</p>
-                  {isEditing ? (
+                  {isEditing && isAdmin? (
                     <input
                       type="text"
                       value={editData.degree || ""}
@@ -416,7 +435,7 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
                 </div>
                 <div>
                   <p className="text-gray-500 text-xs">Intake</p>
-                  {isEditing ? (
+                  {isEditing && isAdmin ? (
                     <input
                       type="text"
                       value={editData.intake || ""}
@@ -433,7 +452,7 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
                 </div>
                 <div className="col-span-2">
                   <p className="text-gray-500 text-xs">University</p>
-                  {isEditing ? (
+                  {isEditing && isAdmin ? (
                     <input
                       type="text"
                       value={editData.university || ""}
@@ -453,7 +472,7 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
               <div className="grid grid-cols-3 gap-3 pt-2 border-t border-gray-100">
                 <div>
                   <p className="text-gray-500 text-xs">Total</p>
-                  {isEditing ? (
+                  {isEditing && isAdmin ? (
                     <input
                       type="number"
                       value={editData.totalAmount || 0}
@@ -487,7 +506,7 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
                 </div>
                 <div>
                   <p className="text-gray-500 text-xs">Due</p>
-                  {isEditing ? (
+                  {isEditing && isAdmin ? (
                     <input
                       type="number"
                       value={editData.due || 0}
@@ -505,12 +524,7 @@ const AccountsTable = ({ data, isAdmin }: AccountsTableProps) => {
               </div>
 
               <div className="flex justify-between items-center pt-2 border-t border-gray-100">
-                <div>
-                  <p className="text-gray-500 text-xs">Profit</p>
-                  <p className="text-blue-600 font-bold text-sm">
-                    {formatCurrency(profit)}
-                  </p>
-                </div>
+                
                 {isAdmin && isEditing && (
                   <div className="flex gap-2">
                     <button

@@ -71,7 +71,7 @@ export default function DashboardLayout({
   return (
     <div className="flex min-h-screen overflow-auto">
       <UserProvider>
-        <div className="max-w-64 w-full">
+        <div className="lg:max-w-64 w-full">
           {/* this sidebar for admin */}
 
           {(userRole === "admin" || userRole === "office_admin") && (
