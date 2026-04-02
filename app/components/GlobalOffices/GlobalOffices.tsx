@@ -150,8 +150,8 @@ const GlobalOffices: React.FC = () => {
                 {/* Phone */}
                 {office.phone && (
                   <div className="flex gap-4">
-                    {office.phone.map((p) => (
-                      <div className="flex items-center gap-2 text-sm">
+                    {office.phone.map((p,index) => (
+                      <div key={index} className="flex items-center gap-2 text-sm">
                         <svg
                           className="w-4 h-4 text-gray-100 shrink-0"
                           fill="none"

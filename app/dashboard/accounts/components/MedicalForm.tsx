@@ -133,7 +133,6 @@ export default function MedicalForm({ authEmail }: { authEmail?: string | null |
       toast.error("Failed to submit medical application.");
     }
 
-  
   };
 
   return (
