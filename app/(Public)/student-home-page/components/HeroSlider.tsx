@@ -12,6 +12,8 @@ import "swiper/css/navigation";
 import { Button } from "@headlessui/react";
 import { ArrowRight } from "lucide-react";
 import { CheckListModal } from "../../medical-home-page/components/checkListModal";
+import { usePathname } from "next/navigation";
+import { NoticeModal } from "../../medical-home-page/components/NoticeModal";
 
 interface SlideData {
   id: number;
@@ -31,10 +33,41 @@ const HeroSlider = ({
   slides: SlideData[];
   checklistItems: string[];
   label: string;
-  from?:string;
+  from?: string;
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isCheckNotice, setIsCheckNotice] = useState(false);
+  const [isNoticeLoading, setIsNoticeLoading] = useState(false);
+  const [isNoticeModalOpen, setIsNoticeModalOpen] = useState(false);
+  const [noticeData, setNoticeData] = useState(null);
+  const path = usePathname();
+
+  const query = path.split("-")[0].replace("/","")
+
+  useEffect(() => {
+    if (isCheckNotice) {
+      fetchNotice();
+    }
+  }, [isCheckNotice]);
+
+  const fetchNotice = async () => {
+    setIsNoticeLoading(true);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/get-notice?query=${query}`,
+        { cache: "no-store" },
+      );
+
+      const result = await res.json();
+      setNoticeData(result.data);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsNoticeLoading(false);
+    }
+  };
+
 
   // Text animation classes based on active slide
   const getAnimationClasses = (index: number) => {
@@ -146,6 +179,22 @@ const HeroSlider = ({
                         <div className="relative h-full w-8 bg-white/20"></div>
                       </div>
                     </Button>
+                    <Button
+                      onClick={() => {
+                        setIsNoticeModalOpen(true);
+                        fetchNotice();
+                      }}
+                      className="group ml-4 relative inline-flex h-10 sm:h-12 items-center justify-center overflow-hidden
+                        bg-linear-to-b from-[#CA2328] via-[#FF5E63] to-[#FF5E63] px-8 sm:px-15 font-medium text-sm sm:text-base text-white hover:scale-110 hover:cursor-pointer rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-red-500/30 active:scale-105"
+                    >
+                      <span className="flex gap-2 items-center">
+                        Check Notice{" "}
+                        <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
+                      </span>
+                      <div className="absolute inset-0 flex h-full w-full justify-center transform-[skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:transform-[skew(-12deg)_translateX(100%)]">
+                        <div className="relative h-full w-8 bg-white/20"></div>
+                      </div>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -157,6 +206,12 @@ const HeroSlider = ({
           setIsOpen={setIsModalOpen}
           checklistItems={checklistItems}
           label={label}
+        />
+        <NoticeModal
+          isOpen={isNoticeModalOpen}
+          setIsOpen={setIsNoticeModalOpen}
+          noticeData={noticeData}
+          loading={isNoticeLoading}
         />
       </Swiper>
 

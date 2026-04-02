@@ -56,6 +56,12 @@ const components: { title: string; href: string; description: string }[] = [
     description:
       "From document preparation to final approval, we stand by you at every stage, making your visa journey simple, secure, and completely stress-free.",
   },
+  {
+    title: "Umrah and Hajj",
+    href: "/umrah&hajj",
+    description:
+      "From document preparation to final approval, we stand by you at every stage, making your visa journey simple, secure, and completely stress-free.",
+  },
 ];
 
 type UserRole = {

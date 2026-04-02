@@ -82,6 +82,15 @@ const ServicesSection: React.FC = () => {
       titleColor: "text-blue-700",
       page_link: "/international-tourist",
     },
+    {
+      iconUrl: "https://i.postimg.cc/PxV3nHPT/825-removebg-preview.png",
+      title: "Umrah And Hajj",
+      description:
+        "Experience a spiritually transformative journey through Umrah and Hajj, deepening your faith and connection with Allah.",
+      color: "bg-gray-700",
+      titleColor: "text-green-700",
+      page_link: "/umrah&hajj",
+    },
   ];
 
   return (
@@ -111,7 +120,7 @@ const ServicesSection: React.FC = () => {
         </div>
 
         {/* Bottom Row - Centered */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mt-6 lg:max-w-7xl lg:mx-auto hover:cursor-pointer">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6 lg:max-w-7xl lg:mx-auto hover:cursor-pointer">
           {services.slice(4).map((service, index) => (
             <ServiceCard key={index + 4} {...service} />
           ))}
