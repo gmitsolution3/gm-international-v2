@@ -41,9 +41,7 @@ export default function TouristHomePackages({
   const [isLoading, setIsLoading] = useState(false);
   const swiperRefs = useRef<{ [key: string]: any }>({});
 
-
   const formatPrice = (price: number, form?: string) => {
-
     return new Intl.NumberFormat("en-BD", {
       style: "currency",
       currency: form === "international" ? "USD" : "BDT",
@@ -118,7 +116,7 @@ export default function TouristHomePackages({
                 onMouseLeave={() => setHoveredCard(null)}
               >
                 <div
-                  className="relative h-full bg-white rounded-3xl overflow-hidden shadow-lg transition-all duration-500 border border-gray-100"
+                  className="relative h-full bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 flex flex-col"
                   style={{
                     transform: isHovered ? "translateY(-8px)" : "translateY(0)",
                     boxShadow: isHovered
@@ -204,7 +202,7 @@ export default function TouristHomePackages({
                   </div>
 
                   {/* Content Container */}
-                  <div className="p-5 md:p-5 lg:p-6">
+                  <div className="p-5 md:p-5 lg:p-6 flex flex-col grow">
                     {/* Package Title and Location */}
                     <div className="mb-3">
                       <h3 className="text-lg md:text-base lg:text-xl font-bold text-gray-800 mb-2 line-clamp-2 group-hover:text-red-600 transition-colors">
@@ -258,7 +256,8 @@ export default function TouristHomePackages({
                         </p>
                         <div className="flex items-baseline gap-1">
                           <span className="text-red-600 text-2xl md:text-xl lg:text-2xl font-bold">
-                            {pkg.international_package_price && pkg.isInternationalPackage
+                            {pkg.international_package_price &&
+                            pkg.isInternationalPackage
                               ? formatPrice(
                                   pkg.international_package_price,
                                   "international",
@@ -283,37 +282,39 @@ export default function TouristHomePackages({
                     </div>
 
                     {/* View Details Button */}
-                    {source?.b2bId && source.form ? (
-                      <Link
-                        href={`/tourist-home-page/package/${pkg._id}?b2bId=${source?.b2bId}&form=${source?.form}`}
-                      >
-                        <Button
-                          className="w-full group relative inline-flex h-12 items-center justify-center overflow-hidden 
+                    <div className="mt-auto">
+                      {source?.b2bId && source.form ? (
+                        <Link
+                          href={`/tourist-home-page/package/${pkg._id}?b2bId=${source?.b2bId}&form=${source?.form}`}
+                        >
+                          <Button
+                            className="w-full group relative inline-flex h-12 items-center justify-center overflow-hidden 
                           bg-linear-to-r from-red-600 to-red-500 px-6 font-medium text-white 
                           transition-all hover:from-red-700 hover:to-red-600 hover:scale-[1.02] 
                           hover:cursor-pointer rounded-xl shadow-lg hover:shadow-xl"
-                        >
-                          <span className="flex items-center gap-2">
-                            View Details
-                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                          </span>
-                        </Button>
-                      </Link>
-                    ) : (
-                      <Link href={`/tourist-home-page/package/${pkg._id}`}>
-                        <Button
-                          className="w-full group relative inline-flex h-12 items-center justify-center overflow-hidden 
+                          >
+                            <span className="flex items-center gap-2">
+                              View Details
+                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </span>
+                          </Button>
+                        </Link>
+                      ) : (
+                        <Link href={`/tourist-home-page/package/${pkg._id}`}>
+                          <Button
+                            className="w-full group relative inline-flex h-12 items-center justify-center overflow-hidden 
                           bg-linear-to-r from-red-600 to-red-500 px-6 font-medium text-white 
                           transition-all hover:from-red-700 hover:to-red-600 hover:scale-[1.02] 
                           hover:cursor-pointer rounded-xl shadow-lg hover:shadow-xl"
-                        >
-                          <span className="flex items-center gap-2">
-                            View Details
-                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                          </span>
-                        </Button>
-                      </Link>
-                    )}
+                          >
+                            <span className="flex items-center gap-2">
+                              View Details
+                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            </span>
+                          </Button>
+                        </Link>
+                      )}
+                    </div>
 
                     {/* Rating (Static for now - can be dynamic later) */}
                     <div className="mt-3 flex items-center justify-between">

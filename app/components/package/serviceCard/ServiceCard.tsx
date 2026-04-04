@@ -1,29 +1,35 @@
-import Link from 'next/link';
-import React from 'react';
+import Link from "next/link";
+import React from "react";
 
 interface ServiceCardProps {
-  iconUrl: string;       // changed from ReactNode to string URL
+  iconUrl: string; // changed from ReactNode to string URL
   title: string;
   description: string;
   color: string;
-  titleColor: string;    // added titleColor here
+  titleColor: string; // added titleColor here
   page_link: string;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({ iconUrl, title, description, titleColor,page_link }) => {
+const ServiceCard: React.FC<ServiceCardProps> = ({
+  iconUrl,
+  title,
+  description,
+  titleColor,
+  page_link,
+}) => {
   return (
     <Link href={page_link}>
-    <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 p-6 flex flex-col items-center text-center group animate-fadeInUp">
-      <div>
-        <img src={iconUrl} alt={title} className="w-8 h-8" />
+      <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 p-6 flex flex-col items-center text-center group animate-fadeInUp">
+        <div>
+          <img src={iconUrl} alt={title} className="w-8 h-8" />
+        </div>
+        <h3
+          className={`${titleColor} text-3xl font-bold mb-3 text-gray-800 group-hover:text-red-500 transition-colors duration-300`}
+        >
+          {title}
+        </h3>
+        <p className="text-gray-600 text-sm leading-relaxed">{description}</p>
       </div>
-      <h3 className={`${titleColor} text-3xl font-bold mb-3 text-gray-800 group-hover:text-red-500 transition-colors duration-300`}>
-        {title}
-      </h3>
-      <p className="text-gray-600 text-sm leading-relaxed">
-        {description}
-      </p>
-    </div>
     </Link>
   );
 };
@@ -77,7 +83,7 @@ const ServicesSection: React.FC = () => {
         "https://i.postimg.cc/sDRg3ZTr/3383446-airport-departure-luggage-passenger-tourist-icon-1.png",
       title: "International Tourist",
       description:
-        "স্বপ্নের দেশ ঘুরে দেখার পরিকল্পনা?আমরা দিচ্ছি Tourist Visa Processing Proper Documentation, Embassy Guideline এবং Visa Success Rate বাড়ানোর Complete Support।",
+        "Bangladesh is an increasingly popular destination for foreign tourists who want authentic culture, natural beauty, and fewer crowds compared to many other countries in South Asia.",
       color: "bg-gray-700",
       titleColor: "text-blue-700",
       page_link: "/international-tourist",

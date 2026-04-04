@@ -5,10 +5,10 @@ import TouristFilter from "./components/touristFilter";
 
 const TouristAllPackage = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/all/tourist-package`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/all/tourist-package/bd-client`,
     {
       next: { revalidate: 300 },
-    }
+    },
   );
 
   const data = await res.json();
@@ -29,10 +29,10 @@ const TouristAllPackage = async () => {
         </p>
       </div>
       <div className="flex max-w-full w-full justify-center gap-10">
-        <div className="hidden md:block mt-10 p-8">
-          {/* <TouristASide/> */}
+        {/* <div className="hidden md:block mt-10 p-8">
+          
           <TouristFilter allPackage={data} />
-        </div>
+        </div> */}
         <div>
           <TouristHomePackages packages={data} />
         </div>

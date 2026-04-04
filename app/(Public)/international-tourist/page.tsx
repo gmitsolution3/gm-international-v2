@@ -21,25 +21,64 @@ const InternationalTourist = async () => {
     </div>;
   }
 
+
+
   const slides = [
     {
       id: 1,
-      title: "Explore The World With Confidence",
-      subtitle: "Your Journey Begins Here",
+      title: "Explore Wildlife Adventures",
+      subtitle: "Feel The Wild Nature",
       description:
-        "Discover breathtaking destinations, exciting adventures, and unforgettable travel experiences with our expertly planned tour packages.",
+        "Experience the thrill of wildlife safaris and get closer to nature with our exclusive jungle tour packages.",
       image:
-        "https://i.postimg.cc/hv9GnRbT/ashraful-pranto-l3Zg9-znzd-Y-unsplash.jpg",
+        "https://i.postimg.cc/8Ch38WBm/amazing-tiger-nature-habitat-tiger-pose-golden-light-time-jpg.jpg",
       imageAlt: "International tourist destination",
     },
     {
       id: 2,
-      title: "Make Every Trip Memorable",
-      subtitle: "Travel Without Worries",
+      title: "Discover Peaceful Countryside",
+      subtitle: "Escape The City Life",
       description:
-        "From visa assistance to hotel booking and guided tours, we handle everything so you can enjoy your vacation stress-free.",
+        "Relax in beautiful countryside destinations filled with greenery, fresh air, and peaceful surroundings.",
+      image: "https://i.postimg.cc/dVCNddfW/dreamy-rainbow-countryside-jpg.jpg",
+      imageAlt: "Happy tourists traveling",
+    },
+    {
+      id: 3,
+      title: "Enjoy Lakeside Serenity",
+      subtitle: "Nature At Its Best",
+      description:
+        "Witness calm lakes, wildlife, and serene environments perfect for a refreshing getaway.",
       image:
-        "https://i.postimg.cc/Dfs0L1k0/masqurul-islam-Qqe-I36DL-x-A-unsplash.jpg",
+        "https://i.postimg.cc/2SW9vvJR/herd-wild-deer-middle-lake-surrounded-by-greenery-jpg.jpg",
+      imageAlt: "Happy tourists traveling",
+    },
+    {
+      id: 4,
+      title: "Tropical Beach Paradise",
+      subtitle: "Sun, Sand & Sea",
+      description:
+        "Unwind in breathtaking beach destinations with crystal clear water and lush green surroundings.",
+      image: "https://i.postimg.cc/PJqF87Gf/lush-beach-forest-paradise-jpg.jpg",
+      imageAlt: "Happy tourists traveling",
+    },
+    {
+      id: 5,
+      title: "Explore Cultural Streets",
+      subtitle: "Tradition Meets Beauty",
+      description:
+        "Walk through historic streets and discover rich culture, heritage, and unique architecture.",
+      image:
+        "https://i.postimg.cc/QCnYgqhL/may-courtyard-narrow-city-china-jpg.jpg",
+      imageAlt: "Happy tourists traveling",
+    },
+    {
+      id: 6,
+      title: "Relax In Green Parks",
+      subtitle: "Breathe Fresh Air",
+      description:
+        "Spend quality time in beautiful parks surrounded by greenery and peaceful nature.",
+      image: "https://i.postimg.cc/J4G2rS57/park-jpg.jpg",
       imageAlt: "Happy tourists traveling",
     },
   ];

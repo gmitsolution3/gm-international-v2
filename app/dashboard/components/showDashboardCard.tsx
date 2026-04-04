@@ -71,16 +71,6 @@ const MainDashboard: React.FC = () => {
         page_link: `/dashboard/visa/${userRole !== "admin" ? userRole : "admin"}`,
       },
       {
-        iconUrl:
-          "https://i.postimg.cc/L8253ZfF/9023992-student-fill-icon-1.png",
-        title: "International Student",
-        description:
-          "Guiding international students to succeed globally with confidence and support. ",
-        color: "bg-red-500",
-        titleColor: "text-red-600",
-        page_link: "/",
-      },
-      {
         iconUrl: "https://i.postimg.cc/DZPZYqMY/6472772-1.png",
         title: "B2B",
         description:

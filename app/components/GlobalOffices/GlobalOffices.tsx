@@ -89,14 +89,14 @@ const GlobalOffices: React.FC = () => {
       </div>
 
       {/* Offices List */}
-      <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 md:gap-6">
+      <div className="space-y-4 grid grid-cols-1 md:grid-cols-2 md:gap-6 items-stretch">
         {offices.map((office) => (
           <div
             key={office.id}
-            className="flex flex-col sm:flex-row md:items-end gap-4 sm:gap-6 overflow-hidden transition-shadow duration-300 border md:border-none border-gray-500 p-2 rounded-2xl"
+            className={`h-full flex flex-col sm:flex-row md:items-start gap-4 sm:gap-6 overflow-hidden transition-shadow duration-300 p-2 rounded-2xl`}
           >
             {/* Image Container - Left Side */}
-            <div className="relative w-full sm:w-28 h-28 shrink-0">
+            <div className="relative w-full sm:w-28 h-28 shrink-0 self-end">
               <div className="absolute inset-0 z-10"></div>
               <Image
                 src={office.imageUrl}
@@ -150,10 +150,13 @@ const GlobalOffices: React.FC = () => {
                 {/* Phone */}
                 {office.phone && (
                   <div className="flex gap-4">
-                    {office.phone.map((p,index) => (
-                      <div key={index} className="flex items-center gap-2 text-sm">
+                    {office.phone.map((p, index) => (
+                      <div
+                        key={index}
+                        className="flex items-center gap-2 text-sm"
+                      >
                         <svg
-                          className="w-4 h-4 text-gray-100 shrink-0"
+                          className="w-4 text-gray-100 shrink-0"
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"

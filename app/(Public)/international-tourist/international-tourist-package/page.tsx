@@ -28,10 +28,7 @@ const InternationalPackage = async () => {
         </p>
       </div>
       <div className="flex max-w-full w-full justify-center gap-10">
-        <div className="mt-10 p-8">
-          {/* <TouristASide/> */}
-          <TouristFilter allPackage={result} />
-        </div>
+        
         <div>
           <TouristHomePackages packages={result} />
         </div>
