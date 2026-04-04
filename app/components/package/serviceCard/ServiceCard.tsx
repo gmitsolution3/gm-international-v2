@@ -73,7 +73,7 @@ const ServicesSection: React.FC = () => {
       iconUrl: "https://i.postimg.cc/L8253ZfF/9023992-student-fill-icon-1.png",
       title: "International Student",
       description:
-        "GM International আপনাকে দিচ্ছে Full & Partial Scholarship, Admission, Visa Processing এবং Complete Guideline",
+        "Bangladesh hosts over 50,000 international students annually, offering affordable, high-quality education, particularly in medical and engineering fields, with university fees as low as $200-$500 per semester.",
       color: "bg-red-500",
       titleColor: "text-red-500",
       page_link: "/international-student",
