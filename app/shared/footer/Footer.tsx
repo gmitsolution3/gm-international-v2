@@ -343,7 +343,7 @@ export default function Footer() {
 
               <div className="mt-6 pt-4 border-t border-white border-opacity-20 text-center md:text-left">
                 <a
-                  href="https://www.facebook.com/profile.php?id=61578361911412"
+                  href="https://www.gmgroupbd.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 group"
