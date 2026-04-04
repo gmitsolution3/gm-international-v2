@@ -22,6 +22,8 @@ import {
   RefreshCw,
   UserPlus,
 } from "lucide-react";
+import Swal from "sweetalert2";
+import { toast } from "sonner";
 
 // Types
 interface User {
@@ -111,25 +113,66 @@ const B2BPartner: React.FC<UserTableProps> = ({ initialUsers }) => {
     });
 
   // Handle delete user
-  const handleDeleteUser = async (userId: string) => {
-    if (!confirm("Are you sure you want to delete this user?")) return;
+  // const handleDeleteUser = async (userId: string) => {
+  //   if (!confirm("Are you sure you want to delete this user?")) return;
 
-    setLoading(userId);
-    try {
-      const response = await fetch(`/api/users/${userId}`, {
-        method: "DELETE",
-      });
+  //   setLoading(userId);
+  //   try {
+  //     const response = await fetch(`/api/users/${userId}`, {
+  //       method: "DELETE",
+  //     });
 
-      if (!response.ok) throw new Error("Failed to delete user");
+  //     if (!response.ok) throw new Error("Failed to delete user");
 
-      setUsers((prev) => prev.filter((user) => user._id !== userId));
-    } catch (error) {
-      console.error("Error deleting user:", error);
-      alert("Failed to delete user. Please try again.");
-    } finally {
-      setLoading(null);
-    }
-  };
+  //     setUsers((prev) => prev.filter((user) => user._id !== userId));
+  //   } catch (error) {
+  //     console.error("Error deleting user:", error);
+  //     alert("Failed to delete user. Please try again.");
+  //   } finally {
+  //     setLoading(null);
+  //   }
+  // };
+
+   const handleDeleteUser = async (userId: string) => {
+     setLoading(userId);
+     Swal.fire({
+       title: "Are you sure?",
+       text: "You won't be able to revert this!",
+       icon: "warning",
+       showCancelButton: true,
+       confirmButtonColor: "#3085d6",
+       cancelButtonColor: "#d33",
+       confirmButtonText: "Yes, delete it!",
+     }).then(async (result) => {
+       if (result.isConfirmed)
+         try {
+           const response = await fetch(
+             `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/delete/b2b-user/${userId}`,
+             {
+               method: "DELETE",
+             },
+           );
+
+           const result = await response.json();
+           if (!result.success) {
+             toast.error(result.message);
+             return;
+           }
+
+           setUsers((prev) => prev.filter((user) => user._id !== userId));
+           Swal.fire({
+             title: "Deleted!",
+             text: "Your file has been deleted.",
+             icon: "success",
+           });
+         } catch (error) {
+           console.error("Error deleting user:", error);
+           alert("Failed to delete user. Please try again.");
+         } finally {
+           setLoading(null);
+         }
+     });
+   };
 
   // Handle bulk delete
   const handleBulkDelete = async () => {

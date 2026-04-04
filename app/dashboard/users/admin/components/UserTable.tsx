@@ -51,7 +51,6 @@ interface UserTableProps {
 
 // Role options for dropdown
 const roleOptions = [
-  { value: "account", label: "Account", color: "bg-red-100 text-red-800" },
   {
     value: "office_admin",
     label: "Office Admin",
