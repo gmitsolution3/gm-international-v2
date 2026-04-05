@@ -23,13 +23,13 @@ const MainDashboard: React.FC = () => {
     if (!userRole) return;
     setServices([
       {
-        iconUrl: "https://i.postimg.cc/y84YY3ng/famicons-school-sharp.png", 
+        iconUrl: "https://i.postimg.cc/y84YY3ng/famicons-school-sharp.png",
         title: "Student",
         description:
           "Empowering students with the skills, exposure, and resources to grow confidently and achieve their dreams.",
         color: "bg-gray-100",
         titleColor: "text-blue-700",
-        page_link: `/dashboard/scholarship/${userRole !== "admin" ? userRole : "admin"}`,
+        page_link: `/dashboard/scholarship/${userRole === "user" ? userRole : "admin"}`,
       },
       {
         iconUrl:
@@ -40,7 +40,7 @@ const MainDashboard: React.FC = () => {
         color: "bg-red-500",
         titleColor: "text-red-500",
         page_link: `/dashboard/medical/${
-          userRole === "admin" ? userRole : userRole + `s`
+          userRole === "user" ? userRole + `s` : "admin"
         }`,
       },
       {
@@ -50,7 +50,7 @@ const MainDashboard: React.FC = () => {
           "Explore China, Malaysia, and Australia with trusted guidance, personalized support",
         color: "bg-sky-400",
         titleColor: "text-sky-300",
-        page_link: `/dashboard/tourist/${userRole !== "admin" ? userRole : "admin"}`,
+        page_link: `/dashboard/tourist/${userRole === "user" ? userRole : "admin"}`,
       },
       {
         iconUrl: "https://i.postimg.cc/5tPX0N6m/solar-pie-chart-3-bold.png",
@@ -59,7 +59,7 @@ const MainDashboard: React.FC = () => {
           "Helping businesses grow with trusted guidance, smart solutions, and reliable support for long-term success.",
         color: "bg-gray-800",
         titleColor: "text-black",
-        page_link: `/dashboard/business/${userRole !== "admin" ? userRole : "admin"}`,
+        page_link: `/dashboard/business/${userRole === "user" ? userRole : "admin"}`,
       },
       {
         iconUrl: "https://i.postimg.cc/5tPX0N6m/solar-pie-chart-3-bold.png",
@@ -68,7 +68,7 @@ const MainDashboard: React.FC = () => {
           "Simplifying your visa journey with support at every step—secure, stress-free",
         color: "bg-green-800",
         titleColor: "text-black",
-        page_link: `/dashboard/visa/${userRole !== "admin" ? userRole : "admin"}`,
+        page_link: `/dashboard/visa/${userRole === "user" ? userRole : "admin"}`,
       },
       {
         iconUrl: "https://i.postimg.cc/DZPZYqMY/6472772-1.png",
@@ -101,6 +101,7 @@ const MainDashboard: React.FC = () => {
   if (loading) return <Loader />;
   if (!userRole) return null;
   if (!services.length) return null;
+
 
   return (
     <section className="min-h-screen flex mx-auto items-center max-w-7xl w-full py-12 px-4 sm:px-6 lg:px-8">
@@ -142,17 +143,23 @@ const MainDashboard: React.FC = () => {
 
           {/* Bottom Row - Centered */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mt-6 lg:max-w-7xl lg:mx-auto hover:cursor-pointer">
-            {services.slice(4, 6).map((service, index) => (
+            {services.slice(4, 5).map((service, index) => (
               <ServiceCard key={index + 4} {...service} />
             ))}
           </div>
           {(userRole === "admin" || userRole === "office_admin") && (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 lg:max-w-7xl lg:mx-auto hover:cursor-pointer">
-              {userRole === "admin" ? services.slice(6, 9).map((service, index) => (
-                <ServiceCard key={index + 6} {...service} />
-              )) : services.slice(8, 9).map((service, index) => (
-                <ServiceCard key={index + 6} {...service} />
-              ))}
+              {userRole === "admin"
+                ? services
+                    .slice(7, 9)
+                    .map((service, index) => (
+                      <ServiceCard key={index + 6} {...service} />
+                    ))
+                : services
+                    .slice(7, 8)
+                    .map((service, index) => (
+                      <ServiceCard key={index + 6} {...service} />
+                    ))}
             </div>
           )}
         </div>

@@ -90,7 +90,7 @@ export default function DashboardLayout({
         <div className="max-w-64 w-full">
           {/* this sidebar for admin */}
 
-          {userRole === "admin" && (
+          {(userRole === "admin" || userRole === "office_admin") && (
             <Sidebar
               isOpen={sidebarOpen}
               onToggle={() => setSidebarOpen(!sidebarOpen)}
