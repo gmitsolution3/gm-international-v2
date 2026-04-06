@@ -145,14 +145,7 @@ export function NavBar() {
             </NavigationMenuLink>
           </NavigationMenuItem>
 
-          {/* <NavigationMenuItem>
-            <NavigationMenuLink
-              asChild
-              className={navigationMenuTriggerStyle()}
-            >
-              <Link href="/dashboard">Dashboard</Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem> */}
+          
 
           <NavigationMenuItem>
             <NavigationMenuTrigger>Services</NavigationMenuTrigger>
@@ -177,6 +170,14 @@ export function NavBar() {
               className={navigationMenuTriggerStyle()}
             >
               <Link href="/visa">Visa Application</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              asChild
+              className={navigationMenuTriggerStyle()}
+            >
+              <Link href="/csca">CSCA</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
 
@@ -222,32 +223,6 @@ export function NavBar() {
             </NavigationMenuContent>
           </NavigationMenuItem>
 
-          {/* <NavigationMenuItem>
-            <NavigationMenuTrigger>About Us</NavigationMenuTrigger> */}
-          {/* <NavigationMenuContent>
-              <ul className="grid w-50 gap-4">
-                <li>
-                  <NavigationMenuLink asChild>
-                    <Link href="#" className="flex items-center gap-2">
-                      <CircleHelpIcon size={18} />
-                      Backlog
-                    </Link>
-                  </NavigationMenuLink>
-                  <NavigationMenuLink asChild>
-                    <Link href="#" className="flex items-center gap-2">
-                      <CircleIcon size={18} />
-                      To Do
-                    </Link>
-                  </NavigationMenuLink>
-                  <NavigationMenuLink asChild>
-                    <Link href="#" className="flex items-center gap-2">
-                      <CircleCheckIcon size={18} />
-                      Done
-                    </Link>
-                  </NavigationMenuLink>
-                </li>
-              </ul>
-            </NavigationMenuContent> */}
           {/* </NavigationMenuItem> */}
 
           <NavigationMenuItem>
@@ -403,32 +378,6 @@ export function NavBar() {
                 </div>
               </MobileMenuSection>
 
-              {/* <MobileMenuSection
-                label="About Us"
-                isOpen={expandedMenu === "about"}
-                onClick={() => toggleExpandMenu("about")}
-              >
-                <div className="bg-gray-50 pl-4">
-                  <MobileMenuItem
-                    href="#"
-                    label="Backlog"
-                    onClick={closeMobileMenu}
-                    icon={<CircleHelpIcon size={18} />}
-                  />
-                  <MobileMenuItem
-                    href="#"
-                    label="To Do"
-                    onClick={closeMobileMenu}
-                    icon={<CircleIcon size={18} />}
-                  />
-                  <MobileMenuItem
-                    href="#"
-                    label="Done"
-                    onClick={closeMobileMenu}
-                    icon={<CircleCheckIcon size={18} />}
-                  />
-                </div>
-              </MobileMenuSection> */}
               <MobileMenuItem
                 href="/#hero"
                 label="About Us"
