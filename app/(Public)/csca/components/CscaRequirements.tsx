@@ -22,6 +22,7 @@ interface ExamCategory {
   title: string;
   icon: React.ReactNode;
   description: string;
+  bgIcon: React.ReactNode;
   pdfs: {
     name: string;
     url: string;
@@ -57,7 +58,7 @@ const getEmbedUrl = (driveUrl: string): string => {
   return driveUrl;
 };
 
-const examCategories: ExamCategory[] = [
+const professionalCategory: ExamCategory[] = [
   {
     id: "humanities-chinese",
     title: "CSCA - Humanities",
@@ -71,6 +72,7 @@ const examCategories: ExamCategory[] = [
         driveFileId: "1G8lcZ8aU4QoX9pDMfM-3ah8c4pyFHzAE",
       },
     ],
+    bgIcon: <Languages size={110} strokeWidth={1} />,
   },
   {
     id: "stem-chinese",
@@ -85,7 +87,11 @@ const examCategories: ExamCategory[] = [
         driveFileId: "16L1xO2jbSDzSDEHxHfUqAtB__JxHvU6M",
       },
     ],
+    bgIcon: <GraduationCap size={110} strokeWidth={1} />,
   },
+];
+
+const examCategories: ExamCategory[] = [
   {
     id: "chemistry",
     title: "CSCA - Chemistry",
@@ -99,6 +105,7 @@ const examCategories: ExamCategory[] = [
         driveFileId: "1rUu2eKS3KzD2GDeg_jNgMSTOuYkLDO_B",
       },
     ],
+    bgIcon: <FlaskConical size={110} strokeWidth={1} />,
   },
   {
     id: "physics",
@@ -113,6 +120,7 @@ const examCategories: ExamCategory[] = [
         driveFileId: "1DGerUcQbr0NX7EVrclBwEgTPWBwhc0ko",
       },
     ],
+    bgIcon: <Atom size={110} strokeWidth={1} />,
   },
   {
     id: "mathematics",
@@ -127,6 +135,7 @@ const examCategories: ExamCategory[] = [
         driveFileId: "1KTSlLnhlkpJYVtkwni1ElQmzOUj02Dg7",
       },
     ],
+    bgIcon: <Calculator size={110} strokeWidth={1} />,
   },
 ];
 
@@ -190,7 +199,16 @@ const CscaRequirements: React.FC = () => {
       <div
         className="relative text-white overflow-hidden"
         style={{
-          background: "linear-gradient(360deg, #CA2328 0%, #301314 70%)",
+          // background: "linear-gradient(360deg, #CA2328 0%, #301314 70%)",
+          backgroundImage: `linear-gradient(
+        to bottom, 
+        rgba(0, 0, 0, 0.65) 0%, 
+        rgba(0, 0, 0, 0.65) 70%,   
+        rgba(0, 0, 0, 0.65) 100%  
+      ), url('https://i.postimg.cc/QMLVzjyc/pexels-clmcdk-fejcn-2057437867-29646491.jpg')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
         }}
       >
         <div className="absolute inset-0 bg-black/10"></div>
@@ -214,8 +232,9 @@ const CscaRequirements: React.FC = () => {
                 onClick={handleApplyNow}
                 className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-red-700 font-semibold rounded-xl hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 mt-6"
               >
-                <span>Apply Now</span>
+                <span>Apply Now </span>
                 <ExternalLink className="w-4 h-4" />
+                <span>(3500 BDT)</span>
               </button>
             </Link>
           </div>
@@ -225,70 +244,156 @@ const CscaRequirements: React.FC = () => {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-        {/* Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-12">
-          {examCategories.map((category) => (
-            <div
-              key={category.id}
-              className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-red-200"
-            >
-              {/* Card Header */}
+        <div>
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            Fundamental Subjects
+          </h2>
+          <p className="text-gray-600 mb-8 max-w-2xl">
+            Explore the different subject areas covered in the CSCA exams and
+            access relevant study materials and syllabi for each category.
+          </p>
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-12">
+            {examCategories.map((category) => (
               <div
-                className="relative h-32 p-6 flex items-center justify-between"
-                style={{
-                  background:
-                    "linear-gradient(180deg, #CA2328 0%, #301314 70%)",
-                }}
+                key={category.id}
+                className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-red-200"
               >
-                <div className="text-white">
-                  <div className="mb-2">{category.icon}</div>
-                  <h3 className="text-xl font-bold">{category.title}</h3>
-                  <p className="text-red-100 text-sm mt-1">
-                    {category.description}
-                  </p>
+                {/* Card Header */}
+                <div
+                  className="relative h-32 p-6 flex items-center justify-between overflow-hidden"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, #CA2328 0%, #301314 70%)",
+                  }}
+                >
+                  <div className="text-white">
+                    <div className="mb-2">{category.icon}</div>
+                    <h3 className="text-xl font-bold">{category.title}</h3>
+                    <p className="text-red-100 text-sm mt-1">
+                      {category.description}
+                    </p>
+                  </div>
+                  <div className="card-header-bg-icon">{category.bgIcon}</div>
                 </div>
-              </div>
 
-              {/* Card Body */}
-              <div className="p-6">
-                {category.pdfs.map((pdf, idx) => (
-                  <div key={idx} className="mb-4 last:mb-0">
-                    <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                      <FileText className="w-5 h-5 text-red-600 mt-0.5 shrink-0" />
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-gray-800 text-sm truncate">
-                          {pdf.name}
-                        </p>
-                        <div className="flex items-center gap-2 mt-2">
-                          <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">
-                            {pdf.type}
-                          </span>
+                {/* Card Body */}
+                <div className="p-6">
+                  {category.pdfs.map((pdf, idx) => (
+                    <div key={idx} className="mb-4 last:mb-0">
+                      <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                        <FileText className="w-5 h-5 text-red-600 mt-0.5 shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-gray-800 text-sm truncate">
+                            {pdf.name}
+                          </p>
+                          <div className="flex items-center gap-2 mt-2">
+                            <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">
+                              {pdf.type}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    {/* Action Buttons */}
-                    <div className="flex gap-2 mt-2">
-                      <button
-                        onClick={() => handleView(pdf.name, pdf.url)}
-                        className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium border border-red-600 text-red-600 rounded-lg hover:bg-red-50 transition-all duration-200"
-                      >
-                        <Eye className="w-4 h-4" />
-                        <span>View</span>
-                      </button>
-                      <button
-                        onClick={() => handleDownload(pdf.name, pdf.url)}
-                        className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-200 shadow-sm hover:shadow-md"
-                      >
-                        <Download className="w-4 h-4" />
-                        <span>Download</span>
-                      </button>
+                      {/* Action Buttons */}
+                      <div className="flex gap-2 mt-2">
+                        <button
+                          onClick={() => handleView(pdf.name, pdf.url)}
+                          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium border border-red-600 text-red-600 rounded-lg hover:bg-red-50 transition-all duration-200"
+                        >
+                          <Eye className="w-4 h-4" />
+                          <span>View</span>
+                        </button>
+                        <button
+                          onClick={() => handleDownload(pdf.name, pdf.url)}
+                          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-200 shadow-sm hover:shadow-md"
+                        >
+                          <Download className="w-4 h-4" />
+                          <span>Download</span>
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+        </div>
+        <div>
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            Professional Chinese
+          </h2>
+          <p className="text-gray-600 mb-8 max-w-2xl">
+            For candidates opting for the Chinese language track, access
+            specialized materials and syllabi tailored to the humanities and
+            STEM subjects in the Chinese context.
+          </p>
+          {/* Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-12">
+            {professionalCategory.map((category) => (
+              <div
+                key={category.id}
+                className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-red-200"
+              >
+                {/* Card Header */}
+                <div
+                  className="relative h-32 p-6 flex items-center justify-between overflow-hidden"
+                  style={{
+                    background:
+                      "linear-gradient(180deg, #CA2328 0%, #301314 70%)",
+                  }}
+                >
+                  <div className="text-white">
+                    <div className="mb-2">{category.icon}</div>
+                    <h3 className="text-xl font-bold">{category.title}</h3>
+                    <p className="text-red-100 text-sm mt-1">
+                      {category.description}
+                    </p>
+                  </div>
+                  <div className="card-header-bg-icon">{category.bgIcon}</div>
+                </div>
+
+                {/* Card Body */}
+                <div className="p-6">
+                  {category.pdfs.map((pdf, idx) => (
+                    <div key={idx} className="mb-4 last:mb-0">
+                      <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                        <FileText className="w-5 h-5 text-red-600 mt-0.5 shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-gray-800 text-sm truncate">
+                            {pdf.name}
+                          </p>
+                          <div className="flex items-center gap-2 mt-2">
+                            <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full">
+                              {pdf.type}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="flex gap-2 mt-2">
+                        <button
+                          onClick={() => handleView(pdf.name, pdf.url)}
+                          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium border border-red-600 text-red-600 rounded-lg hover:bg-red-50 transition-all duration-200"
+                        >
+                          <Eye className="w-4 h-4" />
+                          <span>View</span>
+                        </button>
+                        <button
+                          onClick={() => handleDownload(pdf.name, pdf.url)}
+                          className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-200 shadow-sm hover:shadow-md"
+                        >
+                          <Download className="w-4 h-4" />
+                          <span>Download</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Apply Now CTA Section */}
@@ -315,6 +420,7 @@ const CscaRequirements: React.FC = () => {
                 >
                   <span>Apply Now</span>
                   <ExternalLink className="w-4 h-4" />
+                  <span>(3500 BDT)</span>
                 </button>
               </Link>
             </div>

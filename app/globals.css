@@ -763,3 +763,18 @@ select {
 .animate-fade-in {
   animation: fade-in 0.2s ease-out;
 }
+
+.card-header-bg-icon {
+  position: absolute;
+  right: -12px;
+  bottom: -12px;
+  opacity: 0.08;
+  color: white;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+}
+
+.group:hover .card-header-bg-icon {
+  opacity: 0.18;
+  transform: scale(1.12) rotate(-6deg);
+}

@@ -43,6 +43,8 @@ interface FormData {
   photoUrl: string;
   passportUrl: string;
   nidUrl: string;
+  paymentMethod?: string;
+  transactionId?: string;
 }
 
 interface UploadingFile {
@@ -65,6 +67,8 @@ const ApplicationForm: React.FC = () => {
     photoUrl: "",
     passportUrl: "",
     nidUrl: "",
+    paymentMethod: "bkash",
+    transactionId: "",
   });
 
   const [uploading, setUploading] = useState<UploadingFile | null>(null);
@@ -115,10 +119,10 @@ const ApplicationForm: React.FC = () => {
       let url: string | null = null;
 
       if (uploadType === "pdf") {
-        const url = await UploadToCloudinary(file);
+        url = await UploadToCloudinary(file);
         console.log(url);
       } else {
-       const url = await handleFileUpload(file);
+        url = await handleFileUpload(file);
        console.log({ url });
       }
 
@@ -741,6 +745,119 @@ const ApplicationForm: React.FC = () => {
                   </div>
                 )}
               </div>
+            </div>
+          </div>
+          {/* Payment Information */}
+          <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+            <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+              <CreditCard className="w-5 h-5 text-red-600" />
+              Payment Information
+              <span className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full ml-1">
+                ৳3,500
+              </span>
+            </h2>
+
+            {/* Method selector */}
+            <div className="grid grid-cols-3 gap-3 mb-5">
+              {[
+                {
+                  id: "bkash",
+                  label: "bKash",
+                  img: "https://i.postimg.cc/ydqwZ88M/b-removebg-preview.png",
+                },
+                {
+                  id: "nagad",
+                  label: "Nagad",
+                  img: "https://i.postimg.cc/kGR6hwm4/Nagad-Logo-wine-removebg-preview.png",
+                },
+                {
+                  id: "rocket",
+                  label: "Rocket",
+                  img: "https://i.postimg.cc/CLjHhM3B/dutch-bangla-rocket-logo-png-seeklogo-317692-removebg-preview.png",
+                },
+              ].map((m) => (
+                <button
+                  key={m.id}
+                  type="button"
+                  onClick={() =>
+                    setFormData((prev) => ({ ...prev, paymentMethod: m.id }))
+                  }
+                  className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
+                    formData.paymentMethod === m.id
+                      ? "border-pink-500 bg-pink-50"
+                      : "border-gray-200 hover:border-gray-300"
+                  }`}
+                >
+                  <img
+                    src={m.img}
+                    alt={m.label}
+                    className="h-9 object-contain"
+                  />
+                  <span
+                    className={`text-xs font-semibold ${
+                      formData.paymentMethod === m.id
+                        ? "text-pink-600"
+                        : "text-gray-500"
+                    }`}
+                  >
+                    {m.label}
+                  </span>
+                </button>
+              ))}
+            </div>
+
+            {/* Info box */}
+            <div className="bg-pink-50 border border-pink-200 rounded-xl p-4 mb-5">
+              <div className="flex justify-between text-sm mb-1">
+                <span className="text-gray-500">Send money to</span>
+                <span className="font-bold text-gray-800">
+                  01XXXXXXXXX ({formData.paymentMethod})
+                </span>
+              </div>
+              <div className="flex justify-between text-sm mb-2">
+                <span className="text-gray-500">Amount</span>
+                <span className="font-bold text-pink-600 text-base">
+                  ৳ 3,500
+                </span>
+              </div>
+              <hr className="border-pink-200 mb-2" />
+              <p className="text-xs text-gray-500 mb-2">
+                Payment শেষে Transaction ID নিচে লিখুন
+              </p>
+              <ul className="text-xs text-gray-600 space-y-1">
+                <li className="flex gap-2">
+                  <span className="text-pink-500 font-bold">•</span>
+                  {formData.paymentMethod === "bkash"
+                    ? "bKash"
+                    : formData.paymentMethod === "nagad"
+                      ? "Nagad"
+                      : "Rocket"}{" "}
+                  অ্যাপ → Send Money → নম্বরে 3,500 টাকা পাঠান
+                </li>
+                <li className="flex gap-2">
+                  <span className="text-pink-500 font-bold">•</span>Transaction
+                  ID কপি করুন
+                </li>
+              </ul>
+            </div>
+
+            {/* Transaction ID */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Transaction ID <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="transactionId"
+                value={formData.transactionId}
+                onChange={handleInputChange}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                placeholder="e.g. 8N3KA1XXXX"
+                required
+              />
+              <p className="text-xs text-gray-400 mt-1">
+                Transaction ID ছাড়া আবেদন গ্রহণযোগ্য হবে না।
+              </p>
             </div>
           </div>
 

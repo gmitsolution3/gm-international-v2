@@ -33,6 +33,7 @@ export async function proxy(req: NextRequest) {
     "/b2b/dashboard/b2b-business-package",
     "/b2b/dashboard/visa-rate",
     "/b2b/dashboard/services-pricing",
+    "/csca/csca-application"
   ];
 
   const isProtectedPath = protectedPaths.some((path) =>
@@ -73,5 +74,6 @@ export const config = {
     "/b2b/dashboard/b2b-business-package/:path*",
     "/b2b/dashboard/visa-rate/:path*",
     "/b2b/dashboard/services-pricing/:path*",
+    "/csca/csca-application/:path*",
   ],
 };

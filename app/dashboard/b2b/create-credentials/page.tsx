@@ -187,6 +187,13 @@ const CreateCredential = () => {
       }
     } catch (error) {
       console.log(error);
+      Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Failed to send email",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     } finally {
       setEmailSending(false);
     }

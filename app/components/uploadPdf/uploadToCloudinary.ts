@@ -13,7 +13,7 @@ export const UploadToCloudinary = async (file: File) => {
     }
 
     const cloudinaryUrl =
-      "https://api.cloudinary.com/v1_1/dijzbql87/image/upload";
+      "https://api.cloudinary.com/v1_1/dijzbql87/raw/upload";
 
     const uploadRes = await fetch(cloudinaryUrl, {
       method: "POST",
