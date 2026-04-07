@@ -45,6 +45,7 @@ interface FormData {
   nidUrl: string;
   paymentMethod?: string;
   transactionId?: string;
+  userEmail?: string | null | undefined;
 }
 
 interface UploadingFile {
@@ -52,7 +53,11 @@ interface UploadingFile {
   progress: boolean;
 }
 
-const ApplicationForm: React.FC = () => {
+type Props = {
+  userEmail?: string | null | undefined;
+};
+
+const ApplicationForm: React.FC<Props> = ({ userEmail }) => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     phone: "",
@@ -69,6 +74,7 @@ const ApplicationForm: React.FC = () => {
     nidUrl: "",
     paymentMethod: "bkash",
     transactionId: "",
+    userEmail: userEmail || "",
   });
 
   const [uploading, setUploading] = useState<UploadingFile | null>(null);
@@ -123,7 +129,7 @@ const ApplicationForm: React.FC = () => {
         console.log(url);
       } else {
         url = await handleFileUpload(file);
-       console.log({ url });
+        console.log({ url });
       }
 
       if (url) {
@@ -190,6 +196,8 @@ const ApplicationForm: React.FC = () => {
       "photoUrl",
       "passportUrl",
       "nidUrl",
+      "transactionId",
+      "userEmail",
     ];
 
     for (const field of requiredFields) {
@@ -274,6 +282,7 @@ const ApplicationForm: React.FC = () => {
           photoUrl: "",
           passportUrl: "",
           nidUrl: "",
+          userEmail: userEmail || "",
         });
       }, 1000);
     } catch (error) {
@@ -766,14 +775,9 @@ const ApplicationForm: React.FC = () => {
                   img: "https://i.postimg.cc/ydqwZ88M/b-removebg-preview.png",
                 },
                 {
-                  id: "nagad",
-                  label: "Nagad",
-                  img: "https://i.postimg.cc/kGR6hwm4/Nagad-Logo-wine-removebg-preview.png",
-                },
-                {
-                  id: "rocket",
-                  label: "Rocket",
-                  img: "https://i.postimg.cc/CLjHhM3B/dutch-bangla-rocket-logo-png-seeklogo-317692-removebg-preview.png",
+                  id: "bank",
+                  label: "Bank Transfer",
+                  img: "https://i.postimg.cc/Rh5ZsmVs/id-OY1ii-DV1-1775564052370.jpg",
                 },
               ].map((m) => (
                 <button
@@ -811,7 +815,11 @@ const ApplicationForm: React.FC = () => {
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-gray-500">Send money to</span>
                 <span className="font-bold text-gray-800">
-                  01XXXXXXXXX ({formData.paymentMethod})
+                  {formData.paymentMethod === "bkash" ? (
+                    <span>01XXXXXXXXX ({formData.paymentMethod})</span>
+                  ) : (
+                    <span>2074848480001 ({formData.paymentMethod})</span>
+                  )}
                 </span>
               </div>
               <div className="flex justify-between text-sm mb-2">
@@ -824,20 +832,35 @@ const ApplicationForm: React.FC = () => {
               <p className="text-xs text-gray-500 mb-2">
                 Payment শেষে Transaction ID নিচে লিখুন
               </p>
-              <ul className="text-xs text-gray-600 space-y-1">
-                <li className="flex gap-2">
-                  <span className="text-pink-500 font-bold">•</span>
-                  {formData.paymentMethod === "bkash"
-                    ? "bKash"
-                    : formData.paymentMethod === "nagad"
-                      ? "Nagad"
-                      : "Rocket"}{" "}
-                  অ্যাপ → Send Money → নম্বরে 3,500 টাকা পাঠান
-                </li>
-                <li className="flex gap-2">
-                  <span className="text-pink-500 font-bold">•</span>Transaction
-                  ID কপি করুন
-                </li>
+
+              <ul>
+                {formData.paymentMethod === "bkash" ? (
+                  <li className="flex gap-2 text-xs text-gray-600">
+                    <span className="text-pink-500 font-bold">•</span> bKash
+                    অ্যাপ → Send Money → নম্বরে 3,500 টাকা পাঠান
+                  </li>
+                ) : (
+                  <>
+                    <li className="flex gap-2 text-xs text-gray-600">
+                      <span className="text-pink-500 font-bold">•</span> ব্যাংক:{" "}
+                      <span className="font-semibold">Brac bank</span>
+                    </li>
+                    
+                    <li className="flex gap-2 text-xs text-gray-600">
+                      <span className="text-pink-500 font-bold">•</span> Number:{" "}
+                      <strong className="font-extrabold text-md">2074848480001</strong>
+                    </li>
+                    <li className="flex gap-2 text-xs text-gray-600">
+                      <span className="text-pink-500 font-bold">•</span> A/C
+                      Name:{" "}
+                      <span className="font-semibold">GM International</span>
+                    </li>
+                    <li className="flex gap-2 text-xs text-gray-600">
+                      <span className="text-pink-500 font-bold">•</span> Branch:{" "}
+                      <span className="font-semibold">Mirpur</span>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
 
