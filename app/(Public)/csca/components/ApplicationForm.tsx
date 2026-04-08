@@ -45,6 +45,7 @@ interface FormData {
   nidUrl: string;
   paymentMethod?: string;
   transactionId?: string;
+  paymentReceiptUrl: string;
   userEmail?: string | null | undefined;
 }
 
@@ -74,6 +75,7 @@ const ApplicationForm: React.FC<Props> = ({ userEmail }) => {
     nidUrl: "",
     paymentMethod: "bkash",
     transactionId: "",
+    paymentReceiptUrl: "",
     userEmail: userEmail || "",
   });
 
@@ -90,6 +92,7 @@ const ApplicationForm: React.FC<Props> = ({ userEmail }) => {
     photo: useRef<HTMLInputElement>(null),
     passport: useRef<HTMLInputElement>(null),
     nid: useRef<HTMLInputElement>(null),
+    paymentReceipt: useRef<HTMLInputElement>(null),
   };
 
   const showNotification = (
@@ -196,7 +199,6 @@ const ApplicationForm: React.FC<Props> = ({ userEmail }) => {
       "photoUrl",
       "passportUrl",
       "nidUrl",
-      "transactionId",
       "userEmail",
     ];
 
@@ -237,13 +239,17 @@ const ApplicationForm: React.FC<Props> = ({ userEmail }) => {
 
     setIsSubmitting(true);
 
+    if (formData.paymentMethod === "bank") {
+      if (!formData.paymentReceiptUrl) {
+        toast.error(
+          "Please upload payment receipt or enter transaction ID for bank transfer",
+        );
+        setIsSubmitting(false);
+        return;
+      }
+    }
+
     try {
-      // Here you would send the data to your backend API
-      console.log("Form Data:", formData);
-
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/csca-application`,
         {
@@ -263,28 +269,26 @@ const ApplicationForm: React.FC<Props> = ({ userEmail }) => {
         );
       }
 
-      toast.error(result.message || "Data inserted successfully!!");
-      showNotification("Application submitted successfully!", "success");
+      toast.success(result.message || "Data inserted successfully!!");
 
       // Reset form after successful submission
-      setTimeout(() => {
-        setFormData({
-          name: "",
-          phone: "",
-          email: "",
-          presentAddress: "",
-          permanentAddress: "",
-          lastQualification: "",
-          instituteName: "",
-          passingYear: "",
-          department: "",
-          certificateUrl: "",
-          photoUrl: "",
-          passportUrl: "",
-          nidUrl: "",
-          userEmail: userEmail || "",
-        });
-      }, 1000);
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        presentAddress: "",
+        permanentAddress: "",
+        lastQualification: "",
+        instituteName: "",
+        passingYear: "",
+        department: "",
+        certificateUrl: "",
+        photoUrl: "",
+        passportUrl: "",
+        nidUrl: "",
+        userEmail: userEmail || "",
+        paymentReceiptUrl: "",
+      });
     } catch (error) {
       showNotification(
         "Failed to submit application. Please try again.",
@@ -845,10 +849,12 @@ const ApplicationForm: React.FC<Props> = ({ userEmail }) => {
                       <span className="text-pink-500 font-bold">•</span> ব্যাংক:{" "}
                       <span className="font-semibold">Brac bank</span>
                     </li>
-                    
+
                     <li className="flex gap-2 text-xs text-gray-600">
                       <span className="text-pink-500 font-bold">•</span> Number:{" "}
-                      <strong className="font-extrabold text-md">2074848480001</strong>
+                      <strong className="font-extrabold text-md">
+                        2074848480001
+                      </strong>
                     </li>
                     <li className="flex gap-2 text-xs text-gray-600">
                       <span className="text-pink-500 font-bold">•</span> A/C
@@ -859,6 +865,64 @@ const ApplicationForm: React.FC<Props> = ({ userEmail }) => {
                       <span className="text-pink-500 font-bold">•</span> Branch:{" "}
                       <span className="font-semibold">Mirpur</span>
                     </li>
+                    {/* Passport */}
+                    {/* Recent Photo */}
+                    <div className="border-2 mt-4 border-dashed border-gray-300 rounded-xl p-4 hover:border-red-400 transition-colors">
+                      <label className="block text-sm font-medium text-gray-700 mb-3">
+                        <ImageIcon className="w-4 h-4 inline mr-1 text-red-600" />
+                        Payment receipt <span className="text-red-500">*</span>
+                      </label>
+
+                      {formData.paymentReceiptUrl ? (
+                        <div className="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                          <div className="flex items-center gap-2">
+                            <CheckCircle className="w-5 h-5 text-green-600" />
+                            <span className="text-sm text-gray-700">
+                              Payment receipt uploaded
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeFile("paymentReceiptUrl")}
+                            className="text-red-600 hover:text-red-700"
+                          >
+                            <X className="w-5 h-5" />
+                          </button>
+                        </div>
+                      ) : (
+                        <div
+                          onClick={() =>
+                            fileInputRefs.paymentReceipt.current?.click()
+                          }
+                          className="cursor-pointer text-center py-6 px-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
+                        >
+                          <ImageIcon className="w-10 h-10 text-gray-400 mx-auto mb-2" />
+                          <p className="text-sm text-gray-600">
+                            Click to upload payment receipt
+                          </p>
+                          <p className="text-xs text-gray-400 mt-1">
+                            JPG, PNG, max 5MB
+                          </p>
+                        </div>
+                      )}
+
+                      <input
+                        ref={fileInputRefs.paymentReceipt}
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) =>
+                          handleFileChange(e, "paymentReceiptUrl", "image")
+                        }
+                        className="hidden"
+                      />
+
+                      {uploading?.field === "paymentReceiptUrl" && (
+                        <div className="flex items-center justify-center gap-2 mt-2 text-red-600">
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span className="text-sm">Uploading...</span>
+                        </div>
+                      )}
+                    </div>
                   </>
                 )}
               </ul>
