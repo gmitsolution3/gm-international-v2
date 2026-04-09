@@ -11,6 +11,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Loader from "@/components/ui/loader";
 import Swal from "sweetalert2";
 import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react";
 
 type Inputs = {
   password: string;
@@ -22,6 +23,7 @@ export default function LoginForm() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const {data:session} = useSession();
   const searchParams:any = useSearchParams();
@@ -118,17 +120,6 @@ export default function LoginForm() {
       {/* Left Side - Login Form */}
       <div className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-12 py-8 md:py-0">
         <div className="max-w-md">
-          {/* Logo
-          <div className="mb-8">
-            <div className=" ">
-              <img
-                src="https://i.postimg.cc/WbV55LZS/Group-2.png"
-                alt="com_logo"
-                className="max-w-20"
-              />
-            </div>
-          </div> */}
-
           {/* Heading */}
           <div className="mb-8">
             <h1 className="text-4xl md:text-5xl text-gray-900 mb-2">Hello!</h1>
@@ -151,13 +142,30 @@ export default function LoginForm() {
             </div>
 
             {/* Password */}
-            <div>
+            {/* <div>
               <Input
                 type="password"
                 {...register("password", { required: true })}
                 placeholder="Password"
                 className="w-full px-4 py-3 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500"
               />
+            </div> */}
+            <div className="relative">
+              <Input
+                type={showPassword ? "text" : "password"}
+                {...register("password", { required: true })}
+                placeholder="Password"
+                className="w-full px-4 py-3 pr-10 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+              />
+
+              {/* Eye Icon */}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
 
             {/* Remember Me & Forgot Password */}

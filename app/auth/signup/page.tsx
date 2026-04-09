@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Loader from "@/components/ui/loader";
+import { Eye, EyeOff } from "lucide-react";
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -20,6 +21,7 @@ type Inputs = {
 
 export default function SignUp() {
   const [isError, setIsError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -119,17 +121,6 @@ export default function SignUp() {
       {/* Left Side - Login Form */}
       <div className="w-full md:w-1/2 flex flex-col justify-center px-6 md:px-12 py-8 md:py-0">
         <div className="max-w-md">
-          {/* Logo */}
-          {/* <div className="mb-8">
-            <div className=" ">
-              <img
-                src="https://i.postimg.cc/WbV55LZS/Group-2.png"
-                alt="com_logo"
-                className="max-w-20"
-              />
-            </div>
-          </div> */}
-
           {/* Heading */}
           <div className="mb-8">
             <h1 className="text-4xl md:text-5xl text-gray-900 mb-2">
@@ -172,15 +163,23 @@ export default function SignUp() {
               />
             </div>
             {/* password */}
-            <div>
-              <label>Password</label>
+            
+            <div className="relative">
               <Input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 {...register("password", { required: true })}
-                placeholder="*********"
-                className="w-full px-4 py-3 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500"
+                placeholder="Password"
+                className="w-full px-4 py-3 pr-10 rounded-lg border border-red-300 focus:outline-none focus:ring-2 focus:ring-red-500"
               />
-              <label className="text-sm">Must be at least 8 characters </label>
+
+              {/* Eye Icon */}
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
             </div>
 
             {/* Login Button */}
