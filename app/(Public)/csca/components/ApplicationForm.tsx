@@ -922,7 +922,7 @@ const ApplicationForm: React.FC<Props> = ({ userEmail }) => {
                           <span className="text-sm">Uploading...</span>
                         </div>
                       )}
-                    </div>
+                    </div> 
                   </>
                 )}
               </ul>
