@@ -929,23 +929,25 @@ const ApplicationForm: React.FC<Props> = ({ userEmail }) => {
             </div>
 
             {/* Transaction ID */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Transaction ID <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="transactionId"
-                value={formData.transactionId}
-                onChange={handleInputChange}
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
-                placeholder="e.g. 8N3KA1XXXX"
-                required
-              />
-              <p className="text-xs text-gray-400 mt-1">
-                Transaction ID ছাড়া আবেদন গ্রহণযোগ্য হবে না।
-              </p>
-            </div>
+            {formData.paymentMethod === "bkash" && (
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Transaction ID <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="transactionId"
+                  value={formData.transactionId}
+                  onChange={handleInputChange}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-red-500 focus:border-red-500 transition-all"
+                  placeholder="e.g. 8N3KA1XXXX"
+                  required
+                />
+                <p className="text-xs text-gray-400 mt-1">
+                  Transaction ID ছাড়া আবেদন গ্রহণযোগ্য হবে না।
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Submit Button */}
