@@ -345,6 +345,12 @@ export function NavBar() {
                 onClick={closeMobileMenu}
               />
 
+              <MobileMenuItem
+                href="/csca"
+                label="CSCA"
+                onClick={closeMobileMenu}
+              />
+
               <MobileMenuSection
                 label="Find Us"
                 isOpen={expandedMenu === "findus"}
@@ -383,6 +389,8 @@ export function NavBar() {
                 label="About Us"
                 onClick={closeMobileMenu}
               />
+
+              
             </div>
           </div>
         )}
