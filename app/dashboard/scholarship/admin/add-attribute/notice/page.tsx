@@ -110,8 +110,6 @@ export default function AddNoticeForm() {
 
       const result = await res.json();
 
-      console.log({result: result})
-
       if (!res.ok) throw new Error("Failed to add notice");
 
       toast.success("Notice added successfully");
