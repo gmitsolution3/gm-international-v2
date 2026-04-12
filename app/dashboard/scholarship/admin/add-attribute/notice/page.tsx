@@ -112,8 +112,7 @@ export default function AddNoticeForm() {
 
       if (!res.ok) throw new Error("Failed to add notice");
 
-      toast.success("Notice added successfully");
-
+      toast.success("Notice added successfully")
       reset();
       if (quillRef.current) {
         quillRef.current.root.innerHTML = "";
