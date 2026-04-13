@@ -1,7 +1,12 @@
-"use client"
+"use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { useForm } from "react-hook-form";
 import { Pencil, Trash2, Eye, X } from "lucide-react";
+import Quill from "quill";
+import "quill/dist/quill.snow.css";
+import { toast } from "sonner";
+import Swal from "sweetalert2";
 
 // Types based on your data schema
 interface Notice {
@@ -16,11 +21,81 @@ interface ManagedNoticeProps {
   data: Notice[];
 }
 
+interface NoticeFormData {
+  title: string;
+  noticeFor: string;
+  description: string;
+}
+
 const ManagedNotice: React.FC<ManagedNoticeProps> = ({ data }) => {
   const [selectedNotice, setSelectedNotice] = useState<Notice | null>(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editFormData, setEditFormData] = useState<Notice | null>(null);
+
+  // Quill editor refs
+  const editEditorRef = useRef<HTMLDivElement>(null);
+  const editQuillRef = useRef<Quill | null>(null);
+  const viewEditorRef = useRef<HTMLDivElement>(null);
+  const viewQuillRef = useRef<Quill | null>(null);
+
+  // React Hook Form
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    watch,
+    reset,
+    formState: { errors, isDirty },
+  } = useForm<NoticeFormData>({
+    defaultValues: {
+      title: "",
+      noticeFor: "student",
+      description: "",
+    },
+  });
+
+  const watchDescription = watch("description");
+  // Initialize Quill editor for edit modal
+  useEffect(() => {
+    if (editEditorRef.current && !editQuillRef.current && isEditModalOpen) {
+      editQuillRef.current = new Quill(editEditorRef.current, {
+        theme: "snow",
+        placeholder: "Write notice description...",
+        modules: {
+          toolbar: [
+            ["bold", "italic", "underline"],
+            [{ list: "ordered" }, { list: "bullet" }],
+            [{ header: [1, 2, 3, false] }],
+            ["link"],
+            ["clean"],
+          ],
+        },
+        formats: ["bold", "italic", "underline", "list", "header", "link"],
+      });
+
+      // Set initial content if editing
+      const currentDescription = getValues("description");
+      if (currentDescription) {
+        editQuillRef.current.root.innerHTML = currentDescription;
+      }
+
+      editQuillRef.current.on("text-change", () => {
+        const html = editQuillRef.current?.root.innerHTML ?? "";
+        setValue("description", html === "<p><br></p>" ? "" : html, {
+          shouldValidate: true,
+          shouldDirty: true,
+        });
+      });
+    }
+
+    // Cleanup
+    return () => {
+      if (editQuillRef.current && !isEditModalOpen) {
+        editQuillRef.current = null;
+      }
+    };
+  }, [isEditModalOpen, setValue, getValues]);
 
   // Handle view notice
   const handleView = (notice: Notice) => {
@@ -28,27 +103,94 @@ const ManagedNotice: React.FC<ManagedNoticeProps> = ({ data }) => {
     setIsViewModalOpen(true);
   };
 
-  // Handle edit notice
+  // Handle edit notice - populate form with notice data
   const handleEdit = (notice: Notice) => {
-    setEditFormData(notice);
+    reset({
+      title: notice.title,
+      noticeFor: notice.noticeFor,
+      description: notice.description,
+    });
     setIsEditModalOpen(true);
+    setSelectedNotice(notice);
   };
 
   // Handle delete notice
   const handleDelete = (id: string) => {
-    if (window.confirm("Are you sure you want to delete this notice?")) {
-      console.log("Delete notice with id:", id);
-      // Add your delete API call here
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/notice/delete/${id}`,
+          {
+            method: "DELETE",
+          },
+        );
+
+        const resResult = await res.json()
+
+        if(!resResult.success) {
+          toast.error("Failed to delete notice");
+          return;
+        }
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+        });
+      }
+    });
   };
 
   // Handle edit form submission
-  const handleEditSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (editFormData) {
-      console.log("Update notice:", editFormData);
+  const onEditSubmit = async (formData: NoticeFormData) => {
+    if (editQuillRef.current) {
+      const description = editQuillRef.current.root.innerHTML;
+      const updatedData = {
+        ...formData,
+        description: description === "<p><br></p>" ? "" : description,
+      };
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/notice/update/${selectedNotice?._id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedData),
+        },
+      );
+
+      const result = await res.json();
+
+      if (result.success) {
+        toast.success("Notice updated successfully");
+        console.log("Update notice:", updatedData);
+        // Add your update API call here
+        setIsEditModalOpen(false);
+        reset();
+      } else {
+        toast.error("Failed to update notice");
+      }
+    } else {
+      console.log("Update notice:", formData);
       // Add your update API call here
       setIsEditModalOpen(false);
+      reset();
+    }
+  };
+
+  // Close edit modal and reset form
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    reset();
+    if (editQuillRef.current) {
+      editQuillRef.current = null;
     }
   };
 
@@ -71,16 +213,6 @@ const ManagedNotice: React.FC<ManagedNoticeProps> = ({ data }) => {
 
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-red-700 border-l-4 border-red-600 pl-4">
-          Manage Notices
-        </h1>
-        <p className="text-gray-600 mt-2 text-sm sm:text-base">
-          Total {data?.length || 0} notice{data?.length !== 1 ? "s" : ""} found
-        </p>
-      </div>
-
       {/* Notice Cards - Responsive Grid */}
       {data && data.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -179,46 +311,52 @@ const ManagedNotice: React.FC<ManagedNoticeProps> = ({ data }) => {
         </div>
       )}
 
-      {/* Edit Modal */}
-      {isEditModalOpen && editFormData && (
+      {/* Edit Modal with React Hook Form and Quill */}
+      {isEditModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
           <div className="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
               <h2 className="text-xl font-bold text-red-700">Edit Notice</h2>
               <button
-                onClick={() => setIsEditModalOpen(false)}
+                onClick={closeEditModal}
                 className="p-1 hover:bg-gray-100 rounded-full transition-colors"
               >
                 <X size={24} />
               </button>
             </div>
-            <form onSubmit={handleEditSubmit} className="p-6">
+            <form onSubmit={handleSubmit(onEditSubmit)} className="p-6">
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-2">
-                  Title
+                  Title <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
-                  value={editFormData.title}
-                  onChange={(e) =>
-                    setEditFormData({ ...editFormData, title: e.target.value })
-                  }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition"
-                  required
+                  {...register("title", {
+                    required: "Title is required",
+                    minLength: {
+                      value: 3,
+                      message: "Title must be at least 3 characters",
+                    },
+                  })}
+                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition ${
+                    errors.title ? "border-red-500" : "border-gray-300"
+                  }`}
                 />
+                {errors.title && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.title.message}
+                  </p>
+                )}
               </div>
+
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium mb-2">
-                  Notice For
+                  Notice For <span className="text-red-500">*</span>
                 </label>
                 <select
-                  value={editFormData.noticeFor}
-                  onChange={(e) =>
-                    setEditFormData({
-                      ...editFormData,
-                      noticeFor: e.target.value,
-                    })
-                  }
+                  {...register("noticeFor", {
+                    required: "Notice for is required",
+                  })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition"
                 >
                   <option value="student">Student</option>
@@ -226,32 +364,37 @@ const ManagedNotice: React.FC<ManagedNoticeProps> = ({ data }) => {
                   <option value="medical">Medical</option>
                   <option value="business">Business</option>
                 </select>
+                {errors.noticeFor && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.noticeFor.message}
+                  </p>
+                )}
               </div>
+
               <div className="mb-6">
                 <label className="block text-gray-700 font-medium mb-2">
-                  Description (HTML supported)
+                  Description <span className="text-red-500">*</span>
                 </label>
-                <textarea
-                  value={editFormData.description}
-                  onChange={(e) =>
-                    setEditFormData({
-                      ...editFormData,
-                      description: e.target.value,
-                    })
-                  }
-                  rows={8}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none transition font-mono text-sm"
-                  required
+                <div
+                  ref={editEditorRef}
+                  className="border border-gray-300 rounded-lg bg-white"
+                  style={{ minHeight: "200px" }}
                 />
-                <p className="text-xs text-gray-500 mt-1">
-                  You can use HTML tags like &lt;p&gt;, &lt;strong&gt;,
-                  &lt;br&gt; etc.
+                {errors.description && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.description.message}
+                  </p>
+                )}
+                <p className="text-xs text-gray-500 mt-2">
+                  Use the toolbar to format your notice content. You can add
+                  bold, italic, lists, headers, and links.
                 </p>
               </div>
+
               <div className="flex justify-end gap-3">
                 <button
                   type="button"
-                  onClick={() => setIsEditModalOpen(false)}
+                  onClick={closeEditModal}
                   className="px-5 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition"
                 >
                   Cancel

@@ -28,10 +28,11 @@ import { toast } from "sonner";
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
   description: z.string().min(1, "Description is required"),
-  noticeFor: z.enum(["student", "medical", "business", "tourist"]).refine(
-    (val) => val !== undefined,
-    { message: "Please select a category" }
-  ),
+  noticeFor: z
+    .enum(["student", "medical", "business", "tourist"])
+    .refine((val) => val !== undefined, {
+      message: "Please select a category",
+    }),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -82,7 +83,6 @@ export default function AddNoticeForm() {
         },
         formats: ["bold", "italic", "underline", "list", "header", "link"],
       });
-
       quillRef.current.on("text-change", () => {
         const html = quillRef.current?.root.innerHTML ?? "";
         setValue("description", html === "<p><br></p>" ? "" : html, {
@@ -107,12 +107,10 @@ export default function AddNoticeForm() {
           }),
         },
       );
-
       const result = await res.json();
-
       if (!res.ok) throw new Error("Failed to add notice");
 
-      toast.success("Notice added successfully")
+      toast.success("Notice added successfully");
       reset();
       if (quillRef.current) {
         quillRef.current.root.innerHTML = "";
