@@ -567,15 +567,6 @@ export default function AdmissionForm() {
               </div>
             </div>
           </form>
-
-          {/* Footer Text */}
-          <div className="mt-8 text-center">
-            <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">
-              *Lorem ipsum dolor sit amet consectetur adipiscing elit tortor eu
-              doloroi egestas morbi sem vulputate etiam facilisis pellentesque
-              ut quis.
-            </p>
-          </div>
         </div>
       </div>
     </div>

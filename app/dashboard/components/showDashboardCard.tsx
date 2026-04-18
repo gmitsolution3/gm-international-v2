@@ -36,6 +36,8 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
       Business:
         "from-gray-50 to-slate-50 hover:from-gray-100 hover:to-slate-100",
       Visa: "from-emerald-50 to-teal-50 hover:from-emerald-100 hover:to-teal-100",
+      "Hajj & Umrah":
+        "from-amber-50 to-green-50 hover:from-amber-100 hover:to-green-100",
       B2B: "from-purple-50 to-violet-50 hover:from-purple-100 hover:to-violet-100",
       User: "from-green-50 to-lime-50 hover:from-green-100 hover:to-lime-100",
       Accounts:
@@ -55,6 +57,7 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
       Tourism: "text-cyan-600",
       Business: "text-gray-700",
       Visa: "text-emerald-600",
+      Hajj: "text-amber-600",
       B2B: "text-purple-600",
       User: "text-green-600",
       Accounts: "text-amber-600",
@@ -283,6 +286,15 @@ const MainDashboard: React.FC = () => {
         page_link: `/dashboard/business/${userRole === "user" ? userRole : "admin"}`,
       },
       {
+        iconUrl: "https://i.postimg.cc/PxV3nHPT/825-removebg-preview.png",
+        title: "Hajj & Umrah",
+        description:
+          "Guiding your sacred journey with trusted support, personalized care, and seamless arrangements for a spiritually fulfilling experience.",
+        color: "bg-gray-800",
+        titleColor: "text-black",
+        page_link: `/dashboard/hajj-umrah/${userRole === "user" ? userRole : "admin"}`,
+      },
+      {
         iconUrl: "https://i.postimg.cc/5tPX0N6m/solar-pie-chart-3-bold.png",
         title: "Visa",
         description:
@@ -327,7 +339,7 @@ const MainDashboard: React.FC = () => {
     if (userRole === "admin") {
       roleFiltered = services;
     } else if (userRole === "user") {
-      roleFiltered = services.slice(0, 5);
+      roleFiltered = services.slice(0, 6);
     } else if (userRole === "office_admin") {
       roleFiltered = services.filter(
         (service) => service.title !== "B2B" && service.title !== "User",

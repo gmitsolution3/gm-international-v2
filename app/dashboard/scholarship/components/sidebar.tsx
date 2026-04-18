@@ -3,16 +3,16 @@
 import Link from "next/link";
 import { LayoutDashboard, FileText, Package, Building2, X, LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useState } from "react";
+import React, { useState } from "react";
 import { signOut } from "next-auth/react";
 import { useUser } from "@/app/useContext/useUserData";
 import { useRouter } from "next/navigation";
 
-export interface MenuItem {
+type MenuItem = {
   label: string;
-  icon: LucideIcon;
+  icon: React.ReactNode;
   href: string;
-}
+};
 
 interface SidebarProps {
   isOpen: boolean;
@@ -89,7 +89,6 @@ export default function Sidebar({ isOpen, onToggle, avatar, menuItems }: Sidebar
           {menuItems.map((item) => {
             const isActive = activeItem === item.label;
             const Icon = item.icon;
-
             return (
               <Link
                 key={item.label}
@@ -99,10 +98,11 @@ export default function Sidebar({ isOpen, onToggle, avatar, menuItems }: Sidebar
                   "flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ",
                   isActive
                     ? "bg-red-500 text-white"
-                    : "text-sidebar-foreground hover:bg-red-500 hover:text-white"
+                    : "text-sidebar-foreground hover:bg-red-500 hover:text-white",
                 )}
               >
-                <Icon className="w-5 h-5" />
+                {/* <Icon className="w-5 h-5" /> */}
+                <span className="w-5 h-5">{item.icon}</span>
                 <span className="text-sm font-medium">{item.label}</span>
               </Link>
             );

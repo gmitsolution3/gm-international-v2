@@ -1,35 +1,36 @@
 "use client";
 
 import useUserRole from "@/app/useContext/useUserRole";
-import { useState } from "react";
+import React, { useState } from "react";
 import Sidebar from "../../scholarship/components/sidebar";
 import Header from "../../scholarship/components/Header";
-import { LayoutDashboard, PackagePlus } from "lucide-react";
+import { LayoutDashboard, LucideIcon, PackagePlus } from "lucide-react";
+
+type MenuItem = {
+  label: string;
+  icon: React.ReactNode;
+  href: string;
+};
+
+
+interface SidebarHeaderProviderProps {
+  children: React.ReactNode;
+  avatar: string;
+  menuItems: MenuItem[];
+}
+
 
 export default function SidebarHeaderProvider({
   children,
   avatar,
-}: {
-  children: React.ReactNode;
-  avatar: string;
-}) {
+  menuItems,
+}: SidebarHeaderProviderProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { userRole } = useUserRole();
 
   const isAdminUser = userRole === "admin" || userRole === "office_admin";
 
-  const menuItems = [
-    {
-      label: "Dashboard",
-      icon: LayoutDashboard,
-      href: "/dashboard/accounts",
-    },
-    {
-      label: "Create Application",
-      icon: PackagePlus,
-      href: "/dashboard/accounts/assign-package",
-    },
-  ];
+ 
 
   return (
     <div className="flex min-h-screen w-full">

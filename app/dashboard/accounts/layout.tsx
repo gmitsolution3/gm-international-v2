@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { authConfig } from "@/auth.config";
 import SidebarHeaderProvider from "./components/SidebarHeaderProvider";
 import { UserProvider } from "@/app/useContext/useUserData";
+import { LayoutDashboard, PackagePlus } from "lucide-react";
 
 export default async function DashboardLayout({
   children,
@@ -19,10 +20,23 @@ export default async function DashboardLayout({
   const userAvatar = await res.json();
   const avatar = userAvatar?.avatar;
 
+   const menuItems = [
+     {
+       label: "Dashboard",
+       icon: <LayoutDashboard/> ,
+       href: "/dashboard/accounts",
+     },
+     {
+       label: "Create Application",
+       icon: <PackagePlus />,
+       href: "/dashboard/accounts/assign-package",
+     },
+   ];
+
   return (
     <div className="flex min-h-screen">
       <UserProvider>
-        <SidebarHeaderProvider avatar={avatar}>
+        <SidebarHeaderProvider avatar={avatar} menuItems={menuItems}>
           {children}
         </SidebarHeaderProvider>
       </UserProvider>

@@ -1,28 +1,3 @@
-// import { authConfig } from "@/auth.config";
-// import { getServerSession } from "next-auth";
-// import React from "react";
-
-// const fetchedAnalysisData = async (email: string | undefined | null) => {
-//   const res = await fetch(
-//     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/account/analysis-document?email=${email}`,
-//     {
-//       cache: "no-store",
-//     },
-//   );
-//   return await res.json();
-// };
-
-// const AccountPage = async () => {
-//   const session = await getServerSession(authConfig);
-//   const analysisData  =await fetchedAnalysisData(session?.user?.email)
-
-
-//   return <div>AccountPage</div>;
-// };
-
-// export default AccountPage;
-
-
 // app/dashboard/analysis/page.tsx
 import { authConfig } from "@/auth.config";
 import { getServerSession } from "next-auth";
@@ -46,7 +21,6 @@ const AnalysisPage = async () => {
 
   // Extract the analysis data from the response
   const analysisData = response?.data || null;
-
 
   if (!analysisData) {
     return (
