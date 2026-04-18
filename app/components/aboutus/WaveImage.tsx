@@ -19,7 +19,7 @@ export default function WaveLogoSection() {
                 className="absolute rounded-full border-2"
                 style={{
                   width: `${size}%`,
-                  height: `${size}%`,
+                  height: `${size}%`, 
                   borderColor: `rgba(220, 38, 38, ${opacity})`,
                   animation: `waveExpand 3s ease-out infinite`,
                   animationDelay: `${ring * 0.4}s`,
