@@ -62,9 +62,11 @@ const offices: Office[] = [
   {
     id: "thailand",
     country: "Thailand",
-    address: ["21/30 M5 Nongprue, Banglamung Chonburi 20150, Thailand"],
+    address: [
+      "171, Ambassador Hotel, Sukhumvit Soi-11, Wattana, Bangkok-10110, Thailand",
+    ],
     email: "gminternational.live@gmail.com",
-    phone: ["+66 840 860743"],
+    phone: ["+66 97 030 9762", "+66 095 494 0180"],
     imageUrl: "https://i.postimg.cc/pLJhSGMg/Thailand.png",
   },
   {
@@ -75,17 +77,7 @@ const offices: Office[] = [
     phone: ["+61 4 2624 3477"],
     imageUrl: "https://i.postimg.cc/QC4tnSk9/Australia.png",
   },
-  {
-    id: "thailand2",
-    country: "Thailand",
-    address: [
-      "171, Ambassador Hotel, Sukhumvit Soi-11, Wattana, Bangkok-10110, Thailand",
-    ],
-    email: "gminternational.live@gmail.com",
-    phone: ["+66 97 030 9762", "+66 095 494 0180"],
-    imageUrl:
-      "https://i.postimg.cc/CKS1MsZ1/Large-jpeg-City-12-D-removebg-preview.png",
-  },
+ 
 ];
 
 const GlobalOffices: React.FC = () => {
