@@ -18,27 +18,27 @@ type UserAvatar = {
 const businessMenuItems = [
   {
     label: "Dashboard",
-    icon: LayoutDashboard,
+    icon: <LayoutDashboard />,
     href: "/dashboard/business/admin",
   },
   {
     label: "Business package",
-    icon: FileText,
+    icon: <FileText />,
     href: "/dashboard/business/admin/business-package",
   },
   {
     label: "Manage company",
-    icon: Package,
+    icon: <Package />,
     href: "/dashboard/business/admin/company-list",
   },
   {
     label: "Manage applications",
-    icon: Package,
+    icon: <Package />,
     href: "/dashboard/business/admin/manage-application",
   },
   {
     label: "Manage business deal",
-    icon: Package,
+    icon: <Package />,
     href: "/dashboard/business/admin/business-deal",
   },
 ];
@@ -46,22 +46,22 @@ const businessMenuItems = [
 const businessUserMenuItems = [
   {
     label: "Dashboard",
-    icon: LayoutDashboard,
+    icon: <LayoutDashboard />,
     href: "/dashboard/business/user",
   },
   {
     label: "Application status",
-    icon: FileText,
+    icon: <FileText />,
     href: "/dashboard/business/user/application-status",
   },
   {
     label: "Edit Information",
-    icon: Package,
+    icon: <Package />,
     href: "/dashboard/business/user/edit-application",
   },
   {
     label: "Business Deal",
-    icon: Package,
+    icon: <Package />,
     href: "/dashboard/business/user/business-deal",
   },
 ];

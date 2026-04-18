@@ -17,47 +17,47 @@ type UserAvatar = {
 const menuItems = [
   {
     label: "Dashboard",
-    icon: LayoutDashboard,
+    icon: <LayoutDashboard />,
     href: "/dashboard/b2b",
   },
   {
     label: "Manage Applications",
-    icon: FileText,
+    icon: <FileText />,
     href: "/dashboard/b2b/manage-application",
   },
   {
     label: "Create Credentials",
-    icon: Package,
+    icon: <Package />,
     href: "/dashboard/b2b/create-credentials",
   },
   {
     label: "Assign Student",
-    icon: BookOpen,
+    icon: <BookOpen />,
     href: "/dashboard/b2b/assign/s-package",
   },
   {
     label: "Assign Tourist",
-    icon: PlaneTakeoff,
+    icon: <PlaneTakeoff />,
     href: "/dashboard/b2b/assign/t-package",
   },
   {
     label: "Assign medical",
-    icon: HousePlus,
+    icon: <HousePlus />,
     href: "/dashboard/b2b/assign/m-package",
   },
   {
     label: "Assign business",
-    icon: Handshake,
+    icon: <Handshake />,
     href: "/dashboard/b2b/assign/b-package",
   },
   {
     label: "B2B Visa Rate",
-    icon: Split,
+    icon: <Split />,
     href: "/dashboard/b2b/visa-rate",
   },
   {
     label: "Approved users",
-    icon: Package,
+    icon: <Package />,
     href: "/dashboard/b2b/users",
   },
 ];

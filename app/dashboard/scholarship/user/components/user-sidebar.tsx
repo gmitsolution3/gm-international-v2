@@ -7,9 +7,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { signOut, useSession } from "next-auth/react";
 import { useUser } from "@/app/useContext/useUserData";
-import { MenuItem } from "../../components/sidebar";
 import Loader from "@/components/ui/loader";
 import Swal from "sweetalert2";
+import { MenuItem } from "@/app/dashboard/accounts/components/SidebarHeaderProvider";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -120,7 +120,7 @@ export default function UserSidebar({
                       : "text-sidebar-foreground hover:bg-red-500"
                   )}
                 >
-                  <Icon className="w-5 h-5" />
+                  <span className="h-5 w-5">{Icon}</span>
                   <span className="text-sm font-medium">{item.label}</span>
                 </Link>
               );

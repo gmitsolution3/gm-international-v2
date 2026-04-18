@@ -6,7 +6,7 @@ import Sidebar from "../../scholarship/components/sidebar";
 import Header from "../../scholarship/components/Header";
 import { LayoutDashboard, LucideIcon, PackagePlus } from "lucide-react";
 
-type MenuItem = {
+export type MenuItem = {
   label: string;
   icon: React.ReactNode;
   href: string;

@@ -18,22 +18,22 @@ type UserAvatar = {
 const UserManagement = [
   {
     label: "Dashboard",
-    icon: LayoutDashboard,
+    icon: <LayoutDashboard />,
     href: "/dashboard/users/admin",
   },
   {
     label: "All Users",
-    icon: FileText,
+    icon: <FileText />,
     href: "/dashboard/users/admin/all-users",
   },
   {
     label: "Office Employ",
-    icon: Package,
+    icon: <Package />,
     href: "/dashboard/users/admin/office-employ",
   },
   {
     label: "B2B Partner",
-    icon: Package,
+    icon: <Package />,
     href: "/dashboard/users/admin/b2b-users",
   },
 ];
@@ -41,17 +41,17 @@ const UserManagement = [
 const UserMenuItems = [
   {
     label: "Dashboard",
-    icon: LayoutDashboard,
+    icon: <LayoutDashboard />,
     href: "/dashboard/tourist/user",
   },
   {
     label: "Registration Status",
-    icon: FileText,
+    icon: <FileText />,
     href: "/dashboard/tourist/user/application-status",
   },
   {
     label: "Edit Information",
-    icon: Package,
+    icon: <Package />,
     href: "/dashboard/tourist/user/edit-application",
   },
 ];

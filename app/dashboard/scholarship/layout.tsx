@@ -18,27 +18,27 @@ type UserAvatar = {
 const menuItems = [
   {
     label: "Dashboard",
-    icon: LayoutDashboard,
+    icon: <LayoutDashboard />,
     href: "/dashboard/scholarship/admin",
   },
   {
     label: "Manage Applications",
-    icon: FileText,
+    icon: <FileText />,
     href: "/dashboard/scholarship/admin/manage-student-application",
   },
   {
     label: "Manage Packages",
-    icon: Package,
+    icon: <Package />,
     href: "/dashboard/scholarship/admin/manage-student-packages",
   },
   {
     label: "Activities",
-    icon: SquareActivity,
+    icon: <SquareActivity />,
     href: "/dashboard/scholarship/admin/activities",
   },
   {
     label: "Add attribute",
-    icon: Plus,
+    icon: <Plus />,
     href: "/dashboard/scholarship/admin/add-attribute",
   },
 ];
@@ -46,17 +46,17 @@ const menuItems = [
 const userMenuItems = [
   {
     label: "Dashboard",
-    icon: LayoutDashboard,
+    icon: <LayoutDashboard />,
     href: "/dashboard/scholarship/user",
   },
   {
     label: "Application Status",
-    icon: FileText,
+    icon: <FileText />,
     href: "/dashboard/scholarship/user/application-status",
   },
   {
     label: "Edit Application",
-    icon: Package,
+    icon: <Package />,
     href: "/dashboard/scholarship/user/edit-application",
   },
 ];

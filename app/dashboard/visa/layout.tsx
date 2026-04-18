@@ -18,12 +18,12 @@ type UserAvatar = {
 const visaMenuItems = [
   {
     label: "Dashboard",
-    icon: LayoutDashboard,
+    icon: <LayoutDashboard />,
     href: "/dashboard/visa/admin",
   },
   {
     label: "Manage Applications",
-    icon: FileText,
+    icon: <FileText />,
     href: "/dashboard/visa/admin/visa-applications",
   },
 ];
@@ -31,17 +31,17 @@ const visaMenuItems = [
 const visaUserMenuItems = [
   {
     label: "Dashboard",
-    icon: LayoutDashboard,
+    icon: <LayoutDashboard />,
     href: "/dashboard/visa/user",
   },
   {
     label: "Registration Status",
-    icon: FileText,
+    icon: <FileText />,
     href: "/dashboard/visa/user/application-status",
   },
   {
     label: "Edit Information",
-    icon: Package,
+    icon: <Package />,
     href: "/dashboard/visa/user/edit-application",
   },
 ];

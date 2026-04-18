@@ -22,32 +22,32 @@ type UserAvatar = {
 const userMenuItems = [
   {
     label: "Dashboard",
-    icon: LayoutDashboard,
+    icon: <LayoutDashboard />,
     href: "/b2b/dashboard",
   },
   {
     label: "Student Package",
-    icon: BookUser,
+    icon: <BookUser />,
     href: "/b2b/dashboard/b2b-scholarship-package",
   },
   {
     label: "Tourist Package",
-    icon: Plane,
+    icon: <Plane />,
     href: "/b2b/dashboard/b2b-tourist-package",
   },
   {
     label: "Medical Package",
-    icon: ClipboardPlus,
+    icon: <ClipboardPlus />,
     href: "/b2b/dashboard/b2b-medical-package",
   },
   {
     label: "Business Package",
-    icon: Handshake,
+    icon: <Handshake />,
     href: "/b2b/dashboard/b2b-business-package",
   },
   {
     label: "Visa Rate",
-    icon: Award,
+    icon: <Award />,
     href: "/b2b/dashboard/visa-rate",
   },
 ];

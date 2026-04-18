@@ -7,6 +7,10 @@ import { X, Plus, Save, FileText } from "lucide-react";
 import Editor from "./Editor";
 import { toast } from "sonner";
 
+type DocItem = {
+  value: string;
+};
+
 interface IVisaPackage {
   country: string;
   visaType: string;
@@ -16,11 +20,13 @@ interface IVisaPackage {
     b2c: number;
   };
   validity: string;
-  basicDocuments: string[];
-  businessDocuments?: string[];
-  jobHolderDocuments?: string[];
-  studentDocuments?: string[];
-  coupleDocuments?: string[];
+
+  basicDocuments: DocItem[];
+  businessDocuments?: DocItem[];
+  jobHolderDocuments?: DocItem[];
+  studentDocuments?: DocItem[];
+  coupleDocuments?: DocItem[];
+
   otherInformation?: string;
   createdAt: Date;
 }
@@ -88,11 +94,11 @@ const VisaPackageForm: React.FC = () => {
         b2c: undefined,
       },
       validity: "",
-      basicDocuments: [""],
-      businessDocuments: [""],
-      jobHolderDocuments: [""],
-      studentDocuments: [""],
-      coupleDocuments: [""],
+      basicDocuments: [{ value: "" }],
+      businessDocuments: [{ value: "" }],
+      jobHolderDocuments: [{ value: "" }],
+      studentDocuments: [{ value: "" }],
+      coupleDocuments: [{ value: "" }],
       otherInformation: "",
     },
   });
@@ -102,27 +108,27 @@ const VisaPackageForm: React.FC = () => {
     fields: basicFields,
     append: appendBasic,
     remove: removeBasic,
-  } = useFieldArray<any>({ control, name: "basicDocuments" });
+  } = useFieldArray({ control, name: "basicDocuments" });
   const {
     fields: businessFields,
     append: appendBusiness,
     remove: removeBusiness,
-  } = useFieldArray<any>({ control, name: "businessDocuments" });
+  } = useFieldArray({ control, name: "businessDocuments" });
   const {
     fields: jobFields,
     append: appendJob,
     remove: removeJob,
-  } = useFieldArray<any>({ control, name: "jobHolderDocuments" });
+  } = useFieldArray({ control, name: "jobHolderDocuments" });
   const {
     fields: studentFields,
     append: appendStudent,
     remove: removeStudent,
-  } = useFieldArray<any>({ control, name: "studentDocuments" });
+  } = useFieldArray({ control, name: "studentDocuments" });
   const {
     fields: coupleFields,
     append: appendCouple,
     remove: removeCouple,
-  } = useFieldArray<any>({ control, name: "coupleDocuments" });
+  } = useFieldArray({ control, name: "coupleDocuments" });
 
   // Quill editor modules
   const quillModules = {
@@ -140,10 +146,18 @@ const VisaPackageForm: React.FC = () => {
     setIsModalOpen(true);
   };
 
-
-
   const confirmSubmit = async () => {
     if (!formData) return;
+
+    const transformedData = {
+      ...formData,
+      basicDocuments: formData.basicDocuments.map((i) => i.value),
+      businessDocuments: formData.businessDocuments?.map((i) => i.value),
+      jobHolderDocuments: formData.jobHolderDocuments?.map((i) => i.value),
+      studentDocuments: formData.studentDocuments?.map((i) => i.value),
+      coupleDocuments: formData.coupleDocuments?.map((i) => i.value),
+    };
+
 
     try {
       const res = await fetch(
@@ -153,13 +167,11 @@ const VisaPackageForm: React.FC = () => {
           headers: {
             "Content-type": "application/json",
           },
-          body: JSON.stringify(formData),
+          body: JSON.stringify(transformedData),
         },
       );
 
       const result = await res.json();
-
- 
 
       if (!result.success) {
         toast.error(result.message || "Something went wrong");
@@ -169,7 +181,7 @@ const VisaPackageForm: React.FC = () => {
       toast.success(result.message || "Visa package created");
       setIsModalOpen(false);
       setFormData(null);
-      reset()
+      reset();
     } catch (error) {
       console.error(error);
       toast.error("Server error");
@@ -493,7 +505,7 @@ const VisaPackageForm: React.FC = () => {
                 if (
                   Array.isArray(value) &&
                   value.length > 0 &&
-                  value[0] !== ""
+                  value[0].value !== ""
                 ) {
                   return (
                     <div key={key} className="bg-red-50 p-4 rounded-lg">
@@ -503,7 +515,7 @@ const VisaPackageForm: React.FC = () => {
                       <ul className="list-disc list-inside space-y-1">
                         {value.map((item, idx) => (
                           <li key={idx} className="text-gray-700">
-                            {item}
+                            {item.value}
                           </li>
                         ))}
                       </ul>

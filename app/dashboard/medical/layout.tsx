@@ -18,17 +18,17 @@ type UserAvatar = {
 const touristMenuItems = [
   {
     label: "Dashboard",
-    icon: LayoutDashboard,
+    icon: <LayoutDashboard />,
     href: "/dashboard/medical/admin",
   },
   {
     label: "Manage Applications",
-    icon: FileText,
+    icon: <FileText />,
     href: "/dashboard/medical/admin/manage-application-package",
   },
   {
     label: "Manage Medical",
-    icon: Package,
+    icon: <Package />,
     href: "/dashboard/medical/admin/manage-medical",
   },
 ];
@@ -36,17 +36,17 @@ const touristMenuItems = [
 const medicalMenuItems = [
   {
     label: "Dashboard",
-    icon: LayoutDashboard,
+    icon: <LayoutDashboard />,
     href: "/dashboard/medical/users",
   },
   {
     label: "Appointment Status",
-    icon: FileText,
+    icon: <FileText />,
     href: "/dashboard/medical/users/appointment",
   },
   {
     label: "Edit Information",
-    icon: Package,
+    icon: <Package />,
     href: "/dashboard/medical/users/edit-info",
   },
 ];
