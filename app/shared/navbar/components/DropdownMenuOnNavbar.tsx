@@ -194,7 +194,7 @@ export function UserDropdown({ email, photo, name, role }: UserDropdownProps) {
             </Link>
           )}
 
-          {(role === "admin" || role === "b2b") && (
+          {(role === "b2b") && (
             <Link href="/b2b/dashboard">
               <MenuItemWithIcon
                 icon={LayoutDashboard}
