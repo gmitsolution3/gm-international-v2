@@ -15,9 +15,10 @@ interface UserDropdownProps {
   email?: string;
   photo?: string;
   name?: string;
+  role?: string;
 }
 
-export function UserDropdown({ email, photo, name }: UserDropdownProps) {
+export function UserDropdown({ email, photo, name, role }: UserDropdownProps) {
   const router = useRouter();
   const result = useUserRole();
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +26,7 @@ export function UserDropdown({ email, photo, name }: UserDropdownProps) {
   const [isLoading, setIsLoading] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
-    undefined
+    undefined,
   );
 
   const { userRole, loading } = result;
@@ -113,9 +114,11 @@ export function UserDropdown({ email, photo, name }: UserDropdownProps) {
     // Add your action handlers here
 
     if (action === "Profile") {
-      console.log("Profile");
+      return;
     } else if (action === "Dashboard") {
-      console.log("Dashboard");
+      return;
+    } else if (action === "b2b") {
+      return;
     } else {
       handleOAuthSignOut();
     }
@@ -181,13 +184,25 @@ export function UserDropdown({ email, photo, name }: UserDropdownProps) {
               onClick={() => handleMenuItemClick("Profile")}
             />
           </Link>
-          <Link href="/dashboard">
-            <MenuItemWithIcon
-              icon={LayoutDashboard}
-              label="Dashboard"
-              onClick={() => handleMenuItemClick("Dashboard")}
-            />
-          </Link>
+          {role !== "b2b" && (
+            <Link href="/dashboard">
+              <MenuItemWithIcon
+                icon={LayoutDashboard}
+                label="Dashboard"
+                onClick={() => handleMenuItemClick("Dashboard")}
+              />
+            </Link>
+          )}
+
+          {(role === "admin" || role === "b2b") && (
+            <Link href="/b2b/dashboard">
+              <MenuItemWithIcon
+                icon={LayoutDashboard}
+                label="B2B Dashboard"
+                onClick={() => handleMenuItemClick("b2b")}
+              />
+            </Link>
+          )}
         </div>
 
         {/* Logout Button */}

@@ -25,29 +25,31 @@ export default function LoginForm() {
   const [mounted, setMounted] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const {data:session} = useSession();
-  const searchParams:any = useSearchParams();
+  const { data: session } = useSession();
+  const searchParams: any = useSearchParams();
 
- 
   const callbackUrl = searchParams.get("callbackUrl") || "/";
-
-
 
   const { register, handleSubmit, control, watch, formState } = useForm<Inputs>(
     {
       defaultValues: {
         rememberMe: false,
       },
-    }
+    },
   );
 
   useEffect(() => {
     if (session?.user?.email) {
+      if (
+        (session.user as any).userRole === "admin" ||
+        (session.user as any).userRole === "office_admin"
+      ) {
+        router.push("/dashboard");
+        return;
+      }
       router.push(callbackUrl);
     }
   }, [session, callbackUrl, router]);
-
-
 
   useEffect(() => {
     setMounted(true);
@@ -55,7 +57,7 @@ export default function LoginForm() {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     setIsLoading(true);
-    
+
     signIn("credentials-user", {
       redirect: false,
       email: data.email,
@@ -64,8 +66,7 @@ export default function LoginForm() {
       .then((result) => {
         if (result?.error) {
           setError(result?.error);
-          toast.error("Something was wrong!!")
-          
+          toast.error("Something was wrong!!");
         } else {
           Swal.fire({
             position: "top-end",
@@ -74,7 +75,7 @@ export default function LoginForm() {
             showConfirmButton: false,
             timer: 1500,
           });
-          window.location.href = callbackUrl;
+          // window.location.href = callbackUrl;
         }
       })
       .catch(() => setError("An unexpected error occurred"))

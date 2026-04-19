@@ -82,6 +82,7 @@ export function NavBar() {
   const result: UserRole = useUserRole();
   const { userRole, loading } = result;
 
+
   useEffect(() => {
     const fetchUserData = async () => {
       if (session?.user?.email) {
@@ -250,6 +251,7 @@ export function NavBar() {
                       email={session.user.email}
                       photo={avatar || undefined}
                       name={session.user.name || undefined}
+                      role={userRole}
                     />
                   </NavigationMenuItem>
                 </div>
