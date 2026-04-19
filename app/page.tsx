@@ -10,7 +10,6 @@ import GalleryComponent from "./components/gallery/GalleryComponents";
 import GlobalOffices from "./components/GlobalOffices/GlobalOffices";
 
 async function getVideoAndGallery() {
-  // Fetch videos from your API
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/media-activities/dashboard`,
     {
@@ -25,13 +24,27 @@ async function getVideoAndGallery() {
   return res.json();
 }
 
+export async function getOfficeAddress() {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/get-office-address`,
+    {
+      cache: "no-store",
+    },
+  );
 
-
+  if (!res.ok) {
+    return [];
+  }
+  return res.json();
+}
 
 const Home = async () => {
-  const result = await getVideoAndGallery();
+  const [result, officeData] = await Promise.all([
+    getVideoAndGallery(),
+    getOfficeAddress(),
+  ]);
   const { resultGallery, resultVideo } = result.data;
-  
+
 
   return (
     <div className="min-h-screen">
@@ -41,11 +54,8 @@ const Home = async () => {
       <div id="offers">
         <ServicesSection />
       </div>
-
-      <div
-        className="mb-10 flex flex-col justify-center bg-black  items-center"
-      >
-        <GlobalOffices />
+      <div className="mb-10 flex flex-col justify-center bg-black  items-center">
+        <GlobalOffices offices={officeData.data} />
       </div>
       <div id="hero" className="scroll-mt-20">
         <HomePageAboutUs />

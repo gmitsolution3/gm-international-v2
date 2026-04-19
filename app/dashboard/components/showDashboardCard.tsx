@@ -328,6 +328,15 @@ const MainDashboard: React.FC = () => {
         titleColor: "text-black",
         page_link: `/dashboard/accounts`,
       },
+      {
+        iconUrl:
+          "https://i.postimg.cc/zXX6FsTm/1eee10a3-ae86-4224-86f7-5bec20dcd51f-Photoroom.png",
+        title: "Setting",
+        description: "Manage other activities",
+        color: "bg-aqua-500",
+        titleColor: "text-black",
+        page_link: `/dashboard/setting`,
+      },
     ]);
   }, [userRole]);
 
