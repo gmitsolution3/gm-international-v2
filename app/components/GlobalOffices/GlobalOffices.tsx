@@ -152,7 +152,7 @@ const GlobalOffices: React.FC = () => {
 
                 {/* Phone */}
                 {office.phone && (
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 flex-col md:flex-row">
                     {office.phone.map((p, index) => (
                       <div
                         key={index}
