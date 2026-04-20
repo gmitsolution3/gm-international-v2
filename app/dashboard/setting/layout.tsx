@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/auth.config";
 import { UserProvider } from "@/app/useContext/useUserData";
-import { LayoutDashboard, MapPinHouse } from "lucide-react";
+import { LayoutDashboard, MapPinHouse, Share2 } from "lucide-react";
 import SidebarHeaderProvider from "../accounts/components/SidebarHeaderProvider";
 
 export default async function DashboardLayout({
@@ -29,6 +29,11 @@ export default async function DashboardLayout({
        label: "Office Address",
        icon: <MapPinHouse />,
        href: "/dashboard/setting/office-address",
+     },
+     {
+       label: "About",
+       icon: <Share2 />,
+       href: "/dashboard/setting/about",
      },
    ];
 

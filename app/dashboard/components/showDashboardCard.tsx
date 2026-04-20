@@ -351,7 +351,10 @@ const MainDashboard: React.FC = () => {
       roleFiltered = services.slice(0, 6);
     } else if (userRole === "office_admin") {
       roleFiltered = services.filter(
-        (service) => service.title !== "B2B" && service.title !== "User",
+        (service) =>
+          service.title !== "B2B" &&
+          service.title !== "User" &&
+          service.title !== "Setting",
       );
     } else {
       roleFiltered = [];

@@ -10,8 +10,12 @@ import {
   Heart,
   Shield,
 } from "lucide-react";
+import { getTeamMember } from "@/app/dashboard/setting/about/page";
+import { TeamMember } from "@/app/dashboard/setting/about/components/ManageTeamMember";
 
-const AboutPage = () => {
+const AboutPage = async () => {
+  const teamMembers = await getTeamMember();
+
   const stats = [
     { value: "5000+", label: "Students Placed", icon: Users },
     { value: "10+", label: "Countries", icon: Globe },
@@ -43,27 +47,6 @@ const AboutPage = () => {
       title: "Test Preparation",
       description:
         "Expert coaching for IELTS, TOEFL, PTE, and other language proficiency tests.",
-    },
-  ];
-
-  const teamMembers = [
-    {  id: 1,
-      name: "Ashraful Islam",
-      role: "Founder & CEO",
-      bio: "8+ years of experience in international student placement.",
-      image: "https://i.postimg.cc/15sSyx2B/ceo-DUrbnav-O.jpg", // Make sure to add placeholder images
-    },
-    {   id: 2,
-      name: "Morium Akter Jannatul",
-      role: "Office Admin",
-      bio: "Expert in china university admissions and visa processes.",
-      image: "https://i.postimg.cc/HkLC7wpt/mariam-q-KMi-Nly-U.png",
-    },
-    { id: 3,
-      name: "Anik Saha",
-      role: "Product Manager",
-      bio: "Handled 1000+ successful student visa applications.",
-      image: "https://i.postimg.cc/7LG8KqJf/anik-C2Rus-MQE.jpg",
     },
   ];
 
@@ -187,9 +170,9 @@ const AboutPage = () => {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {teamMembers.map((member, index) => (
+            {teamMembers.data.map((member: TeamMember) => (
               <div
-                key={index}
+                key={member._id}
                 className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition"
               >
                 <div className="h-64 bg-linear-to-br from-red-400 to-red-500 relative">
@@ -202,7 +185,7 @@ const AboutPage = () => {
                       width={450}
                       height={450}
                       //   className= "object-cover"
-                      className={`w-full h-full object-cover ${member.id === 3 ? "object-top" : ""}`}
+                      className={`w-full h-full object-cover ${member.name === "Anik Saha" ? "object-top" : ""}`}
                     />
                   </div>
                 </div>
