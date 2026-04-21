@@ -387,12 +387,10 @@ export function NavBar() {
               </MobileMenuSection>
 
               <MobileMenuItem
-                href="/#hero"
+                href="/pages/about"
                 label="About Us"
                 onClick={closeMobileMenu}
               />
-
-              
             </div>
           </div>
         )}
