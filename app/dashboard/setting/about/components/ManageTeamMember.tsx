@@ -16,6 +16,7 @@ export interface TeamMember {
   role: string;
   bio: string;
   image: string;
+  order_index: number;
 }
 
 // Validation schema
@@ -24,12 +25,16 @@ const teamMemberSchema = z.object({
   role: z.string().min(1, "Role is required"),
   bio: z.string().min(5, "Bio must be at least 5 characters"),
   image: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  order_index: z.number().int().min(0, "Order index must be 0 or greater"),
 });
 
 type TeamMemberFormData = z.infer<typeof teamMemberSchema>;
 
 const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
-  const [members, setMembers] = useState<TeamMember[]>(teamMember || []);
+  // Sort members by order_index initially
+  const [members, setMembers] = useState<TeamMember[]>(
+    [...(teamMember || [])].sort((a, b) => a.order_index - b.order_index)
+  );
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null);
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -51,6 +56,7 @@ const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
       role: "",
       bio: "",
       image: "",
+      order_index: 0,
     },
   });
 
@@ -93,6 +99,7 @@ const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
       role: member.role,
       bio: member.bio,
       image: member.image || "",
+      order_index: member.order_index,
     });
     setIsEditModalOpen(true);
   };
@@ -129,12 +136,13 @@ const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
       const result = await response.json();
 
       if (result.success) {
-        // Update local state
-        setMembers((prev) =>
-          prev.map((member) =>
-            member._id === selectedMember._id ? { ...member, ...data } : member,
-          ),
+        // Update local state and re-sort by order_index
+        const updatedMembers = members.map((member) =>
+          member._id === selectedMember._id ? { ...member, ...data } : member
         );
+        const sortedMembers = [...updatedMembers].sort((a, b) => a.order_index - b.order_index);
+        setMembers(sortedMembers);
+        
         toast.success(result.message || "Team member updated successfully");
         setIsEditModalOpen(false);
         reset();
@@ -165,9 +173,13 @@ const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
       );
       const result = await response.json();
       if (result.success) {
-        setMembers((prev) =>
-          prev.filter((member) => member._id !== selectedMember._id),
+        const updatedMembers = members.filter(
+          (member) => member._id !== selectedMember._id
         );
+        // Re-sort after deletion (though order remains same, just maintaining consistency)
+        const sortedMembers = [...updatedMembers].sort((a, b) => a.order_index - b.order_index);
+        setMembers(sortedMembers);
+        
         toast.success("Team member deleted successfully");
         setIsDeleteModalOpen(false);
       } else {
@@ -181,6 +193,46 @@ const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
     }
   };
 
+  // Function to handle reordering (optional - for drag and drop or manual reorder)
+  const handleReorder = async (memberId: number, newOrderIndex: number) => {
+    const member = members.find(m => m._id === memberId);
+    if (!member) return;
+
+    // Optimistically update UI
+    const updatedMembers = members.map(m => 
+      m._id === memberId ? { ...m, order_index: newOrderIndex } : m
+    ).sort((a, b) => a.order_index - b.order_index);
+    
+    setMembers(updatedMembers);
+
+    // API call to update order
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/update-office-team/${memberId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ ...member, order_index: newOrderIndex }),
+        },
+      );
+      
+      const result = await response.json();
+      if (!result.success) {
+        // Revert on failure
+        setMembers([...(teamMember || [])].sort((a, b) => a.order_index - b.order_index));
+        toast.error("Failed to update order");
+      } else {
+        toast.success("Order updated successfully");
+      }
+    } catch (error) {
+      console.error("Reorder error:", error);
+      setMembers([...(teamMember || [])].sort((a, b) => a.order_index - b.order_index));
+      toast.error("Failed to update order");
+    }
+  };
+
   return (
     <div className="w-full mt-6">
       {/* Table View - Desktop */}
@@ -188,6 +240,9 @@ const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-red-50">
             <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Order
+              </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Image
               </th>
@@ -209,18 +264,30 @@ const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
             {members.length === 0 ? (
               <tr>
                 <td
-                  colSpan={5}
+                  colSpan={6}
                   className="px-6 py-12 text-center text-gray-500"
                 >
                   No team members found. Create one to get started.
                 </td>
               </tr>
             ) : (
-              members.map((member) => (
+              members.map((member, index) => (
                 <tr
                   key={member._id}
                   className="hover:bg-gray-50 transition-colors"
                 >
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-gray-700">
+                        {member.order_index}
+                      </span>
+                      {index === 0 && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+                          First
+                        </span>
+                      )}
+                    </div>
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="relative w-10 h-10 rounded-full overflow-hidden border border-red-200">
                       <Image
@@ -325,7 +392,7 @@ const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
             No team members found. Create one to get started.
           </div>
         ) : (
-          members.map((member) => (
+          members.map((member, index) => (
             <div
               key={member._id}
               className="bg-white rounded-lg shadow-md border border-red-100 p-4"
@@ -340,8 +407,24 @@ const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
                   />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-semibold text-gray-900">{member.name}</h3>
-                  <p className="text-sm text-red-600">{member.role}</p>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-semibold text-gray-900">
+                        {member.name}
+                      </h3>
+                      <p className="text-sm text-red-600">{member.role}</p>
+                    </div>
+                    <div className="text-right">
+                      <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-700">
+                        Order: {member.order_index}
+                      </span>
+                      {index === 0 && (
+                        <span className="ml-2 inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
+                          First
+                        </span>
+                      )}
+                    </div>
+                  </div>
                   <p className="text-sm text-gray-600 mt-2 line-clamp-2">
                     {member.bio}
                   </p>
@@ -411,6 +494,14 @@ const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
                 </div>
               </div>
               <div className="space-y-3">
+                <div>
+                  <label className="text-sm font-medium text-gray-500">
+                    Display Order
+                  </label>
+                  <p className="text-gray-900 font-semibold">
+                    {selectedMember.order_index}
+                  </p>
+                </div>
                 <div>
                   <label className="text-sm font-medium text-gray-500">
                     Name
@@ -500,6 +591,29 @@ const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
                   )}
                 </div>
 
+                {/* Order Index */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Display Order <span className="text-red-500">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    {...register("order_index", { valueAsNumber: true })}
+                    min="0"
+                    step="1"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Lower numbers appear first. Members are sorted by this
+                    value.
+                  </p>
+                  {errors.order_index && (
+                    <p className="text-sm text-red-600 mt-1">
+                      {errors.order_index.message}
+                    </p>
+                  )}
+                </div>
+
                 {/* Name */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -581,7 +695,7 @@ const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
 
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && selectedMember && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 backdrop backdrop-blur-2xl bg-black/10 bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl max-w-md w-full">
             <div className="p-6">
               <div className="flex items-center justify-center mb-4">

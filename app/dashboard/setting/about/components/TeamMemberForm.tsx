@@ -9,11 +9,12 @@ import { UploadToCloudinary } from "@/app/components/uploadPdf/uploadToCloudinar
 
 // Define the Zod schema for validation
 const teamMemberSchema = z.object({
-  id: z.number().optional(),
+  _id: z.number().optional(),
   name: z.string().min(1, "Name is required"),
   role: z.string().min(1, "Role is required"),
   bio: z.string().min(5, "Bio must be at least 5 characters"),
   image: z.string().url("Must be a valid URL").optional().or(z.literal("")),
+  order_index: z.number().int().min(0, "Order index must be 0 or greater").default(0).optional(),
 });
 
 type TeamMemberFormData = z.infer<typeof teamMemberSchema>;
@@ -22,12 +23,14 @@ interface TeamMemberFormProps {
   initialData?: TeamMemberFormData & { id?: number };
   onSubmit: (data: TeamMemberFormData) => void | Promise<void>;
   submitButtonText?: string;
+  maxOrderIndex?: number; // Optional prop to show max available order index
 }
 
 export default function TeamMemberForm({
   initialData,
   onSubmit,
   submitButtonText = "Save Member",
+  maxOrderIndex,
 }: TeamMemberFormProps) {
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -48,10 +51,12 @@ export default function TeamMemberForm({
       role: "",
       bio: "",
       image: "",
+      order_index: 0,
     },
   });
 
   const currentImage = watch("image");
+  const currentOrderIndex = watch("order_index");
 
   // Set preview when image URL changes
   useEffect(() => {
@@ -75,10 +80,11 @@ export default function TeamMemberForm({
         role: "",
         bio: "",
         image: "",
+        order_index: maxOrderIndex !== undefined ? maxOrderIndex + 1 : 0,
       });
       setPreviewUrl(null);
     }
-  }, [initialData, reset]);
+  }, [initialData, reset, maxOrderIndex]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -258,6 +264,38 @@ export default function TeamMemberForm({
           {errors.bio && (
             <p className="text-sm text-red-600">{errors.bio.message}</p>
           )}
+        </div>
+
+        {/* Order Index Field */}
+        <div className="space-y-2">
+          <label
+            htmlFor="order_index"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Display Order <span className="text-red-500">*</span>
+          </label>
+          <div className="flex items-center gap-4">
+            <input
+              id="order_index"
+              type="number"
+              {...register("order_index", { valueAsNumber: true })}
+              className={`w-full max-w-50 px-3 py-2 border ${errors.order_index ? "border-red-500" : "border-gray-300"} rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-colors`}
+              placeholder="0"
+              min="0"
+              step="1"
+            />
+            {maxOrderIndex !== undefined && !initialData && (
+              <span className="text-sm text-gray-500">
+                Next available: {maxOrderIndex + 1}
+              </span>
+            )}
+          </div>
+          {errors.order_index && (
+            <p className="text-sm text-red-600">{errors.order_index.message}</p>
+          )}
+          <p className="text-xs text-gray-500 mt-1">
+            Lower numbers appear first. Members are sorted by this value in ascending order.
+          </p>
         </div>
 
         {/* Submit Button */}
