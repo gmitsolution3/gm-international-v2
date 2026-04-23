@@ -119,15 +119,37 @@ export default function Footer() {
                   </a>
                 </p>{" "}
                 <p className="text-white text-center md:text-left text-sm leading-relaxed">
-                  <strong>China Branches:</strong>{" "}
+                  <strong>Global Branches:</strong>{" "}
                   <a
                     href="https://www.facebook.com/profile.php?id=61580654585072"
                     className="hover:underline"
                     target="_blank"
                   >
-                    Guangzhou
+                    Guangzhou | Kunming
                   </a>{" "}
-                  | Kunming
+                  |
+                  <a
+                    href="https://www.facebook.com/profile.php?id=61580654585072"
+                    className="hover:underline pl-1"
+                    target="_blank"
+                  >
+                    Thailand
+                  </a>{" "}
+                  |
+                  <a
+                    href="https://www.facebook.com/profile.php?id=61580654585072"
+                    className="hover:underline pl-1"
+                    target="_blank"
+                  >
+                    Malaysia
+                  </a>{" "} |
+                  <a
+                    href="https://www.facebook.com/profile.php?id=61580654585072"
+                    className="hover:underline pl-1"
+                    target="_blank"
+                  >
+                    Australia
+                  </a>{" "}
                 </p>
                 <p className="text-white text-center md:text-left text-sm leading-relaxed">
                   <strong>Our China Wirehouse Address:</strong>{" "}

@@ -23,7 +23,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GM International | Bangladesh | China | Malaysia | Australia",
+  title:
+    "GM International | Bangladesh | China | Thailand | Malaysia | Australia",
   description: "Develop By GM IT Solution",
 };
 
