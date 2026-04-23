@@ -246,7 +246,7 @@ const UmrahHajjHero: React.FC = () => {
             </div>
 
             {/* Floating Cards */}
-            <div className="absolute -bottom-4 -left-4 md:-bottom-6 md:-left-6 rounded-xl shadow-xl p-3 md:p-4 max-w-45 md:max-w-50 backdrop-blur-sm bg-white/90">
+            {/* <div className="absolute -bottom-4 -left-4 md:-bottom-6 md:-left-6 rounded-xl shadow-xl p-3 md:p-4 max-w-45 md:max-w-50 backdrop-blur-sm bg-white/90">
               <div className="flex items-center gap-2 md:gap-3">
                 <div className="w-8 h-8 md:w-10 md:h-10 bg-emerald-100 rounded-full flex items-center justify-center">
                   <svg className="w-4 h-4 md:w-5 md:h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -258,7 +258,7 @@ const UmrahHajjHero: React.FC = () => {
                   <p className="font-bold text-gray-900 text-sm md:text-base">December 2024</p>
                 </div>
               </div>
-            </div>
+            </div> */}
 
           </div>
         </div>
