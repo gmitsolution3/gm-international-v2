@@ -20,6 +20,8 @@ import { TbCoinTakaFilled } from "react-icons/tb";
 import { PackageDescriptionView } from "@/app/dashboard/scholarship/admin/manage-student-packages/components/PackageDescriptionView";
 import dynamic from "next/dynamic";
 import { handleFileUpload } from "@/app/components/uploadPdf/uploadToCloudinary";
+import { motion, AnimatePresence } from "framer-motion";
+import AdminTouristPackageCard from "./PackageCard";
 
 const DescriptionEditor = dynamic(
   () =>
@@ -322,14 +324,14 @@ export default function TourPackagesAdmin({
   return (
     <div className="min-h-screen p-3 sm:p-6 font-sans">
       <div className="max-w-7xl mx-auto">
-        {/* Mobile View - Stacked Cards */}
+        {/* Stacked Cards */}
         <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 space-y-4">
-          {packages.map((pkg) => (
+          {/* {packages.map((pkg) => (
             <div
               key={pkg._id}
               className="bg-white rounded-lg shadow-md border border-red-100 overflow-hidden hover:shadow-lg transition-shadow"
             >
-              {/* Package Image */}
+              
               {pkg.thumbnail && (
                 <div className="relative w-full h-60 bg-gray-200">
                   <Image
@@ -388,133 +390,33 @@ export default function TourPackagesAdmin({
                 </button>
               </div>
             </div>
-          ))}
+          ))} */}
+          <AnimatePresence mode="popLayout">
+            {packages.map((pkg, index) => (
+              <motion.div
+                key={pkg._id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  transition: { delay: index * 0.1 },
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.8,
+                  transition: { duration: 0.3 },
+                }}
+                layout
+              >
+                <AdminTouristPackageCard
+                  pkg={pkg}
+                  onView={setSelectedPackage}
+                  onDelete={setShowDeleteConfirm}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
-
-        {/* Tablet & Desktop View - Table */}
-
-        <div className="hidden bg-white rounded-lg sm:rounded-2xl shadow-md sm:shadow-xl border border-red-100 overflow-x-auto">
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-200 lg:min-w-full table-auto">
-              <thead className="bg-linear-to-r from-rose-500 to-red-500 text-white">
-                <tr>
-                  <th className="px-3 sm:px-4 py-3 sm:py-4 text-left font-semibold text-xs sm:text-sm">
-                    Package
-                  </th>
-                  <th className="px-3 sm:px-4 py-3 sm:py-4 text-left font-semibold text-xs sm:text-sm">
-                    Dest.
-                  </th>
-                  <th className="px-3 sm:px-4 py-3 sm:py-4 text-left font-semibold text-xs sm:text-sm">
-                    Country
-                  </th>
-                  <th className="px-3 sm:px-4 py-3 sm:py-4 text-left font-semibold text-xs sm:text-sm">
-                    Created
-                  </th>
-                  <th className="hidden lg:table-cell px-4 py-4 text-left font-semibold text-sm">
-                    International
-                  </th>
-                  <th className="px-3 sm:px-4 py-3 sm:py-4 text-left font-semibold text-xs sm:text-sm">
-                    Price
-                  </th>
-                  <th className="hidden xl:table-cell px-4 py-4 text-left font-semibold text-sm">
-                    Duration
-                  </th>
-                  <th className="px-3 sm:px-4 py-3 sm:py-4 text-center font-semibold text-xs sm:text-sm">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {packages.map((pkg) => (
-                  <tr
-                    key={pkg._id}
-                    className="hover:bg-rose-50 transition-colors"
-                  >
-                    <td className="px-3 sm:px-4 py-3 sm:py-4">
-                      <div className="flex items-center gap-2 max-w-50">
-                        {pkg.thumbnail && (
-                          <div className="relative w-8 h-8 shrink-0 hidden sm:block">
-                            <Image
-                              src={pkg.thumbnail || "/placeholder.svg"}
-                              alt={pkg.p_title}
-                              fill
-                              className="object-cover rounded"
-                            />
-                          </div>
-                        )}
-                        <div className="min-w-0">
-                          <p className="font-semibold text-gray-800 text-xs sm:text-sm truncate">
-                            {pkg.p_title}
-                          </p>
-                          <p className="text-gray-500 text-xs truncate">
-                            {pkg._id?.slice(-8)}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-3 sm:px-4 py-3 sm:py-4">
-                      <p className="text-gray-700 text-xs sm:text-sm truncate max-w-25">
-                        {pkg.tour_plan[0]?.destination || "N/A"}
-                      </p>
-                    </td>
-                    <td className="px-3 sm:px-4 py-3 sm:py-4">
-                      <p className="text-gray-700 text-xs sm:text-sm truncate max-w-25">
-                        {pkg.country}
-                      </p>
-                    </td>
-                    <td className="px-3 sm:px-4 py-3 sm:py-4">
-                      <p className="text-gray-700 text-xs sm:text-sm whitespace-nowrap">
-                        {formatDate(pkg.createdAt)}
-                      </p>
-                    </td>
-                    <td className="hidden lg:table-cell px-4 py-4">
-                      <span
-                        className={`text-xs sm:text-sm px-2 py-1 rounded-full ${
-                          pkg.isInternationalPackage
-                            ? "bg-green-100 text-green-700"
-                            : "bg-gray-100 text-gray-700"
-                        }`}
-                      >
-                        {pkg.isInternationalPackage ? "Yes" : "No"}
-                      </span>
-                    </td>
-                    <td className="px-3 sm:px-4 py-3 sm:py-4">
-                      <p className="text-gray-800 font-bold text-xs sm:text-sm flex items-center gap-1 whitespace-nowrap">
-                        <DollarSign className="w-3 h-3 text-rose-500 shrink-0" />
-                        <span className="truncate">{pkg.p_price}</span>
-                      </p>
-                    </td>
-                    <td className="hidden xl:table-cell px-4 py-4">
-                      <p className="text-gray-700 text-sm flex items-center gap-1 whitespace-nowrap">
-                        <Calendar className="w-4 h-4 text-rose-500 shrink-0" />
-                        <span className="truncate">{pkg.duration}</span>
-                      </p>
-                    </td>
-                    <td className="px-3 sm:px-4 py-3 sm:py-4">
-                      <div className="flex items-center justify-center gap-1">
-                        <button
-                          onClick={() => setSelectedPackage(pkg)}
-                          className="p-1.5 text-rose-500 hover:bg-rose-50 rounded-lg transition-colors"
-                          title="View Details"
-                        >
-                          <Eye className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => setShowDeleteConfirm(pkg._id!)}
-                          className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                          title="Delete"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
         {/* Details Modal with Editable Fields */}
 
         {selectedPackage && (
@@ -537,7 +439,6 @@ export default function TourPackagesAdmin({
                 </button>
               </div>
               <div className="p-4 sm:p-6 space-y-6">
-                
                 {/* Thumbnail */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">

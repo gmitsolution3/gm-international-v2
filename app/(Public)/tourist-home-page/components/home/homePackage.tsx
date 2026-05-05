@@ -116,13 +116,14 @@ export default function TouristHomePackages({
                 onMouseLeave={() => setHoveredCard(null)}
               >
                 <div
-                  className="relative h-full bg-white rounded-3xl overflow-hidden shadow-lg border border-gray-100 flex flex-col"
-                  style={{
-                    transform: isHovered ? "translateY(-8px)" : "translateY(0)",
-                    boxShadow: isHovered
-                      ? "0 25px 50px -12px rgba(220, 38, 38, 0.25)"
-                      : "0 10px 30px -15px rgba(0, 0, 0, 0.1)",
-                  }}
+                  className="
+                relative h-full bg-white rounded-3xl overflow-hidden border border-gray-100 flex flex-col
+                shadow-[0_10px_30px_-15px_rgba(0,0,0,0.12)]
+                transition-all duration-500 ease-out
+                will-change-transform
+                group-hover:-translate-y-2
+                group-hover:shadow-[0_25px_50px_-12px_rgba(220,38,38,0.18)]
+                "
                 >
                   {/* Image Slider Container */}
                   <div className="relative h-56 md:h-52 lg:h-56 overflow-hidden bg-gray-100">
@@ -158,7 +159,7 @@ export default function TouristHomePackages({
                             <img
                               src={image || "/placeholder-image.jpg"}
                               alt={`${pkg.p_title} - Image ${idx + 1}`}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                              className="w-full h-full object-cover transition-transform duration-1400 ease-out group-hover:scale-105"
                             />
                             {/* Image Overlay Gradient */}
                             <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent" />
@@ -290,12 +291,12 @@ export default function TouristHomePackages({
                           <Button
                             className="w-full group relative inline-flex h-12 items-center justify-center overflow-hidden 
                           bg-linear-to-r from-red-600 to-red-500 px-6 font-medium text-white 
-                          transition-all hover:from-red-700 hover:to-red-600 hover:scale-[1.02] 
+                          transition-all duration-500 ease-out group-hover:shadow-2xl hover:from-red-700 hover:to-red-600 hover:scale-[1.02] 
                           hover:cursor-pointer rounded-xl shadow-lg hover:shadow-xl"
                           >
                             <span className="flex items-center gap-2">
                               View Details
-                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-all duration-500 ease-out group-hover:shadow-2xl" />
                             </span>
                           </Button>
                         </Link>
@@ -304,12 +305,12 @@ export default function TouristHomePackages({
                           <Button
                             className="w-full group relative inline-flex h-12 items-center justify-center overflow-hidden 
                           bg-linear-to-r from-red-600 to-red-500 px-6 font-medium text-white 
-                          transition-all hover:from-red-700 hover:to-red-600 hover:scale-[1.02] 
+                          transition-all duration-500 ease-out group-hover:shadow-2xl hover:from-red-700 hover:to-red-600 hover:scale-[1.02] 
                           hover:cursor-pointer rounded-xl shadow-lg hover:shadow-xl"
                           >
                             <span className="flex items-center gap-2">
                               View Details
-                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-all duration-500 ease-out group-hover:shadow-2xl" />
                             </span>
                           </Button>
                         </Link>
@@ -337,14 +338,14 @@ export default function TouristHomePackages({
                   </div>
 
                   {/* Hover Effect Border */}
+
                   <div
-                    className="absolute inset-0 rounded-3xl pointer-events-none transition-opacity duration-500"
-                    style={{
-                      boxShadow: isHovered
-                        ? "inset 0 0 0 2px rgba(220, 38, 38, 0.2)"
-                        : "none",
-                      opacity: isHovered ? 1 : 0,
-                    }}
+                    className="
+                    absolute inset-0 rounded-3xl pointer-events-none
+                    opacity-0 group-hover:opacity-100
+                    transition-all duration-500
+                    shadow-[inset_0_0_0_2px_rgba(220,38,38,0.15)]
+                    "
                   />
                 </div>
               </div>

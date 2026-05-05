@@ -19,38 +19,6 @@ const SelectTourPackage = ({
   const [isInternational, setIsInternational] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-//   useEffect(() => {
-//     if (isInternational) {
-//       fetchesInternationalPackage();
-//       console.log({package: "if"})
-//     } else {
-//       setAllPackages(initialPackages);
-//       console.log({package: "else"})
-//     }
-//   }, [isInternational, initialPackages]);
-
-//   const fetchesInternationalPackage = async () => {
-//     setIsLoading(true);
-//     try {
-//       const res = await fetch(
-//         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/all/tourist-package/int-client`,
-//         {
-//           cache: "no-store",
-//         },
-//       );
-//       const result = await res.json();
-
-//       if (!res.ok) {
-//         throw new Error("Something was wrong!!");
-//       }
-//       setAllPackages(result);
-//     } catch (error) {
-//       console.error("Failed to fetch international packages:", error);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
   const fetchesInternationalPackage = async () => {
     setIsLoading(true);
     try {
