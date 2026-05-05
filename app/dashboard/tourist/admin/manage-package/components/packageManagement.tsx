@@ -326,72 +326,8 @@ export default function TourPackagesAdmin({
       <div className="max-w-7xl mx-auto">
         {/* Stacked Cards */}
         <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 space-y-4">
-          {/* {packages.map((pkg) => (
-            <div
-              key={pkg._id}
-              className="bg-white rounded-lg shadow-md border border-red-100 overflow-hidden hover:shadow-lg transition-shadow"
-            >
-              
-              {pkg.thumbnail && (
-                <div className="relative w-full h-60 bg-gray-200">
-                  <Image
-                    src={pkg.thumbnail || "/placeholder.svg"}
-                    alt={pkg.p_title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              )}
-              <div className="bg-linear-to-r from-rose-500 to-red-500 text-white p-3">
-                <h3 className="font-bold text-base">{pkg.p_title}</h3>
-                <p className="text-rose-100 text-xs mt-1 flex items-center gap-1">
-                  <MapPin className="w-3 h-3" />
-                  {pkg.start_form}, {pkg.country}
-                </p>
-              </div>
-              <div className="p-4 space-y-3">
-                <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div>
-                    <p className="text-gray-500 text-xs font-semibold">
-                      Created At
-                    </p>
-                    <p className="text-gray-800 font-medium">
-                      {formatDate(pkg.createdAt)}
-                    </p>
-                  </div>
-
-                  <div>
-                    <p className="text-gray-500 text-xs font-semibold">Price</p>
-                    <p className="text-gray-800 font-bold">
-                      <TbCoinTakaFilled />
-                      {pkg.p_price}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-gray-500 text-xs font-semibold">
-                      Duration
-                    </p>
-                    <p className="text-gray-800 font-medium">{pkg.duration}</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setSelectedPackage(pkg)}
-                  className="w-full py-2 bg-linear-to-r from-rose-500 to-red-500 text-white rounded-lg font-semibold text-xs hover:shadow-lg transition-all flex items-center justify-center gap-2"
-                >
-                  <Eye className="w-4 h-4" />
-                  View Details
-                </button>
-                <button
-                  onClick={() => setShowDeleteConfirm(pkg._id!)}
-                  className="flex-1 py-2 bg-red-500 text-white rounded-lg font-semibold text-xs hover:shadow-lg transition-all flex items-center justify-center gap-1"
-                >
-                  <Trash2 className="w-3 h-3" />
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))} */}
-          <AnimatePresence mode="popLayout">
+          
+          <AnimatePresence mode="popLayout"> 
             {packages.map((pkg, index) => (
               <motion.div
                 key={pkg._id}
