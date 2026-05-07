@@ -17,8 +17,8 @@ const SkeletonCard: React.FC<{ index: number }> = ({ index }) => {
       {/* Top row: avatar + badge */}
       <div className="mb-3 flex items-center justify-between">
         <div className="h-9 w-9 rounded-full bg-gray-300 animate-pulse" /> 
-        <div className="h-6 w-14 rounded-full bg-gray-300 animate-pulse" />
-      </div>
+        <div className="h-6 w-14 rounded-full bg-gray-300 animate-pulse" />    
+      </div>   
 
       {/* University name */}
       <div className="mb-1.5 h-4 rounded-md bg-gray-300 animate-pulse" style={{ width: w[0] }} />
@@ -26,8 +26,8 @@ const SkeletonCard: React.FC<{ index: number }> = ({ index }) => {
       <div className="mb-4 h-3 rounded-md bg-gray-300 animate-pulse opacity-60" style={{ width: w[1] }} />
 
       {/* Divider */}
-      <div className="mb-4 h-px w-full bg-gray-300" />
-
+      <div className="mb-4 h-px w-full bg-gray-300" />   
+  
       {/* Detail rows */}
       <div className="mb-2.5 flex items-center gap-2">
         <div className="h-4 w-4 rounded-full bg-gray-300 animate-pulse shrink-0" />
