@@ -16,7 +16,7 @@ const SkeletonCard: React.FC<{ index: number }> = ({ index }) => {
 
       {/* Top row: avatar + badge */}
       <div className="mb-3 flex items-center justify-between">
-        <div className="h-9 w-9 rounded-full bg-gray-300 animate-pulse" />
+        <div className="h-9 w-9 rounded-full bg-gray-300 animate-pulse" /> 
         <div className="h-6 w-14 rounded-full bg-gray-300 animate-pulse" />
       </div>
 
