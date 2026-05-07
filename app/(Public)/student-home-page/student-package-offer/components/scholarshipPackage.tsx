@@ -7,6 +7,7 @@ import OfferCard, { ScholarshipCardProps } from "../../components/OfferCard";
 import FilterTag from "./filtered";
 import { toast } from "sonner";
 import { ServicesSkeleton } from "@/app/components/skeleton/ServicesSkeleton";
+import StudentPackageOfferLoader from "@/app/components/skeleton/StudentPackageOffer";
 
 interface Country {
   name: string;
@@ -333,7 +334,7 @@ export default function ScholarshipPackage({
       {loading && (
         <div className="min-h-screen flex items-start scroll-mt-40 mt-20 justify-center px-6">
           <div className="w-full">
-            <ServicesSkeleton />
+            <StudentPackageOfferLoader />
           </div>
         </div>
       )}

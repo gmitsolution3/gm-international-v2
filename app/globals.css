@@ -122,7 +122,7 @@ html {
 
 html,
 body {
-  overflow-y: scroll;     
+  overflow-y: scroll;
 }
 
 @layer base {
@@ -566,7 +566,7 @@ select {
 }
 
 .ql-editor {
-  min-height: 200px; 
+  min-height: 200px;
 }
 
 /* Swiper Custom Styles */
@@ -629,12 +629,10 @@ select {
   transform: scale(0.8);
 }
 
-
 .swiper-slide {
   backface-visibility: hidden;
   transform: translateZ(0);
 }
-
 
 @keyframes fadeInUp {
   from {
@@ -648,7 +646,8 @@ select {
 }
 
 @keyframes float {
-  0%,100% {
+  0%,
+  100% {
     transform: translateY(0);
   }
   50% {
@@ -657,27 +656,38 @@ select {
 }
 
 @keyframes ping-slow {
-  75%,100% {
+  75%,
+  100% {
     transform: scale(1.5);
     opacity: 0;
   }
 }
 
 @keyframes pulse-slow {
-  0%,100% {
-    opacity: .3;
+  0%,
+  100% {
+    opacity: 0.3;
     transform: scale(1);
   }
   50% {
-    opacity: .5;
+    opacity: 0.5;
     transform: scale(1.1);
   }
 }
 
 @keyframes scroll {
-  0% { transform: translateY(0); opacity: 1; }
-  75% { transform: translateY(20px); opacity: 0; }
-  100% { transform: translateY(0); opacity: 0; }
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0;
+  }
 }
 
 .animate-fadeInUp {
@@ -689,7 +699,7 @@ select {
 }
 
 .animate-ping-slow {
-  animation: ping-slow 3s cubic-bezier(0,0,.2,1) infinite;
+  animation: ping-slow 3s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 .animate-pulse-slow {
@@ -702,7 +712,8 @@ select {
 
 /* app/globals.css - Add these animations */
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {
@@ -724,16 +735,10 @@ select {
 }
 
 .shimmer {
-  background: linear-gradient(
-    90deg,
-    #f0f0f0 0%,
-    #e8e8e8 50%,
-    #f0f0f0 100%
-  );
+  background: linear-gradient(90deg, #f0f0f0 0%, #e8e8e8 50%, #f0f0f0 100%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
-
 
 /* app/globals.css - Add these animations */
 @keyframes slide-down {
@@ -770,7 +775,9 @@ select {
   bottom: -12px;
   opacity: 0.08;
   color: white;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
   pointer-events: none;
 }
 
@@ -780,25 +787,43 @@ select {
 }
 
 @keyframes shimmer {
-  0%   { background-position: -700px 0; }
-  100% { background-position:  700px 0; }
+  0% {
+    background-position: -700px 0;
+  }
+  100% {
+    background-position: 700px 0;
+  }
 }
 
 .skeleton {
-  background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--muted-foreground)/0.15) 50%, hsl(var(--muted)) 75%);
+  background: linear-gradient(
+    90deg,
+    hsl(var(--muted)) 25%,
+    hsl(var(--muted-foreground) / 0.15) 50%,
+    hsl(var(--muted)) 75%
+  );
   background-size: 700px 100%;
   animation: shimmer 1.7s infinite linear;
 }
 
 .skeleton-dark {
-  background: linear-gradient(90deg, rgba(255,255,255,0.07) 25%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0.07) 75%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.07) 25%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.07) 75%
+  );
   background-size: 700px 100%;
   animation: shimmer 1.7s infinite linear;
 }
 
 @keyframes shimmer {
-  0%   { background-position: -600px 0; }
-  100% { background-position:  600px 0; }
+  0% {
+    background-position: -600px 0;
+  }
+  100% {
+    background-position: 600px 0;
+  }
 }
 
 .skeleton {
@@ -811,4 +836,13 @@ select {
   background-size: 600px 100%;
   animation: shimmer 1.6s infinite linear;
   border-radius: 6px;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }

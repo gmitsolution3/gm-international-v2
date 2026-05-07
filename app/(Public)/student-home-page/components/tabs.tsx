@@ -172,11 +172,11 @@ export function TabsSection({
                 </span>
               )}
               {selectedCity && (
-                <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-50 text-blue-700 rounded-full text-sm font-medium">
+                <span className="inline-flex items-center gap-1 px-3 py-1.5 bg-blue-50 text-red-700 rounded-full text-sm font-medium">
                   {selectedCity}
                   <button
                     onClick={() => setSelectedCity("")}
-                    className="ml-1 hover:text-blue-900"
+                    className="ml-1 hover:text-red-900"
                   >
                     ×
                   </button>
