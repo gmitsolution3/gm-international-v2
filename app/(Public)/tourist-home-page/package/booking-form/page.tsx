@@ -8,10 +8,7 @@ interface ParamsProps {
 
 const BookingForm = async ({ searchParams }: ParamsProps) => {
   const { id, b2bId, form } = await searchParams;
-
   const source = { b2bId, form };
-
-
 
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/details/${id}`,
