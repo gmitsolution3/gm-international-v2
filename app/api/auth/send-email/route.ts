@@ -8,12 +8,7 @@ export async function POST(req: Request) {
     await sendEmail({
       to: email,
       subject: "Welcome to our platform 🎉",
-      // html: `
-      //   <h2>Hello ${name}</h2>
-      //   <p>Your registration is successful.</p>
-      //   <p>b2bProfileId: ${b2bProfileId}</p>
-      //   <p>b2bProfilePassword: ${b2bProfilePassword}</p>
-      // `,
+      
       html: `
   <div style="font-family: Arial, sans-serif; background:#f4f6f8; padding:30px;">
     

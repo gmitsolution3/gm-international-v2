@@ -1,7 +1,7 @@
 import React from "react";
 import UmrahPackageDetailsCom from "../../components/UmrahPackageDetailsCom";
 
-const getUmrahDataBySlug = async (id: string) => {
+export const getUmrahDataBySlug = async (id: string) => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/umrah-package/details/${id}`,
     {

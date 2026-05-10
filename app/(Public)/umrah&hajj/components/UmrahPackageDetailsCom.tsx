@@ -11,7 +11,7 @@ interface IncludeExcludeItem {
   value: string;
 }
 
-interface UmrahPackage {
+export interface UmrahPackage {
   _id: string;
   createdAt: string;
   title: string;
@@ -29,7 +29,7 @@ interface UmrahPackage {
   description: string;
 }
 
-interface UmrahPackageDetailsComProps {
+export interface UmrahPackageDetailsComProps {
   pkg: UmrahPackage;
 }
 
@@ -472,112 +472,12 @@ const UmrahPackageDetailsCom = ({ pkg }: UmrahPackageDetailsComProps) => {
 
                 {/* Booking Button */}
                 <div className="p-6">
-                  <button
-                    onClick={() => setShowBookingForm(!showBookingForm)}
-                    className="w-full bg-linear-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-xl"
-                  >
-                    {showBookingForm ? "Cancel Booking" : "Book Now"}
-                  </button>
-
-                  <p className="text-xs text-gray-500 text-center mt-4">
-                    ✨ Secure booking • Free cancellation • Best price guarantee
-                  </p>
+                  <Link href={`/umrah&hajj/applicationBooking?pkgId=${pkg._id}`}>
+                    <button className="w-full bg-linear-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-xl">
+                      Book Now
+                    </button>
+                  </Link>
                 </div>
-
-                {/* Booking Form */}
-                {showBookingForm && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="border-t border-gray-100 p-6 bg-gray-50"
-                  >
-                    <h3 className="text-lg font-bold text-gray-900 mb-4">
-                      Book This Package
-                    </h3>
-                    <form onSubmit={handleBookingSubmit} className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Full Name *
-                        </label>
-                        <input
-                          type="text"
-                          name="name"
-                          required
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                          placeholder="Enter your full name"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Email *
-                        </label>
-                        <input
-                          type="email"
-                          name="email"
-                          required
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                          placeholder="Enter your email"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Phone Number *
-                        </label>
-                        <input
-                          type="tel"
-                          name="phone"
-                          required
-                          value={formData.phone}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                          placeholder="Enter your phone number"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Number of Passengers *
-                        </label>
-                        <select
-                          name="passengers"
-                          value={formData.passengers}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                        >
-                          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
-                            <option key={num} value={num}>
-                              {num} Passenger{num > 1 ? "s" : ""}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Special Requests
-                        </label>
-                        <textarea
-                          name="specialRequests"
-                          value={formData.specialRequests}
-                          onChange={handleInputChange}
-                          rows={3}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
-                          placeholder="Any special requirements?"
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-3 rounded-lg transition-colors"
-                      >
-                        Submit Booking Request
-                      </button>
-                    </form>
-                  </motion.div>
-                )}
               </div>
 
               {/* Trust Badges */}

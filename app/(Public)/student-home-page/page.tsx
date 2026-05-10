@@ -50,7 +50,7 @@ const StudentHomePage = async () => {
   const label = "Student documents checklist";
 
   return (
-    <div>
+    <div className="min-h-screen">
       <div>
         <HeroSlider
           slides={slides}
