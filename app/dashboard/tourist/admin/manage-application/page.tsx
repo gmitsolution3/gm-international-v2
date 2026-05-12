@@ -1,46 +1,7 @@
-// import React from "react";
-// import { DashboardErrorHandler } from "@/app/dashboard/components/emtryHandaller";
-// import TouristApplication from "./components/applicationData";
-
-// const ManageApplication = async () => {
-//   const res = await fetch(
-//     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-tourist-booking-package`,
-//     {
-//       cache: "no-store",
-//     }
-//   );
-
-//   const resultOfRes = await res.json();
-
-//   return (
-//     <div>
-//       {/* Header */}
-//       <div className="mb-6">
-//         <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-//           Travel Packages
-//         </h1>
-//         <p className="text-sm sm:text-base text-gray-600">
-//           Manage and review travel package bookings
-//         </p>
-//         <p className="text-xs sm:text-sm text-gray-500 mt-2">
-//           Total Applications: {resultOfRes?.data.length}
-//         </p>
-//       </div>
-//       {resultOfRes?.data.length > 0 ? (
-//         <div>
-//           <TouristApplication initialPackages={resultOfRes.data} />
-
-//         </div>
-//       ) : (
-//         <DashboardErrorHandler />
-//       )}
-//     </div>
-//   );
-// };
-
-// export default ManageApplication;
 
 // app/dashboard/tourist/admin/manage-application/page.tsx
+export const dynamic = "force-dynamic";
+
 import React from "react";
 import { DashboardErrorHandler } from "@/app/dashboard/components/emtryHandaller";
 

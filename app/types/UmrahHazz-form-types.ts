@@ -90,6 +90,12 @@ export const formSchema = z.object({
   documents: documentsSchema,
   companions: z.array(companionSchema).optional(),
   payment: paymentSchema,
+  applicationStatus: z
+    .enum(["pending", "approved", "rejected"])
+    .default("pending")
+    .optional(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
 });
 
 export type FormData = z.infer<typeof formSchema>;

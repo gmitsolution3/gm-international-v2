@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { getTeamMember } from "@/app/dashboard/setting/about/page";
 import TeamMemberCom from "../components/TeamMember";
 

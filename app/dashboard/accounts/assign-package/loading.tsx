@@ -63,6 +63,126 @@ const SkeletonLoader: React.FC = () => {
               </div>
             </div>
           </div>
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 animate-pulse">
+            <div className="p-6 space-y-4">
+              <div className="flex justify-between items-start">
+                <div className="h-8 w-24 bg-gray-200 rounded-lg shimmer"></div>
+                <div className="h-6 w-16 bg-gray-200 rounded-full shimmer"></div>
+              </div>
+              <div className="space-y-2">
+                <div className="h-4 w-full bg-gray-200 rounded shimmer"></div>
+                <div className="h-4 w-3/4 bg-gray-200 rounded shimmer"></div>
+              </div>
+              <div className="pt-4">
+                <div className="h-10 w-full bg-gray-200 rounded-xl shimmer"></div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 animate-pulse">
+            <div className="p-6 space-y-4">
+              <div className="flex justify-between items-start">
+                <div className="h-8 w-24 bg-gray-200 rounded-lg shimmer"></div>
+                <div className="h-6 w-16 bg-gray-200 rounded-full shimmer"></div>
+              </div>
+              <div className="space-y-2">
+                <div className="h-4 w-full bg-gray-200 rounded shimmer"></div>
+                <div className="h-4 w-3/4 bg-gray-200 rounded shimmer"></div>
+              </div>
+              <div className="pt-4">
+                <div className="h-10 w-full bg-gray-200 rounded-xl shimmer"></div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 animate-pulse">
+            <div className="p-6 space-y-4">
+              <div className="flex justify-between items-start">
+                <div className="h-8 w-24 bg-gray-200 rounded-lg shimmer"></div>
+                <div className="h-6 w-16 bg-gray-200 rounded-full shimmer"></div>
+              </div>
+              <div className="space-y-2">
+                <div className="h-4 w-full bg-gray-200 rounded shimmer"></div>
+                <div className="h-4 w-3/4 bg-gray-200 rounded shimmer"></div>
+              </div>
+              <div className="pt-4">
+                <div className="h-10 w-full bg-gray-200 rounded-xl shimmer"></div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 animate-pulse">
+            <div className="p-6 space-y-4">
+              <div className="flex justify-between items-start">
+                <div className="h-8 w-24 bg-gray-200 rounded-lg shimmer"></div>
+                <div className="h-6 w-16 bg-gray-200 rounded-full shimmer"></div>
+              </div>
+              <div className="space-y-2">
+                <div className="h-4 w-full bg-gray-200 rounded shimmer"></div>
+                <div className="h-4 w-3/4 bg-gray-200 rounded shimmer"></div>
+              </div>
+              <div className="pt-4">
+                <div className="h-10 w-full bg-gray-200 rounded-xl shimmer"></div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 animate-pulse">
+            <div className="p-6 space-y-4">
+              <div className="flex justify-between items-start">
+                <div className="h-8 w-24 bg-gray-200 rounded-lg shimmer"></div>
+                <div className="h-6 w-16 bg-gray-200 rounded-full shimmer"></div>
+              </div>
+              <div className="space-y-2">
+                <div className="h-4 w-full bg-gray-200 rounded shimmer"></div>
+                <div className="h-4 w-3/4 bg-gray-200 rounded shimmer"></div>
+              </div>
+              <div className="pt-4">
+                <div className="h-10 w-full bg-gray-200 rounded-xl shimmer"></div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 animate-pulse">
+            <div className="p-6 space-y-4">
+              <div className="flex justify-between items-start">
+                <div className="h-8 w-24 bg-gray-200 rounded-lg shimmer"></div>
+                <div className="h-6 w-16 bg-gray-200 rounded-full shimmer"></div>
+              </div>
+              <div className="space-y-2">
+                <div className="h-4 w-full bg-gray-200 rounded shimmer"></div>
+                <div className="h-4 w-3/4 bg-gray-200 rounded shimmer"></div>
+              </div>
+              <div className="pt-4">
+                <div className="h-10 w-full bg-gray-200 rounded-xl shimmer"></div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 animate-pulse">
+            <div className="p-6 space-y-4">
+              <div className="flex justify-between items-start">
+                <div className="h-8 w-24 bg-gray-200 rounded-lg shimmer"></div>
+                <div className="h-6 w-16 bg-gray-200 rounded-full shimmer"></div>
+              </div>
+              <div className="space-y-2">
+                <div className="h-4 w-full bg-gray-200 rounded shimmer"></div>
+                <div className="h-4 w-3/4 bg-gray-200 rounded shimmer"></div>
+              </div>
+              <div className="pt-4">
+                <div className="h-10 w-full bg-gray-200 rounded-xl shimmer"></div>
+              </div>
+            </div>
+          </div>
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 animate-pulse">
+            <div className="p-6 space-y-4">
+              <div className="flex justify-between items-start">
+                <div className="h-8 w-24 bg-gray-200 rounded-lg shimmer"></div>
+                <div className="h-6 w-16 bg-gray-200 rounded-full shimmer"></div>
+              </div>
+              <div className="space-y-2">
+                <div className="h-4 w-full bg-gray-200 rounded shimmer"></div>
+                <div className="h-4 w-3/4 bg-gray-200 rounded shimmer"></div>
+              </div>
+              <div className="pt-4">
+                <div className="h-10 w-full bg-gray-200 rounded-xl shimmer"></div>
+              </div>
+            </div>
+          </div>
 
           {/* Card 4 - Business */}
           <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 animate-pulse">

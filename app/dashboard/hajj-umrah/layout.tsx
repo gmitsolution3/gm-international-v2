@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth";
 import { authConfig } from "@/auth.config";
 import { UserProvider } from "@/app/useContext/useUserData";
 import SidebarHeaderProvider from "../accounts/components/SidebarHeaderProvider";
-import { LayoutDashboard, PackagePlus } from "lucide-react";
+import { BookCheck, LayoutDashboard, PackagePlus } from "lucide-react";
 
 export default async function DashboardLayout({
   children,
@@ -29,6 +29,11 @@ export default async function DashboardLayout({
       label: "Umrah Package",
       icon: <PackagePlus />,
       href: "/dashboard/hajj-umrah/admin/umrah-packages",
+    },
+    {
+      label: "Umrah Hajj Application",
+      icon: <BookCheck />,
+      href: "/dashboard/hajj-umrah/admin/umrah-hajj-application",
     },
   ];
 
