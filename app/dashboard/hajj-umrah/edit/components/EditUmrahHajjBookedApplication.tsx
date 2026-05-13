@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import {
@@ -51,9 +51,8 @@ import {
 } from "lucide-react";
 import { type FormData, formSchema } from "@/app/types/UmrahHazz-form-types";
 import { UploadToCloudinary } from "@/app/components/uploadPdf/uploadToCloudinary";
-
-
-
+import { toast } from "sonner";
+import Link from "next/link";
 
 interface EditUmrahHajjBookedApplicationProps {
   data: {
@@ -72,7 +71,6 @@ const EditUmrahHajjBookedApplication: React.FC<
     [key: string]: number;
   }>({});
   const [showPreview, setShowPreview] = useState<string | null>(null);
-
   const applicationData = data?.data;
 
   const {
@@ -145,6 +143,8 @@ const EditUmrahHajjBookedApplication: React.FC<
         trxId: "",
         image: "",
         paymentStatus: "pending",
+        paymentPay: 0,
+        paymentDue: 0,
       },
       applicationStatus: applicationData?.applicationStatus || "pending",
     },
@@ -172,7 +172,7 @@ const EditUmrahHajjBookedApplication: React.FC<
       clearInterval(interval);
       setUploadProgress((prev) => ({ ...prev, [fieldName]: 100 }));
 
-      return result.secure_url;
+      return result;
     } catch (error) {
       console.error("Upload failed:", error);
       setUploadProgress((prev) => ({ ...prev, [fieldName]: 0 }));
@@ -205,14 +205,14 @@ const EditUmrahHajjBookedApplication: React.FC<
       const result = await response.json();
 
       // Show success message
-      alert("Application updated successfully!");
+      toast.success("Application updated successfully!");
 
       // Redirect back to view page
-      router.push(`/admin/umrah-hajj-applications/${applicationData?._id}`);
+      router.push(`/dashboard/hajj-umrah/view/${applicationData?._id}`);
       router.refresh();
     } catch (error) {
       console.error("Update failed:", error);
-      alert("Failed to update application. Please try again.");
+      toast.error("Failed to update application. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -291,23 +291,22 @@ const EditUmrahHajjBookedApplication: React.FC<
     accept = "image/*",
     required = false,
   }: any) => {
-    const [preview, setPreview] = useState<string | null>(watch(name) || null);
+    const currentValue = watch(name);
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files?.[0];
       if (!file) return;
 
-      // Show preview immediately
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-
-      // Upload to Cloudinary
+      // upload
       const url = await handleFileUpload(file, name);
+
+      console.log("Uploaded URL:", url);
+
       if (url) {
-        setValue(name, url, { shouldDirty: true });
+        setValue(name, url, {
+          shouldDirty: true,
+          shouldValidate: true,
+        });
       }
     };
 
@@ -316,19 +315,23 @@ const EditUmrahHajjBookedApplication: React.FC<
         <label className="block text-sm font-medium text-gray-700 mb-1.5">
           {label} {required && <span className="text-red-500">*</span>}
         </label>
+
         <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-red-400 transition-colors">
-          {preview ? (
+          {currentValue ? (
             <div className="space-y-3">
               <img
-                src={preview}
+                src={currentValue}
                 alt={label}
                 className="max-h-32 mx-auto rounded-lg"
               />
+
               <button
                 type="button"
                 onClick={() => {
-                  setPreview(null);
-                  setValue(name, "", { shouldDirty: true });
+                  setValue(name, "", {
+                    shouldDirty: true,
+                    shouldValidate: true,
+                  });
                 }}
                 className="text-sm text-red-600 hover:text-red-700"
               >
@@ -338,7 +341,9 @@ const EditUmrahHajjBookedApplication: React.FC<
           ) : (
             <label className="cursor-pointer block">
               <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+
               <p className="text-sm text-gray-600">Click to upload {label}</p>
+
               <input
                 type="file"
                 onChange={handleFileChange}
@@ -348,18 +353,19 @@ const EditUmrahHajjBookedApplication: React.FC<
             </label>
           )}
         </div>
+
         {uploadProgress[name] > 0 && uploadProgress[name] < 100 && (
           <div className="mt-2 w-full bg-gray-200 rounded-full h-1.5">
             <div
               className="bg-red-600 h-1.5 rounded-full transition-all duration-300"
-              style={{ width: `${uploadProgress[name]}%` }}
+              style={{
+                width: `${uploadProgress[name]}%`,
+              }}
             />
           </div>
         )}
+
         <input type="hidden" {...register(name)} />
-        {/* {errors!?.[name] && (
-          <p className="mt-1 text-xs text-red-600">{errors[name]?.message}</p>
-        )} */}
       </div>
     );
   };
@@ -412,17 +418,12 @@ const EditUmrahHajjBookedApplication: React.FC<
             </button>
 
             <div className="flex items-center gap-3">
-              <button
-                onClick={() =>
-                  router.push(
-                    `/admin/umrah-hajj-applications/${applicationData._id}`,
-                  )
-                }
-                className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all"
-              >
-                <Eye className="w-4 h-4" />
-                <span className="hidden sm:inline">View</span>
-              </button>
+              <Link href={`/dashboard/hajj-umrah/view/${applicationData._id}`}>
+                <button className="flex items-center gap-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all">
+                  <Eye className="w-4 h-4" />
+                  <span className="hidden sm:inline">View</span>
+                </button>
+              </Link>
               {isDirty && (
                 <span className="text-sm text-yellow-600 bg-yellow-50 px-3 py-1 rounded-full">
                   Unsaved changes
@@ -443,6 +444,10 @@ const EditUmrahHajjBookedApplication: React.FC<
                   <h1 className="text-2xl font-bold text-gray-900">
                     Edit Application
                   </h1>
+                  <p className="text-gray-500 mt-1">
+                    {applicationData.pkgInfo.pkgName} -{" "}
+                    {applicationData.pkgInfo.pkgPrice}BDT
+                  </p>
                   <p className="text-gray-500 mt-1">
                     {applicationData.applicantInfo.fullName} -{" "}
                     {applicationData.travelInfo.packageType.toUpperCase()}
@@ -995,6 +1000,13 @@ const EditUmrahHajjBookedApplication: React.FC<
                 color="yellow"
               />
 
+              <div>
+                <p className="text-sm bg-amber-800 border border-amber-300 text-amber-800 p-3 rounded-lg mb-4">
+                  Node:The payment paid and due calculated manually.If you want
+                  to update automatic calculation then you have to update
+                  payment paid or due field on application table.
+                </p>
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <SelectField
                   label="Payment Method"
@@ -1024,6 +1036,19 @@ const EditUmrahHajjBookedApplication: React.FC<
                     { value: "paid", label: "Paid" },
                   ]}
                 />
+                <InputField
+                  label="Payment Paid"
+                  name="payment.paymentPay"
+                  type="number"
+                  icon={Banknote}
+                />
+                <InputField
+                  label="Payment Due"
+                  name="payment.paymentDue"
+                  type="number"
+                  icon={Banknote}
+                />
+
                 <div className="sm:col-span-2 lg:col-span-3">
                   <FileUpload label="Payment Screenshot" name="payment.image" />
                 </div>

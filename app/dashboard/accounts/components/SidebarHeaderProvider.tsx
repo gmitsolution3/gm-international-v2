@@ -16,7 +16,7 @@ export type MenuItem = {
 interface SidebarHeaderProviderProps {
   children: React.ReactNode;
   avatar: string;
-  menuItems: MenuItem[];
+  menuItems: MenuItem[] | [];
 }
 
 
@@ -35,6 +35,34 @@ export default function SidebarHeaderProvider({
   return (
     <div className="flex min-h-screen w-full">
       {isAdminUser && (
+        <>
+          {sidebarOpen && (
+            <div
+              className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
+
+          <aside
+            className={`
+              fixed top-0 left-0 z-50 h-full w-64 bg-white
+              transition-transform duration-300
+              ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+              lg:static lg:z-auto lg:h-auto lg:translate-x-0
+              lg:flex lg:shrink-0
+            `}
+          >
+            <Sidebar
+              isOpen={sidebarOpen}
+              onToggle={() => setSidebarOpen(!sidebarOpen)}
+              avatar={avatar}
+              menuItems={menuItems}
+            />
+          </aside>
+        </>
+      )}
+
+      {!isAdminUser && (
         <>
           {sidebarOpen && (
             <div

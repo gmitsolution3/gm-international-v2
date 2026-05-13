@@ -54,9 +54,10 @@ export interface UmrahPackage {
 
 export interface AllUmrahPackageProps {
   packages: UmrahPackage[];
+  userRole?: string;
 }
 
-const AllUmrahPackage = ({ packages }: AllUmrahPackageProps) => {
+const AllUmrahPackage = ({ packages, userRole }: AllUmrahPackageProps) => {
   const router = useRouter();
   const [selectedPackage, setSelectedPackage] = useState<UmrahPackage | null>(
     null,
@@ -298,20 +299,24 @@ const AllUmrahPackage = ({ packages }: AllUmrahPackageProps) => {
                       >
                         <Eye className="w-5 h-5" />
                       </button>
-                      <button
-                        onClick={() => handleEdit(pkg)}
-                        className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
-                        title="Edit Package"
-                      >
-                        <Edit className="w-5 h-5" />
-                      </button>
-                      <button
-                        onClick={() => handleDeleteClick(pkg)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        title="Delete Package"
-                      >
-                        <Trash2 className="w-5 h-5" />
-                      </button>
+                      {userRole !== "user" && (
+                        <button
+                          onClick={() => handleEdit(pkg)}
+                          className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors"
+                          title="Edit Package"
+                        >
+                          <Edit className="w-5 h-5" />
+                        </button>
+                      )}
+                      {userRole !== "user" && (
+                        <button
+                          onClick={() => handleDeleteClick(pkg)}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                          title="Delete Package"
+                        >
+                          <Trash2 className="w-5 h-5" />
+                        </button>
+                      )}
                     </div>
                   </td>
                 </tr>
