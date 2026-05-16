@@ -63,3 +63,83 @@ export interface ApplicationBookedTableProps {
     data: ApplicationData[];
   };
 }
+
+export interface ApplicationStatus {
+  pending: number;
+  approved: number;
+  rejected: number;
+}
+
+export interface PaymentStatus {
+  pending: number;
+  partial: number;
+  paid: number;
+}
+
+export interface DocumentCount {
+  totalBookings: number;
+  totalPackages: number;
+  applications: ApplicationStatus;
+  payment: PaymentStatus;
+}
+
+export interface GenderStat {
+  gender: string;
+  count: number;
+}
+
+export interface ApplicantInfo {
+  fullName: string;
+  gender: string;
+  phone: string;
+  email: string;
+}
+
+export interface TravelInfo {
+  packageType: string;
+}
+
+export interface Payment {
+  paymentStatus: string;
+}
+
+export interface PkgInfo {
+  pkgName: string;
+}
+
+export interface RecentBooking {
+  _id: string;
+  applicantInfo: ApplicantInfo;
+  travelInfo: TravelInfo;
+  payment: Payment;
+  pkgInfo: PkgInfo;
+  createdAt: string;
+  applicationStatus: string;
+}
+
+export interface TopPackage {
+  _id: string;
+  count: number;
+  totalRevenue: number;
+}
+
+export interface MonthlyTrend {
+  _id: {
+    year: number;
+    month: number;
+  };
+  count: number;
+}
+
+export interface Summary {
+  totalRevenue: number;
+}
+
+export interface UmrahHajjAnalysisData {
+  documentCount: DocumentCount;
+  genderStats: GenderStat[];
+  recentBookings: RecentBooking[];
+  topPackages: TopPackage[];
+  monthlyTrend: MonthlyTrend[];
+  summary: Summary;
+}

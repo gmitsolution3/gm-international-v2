@@ -1,9 +1,15 @@
-import React from 'react'
+import React from "react";
+import { getUmrahHajjAnalysis } from "../../components/fetches";
+import UmrahHajjAnalysisState from "./components/UmrahHajjAnalysisState";
 
-const AdminMainPage = () => {
+const AdminMainPage = async () => {
+  const result = await getUmrahHajjAnalysis();
+
   return (
-    <div>AdminMainPage</div>
-  )
-}
+    <div>
+      <UmrahHajjAnalysisState data={result} />
+    </div>
+  );
+};
 
-export default AdminMainPage
+export default AdminMainPage;
