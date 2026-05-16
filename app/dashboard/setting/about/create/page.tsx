@@ -20,7 +20,6 @@ export default function TeamPage() {
 
       const result = await res.json();
 
-      console.log({result: result})
 
       if (result.success) {
         toast.success("Team member saved successfully!");

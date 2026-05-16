@@ -300,7 +300,7 @@ const EditUmrahHajjBookedApplication: React.FC<
       // upload
       const url = await handleFileUpload(file, name);
 
-      console.log("Uploaded URL:", url);
+  
 
       if (url) {
         setValue(name, url, {

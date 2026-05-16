@@ -88,13 +88,6 @@ const UmrahPackageDetailsCom = ({ pkg }: UmrahPackageDetailsComProps) => {
     });
   };
 
-  const handleBookingSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle booking logic here
-    console.log("Booking submitted:", formData);
-    alert("Booking request submitted successfully! We'll contact you soon.");
-    setShowBookingForm(false);
-  };
 
   return (
     <div className="bg-linear-to-br from-gray-50 to-emerald-50/30 min-h-screen py-8 md:py-12 lg:py-16">

@@ -232,7 +232,7 @@ const ApplicationBookedTable: React.FC<ApplicationBookedTableProps> = ({
   }) => {
     try {
       setLoading(true);
-      //   console.log({ paymentData });
+  
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/v1/update-payment/${paymentModal.app?._id}`,
@@ -246,7 +246,6 @@ const ApplicationBookedTable: React.FC<ApplicationBookedTableProps> = ({
       );
       const result = await response.json();
 
-      console.log(result);
 
       if (!result.success) throw new Error("Failed to update payment");
 

@@ -98,7 +98,7 @@ const OfficeAddressForm: React.FC = () => {
       );
 
       const result = await response.json();
-      console.log("Success:", result);
+     
 
       if (!result.success) {
         throw new Error("Failed to submit form");

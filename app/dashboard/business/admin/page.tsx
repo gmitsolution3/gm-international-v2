@@ -5,8 +5,6 @@ import BusinessAnalysisSteps from "./components/BusinessAnalysisSteps";
 const BusinessAnalysisPage = async () => {
   const result = await getBusinessAnalysis();
 
-  console.log({result})
-
   return (
     <div>
       <BusinessAnalysisSteps data={result} />

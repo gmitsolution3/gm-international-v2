@@ -129,10 +129,10 @@ const ApplicationForm: React.FC<Props> = ({ userEmail }) => {
 
       if (uploadType === "pdf") {
         url = await UploadToCloudinary(file);
-        console.log(url);
+       
       } else {
         url = await handleFileUpload(file);
-        console.log({ url });
+        
       }
 
       if (url) {

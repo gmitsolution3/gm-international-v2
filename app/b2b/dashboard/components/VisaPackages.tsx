@@ -144,12 +144,7 @@ export default function VisaPackages({ data }: VisaPackagesProps) {
     }));
   }, []);
 
-  // Handle apply button click
-  const handleApply = useCallback((country: string, visaType: string) => {
-    // Implement your apply logic here
-    console.log(`Applying for ${country} - ${visaType}`);
-    // You can redirect to application form or open modal
-  }, []);
+  
 
   // Handle contact action
   const handleContact = useCallback((type: "phone" | "email") => {

@@ -170,7 +170,7 @@ const ManagedNotice: React.FC<ManagedNoticeProps> = ({ data }) => {
 
       if (result.success) {
         toast.success("Notice updated successfully");
-        console.log("Update notice:", updatedData);
+       
         // Add your update API call here
         setIsEditModalOpen(false);
         reset();
@@ -178,7 +178,7 @@ const ManagedNotice: React.FC<ManagedNoticeProps> = ({ data }) => {
         toast.error("Failed to update notice");
       }
     } else {
-      console.log("Update notice:", formData);
+      
       // Add your update API call here
       setIsEditModalOpen(false);
       reset();

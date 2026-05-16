@@ -172,7 +172,7 @@ const UmrahHajjApplicationForm = ({ pkg }: UmrahPackageDetailsComProps) => {
       setIsLoading(false);
     }
 
-    console.log("Form submitted:", data);
+    
     // Handle form submission
   };
 
