@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/auth.config";
 import { UserProvider } from "@/app/useContext/useUserData";
-import { LayoutDashboard, MapPinHouse, Share2 } from "lucide-react";
+import { Airplay, LayoutDashboard, MapPinHouse, PlusCircle, Share2 } from "lucide-react";
 import SidebarHeaderProvider from "../accounts/components/SidebarHeaderProvider";
 
 export default async function DashboardLayout({
@@ -34,6 +34,16 @@ export default async function DashboardLayout({
        label: "About",
        icon: <Share2 />,
        href: "/dashboard/setting/about",
+     },
+     {
+       label: "Media Manager",
+       icon: <Airplay />,
+       href: "/dashboard/setting/activities",
+     },
+     {
+       label: "Notice Management",
+       icon: <PlusCircle />,
+       href: "/dashboard/setting/notice-management",
      },
    ];
 

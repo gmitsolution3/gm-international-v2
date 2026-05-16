@@ -1,125 +1,74 @@
-"use client";
+import { getServerSession } from "next-auth";
+import { authConfig } from "@/auth.config";
+import { UserProvider } from "@/app/useContext/useUserData";
+import { FileText, LayoutDashboard, Package, PackagePlus } from "lucide-react";
+import SidebarHeaderProvider, { MenuItem } from "../accounts/components/SidebarHeaderProvider";
 
-import { useEffect, useState } from "react";
-import useUserRole from "../../useContext/useUserRole";
-import { UserProvider } from "../../useContext/useUserData";
-import { useSession } from "next-auth/react";
-import Sidebar from "../scholarship/components/sidebar";
-import UserSidebar from "../scholarship/user/components/user-sidebar";
-import Header from "../scholarship/components/Header";
-import { Building2, FileText, LayoutDashboard, Package } from "lucide-react";
-import DashboardHeader from "../components/header";
-import Loader from "@/components/ui/loader";
-
-type UserAvatar = {
-  avatar: string | undefined;
-};
-
-const touristMenuItems = [
-  {
-    label: "Dashboard",
-    icon: <LayoutDashboard />,
-    href: "/dashboard/medical/admin",
-  },
-  {
-    label: "Manage Applications",
-    icon: <FileText />,
-    href: "/dashboard/medical/admin/manage-application-package",
-  },
-  {
-    label: "Manage Medical",
-    icon: <Package />,
-    href: "/dashboard/medical/admin/manage-medical",
-  },
-];
-
-const medicalMenuItems = [
-  {
-    label: "Dashboard",
-    icon: <LayoutDashboard />,
-    href: "/dashboard/medical/users",
-  },
-  {
-    label: "Appointment Status",
-    icon: <FileText />,
-    href: "/dashboard/medical/users/appointment",
-  },
-  {
-    label: "Edit Information",
-    icon: <Package />,
-    href: "/dashboard/medical/users/edit-info",
-  },
-];
-
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [userAvatar, setUserAvatar] = useState<UserAvatar | undefined>();
+  const session = await getServerSession(authConfig);
 
-  const { userRole, loading } = useUserRole();
-  const { data: session } = useSession();
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/get-avatar?email=${session?.user?.email}`,
+    { cache: "no-store" },
+  );
 
-  useEffect(() => {
-    const userData = async () => {
-      const user = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/get-avatar?email=${session?.user?.email}`,
-        {
-          cache: "no-store",
-        }
-      );
-      const userUpdateData = await user.json();
-      setUserAvatar(userUpdateData);
-    };
-
-    userData();
-  }, [session]);
-
+  const userAvatar = await res.json();
   const avatar = userAvatar?.avatar;
+  const user = session?.user as any;
 
-  // if (loading) {
-  //   return <Loader />;
-  // }
+
+  let menuItems: MenuItem[] | [] = [];
+
+  if (user?.userRole === "admin" || user?.userRole === "office_admin") {
+    menuItems = [
+      {
+        label: "Dashboard",
+        icon: <LayoutDashboard />,
+        href: "/dashboard/medical/admin",
+      },
+      {
+        label: "Manage Applications",
+        icon: <FileText />,
+        href: "/dashboard/medical/admin/manage-application-package",
+      },
+      {
+        label: "Manage Medical",
+        icon: <Package />,
+        href: "/dashboard/medical/admin/manage-medical",
+      },
+    ];
+  }
+
+  if (user?.userRole === "user") {
+    menuItems = [
+      {
+        label: "Dashboard",
+        icon: <LayoutDashboard />,
+        href: "/dashboard/medical/users",
+      },
+      {
+        label: "Appointment Status",
+        icon: <FileText />,
+        href: "/dashboard/medical/users/appointment",
+      },
+      {
+        label: "Edit Information",
+        icon: <Package />,
+        href: "/dashboard/medical/users/edit-info",
+      },
+    ];
+  }
 
   return (
-    <div className="flex min-h-screen overflow-auto">
+    <div className="flex min-h-screen">
       <UserProvider>
-        <div className="max-w-64 w-full">
-          {/* this sidebar for admin */}
-
-          {(userRole === "admin" || userRole === "office_admin") && (
-            <Sidebar
-              isOpen={sidebarOpen}
-              onToggle={() => setSidebarOpen(!sidebarOpen)}
-              avatar={avatar}
-              menuItems={touristMenuItems}
-            />
-          )}
-
-          {/* this sidebar for user */}
-          {userRole === "user" && (
-            <UserSidebar
-              isOpen={sidebarOpen}
-              onToggle={() => setSidebarOpen(!sidebarOpen)}
-              avatar={avatar}
-              menuItems={medicalMenuItems}
-            />
-          )}
-        </div>
-        <main className="flex-1 p-6 ">
-          <div>
-            <DashboardHeader
-              userRole={userRole}
-              avatar={avatar}
-              onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
-              sidebarOpen={sidebarOpen}
-            />
-          </div>
-
+        <SidebarHeaderProvider avatar={avatar} menuItems={menuItems}>
           {children}
-        </main>
+        </SidebarHeaderProvider>
       </UserProvider>
     </div>
   );

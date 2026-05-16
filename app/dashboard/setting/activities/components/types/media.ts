@@ -1,4 +1,3 @@
-// types/media.ts
 export interface Video {
   id: string;
   title: string;
@@ -9,7 +8,7 @@ export interface Video {
 }
 
 export interface GalleryImage {
-  _id?:string;
+  _id?: string;
   id: string;
   url: string;
   alt: string;

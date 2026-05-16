@@ -30,8 +30,6 @@ export default function SidebarHeaderProvider({
 
   const isAdminUser = userRole === "admin" || userRole === "office_admin";
 
- 
-
   return (
     <div className="flex min-h-screen w-full">
       {isAdminUser && (
@@ -98,7 +96,7 @@ export default function SidebarHeaderProvider({
           userRole={userRole}
         />
 
-        <div className="flex-1 p-4 md:p-6 w-full">{children}</div>
+        <div className="flex-1 w-full">{children}</div>
       </main>
     </div>
   );

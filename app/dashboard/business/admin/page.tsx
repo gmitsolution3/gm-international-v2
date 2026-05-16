@@ -1,12 +1,17 @@
 import React from "react";
-import { MainAdminDashboard } from "./components/adminDashboard";
+import { getBusinessAnalysis } from "../../components/fetches";
+import BusinessAnalysisSteps from "./components/BusinessAnalysisSteps";
 
-const AdminPanel = () => {
+const BusinessAnalysisPage = async () => {
+  const result = await getBusinessAnalysis();
+
+  console.log({result})
+
   return (
     <div>
-      <MainAdminDashboard />
+      <BusinessAnalysisSteps data={result} />
     </div>
   );
 };
 
-export default AdminPanel;
+export default BusinessAnalysisPage;

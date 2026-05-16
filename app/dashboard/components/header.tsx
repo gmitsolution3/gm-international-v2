@@ -18,7 +18,7 @@ const DashboardHeader = ({
 
 }: SidebarProps) => {
   return (
-    <div className="mb-10 sticky top-0">
+    <div className="sticky top-0">
       <Header
         onMenuToggle={onMenuToggle}
         sidebarOpen={sidebarOpen}

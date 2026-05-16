@@ -3,7 +3,6 @@
 import MediaManager from "./components/MediaManager";
 
 
-
 const getActivities = async () => {
   try {
     const res = await fetch(
@@ -26,11 +25,10 @@ const getActivities = async () => {
 };
 
 export default async function MediaPage() {
- 
-    const result = await getActivities();
+  const result = await getActivities();
 
-    const resultVideo = result?.data?.resultVideo ?? [];
-    const resultGallery = result?.data?.resultGallery ?? [];
+  const resultVideo = result?.data?.resultVideo ?? [];
+  const resultGallery = result?.data?.resultGallery ?? [];
 
   return (
     <div className="min-h-screen bg-gray-50">

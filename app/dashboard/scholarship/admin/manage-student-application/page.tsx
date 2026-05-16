@@ -13,7 +13,7 @@ const ManageStudentApplication = async () => {
   return (
     <main className="min-h-screen bg-background">
       <div className="w-full">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div className="flex flex-col max-w-7xl mx-auto m-6 sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="text-3xl font-bold text-foreground">
               Application Management

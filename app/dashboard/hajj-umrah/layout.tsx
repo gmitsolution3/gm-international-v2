@@ -21,7 +21,7 @@ export default async function DashboardLayout({
   const userAvatar = await res.json();
   const avatar = userAvatar?.avatar;
   const user = session?.user as any;
-  console.log({ userRole: user?.userRole });
+  
 
   let menuItems: MenuItem[] | [] = [];
 

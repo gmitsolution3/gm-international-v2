@@ -12,7 +12,7 @@ const ManageMedical = async () => {
 
   return (
     <div>
-      <div className="flex flex-col md:flex-row md:justify-between">
+      <div className="flex flex-col max-w-7xl mx-auto m-6 sm:flex-row sm:items-center sm:justify-between gap-4">
         {/* Header */}
         <div className="mb-6 sm:mb-8">
           <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-800 mb-2">

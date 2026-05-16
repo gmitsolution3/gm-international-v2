@@ -21,9 +21,9 @@ const ManageApplication = async () => {
     const resultOfRes: IApiResponse = await res.json();
 
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-6">
+        <div className="mb-6 p-6">
           <div className="flex items-center gap-3 mb-2">
             <div className="h-10 w-1 bg-linear-to-b from-red-500 to-red-700 rounded-full"></div>
             <div>
@@ -35,7 +35,7 @@ const ManageApplication = async () => {
               </p>
             </div>
           </div>
-          <div className="ml-13">
+          <div>
             <p className="text-xs sm:text-sm text-red-600 font-medium bg-red-50 inline-block px-3 py-1 rounded-full">
               Total Applications: {resultOfRes?.data?.length || 0}
             </p>

@@ -40,7 +40,7 @@ const AddAttributes = async () => {
               </div>
             </div>
 
-            <Link href="/dashboard/scholarship/admin/add-attribute/notice">
+            <Link href="/dashboard/setting/notice-management/notice">
               <button className="group bg-white text-red-700 px-5 py-2.5 rounded-xl font-semibold hover:bg-red-50 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2 transform hover:scale-105">
                 <PlusCircle className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
                 Add New Notice

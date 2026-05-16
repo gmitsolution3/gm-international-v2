@@ -21,10 +21,10 @@ import {
   EyeOff,
   Calendar,
 } from "lucide-react";
-import { GalleryImage, TabType, Video } from "./types/media";
 import { toast } from "sonner";
 import { handleFileUpload } from "@/app/components/uploadPdf/uploadToCloudinary";
 import Swal from "sweetalert2";
+import { GalleryImage, TabType, Video } from "./types/media";
 
 interface MediaManagerProps {
   initialVideos?: Video[];
