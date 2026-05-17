@@ -110,7 +110,7 @@ const InternationalTourist = async () => {
             </h2>
 
             <p className="mt-3 text-gray-500">
-              There is currently no information to display. Please try again
+              There is currently no information to display. Please try again 
               later.
             </p>
           </div>
