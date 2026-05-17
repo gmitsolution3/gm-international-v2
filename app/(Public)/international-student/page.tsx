@@ -3,6 +3,12 @@ import Link from "next/link";
 import React from "react";
 import OfferCard from "../student-home-page/components/OfferCard";
 import HeroSlider from "../student-home-page/components/HeroSlider";
+import generateSEO from "@/lib/seo";
+
+export const metadata = generateSEO(
+  "International Student Scholarships for Bangladesh",
+  "Apply for fully funded and partial scholarships in Bangladesh. Get expert support for admissions, visa applications, and study abroad programs.",
+);
 
 const InternationalStudent = async () => {
   const res = await fetch(

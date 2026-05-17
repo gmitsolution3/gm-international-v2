@@ -1,5 +1,11 @@
 import React from "react";
 import { ShowFindResult } from "../components/ShowFindResult";
+import generateSEO from "@/lib/seo";
+
+export const metadata = generateSEO(
+  "Result of your search for Medical Treatment Services in China & Malaysia",
+  "Get complete medical treatment support in China and Malaysia including hospital appointments, medical visa processing, travel assistance, accommodation, and recovery support.",
+);
 
 interface PageProps {
   searchParams: {

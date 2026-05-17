@@ -1,18 +1,23 @@
 import React from "react";
 import TouristFilter from "../../tourist-home-page/package/components/touristFilter";
 import TouristHomePackages from "../../tourist-home-page/components/home/homePackage";
+import generateSEO from "@/lib/seo";
+
+export const metadata = generateSEO(
+  "Best Travel & Visa Consultancy for Bangladesh",
+  "GM International provides professional tourist visa services, travel planning, holiday packages, flight booking, and international travel assistance for Bangladesh.",
+);
 
 const InternationalPackage = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-all-international-tourist-package`,
     {
       next: { revalidate: 300 },
-    }
+    },
   );
 
   const result = await res.json();
 
-  
   const from = "allInternationalPackages";
   return (
     <div>
@@ -28,7 +33,6 @@ const InternationalPackage = async () => {
         </p>
       </div>
       <div className="flex max-w-full w-full justify-center gap-10">
-        
         <div>
           <TouristHomePackages packages={result} />
         </div>

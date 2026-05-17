@@ -1,6 +1,12 @@
 import React from "react";
 import { getBusinessPackages } from "../components/fetches";
 import ShowHomePackage from "../components/showHomePackage";
+import generateSEO from "@/lib/seo";
+
+export const metadata = generateSEO(
+  "China Business Visa & Canton Fair Support Services",
+  "Apply for China business visas and get complete Canton Fair support with invitation letters, Z Visa processing, travel planning, interpreter support, hotel booking, and business consultancy.",
+);
 
 const BusinessPackages = async () => {
   const packages = await getBusinessPackages();

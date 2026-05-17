@@ -22,10 +22,30 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// export const metadata: Metadata = {
+//   title:
+//     "GM International | Bangladesh | China | Thailand | Malaysia | Australia",
+//   description: "Develop By GM IT Solution",
+// };
+
 export const metadata: Metadata = {
-  title:
-    "GM International | Bangladesh | China | Thailand | Malaysia | Australia",
-  description: "Develop By GM IT Solution",
+  metadataBase: new URL("https://gminternational.live"),
+
+  title: {
+    default: "GM International",
+    template: "%s | GM International",
+  },
+
+  description: "GM International Official Website",
+
+  keywords: ["Bangladesh", "China", "Thailand", "Malaysia"],
+
+  openGraph: {
+    title: "GM International",
+    description: "GM International Official Website",
+    siteName: "GM International",
+    type: "website",
+  },
 };
 
 export default async function RootLayout({

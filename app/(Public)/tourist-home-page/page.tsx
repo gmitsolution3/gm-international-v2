@@ -7,6 +7,14 @@ import { ArrowRight } from "lucide-react";
 import { Button } from "@headlessui/react";
 import Link from "next/link";
 import HeroSlider from "../student-home-page/components/HeroSlider";
+import generateSEO from "@/lib/seo";
+
+
+export const metadata = generateSEO(
+  "Best Travel & Visa Consultancy for China, Thailand & Malaysia",
+  "GM International provides professional tourist visa services, travel planning, holiday packages, flight booking, and international travel assistance for China, Thailand, and Malaysia.",
+);
+
 
 const TouristHomePage = async () => {
   const res = await fetch(

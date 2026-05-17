@@ -1,10 +1,15 @@
 import React from "react";
 import SupportSection from "@/app/components/HSupport/HSupport";
 import PackageOfferSection from "./components/PackageOfferSection";
-import { NavBar } from "@/app/shared/navbar/NavBar";
 import UniversitySection from "./components/hospitalList";
 import { TabsSection } from "./components/tabs";
 import HeroSlider from "./components/HeroSlider";
+import generateSEO from "@/lib/seo";
+
+export const metadata = generateSEO(
+  "International Student Scholarships for China, Malaysia & Australia",
+  "Apply for fully funded and partial scholarships in China, Malaysia, and Australia. Get expert support for admissions, visa applications, and study abroad programs.",
+);
 
 const StudentHomePage = async () => {
   const fData = await fetch(

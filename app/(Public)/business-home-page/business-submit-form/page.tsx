@@ -1,17 +1,21 @@
 import React from "react";
 import RegistrationForm from "../components/userForm";
+import generateSEO from "@/lib/seo";
 
 type PageProps = {
   searchParams: {
     id?: string;
-    b2bid?:string
+    b2bid?: string;
   };
 };
 
-const BusinessSubmitForm = async ({ searchParams }: PageProps) => {
-  const { id,b2bid } = await searchParams;
+export const metadata = generateSEO(
+  "China Business Visa & Canton Fair Submitted Form",
+  "Apply for China business visas and get complete Canton Fair support with invitation letters, Z Visa processing, travel planning, interpreter support, hotel booking, and business consultancy.",
+);
 
- 
+const BusinessSubmitForm = async ({ searchParams }: PageProps) => {
+  const { id, b2bid } = await searchParams;
 
   if (!id) {
     return (
@@ -20,8 +24,6 @@ const BusinessSubmitForm = async ({ searchParams }: PageProps) => {
       </div>
     );
   }
-
-
 
   return (
     <div>

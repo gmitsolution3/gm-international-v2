@@ -1,9 +1,13 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import React from "react";
-import { ArrowRight, Calendar } from "lucide-react";
 import TouristHomePackages from "../tourist-home-page/components/home/homePackage";
 import HeroSlider from "../student-home-page/components/HeroSlider";
+import generateSEO from "@/lib/seo";
+
+export const metadata = generateSEO(
+  "Best Travel & Visa Consultancy for Bangladesh",
+  "GM International provides professional tourist visa services, travel planning, holiday packages, flight booking, and international travel assistance for Bangladesh.",
+);
 
 const InternationalTourist = async () => {
   const res = await fetch(
@@ -14,14 +18,6 @@ const InternationalTourist = async () => {
   );
 
   const result = await res.json();
-
-  if (result.length === 0) {
-    <div className="min-h-screen flex justify-center items-center text-red-700">
-      no data fuound
-    </div>;
-  }
-
-
 
   const slides = [
     {
@@ -106,16 +102,31 @@ const InternationalTourist = async () => {
           from={from}
         />
       </div>
-      <div>
-        <TouristHomePackages packages={result} />
-        <div className="flex justify-center">
-          <Link href="/international-tourist/international-tourist-package">
-            <Button className="bg-red-600 hover:bg-red-700 text-white rounded-full px-6 py-2 md:px-8 md:py-3 font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95">
-              View More
-            </Button>
-          </Link>
+      {result.length === 0 ? (
+        <div className="min-h-[60vh] flex items-center justify-center px-4">
+          <div className="border rounded-2xl p-8 text-center shadow-sm bg-white max-w-md w-full">
+            <h2 className="text-2xl font-bold text-gray-800">
+              No Data Available
+            </h2>
+
+            <p className="mt-3 text-gray-500">
+              There is currently no information to display. Please try again
+              later.
+            </p>
+          </div>
         </div>
-      </div>
+      ) : (
+        <div>
+          <TouristHomePackages packages={result} />
+          <div className="flex justify-center">
+            <Link href="/international-tourist/international-tourist-package">
+              <Button className="bg-red-600 hover:bg-red-700 text-white rounded-full px-6 py-2 md:px-8 md:py-3 font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95">
+                View More
+              </Button>
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

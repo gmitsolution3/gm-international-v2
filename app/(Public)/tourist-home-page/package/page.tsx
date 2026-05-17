@@ -3,6 +3,14 @@ import TouristHomePackages from "../components/home/homePackage";
 import TouristASide from "./components/aSide";
 import TouristFilter from "./components/touristFilter";
 
+import generateSEO from "@/lib/seo";
+
+export const metadata = generateSEO(
+  "Affordable Umrah & Hajj Packages for Saudi Arabia",
+  "Explore affordable Umrah and Hajj packages with complete support for Saudi visa processing, flights, accommodation, transportation, and guided religious tours from Bangladesh.",
+);
+
+
 const TouristAllPackage = async () => {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/all/tourist-package/bd-client`,

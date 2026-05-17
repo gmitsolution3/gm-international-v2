@@ -1,5 +1,12 @@
 import React from "react";
 import ScholarshipPackage from "./components/scholarshipPackage";
+import generateSEO from "@/lib/seo";
+
+export const metadata = generateSEO(
+  "International Student Scholarships for China, Malaysia & Australia",
+  "Apply for fully funded and partial scholarships in China, Malaysia, and Australia. Get expert support for admissions, visa applications, and study abroad programs.",
+);
+
 
 
 

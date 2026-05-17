@@ -5,6 +5,12 @@
 import React from "react";
 import { getAllMedicalData, getFilterInfo } from "../components/fetches";
 import ListCard from "./components/listCard";
+import generateSEO from "@/lib/seo";
+
+export const metadata = generateSEO(
+  "Medical Treatment Services in China & Malaysia",
+  "Get complete medical treatment support in China and Malaysia including hospital appointments, medical visa processing, travel assistance, accommodation, and recovery support.",
+);
 
 const MedicalList = async ({  
   searchParams,

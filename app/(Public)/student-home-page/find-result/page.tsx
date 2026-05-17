@@ -3,6 +3,13 @@ import React from "react";
 import { Search, MapPin, Globe, GraduationCap, Filter } from "lucide-react";
 import OfferCard from "../components/OfferCard";
 import Link from "next/link";
+import generateSEO from "@/lib/seo";
+
+export const metadata = generateSEO(
+  "Result of your search for International Student Scholarships for China, Malaysia & Australia",
+  "Apply for fully funded and partial scholarships in China, Malaysia, and Australia. Get expert support for admissions, visa applications, and study abroad programs.",
+);
+
 
 interface PageProps {
   searchParams: {

@@ -5,6 +5,12 @@ import ServicesComponent from "./components/weOffer";
 import { BusinessHomePackage } from "./components/businessHomePackage";
 import { ServicesSkeleton } from "@/app/components/skeleton/ServicesSkeleton";
 import HeroSlider from "../student-home-page/components/HeroSlider";
+import generateSEO from "@/lib/seo";
+
+export const metadata = generateSEO(
+  "China Business Visa & Canton Fair Support Services",
+  "Apply for China business visas and get complete Canton Fair support with invitation letters, Z Visa processing, travel planning, interpreter support, hotel booking, and business consultancy.",
+);
 
 const BusinessHomePage = () => {
   const slides = [

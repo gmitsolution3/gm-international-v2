@@ -1,6 +1,12 @@
 import { Filter } from "lucide-react";
 import React from "react";
 import OfferCard from "../../student-home-page/components/OfferCard";
+import generateSEO from "@/lib/seo";
+
+export const metadata = generateSEO(
+  "International Student Scholarships for Bangladesh",
+  "Apply for fully funded and partial scholarships in Bangladesh. Get expert support for admissions, visa applications, and study abroad programs.",
+);
 
 const InternationalStudentPackage = async () => {
   const res = await fetch(

@@ -5,11 +5,15 @@ import SupportSection from "@/app/components/HSupport/HSupport";
 import HeroSlider from "../student-home-page/components/HeroSlider";
 import { getFilterInfo } from "./components/fetches";
 import { MedicalTabSection } from "./medical-list/components/MedicalTabSection";
+import generateSEO from "@/lib/seo";
+
+export const metadata = generateSEO(
+  "Medical Treatment Services in China & Malaysia",
+  "Get complete medical treatment support in China and Malaysia including hospital appointments, medical visa processing, travel assistance, accommodation, and recovery support.",
+);
 
 const MedicalHomePage = async () => {
   const res = await getFilterInfo();
-
-
 
   const checklistItems = [
     "Recent photo",
