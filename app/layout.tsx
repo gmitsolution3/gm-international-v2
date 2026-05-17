@@ -32,7 +32,8 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://gminternational.live"),
 
   title: {
-    default: "GM International",
+    default:
+      "GM International | Bangladesh | China | Thailand | Malaysia | Australia",
     template: "%s | GM International",
   },
 
@@ -41,7 +42,8 @@ export const metadata: Metadata = {
   keywords: ["Bangladesh", "China", "Thailand", "Malaysia"],
 
   openGraph: {
-    title: "GM International",
+    title:
+      "GM International | Bangladesh | China | Thailand | Malaysia | Australia",
     description: "GM International Official Website",
     siteName: "GM International",
     type: "website",
