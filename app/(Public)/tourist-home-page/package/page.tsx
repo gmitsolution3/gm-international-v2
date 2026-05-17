@@ -6,8 +6,8 @@ import TouristFilter from "./components/touristFilter";
 import generateSEO from "@/lib/seo";
 
 export const metadata = generateSEO(
-  "Affordable Umrah & Hajj Packages for Saudi Arabia",
-  "Explore affordable Umrah and Hajj packages with complete support for Saudi visa processing, flights, accommodation, transportation, and guided religious tours from Bangladesh.",
+  "Best Travel & Visa Consultancy for China, Thailand & Malaysia",
+  "GM International provides professional tourist visa services, travel planning, holiday packages, flight booking, and international travel assistance for China, Thailand, and Malaysia.",
 );
 
 
