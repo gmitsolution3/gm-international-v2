@@ -12,13 +12,11 @@ export type MenuItem = {
   href: string;
 };
 
-
 interface SidebarHeaderProviderProps {
   children: React.ReactNode;
   avatar: string;
   menuItems: MenuItem[] | [];
 }
-
 
 export default function SidebarHeaderProvider({
   children,
@@ -31,24 +29,22 @@ export default function SidebarHeaderProvider({
   const isAdminUser = userRole === "admin" || userRole === "office_admin";
 
   return (
-    <div className="flex min-h-screen w-full">
+    <div className="flex h-screen w-full overflow-hidden">
       {isAdminUser && (
         <>
           {sidebarOpen && (
             <div
-              className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+              className="inset-0 z-40 bg-black/50 lg:hidden sticky top-0"
               onClick={() => setSidebarOpen(false)}
             />
           )}
-
           <aside
             className={`
-              fixed top-0 left-0 z-50 h-full w-64 bg-white
-              transition-transform duration-300
-              ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-              lg:static lg:z-auto lg:h-auto lg:translate-x-0
-              lg:flex lg:shrink-0
-            `}
+      fixed top-0 left-0 z-50 h-screen w-64 bg-white
+      transition-transform duration-300
+      ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+      lg:static lg:translate-x-0 lg:flex lg:shrink-0
+    `}
           >
             <Sidebar
               isOpen={sidebarOpen}
@@ -71,12 +67,11 @@ export default function SidebarHeaderProvider({
 
           <aside
             className={`
-              fixed top-0 left-0 z-50 h-full w-64 bg-white
-              transition-transform duration-300
-              ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
-              lg:static lg:z-auto lg:h-auto lg:translate-x-0
-              lg:flex lg:shrink-0
-            `}
+      fixed top-0 left-0 z-50 h-screen w-64 bg-white
+      transition-transform duration-300
+      ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+      lg:static lg:translate-x-0 lg:flex lg:shrink-0
+    `}
           >
             <Sidebar
               isOpen={sidebarOpen}
@@ -88,7 +83,7 @@ export default function SidebarHeaderProvider({
         </>
       )}
 
-      <main className="flex min-h-screen flex-1 flex-col min-w-0 overflow-hidden">
+      <div className="custom-scrollbar flex flex-1 flex-col h-screen w-full overflow-y-auto">
         <Header
           onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
           sidebarOpen={sidebarOpen}
@@ -97,7 +92,7 @@ export default function SidebarHeaderProvider({
         />
 
         <div className="flex-1 w-full">{children}</div>
-      </main>
+      </div>
     </div>
   );
 }

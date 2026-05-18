@@ -120,10 +120,10 @@ html {
   scroll-behavior: smooth;
 }
 
-html,
+/* html,
 body {
   overflow-y: scroll;
-}
+} */
 
 @layer base {
   * {
@@ -862,3 +862,56 @@ select {
 .animate-in {
   animation: zoom-in-95 0.2s ease-out;
 }
+
+/* 
+.custom-scrollbar::-webkit-scrollbar {
+  width: 16px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #b91c1c;
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #b91c1c;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #b91c1c #f1f1f1;
+} */
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(239, 68, 68, 0.7);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #dc2626;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #ef4444 #f3f4f6;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+
+
