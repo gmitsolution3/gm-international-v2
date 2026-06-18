@@ -26,6 +26,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Swal from "sweetalert2";
 import { useSession } from "next-auth/react";
 import { handleFileUpload } from "@/app/components/uploadPdf/uploadToCloudinary";
+import { useRouter } from "next/navigation";
 
 // ─── Updated Interface matching new schema ───────────────────────────────────
 export interface ITouristPackage {
@@ -95,6 +96,7 @@ export function TouristUserForm({ touristPackage, source }: PackageProps) {
   const { data: session } = useSession();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [uploading, setUploading] = React.useState(false);
+  const router = useRouter()
 
   // Derived values from new schema
   const packagePrice =
@@ -207,9 +209,13 @@ export function TouristUserForm({ touristPackage, source }: PackageProps) {
       client: source,
     };
 
+    if (!payload.client?.b2bId && !payload.client?.form) {
+      delete payload.client;
+    }
+
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package-booking`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-application/api/v1/create`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -219,7 +225,7 @@ export function TouristUserForm({ touristPackage, source }: PackageProps) {
 
       const result = await res.json();
 
-      if (result?.insertedId) {
+      if (result.success) {
         Swal.fire({
           title: "Your Form has been submitted",
           icon: "success",
@@ -227,12 +233,21 @@ export function TouristUserForm({ touristPackage, source }: PackageProps) {
           showConfirmButton: false,
           timer: 2000,
         });
+
+        router.push("/dashboard")
       } else {
+        Swal.fire({
+          title: result.message || "Application Not submitted yet!",
+          icon: "error",
+          draggable: false,
+          showConfirmButton: false,
+          timer: 2000,
+        });
         throw new Error("No insertedId");
       }
-    } catch {
+    } catch (error: any) {
       Swal.fire({
-        title: "Something went wrong! Try again.",
+        title: error.message || "Something went wrong! Try again.",
         icon: "error",
         draggable: false,
         showConfirmButton: false,

@@ -12,7 +12,7 @@ export const PackageWithoutVisa = async() => {
   return (
     <div>
       <div>
-        <ShowHomePackage packages={companyData} from={"withoutVisa"} />
+        <ShowHomePackage packages={companyData.data} from={"withoutVisa"} />
       </div>
       <div className="flex justify-center">
         <Link href="/business-home-page/business-packages-without-visa-&-air-ticket">

@@ -126,12 +126,13 @@
 //   );
 // }
 
-
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/auth.config";
 import { UserProvider } from "@/app/useContext/useUserData";
 import { FileText, LayoutDashboard, Package, PackagePlus } from "lucide-react";
-import SidebarHeaderProvider, { MenuItem } from "../accounts/components/SidebarHeaderProvider";
+import SidebarHeaderProvider, {
+  MenuItem,
+} from "../accounts/components/SidebarHeaderProvider";
 
 export default async function DashboardLayout({
   children,
@@ -148,7 +149,6 @@ export default async function DashboardLayout({
   const userAvatar = await res.json();
   const avatar = userAvatar?.avatar;
   const user = session?.user as any;
-
 
   let menuItems: MenuItem[] | [] = [];
 

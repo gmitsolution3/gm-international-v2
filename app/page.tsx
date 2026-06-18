@@ -11,7 +11,7 @@ import GlobalOffices from "./components/GlobalOffices/GlobalOffices";
 
 async function getVideoAndGallery() {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/media-activities/dashboard`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/activities/api/v1/image-gallery/video-gallery`,
     {
       cache: "no-store",
     },
@@ -26,14 +26,13 @@ async function getVideoAndGallery() {
 
 export async function getOfficeAddress() {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/get-office-address`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/office-address/api/v1/get/all-office-address`,
     {
       cache: "no-store",
     },
   );
-
   if (!res.ok) {
-    return [];
+    return [];     
   }
   return res.json();
 }
@@ -44,7 +43,6 @@ const Home = async () => {
     getOfficeAddress(),
   ]);
   const { resultGallery, resultVideo } = result.data;
-
 
   return (
     <div className="min-h-screen">

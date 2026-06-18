@@ -3,7 +3,7 @@ import UserTable from "../components/UserTable";
 
 const allUser = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-all-users`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/get-all-users`,
     {
       cache: "no-cache",
     },

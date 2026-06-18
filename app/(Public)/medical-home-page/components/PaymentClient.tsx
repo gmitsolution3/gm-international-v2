@@ -126,17 +126,15 @@ const BkashPayment = ({
 
       // Update payment status
       const updateRes = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/update-medical-payment/${appointmentId}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical-application/api/v1/upd-appointment/payment/${appointmentId}`,
         {
-          method: "PUT",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             paymentStatus: "Delivered",
-            transactionId: transactionId,
-            paymentScreenshot: uploadResult.secure_url,
-            paymentMethod: "Bkash",
+            paymentMethod: "Bank",
             paidAt: new Date(),
             paymentAmount: amount,
           }),
@@ -389,17 +387,15 @@ const NagadPayment = ({
 
       // Update payment status
       const updateRes = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/update-medical-payment/${appointmentId}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical-application/api/v1/upd-appointment/payment/${appointmentId}`,
         {
-          method: "PUT",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             paymentStatus: "Delivered",
-            transactionId: transactionId,
-            paymentScreenshot: uploadResult.secure_url,
-            paymentMethod: "Nagad",
+            paymentMethod: "Bank",
             paidAt: new Date(),
             paymentAmount: amount,
           }),
@@ -584,9 +580,9 @@ const BankPayment = ({
 
     try {
       const updateRes = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/update-medical-payment/${appointmentId}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical-application/api/v1/upd-appointment/payment/${appointmentId}`,
         {
-          method: "PUT",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
@@ -599,7 +595,9 @@ const BankPayment = ({
         },
       );
 
+
       const result = await updateRes.json();
+   
 
       if (result.success) {
         Swal.fire({

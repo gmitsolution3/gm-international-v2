@@ -81,7 +81,7 @@ export default function ListCard({
     updateFilters(tempFilters);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/filtered-medical-list?city=${tempFilters.city}&country=${tempFilters.country}&provience=${tempFilters.province}&dept=${tempFilters.department}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical-pkg/api/v1/filtered-medical-list?city=${tempFilters.city}&country=${tempFilters.country}&provience=${tempFilters.province}&dept=${tempFilters.department}`,
       );
 
       const result = await res.json();
@@ -126,7 +126,7 @@ export default function ListCard({
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/search-hospital?search=${search}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical-pkg/api/v1/get-search-result?search=${search}`,
       );
 
       const result = await res.json();

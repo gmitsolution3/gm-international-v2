@@ -4,10 +4,10 @@ import { ScholarshipPackageWrapper } from "./components/scholarshipPackageWrappe
 
 const ManageStudentPackage = async () => {
   const manageScholarShipPackage = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/scholarship-package/api/v1/get/available-pkg`,
     {
       next: { revalidate: 300 },
-    }
+    },
   );
   const scholarShipData = await manageScholarShipPackage.json();
   return (

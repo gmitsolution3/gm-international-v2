@@ -104,7 +104,7 @@ const UserTable: React.FC<UserTableProps> = ({ initialUsers, form }) => {
         const inputValue = result.value;
         if (result.isConfirmed) {
           const response = await fetch(
-            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/users/updated-role/${userId}`,
+            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/updated-role/${userId}`,
             {
               method: "PATCH",
               headers: {
@@ -184,7 +184,7 @@ const UserTable: React.FC<UserTableProps> = ({ initialUsers, form }) => {
       if (result.isConfirmed)
         try {
           const response = await fetch(
-            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/user-delete/${userId}`,
+            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/delete/${userId}`,
             {
               method: "DELETE",
             },

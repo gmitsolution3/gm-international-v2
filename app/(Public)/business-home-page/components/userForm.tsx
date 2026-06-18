@@ -9,12 +9,12 @@ import { fbEvent } from "@/lib/fbPixel";
 export default function RegistrationForm({
   packageId,
   b2bid,
+  userEmail,
 }: {
   packageId: string;
   b2bid?: string;
+  userEmail: string;
 }) {
-  const { data: session } = useSession();
-
   const [formData, setFormData] = useState({
     country: "",
     companyName: "",
@@ -31,7 +31,7 @@ export default function RegistrationForm({
     passportFile: "",
     photo: "",
     createdAt: new Date(),
-    createdBy: session?.user?.email,
+    createdBy: userEmail,
     paymentStatus: "pending",
     applicationStatus: "pending",
     packageId: packageId,
@@ -39,8 +39,6 @@ export default function RegistrationForm({
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [uploaded, setUploaded] = useState(false);
-  const [cardUploaded, setCardUploaded] = useState(false);
   const [uploading, setUploading] = useState({
     passport: false,
     card: false,
@@ -119,7 +117,7 @@ export default function RegistrationForm({
     try {
       setIsSubmitting(true);
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-submit-form`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-application/api/v1/applied`,
         {
           method: "POST",
           headers: {
@@ -131,6 +129,9 @@ export default function RegistrationForm({
 
       const result = await res.json();
 
+      console.log({ formData });
+      console.log({ result });
+
       if (!result.success) {
         Swal.fire({
           title: "Something was wrong!! try again",
@@ -139,6 +140,7 @@ export default function RegistrationForm({
           showConfirmButton: false,
           timer: 2000,
         });
+        setIsSubmitting(false);
         return;
       }
 
@@ -183,7 +185,7 @@ export default function RegistrationForm({
       passportFile: "",
       photo: "",
       createdAt: new Date(),
-      createdBy: session?.user?.email,
+      createdBy: userEmail,
       paymentStatus: "pending",
       applicationStatus: "pending",
       packageId: packageId,

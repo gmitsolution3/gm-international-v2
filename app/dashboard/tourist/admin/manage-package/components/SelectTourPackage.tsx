@@ -9,7 +9,6 @@ import { MapIcon, SparklesIcon } from "lucide-react";
 import { BiGlobeAlt } from "react-icons/bi";
 import { PackageSkeletonLoader } from "./TouristPackageSkeletonLoader";
 
-
 const SelectTourPackage = ({
   initialPackages,
 }: {
@@ -23,12 +22,12 @@ const SelectTourPackage = ({
     setIsLoading(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/all/tourist-package/int-client`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/api/v1/get/all-packages/int-client`,
         { cache: "no-store" },
       );
       const result = await res.json();
       if (!res.ok) throw new Error("Something was wrong!!");
-      setAllPackages(result);
+      setAllPackages(result.data);
     } catch (error) {
       console.error("Failed to fetch international packages:", error);
     } finally {
@@ -36,16 +35,14 @@ const SelectTourPackage = ({
     }
   };
 
-
-   const handleTabChange = (international: boolean) => {
-     setIsInternational(international);
-     if (international) {
-       fetchesInternationalPackage();
-     } else {
-       setAllPackages(initialPackages); 
-     }
-   };
-  
+  const handleTabChange = (international: boolean) => {
+    setIsInternational(international);
+    if (international) {
+      fetchesInternationalPackage();
+    } else {
+      setAllPackages(initialPackages);
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -124,7 +121,7 @@ const SelectTourPackage = ({
         {/* Tab Indicator Line Animation */}
         <div className="mt-4">
           {isLoading ? (
-            <PackageSkeletonLoader/>
+            <PackageSkeletonLoader />
           ) : (
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
               {allPackages.length > 0 ? (

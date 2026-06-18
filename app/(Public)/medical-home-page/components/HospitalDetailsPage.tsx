@@ -93,7 +93,7 @@ const HospitalDetailsPage = ({
       setIsLoading(true);
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-hospital-review/${hospital._id}`,
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/hospital/reviews/${hospital._id}`,
         );
 
         const result = await res.json();

@@ -5,7 +5,6 @@ import { CheckIcon, PencilIcon, X } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 
-
 interface TouristAccount {
   _id: string;
   clientName: string;
@@ -116,7 +115,7 @@ const TouristAccountsTable = ({
 
       // API call to update tourist account
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/accounts/tap-update/${id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/account-tourist/api/v1/accounts/tap-update/${id}`,
         {
           method: "PUT",
           headers: {
@@ -126,7 +125,7 @@ const TouristAccountsTable = ({
         },
       );
 
-      const result = await response.json()
+      const result = await response.json();
 
       if (result.success) {
         // Update local state
@@ -137,10 +136,10 @@ const TouristAccountsTable = ({
         );
         setEditingId(null);
         setEditData({});
-        toast.success(result.message || "Document updated successfully")
+        toast.success(result.message || "Document updated successfully");
       } else {
         console.error("Failed to update tourist account");
-        toast.error(result.message || "Failed to update tourist account")
+        toast.error(result.message || "Failed to update tourist account");
       }
     } catch (error) {
       console.error("Error updating tourist account:", error);
@@ -155,26 +154,24 @@ const TouristAccountsTable = ({
     setEditData({});
   };
 
+  const handleInputChange = (
+    field: keyof TouristAccount,
+    value: string | number,
+  ) => {
+    setEditData((prev) => {
+      const updated = { ...prev, [field]: value };
 
+      // always recalculate when advance or total changes
+      if (field === "advance" || field === "totalAmount") {
+        const total = Number(updated.totalAmount || 0);
+        const advance = Number(updated.advance || 0);
 
-   const handleInputChange = (
-     field: keyof TouristAccount,
-     value: string | number,
-   ) => {
-     setEditData((prev) => {
-       const updated = { ...prev, [field]: value };
+        updated.due = total - advance >= 0 ? total - advance : 0;
+      }
 
-       // always recalculate when advance or total changes
-       if (field === "advance" || field === "totalAmount") {
-         const total = Number(updated.totalAmount || 0);
-         const advance = Number(updated.advance || 0);
-
-         updated.due = total - advance >= 0 ? total - advance : 0;
-       }
-
-       return updated;
-     });
-   };
+      return updated;
+    });
+  };
 
   // Handle coverage areas input (comma-separated)
   const handleCoverageAreasChange = (value: string) => {
@@ -237,7 +234,7 @@ const TouristAccountsTable = ({
               <th className="px-4 py-4 text-right text-sm font-semibold text-gray-900">
                 Due
               </th>
-              
+
               {isAdmin && (
                 <th className="px-4 py-4 text-center text-sm font-semibold text-gray-900">
                   Account Holder
@@ -467,7 +464,7 @@ const TouristAccountsTable = ({
                       </p>
                     )}
                   </td>
-                  
+
                   {isAdmin && (
                     <td className="px-4 py-4">
                       {account.accountHolder && (
@@ -539,7 +536,7 @@ const TouristAccountsTable = ({
               <td className="px-4 py-4 text-right text-sm text-red-700">
                 {formatCurrency(totals.totalDue)}
               </td>
-              
+
               {isAdmin && <td className="px-4 py-4"></td>}
               <td className="px-4 py-4"></td>
             </tr>
@@ -794,7 +791,6 @@ const TouristAccountsTable = ({
               </div>
 
               <div className="flex justify-between items-center pt-2 border-t border-gray-100">
-                
                 {isAdmin && account.accountHolder && (
                   <div className="text-right text-xs">
                     <p className="text-gray-500">
@@ -849,7 +845,6 @@ const TouristAccountsTable = ({
                 {formatCurrency(totals.totalDue)}
               </p>
             </div>
-            
           </div>
         </div>
       </div>

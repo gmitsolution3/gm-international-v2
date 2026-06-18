@@ -877,7 +877,7 @@ const B2BPackagesTable: React.FC<B2BPackagesTableProps> = ({
                 <div className="max-w-xs" title={pkg.p_title}>
                   <p className="font-medium truncate">{pkg.p_title}</p>
                   <p className="text-xs text-gray-500 mt-1 truncate">
-                    {pkg.country.join(", ")}
+                    {pkg?.country?.join(", ")}
                   </p>
                 </div>
               </td>

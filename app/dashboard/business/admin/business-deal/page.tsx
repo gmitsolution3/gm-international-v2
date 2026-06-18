@@ -7,12 +7,10 @@ import AdminDealTable from './components/AdminDealTable';
 const BusinessDeal = async() => {
     const businessDeal = await getAllBusinessDeal();
     
-
-
   return (
     <div>
       <div className="min-h-screen">
-        <AdminDealTable initialData={businessDeal} />
+        <AdminDealTable initialData={businessDeal.data} />
       </div>
     </div>
   );

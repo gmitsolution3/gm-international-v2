@@ -13,17 +13,8 @@ interface University {
   photo: string;
 }
 
-export default async function UniversitySection() {
-  const data = await fetch(
-    `${process.env.NEXT_EXPRESS_BASE_URL}/mange-university/admin`,
-    {
-      cache: "no-cache",
-    }
-  );
-
-  const universities = await data.json();
-  const displayedUniversities = universities.slice(0, 3);
-
+export default async function UniversitySection({ pkg }: { pkg: ScholarshipCardProps[]}) {
+  const displayedUniversities = pkg.slice(0, 3);
 
   return (
     <section className="w-full py-12 px-4 sm:px-6 lg:px-8">

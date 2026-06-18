@@ -29,10 +29,9 @@ import { getServerSession } from "next-auth";
 import Link from "next/link";
 import BusinessAccountsTable from "../components/BusinessAccountsTable";
 
-
 const fetchBusinessAccounts = async (email: string | undefined | null) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/account/business-application?email=${email}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-application/api/v1/account/business-application?email=${email}`,
     {
       cache: "no-store",
     },
@@ -43,12 +42,12 @@ const fetchBusinessAccounts = async (email: string | undefined | null) => {
 const BusinessAccountPage = async () => {
   const session = await getServerSession(authConfig);
   const response = await fetchBusinessAccounts(session?.user?.email);
-  
+
   // Handle both data structures
   let accountsData: any[] = [];
   let isAdmin = false;
   let userRole = "";
-  
+
   if (response?.data) {
     // Check if the response has adminAccount (admin view) or just array (non-admin view)
     if (response.data.adminAccount) {
@@ -66,7 +65,7 @@ const BusinessAccountPage = async () => {
       accountsData = response.data.result;
       // Check if any account has accountHolder to determine if admin
       const hasAccountHolder = accountsData.some(
-        (account: any) => account.accountHolder
+        (account: any) => account.accountHolder,
       );
       if (hasAccountHolder && accountsData[0]?.accountHolder) {
         isAdmin = true;
@@ -99,8 +98,8 @@ const BusinessAccountPage = async () => {
         </div>
 
         {/* Business Accounts Table */}
-        <BusinessAccountsTable 
-          data={accountsData} 
+        <BusinessAccountsTable
+          data={accountsData}
           isAdmin={isAdmin}
           userRole={userRole}
         />

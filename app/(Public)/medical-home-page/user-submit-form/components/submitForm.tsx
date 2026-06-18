@@ -49,13 +49,13 @@ interface FormData {
   passport_copy: string | null;
   destinationCountry: string;
   destinationCity: string;
-  payment: string;
+  paymentMethod: string;
   createdBy: string | null | undefined;
   createdAt: string | Date;
   paymentStatus: string;
   appointmentStatus: string;
   package_id: string | undefined;
-  b2bId?: string | undefined 
+  b2bId?: string | undefined;
 }
 
 interface SubmitStatus {
@@ -72,17 +72,20 @@ interface UploadStatus {
 export default function AppointmentForm({
   hospitals,
   b2bId,
+  userEmail,
 }: {
   hospitals: MedicalFormData;
-  b2bId?: string ;
+  b2bId?: string;
+  userEmail: string;
 }) {
-  const { data: session } = useSession();
+
 
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>({
     medical_report: false,
     recent_photo: false,
     passport_copy: false,
   });
+
 
   const [uploadingFor, setUploadingFor] = useState<string | null>(null);
   const [formData, setFormData] = useState<FormData>({
@@ -101,10 +104,10 @@ export default function AppointmentForm({
     medical_report: [],
     recent_photo: null,
     passport_copy: null,
-    payment: "",
+    paymentMethod: "",
     destinationCountry: hospitals.country_name,
     destinationCity: hospitals.city_name,
-    createdBy: session?.user?.email,
+    createdBy: userEmail,
     createdAt: new Date(),
     paymentStatus: "pending",
     appointmentStatus: "pending",
@@ -337,7 +340,7 @@ export default function AppointmentForm({
       "disease_duration",
       "contactNumber",
 
-      "payment",
+      "paymentMethod",
       "medical_report",
       "recent_photo",
       "passport_copy",
@@ -355,7 +358,7 @@ export default function AppointmentForm({
         type: "error",
         message: "Please fill all required fields and upload all documents",
       });
-
+      console.log("find all the missing", missingFields);
       toast.error(
         "Please complete all required fields and upload all documents",
       );
@@ -368,6 +371,7 @@ export default function AppointmentForm({
         type: "error",
         message: "Please enter a valid contact number",
       });
+      console.log("issue in phone");
       return;
     }
 
@@ -380,9 +384,11 @@ export default function AppointmentForm({
       return;
     }
 
+    console.log({ formData });
+
     try {
       const submitData = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical_appointment_form`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical-application/api/v1/create`,
         {
           method: "POST",
           headers: {
@@ -393,8 +399,9 @@ export default function AppointmentForm({
       );
 
       const isSubmitSuccess = await submitData.json();
+      console.log({ isSubmitSuccess });
 
-      if (!isSubmitSuccess || !isSubmitSuccess.insertedId) {
+      if (!isSubmitSuccess.success) {
         Swal.fire({
           title: isSubmitSuccess.message,
           text: "Please try again",
@@ -434,10 +441,10 @@ export default function AppointmentForm({
           medical_report: [],
           recent_photo: null,
           passport_copy: null,
-          payment: "",
+          paymentMethod: "",
           destinationCountry: hospitals.country_name,
           destinationCity: hospitals.city_name,
-          createdBy: session?.user?.email,
+          createdBy: userEmail,
           createdAt: new Date(),
           paymentStatus: "pending",
           appointmentStatus: "pending",
@@ -445,7 +452,7 @@ export default function AppointmentForm({
         });
         setSubmitStatus(null);
         router.push(
-          `/medical-home-page/payment?id=${isSubmitSuccess.insertedId}`,
+          `/medical-home-page/payment?id=${isSubmitSuccess.data._id}`,
         );
       }, 1000);
     } catch (error) {
@@ -935,8 +942,8 @@ export default function AppointmentForm({
                       <CreditCard className="w-6 h-6 text-white" />
                     </div>
                     <select
-                      name="payment"
-                      value={formData.payment}
+                      name="paymentMethod"
+                      value={formData.paymentMethod}
                       onChange={handleInputChange}
                       className="w-full pl-20 pr-4 py-3 rounded-full border-2 border-red-200 focus:border-red-600 focus:outline-none text-slate-700 transition-all duration-300 hover:border-red-400 shadow-sm appearance-none bg-white"
                     >

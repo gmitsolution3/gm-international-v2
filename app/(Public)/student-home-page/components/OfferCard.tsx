@@ -122,7 +122,7 @@ const OfferCard = ({ offer, form, b2bId, from }: OfferCardProps) => {
         </div>
         {b2bId ? (
           <Link
-            href={`/student-home-page/student-package-offer/${offer._id}?b2bId=${b2bId}&form=${form}`}
+            href={`/student-home-page/student-package/${offer._id}?b2bId=${b2bId}&form=${form}`}
           >
             <button
               // onClick={onApply}
@@ -134,7 +134,7 @@ const OfferCard = ({ offer, form, b2bId, from }: OfferCardProps) => {
             </button>
           </Link>
         ) : (
-          <Link href={`/student-home-page/student-package-offer/${offer._id}`}>
+          <Link href={`/student-home-page/student-package/${offer._id}`}>
             <button
               // onClick={onApply}
               className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-white text-sm font-semibold transition-all duration-300 hover:shadow-md transform hover:scale-105"

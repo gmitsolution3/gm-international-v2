@@ -11,7 +11,7 @@ type Payment = "Nagad" | "bKash" | "Bank";
 
 const appointmentFound = async (id: string) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-single-medical-appointment/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical-application/api/v1/get-single/${id}`,
     { cache: "no-store" },
   );
   if (!res.ok) {
@@ -37,7 +37,7 @@ const PaymentPage = async ({ searchParams }: PageProps) => {
     );
   }
 
-  const paymentMethod: Payment = result?.data?.payment;
+  const paymentMethod: Payment = result?.data?.paymentMethod;
 
   return (
     <PaymentClient

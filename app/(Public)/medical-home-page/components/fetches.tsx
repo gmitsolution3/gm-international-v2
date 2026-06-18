@@ -39,10 +39,10 @@ export const fetchMedicalPackageDetails = async (id: string) => {
 
 export const fetchMedicalList = async () => {
   const res = await fetch(
-    `${process.env.NEXT_EXPRESS_BASE_URL}/get-medical-list`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/medical-pkg/api/v1/get/home-medical-pkg`,
     {
       cache: "no-store",
-    }
+    },
   );
 
   return res.json();
@@ -50,18 +50,7 @@ export const fetchMedicalList = async () => {
 
 export const getAllMedicalData = async () => {
   const res = await fetch(
-    `${process.env.NEXT_EXPRESS_BASE_URL}/get-all-medical-list`,
-    {
-      cache: "no-store",
-    }
-  );
-  
-  return res.json();
-};
-
-export const getFilterInfo = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_EXPRESS_BASE_URL}/hospital-filters`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/medical-pkg/api/v1/get/all-medical-pkg`,
     {
       cache: "no-store",
     },
@@ -70,12 +59,22 @@ export const getFilterInfo = async () => {
   return res.json();
 };
 
-export const getMedicalDetails = async (id: string) => {
+export const getFilterInfo = async () => {
   const res = await fetch(
-    `${process.env.NEXT_EXPRESS_BASE_URL}/get-medical-details/${id}`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/medical-pkg/api/v1/hospital-filters`,
     {
       cache: "no-store",
-    }
+    },
+  );
+  return res.json();
+};
+
+export const getMedicalDetails = async (id: string) => {
+  const res = await fetch(
+    `${process.env.NEXT_EXPRESS_BASE_URL}/medical-pkg/api/v1/get/medical/${id}`,
+    {
+      cache: "no-store",
+    },
   );
 
   if (!res.ok) throw new Error("failed to fetch details medical list");

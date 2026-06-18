@@ -26,9 +26,7 @@ export default async function ServicePage({ params }: ServicePageProps) {
   const { service } = await params
 
   const session = await getServerSession(authConfig);
-
   const userEmail = session?.user?.email; 
-
   const serviceConfig = getServiceConfig(service);
 
   // If service not found, show 404

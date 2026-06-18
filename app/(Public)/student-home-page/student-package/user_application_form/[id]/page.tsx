@@ -18,7 +18,7 @@ const Application = async ({ params, searchParams }: ParamsProps) => {
   const session: any = await getServerSession(authConfig);
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/scholarship-package/api/v1/pkg-details/${id}`,
     {
       next: { revalidate: 300 },
     },
@@ -42,7 +42,7 @@ const Application = async ({ params, searchParams }: ParamsProps) => {
         }
       >
         <ScholarshipApplicationForm
-          packageData={result}
+          packageData={result.data}
           session={session}
           source={source}
         />

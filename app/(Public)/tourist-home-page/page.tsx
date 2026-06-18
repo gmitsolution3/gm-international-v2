@@ -18,13 +18,15 @@ export const metadata = generateSEO(
 
 const TouristHomePage = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/api/v1/get-home-page/pkg`,
     {
       cache: "no-store",
     },
   );
 
   const packageOfRes = await res.json();
+
+  console.log({findData: packageOfRes})
 
   const slides = [
     {
@@ -71,7 +73,7 @@ const TouristHomePage = async () => {
         />
       </div>
       <div>
-        <TouristHomePackages packages={packageOfRes} />
+        <TouristHomePackages packages={packageOfRes.data} />
         {/* View More Button */}
         <div className="flex justify-center mt-8">
           <Link href="/tourist-home-page/package">

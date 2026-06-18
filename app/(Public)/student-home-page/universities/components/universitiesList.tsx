@@ -4,22 +4,11 @@ import { useState, useEffect } from "react"
 import { UniversityCard } from "./universityCard"
 import { ScholarshipCardProps } from "../../components/OfferCard"
 
-interface University {
-  _id: string
-  country: string
-  university: string
-  studyLevel: string
-  universityUrl: string
-  introduction: string
-  photo: string
-}
-
 interface UniversitiesListProps {
   universities: ScholarshipCardProps[]
-  country: string;
 }
 
-export function UniversitiesList({ universities, country }: UniversitiesListProps) {
+export function UniversitiesList({ universities,  }: UniversitiesListProps) {
   const [visibleCards, setVisibleCards] = useState<number>(0)
 
   // Stagger animation for cards

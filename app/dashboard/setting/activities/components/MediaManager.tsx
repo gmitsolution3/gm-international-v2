@@ -114,7 +114,7 @@ const MediaManager: React.FC<MediaManagerProps> = ({
       };
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/activities/video`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/video-gallery/api/v1/create-video`,
         {
           method: "POST",
           headers: {
@@ -206,7 +206,7 @@ const MediaManager: React.FC<MediaManagerProps> = ({
 
       //  parallel upload
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/activities/gallery`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/image-gallery/api/v1/create/image-gallery`,
         {
           method: "POST",
           headers: {
@@ -216,10 +216,20 @@ const MediaManager: React.FC<MediaManagerProps> = ({
         },
       );
 
+      console.log({ uploadedImages });
+
       const result = await response.json();
 
-      // single state update (important for performance)
-      setGallery((prev) => [...prev, ...uploadedImages]);
+      console.log({ result });
+
+      if (result.success) {
+        // single state update (important for performance)
+        setGallery((prev) => [...prev, ...uploadedImages]);
+        toast.success("Image uploade successful");
+        return;
+      }
+
+      toast.error("Problem is: ", result.message);
     } catch (error) {
       console.error("Error uploading images:", error);
     } finally {
@@ -242,9 +252,8 @@ const MediaManager: React.FC<MediaManagerProps> = ({
     if (!itemToDelete) return;
 
     if (itemToDelete.type === "video") {
-
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/activities/single-delete-video/${itemToDelete.id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/video-gallery/api/v1/del-video/${itemToDelete.id}`,
         {
           method: "DELETE",
         },
@@ -264,7 +273,7 @@ const MediaManager: React.FC<MediaManagerProps> = ({
       toast.success(`${data.message}`);
     } else {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/activities/single-delete-gallery/${itemToDelete.id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/image-gallery/api/v1/del-single-image/${itemToDelete.id}`,
         {
           method: "DELETE",
         },
@@ -302,13 +311,16 @@ const MediaManager: React.FC<MediaManagerProps> = ({
     }).then(async (result) => {
       if (result.isConfirmed) {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/activities/bulk-delete-gallery`,
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/image-gallery/api/v1/del-images`,
           {
-            method: "POST",
+            method: "DELETE",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(selectedImages),
+            body: JSON.stringify({
+              ids: selectedImages,
+            }),
+            // body: JSON.stringify(selectedImages),
           },
         );
         const data = await res.json();

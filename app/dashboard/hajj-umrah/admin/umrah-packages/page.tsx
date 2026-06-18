@@ -5,7 +5,7 @@ import AllUmrahPackage from "../components/AllUmrahPackage";
 
 export const fetchAllUmrahPackage = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/get-all/umrah-packages`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/umrah/api/v1/get-all-pkg`,
     {
       method: "GET",
       headers: {

@@ -12,7 +12,7 @@ import TouristApplicationTable from "./components/applicationData";
 const ManageApplication = async () => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-tourist-booking-package`,
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-application/api/v1/get/all-applications`,
       {
         cache: "no-store",
       },

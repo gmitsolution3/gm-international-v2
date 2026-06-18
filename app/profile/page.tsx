@@ -24,7 +24,7 @@ export default async function ProfilePage({
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-red-300/10 rounded-full blur-3xl animate-float-slow"></div>
       </div>
       <div>
-        <MainProfile userProfleData={userProfleData} />
+        <MainProfile userProfleData={userProfleData.data} />
       </div>
     </main>
   );

@@ -25,6 +25,7 @@ const YoutubeVideoPlayer: React.FC<YoutubeVideoPlayerProps> = ({
 }) => {
   const embedUrl = getYoutubeEmbedUrl(url!);
 
+
   if (!embedUrl) {
     return <p className="text-red-500">Invalid YouTube URL</p>;
   }

@@ -16,10 +16,10 @@ export const getSubmitApplication = async (
 
 export const getAllBusinessApplication = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-business-all-applications`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-application/api/v1/get/all-application`,
     {
       cache: "no-store",
-    }
+    },
   );
 
   if (!res.ok) throw new Error("data not found");
@@ -29,10 +29,10 @@ export const getAllBusinessApplication = async () => {
 
 export const getAllBusinessDeal = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-business-deal`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-deal/api/v1/get/all-deals`,
     {
       cache: "no-store",
-    }
+    },
   ); 
 
   if (!res.ok) throw new Error("Data not found");
@@ -56,10 +56,10 @@ export const getUserBusinessDeal = async (email: string | null | undefined) => {
 
 export const getAllBusinessPackage = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-all-business-package`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-package/api/v1/get/all-packages`,
     {
       cache: "no-store",
-    }
+    },
   );
   if (!res.ok) throw new Error("Data not found");
 

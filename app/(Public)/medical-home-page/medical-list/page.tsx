@@ -21,14 +21,15 @@ const MedicalList = async ({
     getAllMedicalData(),
     getFilterInfo(),
   ]);
+  
 
   return (
     <div>
-      {getAllMedicalList?.length > 0 ? (
+      {getAllMedicalList.data?.length > 0 ? (
         <div>
           <ListCard
-            initialHospitals={getAllMedicalList}
-            totalCount={getAllMedicalList.totalCount}
+            initialHospitals={getAllMedicalList.data}
+            totalCount={getAllMedicalList.data.totalCount}
             filterInfo={filterInfo}
           />
         </div>

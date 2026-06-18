@@ -1,6 +1,8 @@
 import React from "react";
 import RegistrationForm from "../components/userForm";
 import generateSEO from "@/lib/seo";
+import { getServerSession } from "next-auth";
+import { authConfig } from "@/auth.config";
 
 type PageProps = {
   searchParams: {
@@ -16,6 +18,9 @@ export const metadata = generateSEO(
 
 const BusinessSubmitForm = async ({ searchParams }: PageProps) => {
   const { id, b2bid } = await searchParams;
+  const user =await getServerSession(authConfig)
+  console.log("user", user)
+  const userEmail = user?.user?.email
 
   if (!id) {
     return (
@@ -27,7 +32,7 @@ const BusinessSubmitForm = async ({ searchParams }: PageProps) => {
 
   return (
     <div>
-      <RegistrationForm packageId={id} b2bid={b2bid} />
+      <RegistrationForm packageId={id} b2bid={b2bid} userEmail={userEmail!}/>
     </div>
   );
 };

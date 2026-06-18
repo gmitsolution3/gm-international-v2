@@ -4,8 +4,8 @@ import { getAllB2BApplication } from '../components/fetch';
 
 const ManageApplication = async() => {
 
-  const data = await getAllB2BApplication();
-  
+  const {data} = await getAllB2BApplication();
+
 
   return (
     <div><ShowAllApplications data ={data}/></div>

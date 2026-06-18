@@ -93,7 +93,7 @@ interface PaymentFormProps {
   //   onSubmit: (data: FormData) => void;
   serviceConfig: ServiceConfig;
   service: string;
-  userEmail: string | null | undefined
+  userEmail: string | null | undefined;
 }
 
 const DealForm: React.FC<PaymentFormProps> = ({
@@ -235,12 +235,12 @@ const DealForm: React.FC<PaymentFormProps> = ({
       serviceTitle: serviceConfig.title,
       createdBy: userEmail,
       createdAt: new Date(),
-      applicationStatus: "pending"
+      applicationStatus: "pending",
     };
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/submit-business-deal`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-deal/api/v1/create`,
         {
           method: "POST",
           headers: {
@@ -249,6 +249,9 @@ const DealForm: React.FC<PaymentFormProps> = ({
           body: JSON.stringify(finalData),
         },
       );
+
+      const result = await response.json();
+      console.log({ result });
 
       if (response.ok) {
         Swal.fire({
@@ -268,11 +271,9 @@ const DealForm: React.FC<PaymentFormProps> = ({
     }
   };
 
-
   const prices = parsePricing(serviceConfig.title);
 
   const [before, after] = serviceConfig.title.split("-");
-
 
   return (
     <FormProvider {...methods}>

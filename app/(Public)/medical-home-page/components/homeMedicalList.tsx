@@ -6,7 +6,7 @@ import HospitalCard from "./HospitalCard";
 import { MedicalFormData } from "@/app/dashboard/medical/admin/manage-application-package/components/type/type";
 
 export default async function HomeMedicalList() {
-  const defaultHospitals: MedicalFormData[] = await fetchMedicalList();
+  const {data} = await fetchMedicalList();
 
   return (
     <div className="min-h-screen bg-linear-to-br from-pink-50 via-white to-pink-50 py-16 px-4">
@@ -25,13 +25,14 @@ export default async function HomeMedicalList() {
 
         {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-8">
-          
-          {defaultHospitals.length > 0 ? (
-            defaultHospitals.map((hospital, index) => (
-              <HospitalCard key={index} hospital={hospital} />
+          {data.length > 0 ? (
+            data.map((d: MedicalFormData) => (
+              <HospitalCard key={d._id} hospital={d} />
             ))
           ) : (
-            <div className="max-w-7xl mx-auto text-2xl text-red-700 font-bold">Package coming soon...</div>
+            <div className="max-w-7xl mx-auto text-2xl text-red-700 font-bold">
+              Package coming soon...
+            </div>
           )}
         </div>
 

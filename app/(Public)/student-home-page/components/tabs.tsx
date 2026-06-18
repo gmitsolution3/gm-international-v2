@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Search, MapPin, Globe, BookOpen } from "lucide-react";
-import { ScholarshipFilterResponse } from "../student-package-offer/components/scholarshipPackage";
+import { ScholarshipFilterResponse } from "../student-package/components/scholarshipPackage";
 import Link from "next/link";
 
 interface SearchFilters {

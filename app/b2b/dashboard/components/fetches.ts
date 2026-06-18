@@ -1,6 +1,6 @@
 export const getB2BScholarshipPackage = async (id: string) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-b2b-scholarship-package/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/std-pkg/api/v1/find-b2b-all-pkg`,
     {
       cache: "no-store",
     },
@@ -13,7 +13,7 @@ export const getB2BScholarshipPackage = async (id: string) => {
 
 export const getB2BTouristPackage = async (id: string) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-b2b-tourist-package-dashboard/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-pkg/api/v1/all-tourist-pkg`,
     {
       cache: "no-store",
     },
@@ -24,7 +24,7 @@ export const getB2BTouristPackage = async (id: string) => {
 
 export const getB2BDocumentCount = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b-documents-count`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b-user/api/v1/get-user-dashboard-stats`,
     {
       cache: "no-store",
     },

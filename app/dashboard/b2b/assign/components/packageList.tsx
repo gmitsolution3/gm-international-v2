@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
 import {
@@ -32,9 +32,6 @@ interface SelectedUniversities {
   packageId: string[];
   packageCount: number;
   createdAt: string;
-  // b2bUserId: string;
-  // b2bUserName: string;
-  // b2bUserEmail: string;
 }
 
 // Utility Functions
@@ -57,9 +54,9 @@ const formatCurrency = (amount: string): string => {
 // Main Component
 const UniversityApplications = ({
   universities,
- 
 }: {
-  universities: University[]}) => {
+  universities: University[];
+}) => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
@@ -84,9 +81,7 @@ const UniversityApplications = ({
       setTimeout(() => setMessage(""), 3000);
       return;
     }
-
     setLoading(true);
-
 
     const dataToSave: SelectedUniversities = {
       packageId: selectedIds,
@@ -95,7 +90,7 @@ const UniversityApplications = ({
     };
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b-student-package`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/std-pkg/api/v1/create`,
         {
           method: "POST",
           headers: {
@@ -105,15 +100,17 @@ const UniversityApplications = ({
         },
       );
 
-      if (!response.ok) {
+      const result = await response.json();
+      console.log({ dataToSave, result });
+      if (!result.success) {
         throw new Error("Failed to save selections");
       }
+      console.log({ dataToSave, result });
 
       setMessage(
         `✓ Successfully saved ${selectedIds.length} university selection(s)`,
       );
-      toast.success(`${dataToSave.packageCount} assign to b2b user`)
-
+      toast.success(`${dataToSave.packageCount} assign to b2b user`);
     } catch (error) {
       setMessage("Error saving to database. Check console for details.");
       console.error("Error:", error);

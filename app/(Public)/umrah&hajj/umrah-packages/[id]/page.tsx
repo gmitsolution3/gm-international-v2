@@ -3,7 +3,7 @@ import UmrahPackageDetailsCom from "../../components/UmrahPackageDetailsCom";
 
 export const getUmrahDataBySlug = async (id: string) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/umrah-package/details/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/umrah/api/v1/get-single-pkg/${id}`,
     {
       method: "GET",
       headers: {
@@ -12,14 +12,12 @@ export const getUmrahDataBySlug = async (id: string) => {
       cache: "no-store",
     },
   );
-  const data = await res.json();
-  return data;
+  return await res.json();
 };
 
 const UmrahPackageDetails = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
   const pkgDetails = await getUmrahDataBySlug(id);
-
 
   return (
     <div>

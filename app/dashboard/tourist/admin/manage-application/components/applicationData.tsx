@@ -19,7 +19,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { ITouristBooking } from "@/app/types/touristBooking";
-
+import { toast } from "sonner";
 
 interface TouristApplicationTableProps {
   initialPackages: ITouristBooking[];
@@ -148,7 +148,7 @@ const TouristApplicationTable: React.FC<TouristApplicationTableProps> = ({
     setIsDeleting(true);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/delete-tourist-booking/${deleteModal.id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-application/api/v1/delete/${deleteModal.id}`,
         {
           method: "DELETE",
         },
@@ -157,8 +157,9 @@ const TouristApplicationTable: React.FC<TouristApplicationTableProps> = ({
 
       if (data.success) {
         setPackages((prev) => prev.filter((pkg) => pkg._id !== deleteModal.id));
-        showNotification("Application deleted successfully!", "success");
+        // showNotification("Application deleted successfully!", "success");
         setDeleteModal({ show: false, id: null, name: "" });
+        toast.success("Application deleted successfully")
       } else {
         throw new Error(data.message || "Failed to delete");
       }
@@ -174,11 +175,11 @@ const TouristApplicationTable: React.FC<TouristApplicationTableProps> = ({
 
   // Handle actions
   const handleView = (id: string) => {
-    router.push(`/dashboard/tourist/admin/manage-application/view/${id}`);
+    router.push(`/dashboard/tourist/${id}/view`);
   };
 
   const handleEdit = (id: string) => {
-    router.push(`/dashboard/tourist/admin/manage-application/edit/${id}`);
+    router.push(`/dashboard/tourist/${id}/edit`);
   };
 
   // Format date

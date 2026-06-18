@@ -6,7 +6,7 @@ import MediaManager from "./components/MediaManager";
 const getActivities = async () => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/media-activities/dashboard`,
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/image-gallery/api/v1/get-media-activities`,
       { cache: "no-store" },
     );
 

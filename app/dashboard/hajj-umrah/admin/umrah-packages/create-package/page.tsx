@@ -11,7 +11,7 @@ export default function CreatePackagePage() {
   const handleSubmit = async (data: any) => {
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/create-hajj-package`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/umrah/api/v1/create-pkg`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

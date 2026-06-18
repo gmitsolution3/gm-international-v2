@@ -142,18 +142,21 @@ const B2BStep2 = ({ onPrevious }: Step2Props) => {
     };
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b-application-submit`,
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b-applications/api/v1/create`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(fullData),
-      }
+      },
     );
 
     const result = await res.json();
-    if (result.insertedId) {
+
+    console.log({result, fullData})
+
+    if (result.data) {
       Swal.fire({
         icon: "success",
         title: "Application Submitted",

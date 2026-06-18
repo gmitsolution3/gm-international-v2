@@ -10,7 +10,7 @@ export const metadata = generateSEO(
 
 const InternationalPackage = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-all-international-tourist-package`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/api/v1/get/all-packages/int-client`,
     {
       next: { revalidate: 300 },
     },
@@ -34,7 +34,7 @@ const InternationalPackage = async () => {
       </div>
       <div className="flex max-w-full w-full justify-center gap-10">
         <div>
-          <TouristHomePackages packages={result} />
+          <TouristHomePackages packages={result.data} />
         </div>
       </div>
     </div>

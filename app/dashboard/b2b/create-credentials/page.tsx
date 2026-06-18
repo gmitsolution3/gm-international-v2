@@ -50,7 +50,7 @@ const CreateCredential = () => {
   useEffect(() => {
     setIsLoading(true);
     const getApplications = async () => {
-      const data = await getAllB2BApplication();
+      const {data} = await getAllB2BApplication();
       setApplications(data);
     };
     getApplications();

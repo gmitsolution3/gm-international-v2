@@ -15,13 +15,18 @@ export default async function OfferDetailsPage({
   const { form, b2bId } = await searchParams;
   const source = { form, b2bId };
 
-
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/scholarship-package/api/v1/pkg-details/${id}`,
     {
       cache: "no-store",
     },
   );
+  // const res = await fetch(
+  //   `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management/${id}`,
+  //   {
+  //     cache: "no-store",
+  //   },
+  // );
 
   const packageDetails = await res.json();
 
@@ -36,11 +41,10 @@ export default async function OfferDetailsPage({
     thumbnail,
     applicationFee,
     description,
-    universityDescription,
     serviceFee,
     universityName,
     universityURL,
-  } = packageDetails;
+  } = packageDetails.data;
 
   return (
     <div className="min-h-screen bg-background">
@@ -89,7 +93,7 @@ export default async function OfferDetailsPage({
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <OfferSidebar packageSidebarInfo={packageDetails} source={source} />
+            <OfferSidebar packageSidebarInfo={packageDetails.data} source={source} />
           </div>
         </div>
       </div>

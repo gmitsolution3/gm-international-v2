@@ -11,7 +11,7 @@ export const metadata = generateSEO(
 
 const InternationalTourist = async () => {
   const res = await fetch(
-    `${process.env.NEXT_EXPRESS_BASE_URL}/get-international-tourist-package`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/tourist-package/api/v1/get/all-packages/int-client-home`,
     {
       cache: "no-store",
     },
@@ -102,7 +102,7 @@ const InternationalTourist = async () => {
           from={from}
         />
       </div>
-      {result.length === 0 ? (
+      {result.data.length === 0 ? (
         <div className="min-h-[60vh] flex items-center justify-center px-4">
           <div className="border rounded-2xl p-8 text-center shadow-sm bg-white max-w-md w-full">
             <h2 className="text-2xl font-bold text-gray-800">
@@ -110,14 +110,14 @@ const InternationalTourist = async () => {
             </h2>
 
             <p className="mt-3 text-gray-500">
-              There is currently no information to display. Please try again 
+              There is currently no information to display. Please try again
               later.
             </p>
           </div>
         </div>
       ) : (
         <div>
-          <TouristHomePackages packages={result} />
+          <TouristHomePackages packages={result.data} />
           <div className="flex justify-center">
             <Link href="/international-tourist/international-tourist-package">
               <Button className="bg-red-600 hover:bg-red-700 text-white rounded-full px-6 py-2 md:px-8 md:py-3 font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95">

@@ -3,7 +3,7 @@ import VisaPackages from "../components/VisaPackages";
 
 const VisaRate = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b/get-visa-rate`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/visa-rate/api/v1/get-all`,
     {
       cache: "no-cache",
     },

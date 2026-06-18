@@ -8,7 +8,7 @@ export default function TeamPage() {
   const handleSubmit = async (data: any) => {
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/create-team-member`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/about-team/api/v1/create-team-member`,
         {
           method: "POST",
           headers: {
@@ -18,8 +18,10 @@ export default function TeamPage() {
         },
       );
 
+      console.log({data})
       const result = await res.json();
 
+      console.log({result})
 
       if (result.success) {
         toast.success("Team member saved successfully!");

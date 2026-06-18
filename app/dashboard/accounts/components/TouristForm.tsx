@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { toast } from "sonner";
@@ -95,6 +96,7 @@ export default function TouristForm({
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "loading" | "success"
   >("idle");
+  const router = useRouter();
 
   const {
     register,
@@ -126,12 +128,11 @@ export default function TouristForm({
       coverageAreas: data.coverageAreas.map((a) => a.value).filter(Boolean),
       due,
       submittedBy: email,
-      createdAt: new Date().toISOString(),
     };
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/accounts/tourist-application`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/account-tourist/api/v1/accounts/tourist-application`,
         {
           method: "POST",
           headers: {
@@ -141,9 +142,9 @@ export default function TouristForm({
         },
       );
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      // if (!response.ok) {
+      //   throw new Error(`HTTP error! status: ${response.status}`);
+      // }
 
       const result = await response.json();
 
@@ -154,6 +155,7 @@ export default function TouristForm({
         setSubmitStatus("success");
         setSubmitStatus("idle");
         reset();
+        router.push("/dashboard/accounts/tourist");
         return;
       }
 

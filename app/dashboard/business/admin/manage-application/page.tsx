@@ -9,7 +9,7 @@ const MangeBusinessApplications = async () => {
 
   return (
     <div>
-      <ShowAllBusinessApplications initialData={userApplication} />
+      <ShowAllBusinessApplications initialData={userApplication.data} />
     </div>
   );
 };

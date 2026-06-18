@@ -125,6 +125,30 @@ body {
   overflow-y: scroll;
 } */
 
+@keyframes bounce {
+  0%,
+  80%,
+  100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1.4s infinite ease-in-out both;
+}
+
+/* Optional: Different colored typing indicator */
+.typing-indicator-admin {
+  background: linear-gradient(to right, #1f2937, #dc2626);
+}
+
+.typing-indicator-user {
+  background: #e5e7eb;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -847,7 +871,6 @@ select {
   }
 }
 
-
 @keyframes zoom-in-95 {
   from {
     opacity: 0;
@@ -912,6 +935,3 @@ select {
 ::-webkit-scrollbar {
   width: 6px;
 }
-
-
-

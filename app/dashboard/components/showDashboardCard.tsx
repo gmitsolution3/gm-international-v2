@@ -244,6 +244,7 @@ const MainDashboard: React.FC = () => {
   const { userRole, loading } = useUserRole();
   const [services, setServices] = useState<ServiceCardProps[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  
 
   React.useEffect(() => {
     if (!userRole) return;

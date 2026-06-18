@@ -16,7 +16,6 @@ import PaymentStep from "./PaymentStep";
 import Swal from "sweetalert2";
 import ApplicationSuccess from "./ApplicationSuccessMessage";
 
-
 const steps = [
   "Applicant Info",
   "Travel Info",
@@ -127,7 +126,7 @@ const UmrahHajjApplicationForm = ({ pkg }: UmrahPackageDetailsComProps) => {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/v1/booked-umrah-package`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/umrah-application/api/v1/create`,
         {
           method: "POST",
           headers: {
@@ -139,7 +138,7 @@ const UmrahHajjApplicationForm = ({ pkg }: UmrahPackageDetailsComProps) => {
 
       const result = await res.json();
 
-      if (!result.success) {
+      if (!result._id) {
         Swal.fire({
           icon: "error",
           title: "Submission Failed",
@@ -152,15 +151,15 @@ const UmrahHajjApplicationForm = ({ pkg }: UmrahPackageDetailsComProps) => {
       }
 
       setIsSubmitted(true);
-      setApplicationId(result.data.insertedId);
-      setCurrentStep(7); 
+      setApplicationId(result._id);
+      setCurrentStep(7);
 
       Swal.fire({
         icon: "success",
         title: "Application Submitted",
         text:
           "Your application has been submitted successfully! Application ID: " +
-          result.data.insertedId,
+          result._id,
       });
     } catch (err: any) {
       Swal.fire({
@@ -172,7 +171,6 @@ const UmrahHajjApplicationForm = ({ pkg }: UmrahPackageDetailsComProps) => {
       setIsLoading(false);
     }
 
-    
     // Handle form submission
   };
 
@@ -209,7 +207,6 @@ const UmrahHajjApplicationForm = ({ pkg }: UmrahPackageDetailsComProps) => {
     }
   };
 
-
   const successProps = {
     applicationId,
     packageName: pkg.title,
@@ -221,7 +218,6 @@ const UmrahHajjApplicationForm = ({ pkg }: UmrahPackageDetailsComProps) => {
       returnDate: pkg.return_date,
     },
   };
-
 
   const renderStep = () => {
     switch (currentStep) {
@@ -240,13 +236,7 @@ const UmrahHajjApplicationForm = ({ pkg }: UmrahPackageDetailsComProps) => {
       case 6:
         return <PaymentStep packagePrice={pkg.discount_price || pkg.price} />;
       case 7:
-        return (
-          isSubmitted && (
-            <ApplicationSuccess
-              {...successProps}
-            />
-          )
-        );
+        return isSubmitted && <ApplicationSuccess {...successProps} />;
       default:
         return null;
     }

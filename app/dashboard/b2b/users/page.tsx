@@ -4,8 +4,8 @@ import UsersTable from "../components/usersTable";
 import { Users } from "lucide-react";
 
 const B2BUsers = async () => {
-  const users = await getAllB2BUsers();
-  
+  const {data} = await getAllB2BUsers();
+
 
   return (
     <div>
@@ -16,10 +16,10 @@ const B2BUsers = async () => {
             User Data Table
           </h1>
         </div>
-        <p className="text-red-700">Total Users: {users.length}</p>
+        <p className="text-red-700">Total Users: {data.length}</p>
       </div>
       <div>
-        <UsersTable allUsers={users}/>
+        <UsersTable allUsers={data} />
       </div>
     </div>
   );

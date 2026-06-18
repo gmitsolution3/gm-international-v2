@@ -11,7 +11,7 @@ export default async function DetailsPage({ params, searchParams }: Params) {
   const source = { form, b2bId };
 
   const data = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/manage-university/details/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/scholarship-package/api/v1/pkg-details/${id}`,
     {
       cache: "no-store",
     },
@@ -19,6 +19,6 @@ export default async function DetailsPage({ params, searchParams }: Params) {
   const universityDetails = await data.json();
 
   return (
-    <UniversityDetailsPage university={universityDetails} source={source} />
+    <UniversityDetailsPage university={universityDetails.data} source={source} />
   );
 }

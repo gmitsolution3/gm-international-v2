@@ -12,9 +12,12 @@ const B2BTouristPackage = async () => {
 
   return (
     <div className="px-4 py-12 sm:px-6 md:px-8 lg:px-12 bg-background">
-      {data.data.length > 0 ? (
+      {data.data.packageIds.length > 0 ? (
         <div className="max-w-7xl mx-auto">
-          <TouristHomePackages packages={data.data} source={source} />
+          <TouristHomePackages
+            packages={data.data.packageIds}
+            source={source}
+          />
         </div>
       ) : (
         <div>No data found in db</div>
@@ -24,4 +27,3 @@ const B2BTouristPackage = async () => {
 };
 
 export default B2BTouristPackage;
- 

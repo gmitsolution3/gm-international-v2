@@ -1,5 +1,6 @@
 {
   "cSpell.words": [
+    "Appli",
     "bkash",
     "BRAC",
     "CSCA",
@@ -15,5 +16,25 @@
     "universitys",
     "uploade"
   ],
-  "cSpell.ignoreWords": ["umrah"]
+  "cSpell.ignoreWords": ["umrah"],
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#446c86",
+    "activityBar.background": "#446c86",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#552b44",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#446c86",
+    "statusBar.background": "#335164",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#446c86",
+    "statusBarItem.remoteBackground": "#335164",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#335164",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#33516499",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.color": "#335164"
 }

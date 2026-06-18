@@ -30,7 +30,7 @@ export default async function DashboardLayout({
       {
         label: "Dashboard",
         icon: <LayoutDashboard />,
-        href: "/dashboard/hajj-umrah",
+        href: `/dashboard/hajj-umrah/${user.userRole}`,
       },
       {
         label: "Umrah Package",
@@ -50,7 +50,7 @@ export default async function DashboardLayout({
       {
         label: "Dashboard",
         icon: <LayoutDashboard />,
-        href: "/dashboard/hajj-umrah",
+        href: `/dashboard/hajj-umrah/${user.userRole}`,
       },
       {
         label: "Booked Package",

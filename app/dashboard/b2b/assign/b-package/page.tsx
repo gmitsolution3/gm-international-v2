@@ -3,15 +3,12 @@ import CantonFairPackageManager from "../components/CantonFairPackageManager";
 
 const AssignBusinessPackage = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b/get-business-package`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-package/api/v1/get/b2b-business-packages`,
     {
       cache: "no-cache",
     },
   );
-
   const result = await res.json();
-
-
 
   return (
     <div>

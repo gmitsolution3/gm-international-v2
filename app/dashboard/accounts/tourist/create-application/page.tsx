@@ -5,9 +5,7 @@ import { authConfig } from "@/auth.config";
 
 const TouristApplication = async() => {
     const session = await getServerSession(authConfig)
-
     const email = session?.user?.email
-
     
   return (
     <div>

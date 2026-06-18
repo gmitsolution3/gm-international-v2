@@ -26,6 +26,7 @@ import {
   Package,
   Ticket,
 } from "lucide-react";
+import { toast } from "sonner";
 
 // Types based on your data structure
 interface IncludeExcludeItem {
@@ -140,28 +141,35 @@ const AllUmrahPackage = ({ packages, userRole }: AllUmrahPackageProps) => {
   };
 
   const handleDeleteConfirm = async () => {
-    if (!packageToDelete) return;
+    console.log("before return");
+    if (!packageToDelete?._id) return;
+
+    console.log("pack", packageToDelete);
 
     setIsDeleting(true);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/delete/umrah-package/${packageToDelete._id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/umrah/api/v1/del-pkg/${packageToDelete._id}`,
         {
           method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          // headers: {
+          //   "Content-Type": "application/json",
+          // },
         },
       );
 
-      if (response.ok) {
-        window.location.reload();
+      const result = await response.json();
+
+      if (result.success) {
+        toast.success("Pkg deleted successful");
+        // window.location.reload();
+        router.refresh();
       } else {
         throw new Error("Failed to delete package");
       }
     } catch (error) {
       console.error("Error deleting package:", error);
-      alert("Failed to delete package. Please try again.");
+      toast.error("Failed to delete package. Please try again.");
     } finally {
       setIsDeleting(false);
       setIsDeleteModalOpen(false);
@@ -651,14 +659,14 @@ const AllUmrahPackage = ({ packages, userRole }: AllUmrahPackageProps) => {
 
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && packageToDelete && (
-        <div className="fixed inset-0 z-50 overflow-y-auto">
+        <div className="fixed inset-0 z-40 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
             <div
-              className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
+              className="fixed bg-black/50"
               onClick={() => setIsDeleteModalOpen(false)}
             ></div>
 
-            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div className="inline-block z-50 align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
               <div className="bg-red-50 px-6 py-4">
                 <div className="flex items-center gap-3">
                   <div className="shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
@@ -692,7 +700,11 @@ const AllUmrahPackage = ({ packages, userRole }: AllUmrahPackageProps) => {
                   Cancel
                 </button>
                 <button
-                  onClick={handleDeleteConfirm}
+                  // onClick={handleDeleteConfirm}
+                  onClick={() => {
+                    console.log("DELETE BUTTON CLICKED");
+                    handleDeleteConfirm();
+                  }}
                   className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center gap-2"
                   disabled={isDeleting}
                 >

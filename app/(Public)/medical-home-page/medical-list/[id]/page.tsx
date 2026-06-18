@@ -15,16 +15,17 @@ const MedicalDetails = async ({
 }: MedicalDetailsParams) => {
   const { id } = await params;
   const { b2bId } = await searchParams;
-  const data = await getMedicalDetails(id);
-  const session = await getServerSession(authConfig);
 
-
+  const [result, session] = await Promise.all([
+    getMedicalDetails(id),
+    getServerSession(authConfig),
+  ]);
 
   return (
     <div className="lg:p-8">
       <div>
         <HospitalDetailsPage
-          hospital={data}
+          hospital={result.data}
           session={session?.user}
           b2bId={b2bId}
         />

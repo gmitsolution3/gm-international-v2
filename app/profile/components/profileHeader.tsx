@@ -12,6 +12,8 @@ interface User {
 export function ProfileHeader({ user, onEditClick }: { user: User; onEditClick: () => void }) {
   const [isVisible, setIsVisible] = useState(false);
 
+
+
   useEffect(() => {
     setIsVisible(true);
   }, []);
@@ -36,8 +38,8 @@ export function ProfileHeader({ user, onEditClick }: { user: User; onEditClick: 
           >
             <div className="absolute inset-0 bg-white rounded-full p-1 shadow-2xl">
               <img
-                src={user.avatar || "/placeholder.svg"}
-                alt={user.username}
+                src={user?.avatar || "/placeholder.svg"}
+                alt={user?.username}
                 className="w-full h-full rounded-full object-cover"
               />
             </div>
@@ -55,7 +57,7 @@ export function ProfileHeader({ user, onEditClick }: { user: User; onEditClick: 
           }`}
         >
           <h1 className="text-5xl sm:text-6xl font-bold text-white mb-3 drop-shadow-lg">
-            {user.username}
+            {user?.username}
           </h1>
           <p className="text-xl sm:text-2xl text-red-100 font-medium drop-shadow-md">
             {user.userRole.charAt(0).toUpperCase() + user.userRole.slice(1)}

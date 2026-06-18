@@ -982,6 +982,8 @@ const StudentDashboardStats: React.FC<StudentDashboardStatsProps> = ({
     monthlyTrend,
   } = data;
 
+  console.log({data})
+
   // Prepare chart data
   const applicationStatusData = [
     { name: "Approved", value: documentCount.totalApproved },

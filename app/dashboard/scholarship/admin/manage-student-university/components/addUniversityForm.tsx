@@ -2,7 +2,7 @@
 
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { Loader2, Plus, Upload } from "lucide-react";
-import Dropdown from "@/app/(Public)/student-home-page/student-package-offer/[id]/user-application-form/components/dropDown";
+import Dropdown from "@/app/(Public)/student-home-page/student-package/[id]/user-application-form/components/dropDown";
 import Swal from "sweetalert2";
 
 interface FormData {

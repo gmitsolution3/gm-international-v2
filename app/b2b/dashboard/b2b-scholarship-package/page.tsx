@@ -15,6 +15,8 @@ const B2BScholarshipPackage = async () => {
 
   const data = await getB2BScholarshipPackage(userId);
 
+  console.log({ data: data?.data?.packageId });
+
   if (!data.success) {
     return <div>No Data found</div>;
   }
@@ -42,7 +44,7 @@ const B2BScholarshipPackage = async () => {
       </div>
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-10">
-          {data.data.packageInfo.map(
+          {data.data.packageId.map(
             (offer: ScholarshipCardProps, index: number) => (
               <OfferCard
                 key={index}

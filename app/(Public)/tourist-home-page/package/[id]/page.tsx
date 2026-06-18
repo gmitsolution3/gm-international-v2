@@ -12,17 +12,16 @@ export default async function TouristPackageDetails({ params, searchParams }: Pa
   const { id } = await params;
   const { form, b2bId } = await searchParams;
   const source = { form, b2bId };
-
-
-
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/details/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/api/v1/get/single-package/${id}`,
     { next: { revalidate: 300 } },
   );
 
   const resOfResult = await res.json();
 
+  console.log({resOfResult})
 
 
-  return <PackageDetails packageData={resOfResult} source={source} />;
+
+  return <PackageDetails packageData={resOfResult.data} source={source} />;
 }

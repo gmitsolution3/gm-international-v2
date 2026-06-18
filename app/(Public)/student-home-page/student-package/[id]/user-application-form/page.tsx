@@ -201,7 +201,7 @@ export default function AdmissionForm() {
       createdBy: session?.user?.email,
     });
     setUploaded(false);
-    router.push(`/student-home-page/student-package-offer/${id}`);
+    router.push(`/student-home-page/student-package/${id}`);
   };
 
   return (

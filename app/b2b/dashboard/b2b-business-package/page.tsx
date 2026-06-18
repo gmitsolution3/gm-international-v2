@@ -8,28 +8,27 @@ const B2BBusinessPackage = async () => {
 
   const id = (session?.user as any).id;
 
- 
-
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b/get-b2b-business-package/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b/business-pkg/api/v1/get-all-pkg`,
     { cache: "no-cache" },
   );
 
   const result = await res.json();
 
- 
   return (
     <div>
       <div>
         <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
           Canton Fair Packages
         </h1>
-        <p className="text-sm text-gray-600 mt-1">
-          Choice your package
-        </p>
+        <p className="text-sm text-gray-600 mt-1">Choice your package</p>
       </div>
       <div>
-        <ShowHomePackage packages={result.data} from={"b2b"} id={id}/>
+        <ShowHomePackage
+          packages={result.data.packageIds}
+          from={"b2b"}
+          id={id}
+        />
       </div>
     </div>
   );

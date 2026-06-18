@@ -3,7 +3,7 @@ import B2BPartner from "../components/B2BPartnar";
 
 const b2bPartner = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/b2b-partner`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b-user/api/v1/find-all`,
     {
       cache: "no-cache",
     },

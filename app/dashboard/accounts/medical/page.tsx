@@ -7,7 +7,7 @@ import MedicalAccountsTable from "../components/MedicalAccountsTable";
 
 const fetchMedicalAccounts = async (email: string | undefined | null) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/account/medical-application?email=${email}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/med-account/api/v1/get-med?email=${email}`,
     {
       cache: "no-store",
       credentials: "include",
@@ -19,6 +19,8 @@ const fetchMedicalAccounts = async (email: string | undefined | null) => {
 const MedicalAccountPage = async () => {
   const session = await getServerSession(authConfig);
   const response = await fetchMedicalAccounts(session?.user?.email);
+
+  console.log({response})
   
   // Handle both data structures
   let accountsData: any[] = [];

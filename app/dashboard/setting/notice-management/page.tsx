@@ -5,7 +5,7 @@ import ManagedNotice from "./components/ManagedNotice";
 
 const AddAttributes = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/get-notice`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/notice-management/api/v1/get/all-notice`,
     {
       cache: "no-store",
     },

@@ -7,7 +7,7 @@ import Loading from "./loading";
 const getUmrahHajj = async () => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/v1/get-all-booked-umrah-application`,
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/umrah-application/api/v1/get-all-application`,
       {
         cache: "no-store",
       },
@@ -17,8 +17,7 @@ const getUmrahHajj = async () => {
       throw new Error(`HTTP error! status: ${res.status}`);
     }
 
-    const data = await res.json();
-    return data;
+    return await res.json();
   } catch (error) {
     console.error("Failed to fetch applications:", error);
     return {
@@ -31,6 +30,8 @@ const getUmrahHajj = async () => {
 
 const UmrahHajjApplicationsPage = async () => {
   const umrahHajjData = await getUmrahHajj();
+
+  console.log({umrahHajjData})
 
   return (
     <div className="min-h-screen">

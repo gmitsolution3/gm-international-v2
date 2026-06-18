@@ -67,10 +67,10 @@ const PackageDetails = ({ packageData, source }: PackageDetailsProps) => {
       try {
         setLoadingSimilar(true);
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package`,
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/api/v1/get-home-page/pkg`,
         );
         const data = await response.json();
-        setSimilarPackages(data || []);
+        setSimilarPackages(data.data || []);
       } catch (error) {
         console.error("Error fetching similar packages:", error);
         setSimilarPackages([]);

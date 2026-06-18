@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -93,6 +94,7 @@ export default function BusinessForm({
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "loading" | "success"
   >("idle");
+  const router = useRouter();
 
   const {
     register,
@@ -112,12 +114,11 @@ export default function BusinessForm({
       ...data,
       due,
       submittedBy: email,
-      createdAt: new Date().toISOString(),
     };
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/accounts/business-application`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-application/api/v1/accounts/business-application`,
         {
           method: "POST",
           headers: {
@@ -133,6 +134,8 @@ export default function BusinessForm({
 
       const result = await response.json();
 
+      console.log({ result });
+
       if (result.success) {
         toast.success(
           result.message || "Patient record submitted successfully!",
@@ -140,6 +143,7 @@ export default function BusinessForm({
         setSubmitStatus("success");
         setSubmitStatus("idle");
         reset();
+        router.push("/dashboard/accounts/business");
         return;
       }
 

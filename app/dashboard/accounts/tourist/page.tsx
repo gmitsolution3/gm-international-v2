@@ -31,7 +31,6 @@
 
 // export default TouristAccountPage
 
-
 // app/dashboard/accounts/tourist/page.tsx
 import { authConfig } from "@/auth.config";
 import { getServerSession } from "next-auth";
@@ -40,10 +39,10 @@ import TouristAccountsTable from "../components/TouristAccountsTable";
 
 const fetchTouristAccounts = async (email: string | undefined | null) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/account/tourist-application?email=${email}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/account-tourist/api/v1/account/tourist-application?email=${email}`,
     {
       cache: "no-store",
-    }
+    },
   );
   return res.json();
 };
@@ -51,12 +50,12 @@ const fetchTouristAccounts = async (email: string | undefined | null) => {
 const TouristAccountPage = async () => {
   const session = await getServerSession(authConfig);
   const response = await fetchTouristAccounts(session?.user?.email);
-  
+
   // Handle both data structures
   let accountsData: any[] = [];
   let isAdmin = false;
   let userRole = "";
-  
+
   if (response?.data) {
     // Check if the response has adminAccount (admin view) or just array (non-admin view)
     if (response.data.adminAccount) {
@@ -74,7 +73,7 @@ const TouristAccountPage = async () => {
       accountsData = response.data.result;
       // Check if any account has accountHolder to determine if admin
       const hasAccountHolder = accountsData.some(
-        (account: any) => account.accountHolder
+        (account: any) => account.accountHolder,
       );
       if (hasAccountHolder && accountsData[0]?.accountHolder) {
         isAdmin = true;
@@ -107,8 +106,8 @@ const TouristAccountPage = async () => {
         </div>
 
         {/* Tourist Accounts Table */}
-        <TouristAccountsTable 
-          data={accountsData} 
+        <TouristAccountsTable
+          data={accountsData}
           isAdmin={isAdmin}
           userRole={userRole}
         />

@@ -13,84 +13,6 @@ import bcrypt from "bcrypt";
 
 export const authConfig: NextAuthOptions = {
   providers: [
-    // Credentials({
-    //   credentials: {
-    //     email: { label: "Email", type: "text", placeholder: "you@example.com" },
-    //     profile_id: { label: "profile_id", type: "text", placeholder: "Enter b2b-profile-id" },
-    //     password: { label: "Password", type: "password" },
-    //   },
-    //   async authorize(credentials, req) {
-    //     if (!credentials?.email || !credentials.password) {
-    //       return null;
-    //     }
-
-    //     await connectDB();
-    //     const user = await findUserByEmail(credentials.email);
-
-    //      if (user && user.password) {
-    //        const passwordMatch = await bcrypt.compare(
-    //          credentials.password,
-    //          user.password
-    //        );
-
-    //        if (!passwordMatch) return null;
-
-    //        return {
-    //          id: user._id.toString(),
-    //          email: user.email,
-    //          name: user.username,
-    //          username: user.username,
-    //          phone: user.phone,
-    //          userRole: user.userRole, // "user"
-    //          source: "users",
-    //        } as any;
-    //      }
-
-    //     // if (user && user.password) {
-    //     //   const passwordMatch = await bcrypt.compare(
-    //     //     credentials.password,
-    //     //     user.password
-    //     //   );
-
-    //     //   if (!passwordMatch) {
-    //     //     return null;
-    //     //   }
-
-    //     //   // ensure id is a string to satisfy NextAuth User type
-    //     //   return {
-    //     //     id: user._id.toString(),
-    //     //     email: user.email,
-    //     //     name: user.username,
-    //     //     username: user.username,
-    //     //     phone: user.phone,
-    //     //     userRole: user.userRole,
-    //     //   } as any;
-    //     // }
-
-    //     // 2️⃣ Try B2B user
-    //     // const b2bUser = await findB2BUserByEmail(credentials.email);
-    //     const b2bProfileId = await findB2BUserById(credentials.profile_id)
-
-    //     if (b2bProfileId && b2bProfileId.password) {
-    //       const passwordMatch = await bcrypt.compare(
-    //         credentials.password,
-    //         b2bProfileId.password
-    //       );
-
-    //       if (!passwordMatch || !b2bProfileId.isActive) return null;
-
-    //       return {
-    //         id: b2bProfileId._id.toString(),
-    //         email: b2bProfileId.email,
-    //         name: b2bProfileId.userName,
-    //         phone: b2bProfileId.phone,
-    //         userRole: "b2b",
-    //         source: "b2b_users",
-    //       } as any;
-    //     }
-    //   },
-    // }),
-
     Credentials({
       id: "credentials-user",
       name: "User Login",
@@ -99,15 +21,12 @@ export const authConfig: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-
         if (!credentials?.email || !credentials.password) {
           return null;
         }
 
         await connectDB();
-        const user = await findUserByEmail(
-          credentials.email.toLowerCase()
-        );
+        const user = await findUserByEmail(credentials.email.toLowerCase());
 
         if (!user) {
           return null;

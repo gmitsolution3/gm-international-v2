@@ -17,9 +17,7 @@ const BusinessPackageDetails = async ({
   const { id } = await params;
   const { b2bid } = await searchParams;
 
-  
-
-  const packageDetails = await getBusinessDetails(id);
+  const { data: packageDetails } = await getBusinessDetails(id);
 
   if (!packageDetails) {
     return (

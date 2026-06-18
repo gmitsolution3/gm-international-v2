@@ -20,34 +20,7 @@ interface Offer {
   B2BPrice: string;
 }
 
-const PackageOfferSection = () => {
-  const [displayedOffers, setDisplayedOffers] = useState<
-    ScholarshipCardProps[]
-  >([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Fetch from your database
-    const fetchOffers = async () => {
-      try {
-        // Replace with your actual API endpoint
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/scholarship-package`
-        );
-        const data = await response.json();
-        setDisplayedOffers(data.slice(0, 3));
-      } catch (error) {
-        console.error("Failed to fetch offers:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchOffers();
-  }, []);
-
-
-
+const PackageOfferSection = ({ pkg }: { pkg: ScholarshipCardProps[] }) => {
   const from = "student";
 
   return (
@@ -67,13 +40,13 @@ const PackageOfferSection = () => {
 
         {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-10">
-          {displayedOffers.map((offer, index) => (
+          {pkg.map((offer, index) => (
             <OfferCard key={index} offer={offer} form={from} />
           ))}
         </div>
 
         <div className="flex justify-center">
-          <Link href="/student-home-page/student-package-offer">
+          <Link href="/student-home-page/student-package">
             <Button className="bg-[#CA2328] hover:bg-red-700 text-white rounded-full px-6 py-2 md:px-8 md:py-3 font-semibold transition-all duration-300 ease-in-out transform hover:scale-105 active:scale-95 hover:cursor-pointer">
               View More
             </Button>

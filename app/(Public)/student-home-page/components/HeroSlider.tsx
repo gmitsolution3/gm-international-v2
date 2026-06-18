@@ -55,7 +55,7 @@ const HeroSlider = ({
     setIsNoticeLoading(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/get-notice?query=${query}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/notice-management/api/v1/get-notice?query=${query}`,
         { cache: "no-store" },
       );
 

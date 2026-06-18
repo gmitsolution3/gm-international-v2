@@ -11,7 +11,7 @@ const BookingForm = async ({ searchParams }: ParamsProps) => {
   const source = { b2bId, form };
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/details/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/api/v1/get/single-package/${id}`,
     {
       next: { revalidate: 300 },
     },
@@ -28,7 +28,7 @@ const BookingForm = async ({ searchParams }: ParamsProps) => {
           </div>
         }
       >
-        <TouristUserForm touristPackage={result} source={source} />
+        <TouristUserForm touristPackage={result.data} source={source} />
       </Suspense>
     </div>
   );

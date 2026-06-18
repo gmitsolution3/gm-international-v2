@@ -44,44 +44,6 @@ const B2BPackagesPage = ({ data }: { data: Package[] }) => {
   const API_BASE_URL =
     process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
 
-  // Fetch packages from backend
-//   const fetchPackages = async () => {
-//     setIsLoading(true);
-//     setError(null);
-//     try {
-//       // API Endpoint: GET /api/b2b/packages
-//       const response = await fetch(`${API_BASE_URL}/b2b/packages`, {
-//         method: "GET",
-//         headers: {
-//           "Content-Type": "application/json",
-//           // Add authentication headers if needed
-//           // 'Authorization': `Bearer ${localStorage.getItem('token')}`
-//         },
-//       });
-
-//       if (!response.ok) {
-//         throw new Error(`HTTP error! status: ${response.status}`);
-//       }
-
-//       const result = await response.json();
-
-//       if (result.success && result.data) {
-//         setPackages(result.data);
-//         setFilteredPackages(result.data);
-//       } else {
-//         throw new Error(result.message || "Failed to fetch packages");
-//       }
-//     } catch (err) {
-//       setError(err instanceof Error ? err.message : "Failed to fetch packages");
-//       console.error("Error fetching packages:", err);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchPackages();
-//   }, []);
 
   // Handle search
   useEffect(() => {
@@ -102,7 +64,6 @@ const B2BPackagesPage = ({ data }: { data: Package[] }) => {
 
   // Handle assign to B2B
   const handleAssignToB2B = async (selectedIds: string[]) => {
-   
     setSelectedIds(selectedIds);
     setShowAssignModal(true);
   };
@@ -112,18 +73,17 @@ const B2BPackagesPage = ({ data }: { data: Package[] }) => {
     try {
       // API Endpoint: POST /api/b2b/assign
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b-tourist/assign`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-pkg/api/v1/assign`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            // 'Authorization': `Bearer ${localStorage.getItem('token')}`
           },
           body: JSON.stringify({
             packageIds: selectedIds,
             action: "assign_to_b2b",
             createdAt: new Date(),
-            updatedAt: new Date()
+            updatedAt: new Date(),
           }),
         },
       );

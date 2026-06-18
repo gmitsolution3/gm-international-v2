@@ -64,15 +64,15 @@ export default function ShowAllApplications({ data }: DataProps) {
     if (result.isConfirmed) {
       // API call here
       const deleteRes = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/delete-d2b-application/${id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b-applications/api/v1/del/${id}`,
         {
           method: "DELETE",
-        }
+        },
       );
 
       const isDeleteConfirm = await deleteRes.json();
 
-      if (!isDeleteConfirm) {
+      if (!isDeleteConfirm.success) {
         return Swal.fire({
           title: "Sorry!",
           text: "Application can't be deleted now! Try again!.",

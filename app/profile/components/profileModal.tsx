@@ -118,12 +118,10 @@ export function EditProfileModal({
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(updateData),
-        }
+        },
       );
 
       const result = await res.json();
-
-    
 
       if (result.success) {
         Swal.fire({

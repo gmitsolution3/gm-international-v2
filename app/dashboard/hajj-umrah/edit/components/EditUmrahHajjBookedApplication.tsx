@@ -185,9 +185,9 @@ const EditUmrahHajjBookedApplication: React.FC<
       setIsSubmitting(true);
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/v1/update-umrah-application/${applicationData?._id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/umrah-application/api/v1/upd-application/${applicationData?._id}`,
         {
-          method: "PUT",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },

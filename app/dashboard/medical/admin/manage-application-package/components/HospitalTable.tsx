@@ -94,16 +94,15 @@ export default function HospitalTable({
 
   const confirmDelete = async () => {
     if (selectedHospital) {
-
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/hospital-list-delete/${selectedHospital._id}`,{
-            method: "DELETE"
-          }
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical-pkg/api/v1/del-medical-pkg/${selectedHospital._id}`,
+          {
+            method: "DELETE",
+          },
         );
 
         const result = await res.json();
-
 
         if (result.success) {
           setHospitals(hospitals.filter((h) => h._id !== selectedHospital._id));
@@ -115,7 +114,6 @@ export default function HospitalTable({
 
         toast.error(result.message);
       } catch (err: any) {
-        
         toast.error(err);
       }
     }
@@ -131,9 +129,9 @@ export default function HospitalTable({
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/hospital-list-update/${selectedHospital._id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical-pkg/api/v1/upd-medical-pkg/${selectedHospital._id}`,
         {
-          method: "PUT",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
@@ -155,7 +153,9 @@ export default function HospitalTable({
         setIsEditModalOpen(false);
         setSelectedHospital(null);
         toast.success("Data updated successfully!!");
+        return;
       }
+      toast.error("pkg not deleted yet!");
     } catch (error) {
       console.error(error);
     }

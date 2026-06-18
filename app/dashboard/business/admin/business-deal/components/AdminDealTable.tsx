@@ -1,7 +1,7 @@
 // components/AdminTable.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import {
   Eye,
   Edit,
@@ -11,81 +11,101 @@ import {
   Search,
   X,
   Save,
-  Upload,
   Phone,
-  Mail,
   Building2,
-  Clock,
   CreditCard,
   FileText,
-  Image as ImageIcon,
+  Loader,
+  Mail,
 } from "lucide-react";
-import { ApplicationData, ModalType } from "./types";
+import { IApplicationData, ModalType } from "./types";
 import Swal from "sweetalert2";
 
 interface AdminTableProps {
-  initialData: ApplicationData[];
+  initialData: IApplicationData[];
 }
 
 const AdminDealTable: React.FC<AdminTableProps> = ({ initialData }) => {
-  const [data, setData] = useState<ApplicationData[]>(initialData);
+  const [data, setData] = useState<IApplicationData[]>(initialData);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [selectedItem, setSelectedItem] = useState<ApplicationData | null>(
+  const [selectedItem, setSelectedItem] = useState<IApplicationData | null>(
     null,
   );
   const [modalType, setModalType] = useState<ModalType>(null);
-  const [editFormData, setEditFormData] = useState<Partial<ApplicationData>>(
-    {},
+  const [editFormData, setEditFormData] = useState<IApplicationData | null>(
+    null,
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [actionLoading, setActionLoading] = useState<string>("");
 
   const itemsPerPage = 10;
 
-  // Filter data based on search
-  const filteredData = data.filter(
-    (item) =>
-      item.f_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.phone.includes(searchTerm) ||
-      item.c_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.service.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.transaction_id?.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  // Memoized filtered data
+  const filteredData = useMemo(() => {
+    return data.filter((item) => {
+      const searchLower = searchTerm.toLowerCase();
+      return (
+        item.allFormData.f_name.toLowerCase().includes(searchLower) ||
+        item.allFormData.phone.includes(searchTerm) ||
+        item.allFormData.c_name.toLowerCase().includes(searchLower) ||
+        item.service.toLowerCase().includes(searchLower) ||
+        item.allFormData.transaction_id?.toLowerCase().includes(searchLower)
+      );
+    });
+  }, [data, searchTerm]);
 
-  // Pagination
+  // Pagination calculations
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentData = filteredData.slice(startIndex, endIndex);
+  const currentData = useMemo(() => {
+    return filteredData.slice(startIndex, startIndex + itemsPerPage);
+  }, [filteredData, startIndex]);
+
+  // Reset page when search changes
+  const handleSearch = useCallback((value: string) => {
+    setSearchTerm(value);
+    setCurrentPage(1); // Reset to first page on search
+  }, []);
 
   // Handle view
-  const handleView = (item: ApplicationData) => {
+  const handleView = useCallback((item: IApplicationData) => {
     setSelectedItem(item);
     setModalType("view");
-  };
+    setEditFormData(null);
+  }, []);
 
   // Handle edit
-  const handleEdit = (item: ApplicationData) => {
+  const handleEdit = useCallback((item: IApplicationData) => {
     setSelectedItem(item);
-    setEditFormData(item);
+    setEditFormData({ ...item }); // Create a copy for editing
     setModalType("edit");
-  };
+  }, []);
 
   // Handle delete
-  const handleDelete = (item: ApplicationData) => {
+  const handleDelete = useCallback((item: IApplicationData) => {
     setSelectedItem(item);
     setModalType("delete");
-  };
+  }, []);
+
+  // Close modal
+  const closeModal = useCallback(() => {
+    setModalType(null);
+    setSelectedItem(null);
+    setEditFormData(null);
+    setActionLoading("");
+  }, []);
 
   // Handle update
   const handleUpdate = async () => {
-    setIsLoading(true);
+    if (!editFormData || !selectedItem) return;
+
+    setActionLoading("update");
     try {
-      // API call to update
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/business-deal-applications-update/${selectedItem?._id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-deal/api/v1/update/${selectedItem._id}`,
         {
-          method: "PUT",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
@@ -97,83 +117,98 @@ const AdminDealTable: React.FC<AdminTableProps> = ({ initialData }) => {
         // Update local state
         setData((prevData) =>
           prevData.map((item) =>
-            item._id === selectedItem?._id
-              ? { ...item, ...editFormData }
-              : item,
+            item._id === selectedItem._id ? { ...editFormData } : item,
           ),
         );
-        setModalType(null);
+
+        Swal.fire({
+          title: "Updated!",
+          text: "Application has been updated successfully.",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        closeModal();
+      } else {
+        throw new Error("Failed to update");
       }
     } catch (error) {
-      console.error("Error updating:", error);
+      closeModal();
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to update application. Please try again.",
+        icon: "error",
+      });
     } finally {
-      setIsLoading(false);
+      setActionLoading("");
     }
   };
 
   // Handle delete confirm
   const handleDeleteConfirm = async () => {
-    setIsLoading(true);
+    if (!selectedItem) return;
+    closeModal();
 
-    if (selectedItem?.applicationStatus !== "rejected") {
-      Swal.fire({
+    if (selectedItem.applicationStatus !== "rejected") {
+      await Swal.fire({
         title: "Cannot delete!",
         text: "Only rejected deals can be deleted.",
         icon: "warning",
         confirmButtonColor: "#3085d6",
       });
-      setModalType(null);
-      setIsLoading(false)
       return;
     }
 
-    try {
-      Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!",
-      }).then(async (result) => {
-        if (result.isConfirmed) {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/delete-deal/${selectedItem?._id}`,
-            {
-              method: "DELETE",
-            },
-          );
 
-          const data = await res.json();
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
 
-          if (res.status !== 200) {
-            Swal.fire({
-              title: data.message || "Something went wrong",
-              icon: "error",
-              timer: 2000,
-              showConfirmButton: false,
-            });
-            return;
-          }
+    if (result.isConfirmed) {
+      setActionLoading("delete");
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-deal/api/v1/delete/${selectedItem._id}`,
+          {
+            method: "DELETE",
+          },
+        );
 
-          Swal.fire({
-            title: "Deleted Successfully",
-            icon: "success",
-            timer: 2000,
-            showConfirmButton: false,
-          });
+        const responseData = await response.json();
 
-          setData((prevData) =>
-            prevData.filter((item) => item._id !== selectedItem?._id),
-          );
-          setModalType(null);
+        if (response.status !== 200) {
+          throw new Error(responseData.message || "Something went wrong");
         }
-      });
-    } catch (error) {
-      console.error("Error deleting:", error);
-    } finally {
-      setIsLoading(false);
+
+        setData((prevData) =>
+          prevData.filter((item) => item._id !== selectedItem._id),
+        );
+
+        await Swal.fire({
+          title: "Deleted Successfully",
+          icon: "success",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      } catch (error) {
+        closeModal();
+        Swal.fire({
+          title:
+            error instanceof Error ? error.message : "Something went wrong",
+          icon: "error",
+          timer: 2000,
+          showConfirmButton: false,
+        });
+      } finally {
+        setActionLoading("");
+      }
     }
   };
 
@@ -183,21 +218,43 @@ const AdminDealTable: React.FC<AdminTableProps> = ({ initialData }) => {
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
     >,
   ) => {
+    if (!editFormData) return;
+
     const { name, value } = e.target;
-    setEditFormData((prev) => ({ ...prev, [name]: value }));
+
+    setEditFormData((prev) => {
+      if (!prev) return null;
+
+      // Check if the field is nested in allFormData
+      if (name in prev.allFormData) {
+        return {
+          ...prev,
+          allFormData: {
+            ...prev.allFormData,
+            [name]: value,
+          },
+        };
+      }
+
+      // Otherwise update top-level field
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
   };
 
   // Get status badge color
   const getStatusBadge = (status: string) => {
     switch (status.toLowerCase()) {
       case "pending":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-yellow-100 text-yellow-800 border border-yellow-200";
       case "approved":
-        return "bg-green-100 text-green-800";
+        return "bg-green-100 text-green-800 border border-green-200";
       case "rejected":
-        return "bg-red-100 text-red-800";
+        return "bg-red-100 text-red-800 border border-red-200";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-gray-100 text-gray-800 border border-gray-200";
     }
   };
 
@@ -206,18 +263,24 @@ const AdminDealTable: React.FC<AdminTableProps> = ({ initialData }) => {
     if (!modalType || !selectedItem) return null;
 
     return (
-      <div className="fixed inset-0 bg-white/30 backdrop-blur-md bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+      <div
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-9999 p-4 transition-all duration-300"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) closeModal();
+        }}
+      >
+        <div className="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto shadow-2xl transform transition-all duration-300 scale-100">
           {/* Modal Header */}
-          <div className="sticky top-0 bg-red-600 text-white p-4 flex justify-between items-center">
+          <div className="sticky top-0 bg-linear-to-r from-red-600 to-red-700 text-white p-4 flex justify-between items-center rounded-t-lg z-10">
             <h2 className="text-xl font-semibold">
               {modalType === "view" && "View Application Details"}
               {modalType === "edit" && "Edit Application"}
               {modalType === "delete" && "Confirm Delete"}
             </h2>
             <button
-              onClick={() => setModalType(null)}
-              className="p-1 hover:bg-red-700 rounded"
+              onClick={closeModal}
+              className="p-2 hover:bg-red-500 rounded-full transition-colors duration-200"
+              aria-label="Close modal"
             >
               <X size={24} />
             </button>
@@ -226,64 +289,92 @@ const AdminDealTable: React.FC<AdminTableProps> = ({ initialData }) => {
           {/* Modal Body */}
           <div className="p-6">
             {modalType === "view" && (
-              <div className="space-y-6">
+              <div className="space-y-6 animate-fadeIn">
                 {/* Personal Information */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="bg-gray-50 p-4 rounded">
-                    <h3 className="font-semibold text-red-600 mb-3">
+                  <div className="bg-linear-to-br from-gray-50 to-gray-100 p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-semibold text-red-600 mb-3 flex items-center gap-2">
+                      <span className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                        👤
+                      </span>
                       Personal Information
                     </h3>
-                    <p>
-                      <span className="font-medium">Name:</span>{" "}
-                      {selectedItem.f_name}
-                    </p>
-                    <p>
-                      <span className="font-medium">Phone:</span>{" "}
-                      {selectedItem.phone}
-                    </p>
-                    <p>
-                      <span className="font-medium">Email:</span>{" "}
-                      {selectedItem.c_email}
-                    </p>
+                    <div className="space-y-2">
+                      <p className="flex items-center gap-2">
+                        <span className="font-medium text-gray-600">Name:</span>{" "}
+                        {selectedItem.allFormData.f_name}
+                      </p>
+                      <p className="flex items-center gap-2">
+                        <Phone size={16} className="text-gray-400" />
+                        <span className="font-medium text-gray-600">
+                          Phone:
+                        </span>{" "}
+                        {selectedItem.allFormData.phone}
+                      </p>
+                      <p className="flex items-center gap-2">
+                        <Mail size={16} className="text-gray-400" />
+                        <span className="font-medium text-gray-600">
+                          Email:
+                        </span>{" "}
+                        {selectedItem.allFormData.c_email}
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="bg-gray-50 p-4 rounded">
-                    <h3 className="font-semibold text-red-600 mb-3">
+                  <div className="bg-linear-to-br from-gray-50 to-gray-100 p-6 rounded-lg border border-gray-200">
+                    <h3 className="font-semibold text-red-600 mb-3 flex items-center gap-2">
+                      <span className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                        🏢
+                      </span>
                       Company Information
                     </h3>
-                    <p>
-                      <span className="font-medium">Company:</span>{" "}
-                      {selectedItem.c_name}
-                    </p>
-                    <p>
-                      <span className="font-medium">Address:</span>{" "}
-                      {selectedItem.c_address}
-                    </p>
-                    <p>
-                      <span className="font-medium">Service:</span>{" "}
-                      {selectedItem.serviceTitle}
-                    </p>
+                    <div className="space-y-2">
+                      <p className="flex items-center gap-2">
+                        <Building2 size={16} className="text-gray-400" />
+                        <span className="font-medium text-gray-600">
+                          Company:
+                        </span>{" "}
+                        {selectedItem.allFormData.c_name}
+                      </p>
+                      <p>
+                        <span className="font-medium text-gray-600">
+                          Address:
+                        </span>{" "}
+                        {selectedItem.allFormData.c_address}
+                      </p>
+                      <p>
+                        <span className="font-medium text-gray-600">
+                          Service:
+                        </span>{" "}
+                        {selectedItem.serviceTitle}
+                      </p>
+                    </div>
                   </div>
                 </div>
 
                 {/* Payment Information */}
-                <div className="bg-gray-50 p-4 rounded">
-                  <h3 className="font-semibold text-red-600 mb-3">
+                <div className="bg-linear-to-br from-gray-50 to-gray-100 p-6 rounded-lg border border-gray-200">
+                  <h3 className="font-semibold text-red-600 mb-3 flex items-center gap-2">
+                    <CreditCard size={20} />
                     Payment Information
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <p>
-                      <span className="font-medium">Gateway:</span> Gateway{" "}
-                      {selectedItem.payment_gateway}
+                      <span className="font-medium text-gray-600">
+                        Gateway:
+                      </span>{" "}
+                      {selectedItem.allFormData.payment_gateway}
                     </p>
                     <p>
-                      <span className="font-medium">Transaction ID:</span>{" "}
-                      {selectedItem.transaction_id || "N/A"}
+                      <span className="font-medium text-gray-600">
+                        Transaction ID:
+                      </span>{" "}
+                      {selectedItem.allFormData.transaction_id || "N/A"}
                     </p>
-                    <p>
-                      <span className="font-medium">Status:</span>
+                    <p className="flex items-center gap-2">
+                      <span className="font-medium text-gray-600">Status:</span>
                       <span
-                        className={`ml-2 px-2 py-1 rounded-full text-xs ${getStatusBadge(selectedItem.applicationStatus)}`}
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusBadge(selectedItem.applicationStatus)}`}
                       >
                         {selectedItem.applicationStatus}
                       </span>
@@ -292,89 +383,79 @@ const AdminDealTable: React.FC<AdminTableProps> = ({ initialData }) => {
                 </div>
 
                 {/* Documents */}
-                {(selectedItem.payment_photo || selectedItem.p_photo) && (
-                  <div className="bg-gray-50 p-4 rounded">
+                {(selectedItem.payment_photo ||
+                  selectedItem.allFormData.p_photo) && (
+                  <div className="bg-linear-to-br from-gray-50 to-gray-100 p-6 rounded-lg border border-gray-200">
                     <h3 className="font-semibold text-red-600 mb-3">
                       Documents
                     </h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {selectedItem.payment_photo && (
                         <div>
-                          <p className="font-medium mb-2">Payment Proof:</p>
+                          <p className="font-medium mb-2 text-gray-600">
+                            Payment Proof:
+                          </p>
                           <img
                             src={selectedItem.payment_photo}
                             alt="Payment"
-                            className="w-full h-32 object-cover rounded"
+                            className="w-full h-48 object-cover rounded-lg border border-gray-200"
+                            loading="lazy"
                           />
                         </div>
                       )}
-                      {selectedItem.p_photo && (
+                      {selectedItem.allFormData.p_photo && (
                         <div>
-                          <p className="font-medium mb-2">Profile Photo:</p>
+                          <p className="font-medium mb-2 text-gray-600">
+                            Profile Photo:
+                          </p>
                           <img
-                            src={selectedItem.p_photo}
+                            src={selectedItem.allFormData.p_photo}
                             alt="Profile"
-                            className="w-full h-32 object-cover rounded"
+                            className="w-full h-48 object-cover rounded-lg border border-gray-200"
+                            loading="lazy"
                           />
                         </div>
                       )}
                     </div>
                   </div>
                 )}
-
-                {/* Additional Information based on service type */}
-                {selectedItem.select_advise_time && (
-                  <div className="bg-gray-50 p-4 rounded">
-                    <h3 className="font-semibold text-red-600 mb-3">
-                      Service Details
-                    </h3>
-                    <p>
-                      <span className="font-medium">Advise Time:</span>{" "}
-                      {selectedItem.select_advise_time}
-                    </p>
-                    {selectedItem.select_adviser && (
-                      <p>
-                        <span className="font-medium">Adviser:</span>{" "}
-                        {selectedItem.select_adviser}
-                      </p>
-                    )}
-                  </div>
-                )}
               </div>
             )}
 
-            {modalType === "edit" && (
+            {modalType === "edit" && editFormData && (
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
                   handleUpdate();
                 }}
-                className="space-y-4"
+                className="space-y-6"
               >
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Full Name
+                      Full Name *
                     </label>
                     <input
                       type="text"
                       name="f_name"
-                      value={editFormData.f_name || ""}
+                      value={editFormData.allFormData.f_name}
                       onChange={handleInputChange}
-                      className="w-full p-2 border rounded focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
+                      required
                     />
                   </div>
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Phone
+                      Phone *
                     </label>
                     <input
                       type="text"
                       name="phone"
-                      value={editFormData.phone || ""}
+                      value={editFormData.allFormData.phone}
                       onChange={handleInputChange}
-                      className="w-full p-2 border rounded focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
+                      required
                     />
                   </div>
 
@@ -385,9 +466,9 @@ const AdminDealTable: React.FC<AdminTableProps> = ({ initialData }) => {
                     <input
                       type="text"
                       name="c_name"
-                      value={editFormData.c_name || ""}
+                      value={editFormData.allFormData.c_name}
                       onChange={handleInputChange}
-                      className="w-full p-2 border rounded focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
                     />
                   </div>
 
@@ -398,9 +479,9 @@ const AdminDealTable: React.FC<AdminTableProps> = ({ initialData }) => {
                     <input
                       type="email"
                       name="c_email"
-                      value={editFormData.c_email || ""}
+                      value={editFormData.allFormData.c_email}
                       onChange={handleInputChange}
-                      className="w-full p-2 border rounded focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
                     />
                   </div>
 
@@ -410,10 +491,10 @@ const AdminDealTable: React.FC<AdminTableProps> = ({ initialData }) => {
                     </label>
                     <textarea
                       name="c_address"
-                      value={editFormData.c_address || ""}
+                      value={editFormData.allFormData.c_address}
                       onChange={handleInputChange}
-                      rows={2}
-                      className="w-full p-2 border rounded focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                      rows={3}
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 resize-none"
                     />
                   </div>
 
@@ -424,9 +505,9 @@ const AdminDealTable: React.FC<AdminTableProps> = ({ initialData }) => {
                     <input
                       type="text"
                       name="transaction_id"
-                      value={editFormData.transaction_id || ""}
+                      value={editFormData.allFormData.transaction_id || ""}
                       onChange={handleInputChange}
-                      className="w-full p-2 border rounded focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
                     />
                   </div>
 
@@ -436,9 +517,9 @@ const AdminDealTable: React.FC<AdminTableProps> = ({ initialData }) => {
                     </label>
                     <select
                       name="applicationStatus"
-                      value={editFormData.applicationStatus || ""}
+                      value={editFormData.applicationStatus}
                       onChange={handleInputChange}
-                      className="w-full p-2 border rounded focus:ring-2 focus:ring-red-500 focus:border-red-500"
+                      className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200"
                     >
                       <option value="pending">Pending</option>
                       <option value="approved">Approved</option>
@@ -447,48 +528,69 @@ const AdminDealTable: React.FC<AdminTableProps> = ({ initialData }) => {
                   </div>
                 </div>
 
-                <div className="flex justify-end gap-3 mt-6">
+                <div className="flex justify-end gap-3 pt-4 border-t">
                   <button
                     type="button"
-                    onClick={() => setModalType(null)}
-                    className="px-4 py-2 border rounded hover:bg-gray-50"
+                    onClick={closeModal}
+                    className="px-6 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    disabled={isLoading}
-                    className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50 flex items-center gap-2"
+                    disabled={actionLoading === "update"}
+                    className="px-6 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-all duration-200"
                   >
-                    {isLoading ? "Updating..." : "Update"}
-                    <Save size={16} />
+                    {actionLoading === "update" ? (
+                      <>
+                        <Loader size={16} className="animate-spin" />
+                        Updating...
+                      </>
+                    ) : (
+                      <>
+                        <Save size={16} />
+                        Update
+                      </>
+                    )}
                   </button>
                 </div>
               </form>
             )}
 
             {modalType === "delete" && (
-              <div className="text-center py-4">
-                <p className="text-lg mb-6">
-                  Are you sure you want to delete this application?
-                </p>
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Trash2 size={32} className="text-red-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">
+                  Delete Application
+                </h3>
                 <p className="text-gray-600 mb-6">
+                  Are you sure you want to delete this application?
+                  <br />
                   This action cannot be undone.
                 </p>
 
                 <div className="flex justify-center gap-4">
                   <button
-                    onClick={() => setModalType(null)}
-                    className="px-6 py-2 border rounded hover:bg-gray-50"
+                    onClick={closeModal}
+                    className="px-6 py-2.5 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleDeleteConfirm}
-                    disabled={isLoading}
-                    className="px-6 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50"
+                    disabled={actionLoading === "delete"}
+                    className="px-6 py-2.5 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 transition-all duration-200"
                   >
-                    {isLoading ? "Deleting..." : "Delete"}
+                    {actionLoading === "delete" ? (
+                      <>
+                        <Loader size={16} className="animate-spin" />
+                        Deleting...
+                      </>
+                    ) : (
+                      "Delete"
+                    )}
                   </button>
                 </div>
               </div>
@@ -500,82 +602,105 @@ const AdminDealTable: React.FC<AdminTableProps> = ({ initialData }) => {
   };
 
   return (
-    <div className="min-h-screen p-4">
+    <div className="min-h-screen bg-gray-50 p-4">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="bg-gray-100 rounded-lg shadow-md p-4 mb-4">
-          <h1 className="text-2xl font-bold text-red-600 mb-4">
-            Admin Dashboard
-          </h1>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+            <h1 className="text-2xl font-bold text-gray-800">
+              Admin Dashboard
+            </h1>
+            <span className="text-sm text-gray-500">
+              Total Applications: {filteredData.length}
+            </span>
+          </div>
 
           {/* Search Bar */}
           <div className="relative">
             <Search
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"
               size={20}
             />
             <input
               type="text"
               placeholder="Search by name, phone, company, service or transaction ID..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white"
+              onChange={(e) => handleSearch(e.target.value)}
+              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent bg-white transition-all duration-200"
             />
+            {searchTerm && (
+              <button
+                onClick={() => handleSearch("")}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <X size={20} />
+              </button>
+            )}
           </div>
         </div>
 
         {/* Table - Desktop View */}
-        <div className="hidden md:block bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="hidden md:block bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-red-600 text-white">
-                <tr>
-                  <th className="p-3 text-left">Name</th>
-                  <th className="p-3 text-left">Phone</th>
-                  <th className="p-3 text-left">Company</th>
-                  <th className="p-3 text-left">Service</th>
-                  <th className="p-3 text-left">Status</th>
-                  <th className="p-3 text-left">Txn ID</th>
-                  <th className="p-3 text-left">Actions</th>
+              <thead>
+                <tr className="bg-linear-to-r from-red-600 to-red-700 text-white">
+                  <th className="p-4 text-left font-semibold">Name</th>
+                  <th className="p-4 text-left font-semibold">Phone</th>
+                  <th className="p-4 text-left font-semibold">Company</th>
+                  <th className="p-4 text-left font-semibold">Service</th>
+                  <th className="p-4 text-left font-semibold">Status</th>
+                  <th className="p-4 text-left font-semibold">Txn ID</th>
+                  <th className="p-4 text-left font-semibold">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {currentData.map((item, index) => (
                   <tr
                     key={item._id}
-                    className="bg-gray-100 hover:bg-red-100 border-b"
+                    className={`border-b border-gray-100 hover:bg-red-50 transition-colors duration-150 ${
+                      index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                    }`}
                   >
-                    <td className="p-3 font-medium">{item.f_name}</td>
-                    <td className="p-3">{item.phone}</td>
-                    <td className="p-3">{item.c_name}</td>
-                    <td className="p-3">{item.service}</td>
-                    <td className="p-3">
+                    <td className="p-4 font-medium text-gray-800">
+                      {item.allFormData.f_name}
+                    </td>
+                    <td className="p-4 text-gray-600">
+                      {item.allFormData.phone}
+                    </td>
+                    <td className="p-4 text-gray-600">
+                      {item.allFormData.c_name}
+                    </td>
+                    <td className="p-4 text-gray-600">{item.service}</td>
+                    <td className="p-4">
                       <span
-                        className={`px-2 py-1 rounded-full text-xs ${getStatusBadge(item.applicationStatus)}`}
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusBadge(item.applicationStatus)}`}
                       >
                         {item.applicationStatus}
                       </span>
                     </td>
-                    <td className="p-3">{item.transaction_id || "-"}</td>
-                    <td className="p-3">
+                    <td className="p-4 text-gray-600">
+                      {item.allFormData.transaction_id || "-"}
+                    </td>
+                    <td className="p-4">
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleView(item)}
-                          className="p-1 text-red-600 hover:bg-blue-50 rounded"
+                          className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-all duration-200 hover:scale-110"
                           title="View"
                         >
                           <Eye size={18} />
                         </button>
                         <button
                           onClick={() => handleEdit(item)}
-                          className="p-1 text-green-600 hover:bg-green-50 rounded"
+                          className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-all duration-200 hover:scale-110"
                           title="Edit"
                         >
                           <Edit size={18} />
                         </button>
                         <button
                           onClick={() => handleDelete(item)}
-                          className="p-1 text-red-600 hover:bg-red-50 rounded"
+                          className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-all duration-200 hover:scale-110"
                           title="Delete"
                         >
                           <Trash2 size={18} />
@@ -584,6 +709,13 @@ const AdminDealTable: React.FC<AdminTableProps> = ({ initialData }) => {
                     </td>
                   </tr>
                 ))}
+                {currentData.length === 0 && (
+                  <tr>
+                    <td colSpan={7} className="p-8 text-center text-gray-500">
+                      No applications found
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -592,83 +724,108 @@ const AdminDealTable: React.FC<AdminTableProps> = ({ initialData }) => {
         {/* Mobile View - Card Layout */}
         <div className="md:hidden space-y-4">
           {currentData.map((item) => (
-            <div key={item._id} className="bg-white rounded-lg shadow-md p-4">
+            <div
+              key={item._id}
+              className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow duration-200"
+            >
               <div className="flex justify-between items-start mb-3">
                 <div>
-                  <h3 className="font-semibold text-lg">{item.f_name}</h3>
+                  <h3 className="font-semibold text-lg text-gray-800">
+                    {item.allFormData.f_name}
+                  </h3>
                   <p className="text-gray-600 flex items-center gap-1 mt-1">
-                    <Phone size={14} /> {item.phone}
+                    <Phone size={14} className="text-gray-400" />
+                    {item.allFormData.phone}
                   </p>
                 </div>
                 <span
-                  className={`px-2 py-1 rounded-full text-xs ${getStatusBadge(item.applicationStatus)}`}
+                  className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusBadge(item.applicationStatus)}`}
                 >
                   {item.applicationStatus}
                 </span>
               </div>
 
-              <div className="space-y-2 mb-3">
-                <p className="flex items-center gap-2">
-                  <Building2 size={14} className="text-gray-500" />
-                  <span className="text-gray-700">{item.c_name}</span>
+              <div className="space-y-2 mb-4">
+                <p className="flex items-center gap-2 text-gray-600">
+                  <Building2 size={14} className="text-gray-400" />
+                  {item.allFormData.c_name}
                 </p>
-                <p className="flex items-center gap-2">
-                  <FileText size={14} className="text-gray-500" />
-                  <span className="text-gray-700">Service: {item.service}</span>
+                <p className="flex items-center gap-2 text-gray-600">
+                  <FileText size={14} className="text-gray-400" />
+                  Service: {item.service}
                 </p>
-                {item.transaction_id && (
-                  <p className="flex items-center gap-2">
-                    <CreditCard size={14} className="text-gray-500" />
-                    <span className="text-gray-700">
-                      Txn: {item.transaction_id}
-                    </span>
+                {item.allFormData.transaction_id && (
+                  <p className="flex items-center gap-2 text-gray-600">
+                    <CreditCard size={14} className="text-gray-400" />
+                    Txn: {item.allFormData.transaction_id}
                   </p>
                 )}
               </div>
 
-              <div className="flex justify-end gap-3 pt-2 border-t">
+              <div className="flex justify-end gap-2 pt-3 border-t border-gray-100">
                 <button
                   onClick={() => handleView(item)}
-                  className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg flex items-center gap-1"
+                  className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-200 flex items-center gap-1"
                 >
                   <Eye size={18} /> View
                 </button>
                 <button
                   onClick={() => handleEdit(item)}
-                  className="p-2 text-green-600 hover:bg-green-50 rounded-lg flex items-center gap-1"
+                  className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-all duration-200 flex items-center gap-1"
                 >
                   <Edit size={18} /> Edit
                 </button>
                 <button
                   onClick={() => handleDelete(item)}
-                  className="p-2 text-red-600 hover:bg-red-50 rounded-lg flex items-center gap-1"
+                  className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-all duration-200 flex items-center gap-1"
                 >
                   <Trash2 size={18} /> Delete
                 </button>
               </div>
             </div>
           ))}
+          {currentData.length === 0 && (
+            <div className="text-center py-8 text-gray-500">
+              No applications found
+            </div>
+          )}
         </div>
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="mt-4 flex justify-center items-center gap-2">
+          <div className="mt-6 flex justify-center items-center gap-2">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
               disabled={currentPage === 1}
-              className="p-2 bg-white rounded shadow hover:bg-gray-50 disabled:opacity-50"
+              className="p-3 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-105"
             >
               <ChevronLeft size={20} />
             </button>
-            <span className="px-4 py-2 bg-white rounded shadow">
-              Page {currentPage} of {totalPages}
-            </span>
+
+            <div className="flex gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`w-10 h-10 rounded-lg transition-all duration-200 ${
+                      currentPage === page
+                        ? "bg-red-600 text-white shadow-md"
+                        : "bg-white text-gray-600 hover:bg-gray-50 border border-gray-200"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ),
+              )}
+            </div>
+
             <button
               onClick={() =>
                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
               }
               disabled={currentPage === totalPages}
-              className="p-2 bg-white rounded shadow hover:bg-gray-50 disabled:opacity-50"
+              className="p-3 bg-white rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 hover:scale-105"
             >
               <ChevronRight size={20} />
             </button>

@@ -20,6 +20,9 @@ export default async function DashboardLayout({
   const avatar = userAvatar?.avatar;
   const user = session?.user as any;
 
+  console.log({user})
+
+
   let menuItems: MenuItem[] | [] = [];
   
     if (user?.userRole === "admin" || user?.userRole === "office_admin") {

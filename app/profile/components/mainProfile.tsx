@@ -23,8 +23,6 @@ const MainProfile = ({ userProfleData }: UserProfileData) => {
   const [user, setUser] = useState(userProfleData);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-
-
   return (
     <div>
       <div className="relative z-10">

@@ -10,16 +10,11 @@ import StatCard from "../components/stat_card";
 export default async function ScholarshipUserDashboard() {
 
   const session = await getServerSession(authConfig);
-
-
   if (!session?.user?.email) {
     redirect("/auth/signin"); 
   }
-
   const email = session.user.email;
-
   const documentData = await getUserScholarshipDocuments(email);
-
 
   if (!documentData || !documentData.documentCount) {
     return (

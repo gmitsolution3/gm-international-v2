@@ -503,7 +503,7 @@ export default function ScholarshipApplicationForm({
       };
 
       const addApplicationForm = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/student-home-page/student-package-offer/user-application-form`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/scholarship-application/api/v1/create-application`,
         {
           method: "POST",
           headers: {
@@ -514,8 +514,9 @@ export default function ScholarshipApplicationForm({
       );
 
       const resultOfApplicationForm = await addApplicationForm.json();
+      
 
-      if (!resultOfApplicationForm.insertedId) {
+      if (!resultOfApplicationForm.success) {
         Swal.fire({
           title: "Something was wrong!! try again",
           icon: "error",
@@ -526,7 +527,7 @@ export default function ScholarshipApplicationForm({
         return;
       }
 
-      if (resultOfApplicationForm.insertedId) {
+      if (resultOfApplicationForm.success) {
         Swal.fire({
           title: "Application Submitted!",
           text: "Your application has been successfully submitted.",

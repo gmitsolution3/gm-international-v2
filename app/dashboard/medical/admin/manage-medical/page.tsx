@@ -9,7 +9,6 @@ const ManageMedical = async () => {
 
   const medicalData = await getAllMedicalData();
 
-
   return (
     <div>
       <div className="flex flex-col max-w-7xl mx-auto m-6 sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -25,10 +24,9 @@ const ManageMedical = async () => {
         <AddMedicalPackage value={value} />
       </div>
 
-      {medicalData.length > 0 ? (
+      {medicalData.data.length > 0 ? (
         <div>
-          {/* <AdminMedicalPackage treatments={medicalPackageData} /> */}
-          <HospitalTable initialHospitals={medicalData} />
+          <HospitalTable initialHospitals={medicalData.data} />
         </div>
       ) : (
         <DashboardErrorHandler />

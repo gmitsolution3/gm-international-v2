@@ -52,13 +52,13 @@ export default function TouristUserApplicationStatus() {
     const userApplication = async () => {
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-user-booked-data?email=${session?.user?.email}`,
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-application/api/v1/get-user-application?email=${session?.user?.email}`,
           {
             cache: "no-store",
-          }
+          },
         );
         const resOfResult = await res.json();
-        setBookings(resOfResult);
+        setBookings(resOfResult.data);
       } catch (error) {
         console.error(`no data found ${error}`);
       } finally {

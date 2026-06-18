@@ -123,7 +123,7 @@ const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/update-office-team/${selectedMember._id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/about-team/api/v1/upd-about/${selectedMember._id}`,
         {
           method: "PUT",
           headers: {
@@ -163,13 +163,10 @@ const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
     setIsSubmitting(true);
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/delete-office-team/${selectedMember._id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/about-team/api/v1/del-about/${selectedMember._id}`,
         {
           method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
+        }
       );
       const result = await response.json();
       if (result.success) {
@@ -193,45 +190,7 @@ const ManageTeamMember = ({ teamMember }: { teamMember: TeamMember[] }) => {
     }
   };
 
-  // Function to handle reordering (optional - for drag and drop or manual reorder)
-  const handleReorder = async (memberId: number, newOrderIndex: number) => {
-    const member = members.find(m => m._id === memberId);
-    if (!member) return;
-
-    // Optimistically update UI
-    const updatedMembers = members.map(m => 
-      m._id === memberId ? { ...m, order_index: newOrderIndex } : m
-    ).sort((a, b) => a.order_index - b.order_index);
-    
-    setMembers(updatedMembers);
-
-    // API call to update order
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/update-office-team/${memberId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ ...member, order_index: newOrderIndex }),
-        },
-      );
-      
-      const result = await response.json();
-      if (!result.success) {
-        // Revert on failure
-        setMembers([...(teamMember || [])].sort((a, b) => a.order_index - b.order_index));
-        toast.error("Failed to update order");
-      } else {
-        toast.success("Order updated successfully");
-      }
-    } catch (error) {
-      console.error("Reorder error:", error);
-      setMembers([...(teamMember || [])].sort((a, b) => a.order_index - b.order_index));
-      toast.error("Failed to update order");
-    }
-  };
+  
 
   return (
     <div className="w-full mt-6">

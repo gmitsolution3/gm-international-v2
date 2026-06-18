@@ -111,7 +111,7 @@ const BusinessAccountsTable = ({
 
       // API call to update business account
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/accounts/bap-update/${id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-application/api/v1/accounts/bap-update/${id}`,
         {
           method: "PUT",
           headers: {

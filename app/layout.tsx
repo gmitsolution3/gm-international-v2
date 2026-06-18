@@ -11,6 +11,7 @@ import CopyProtected from "@/app/components/CopyProtected";
 import { getServerSession } from "next-auth";
 import { authConfig } from "@/auth.config";
 import { UserProvider } from "./useContext/useUserData";
+import FloatingMessage from "./components/floatingCart/FloatingMessage";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,12 +22,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-// export const metadata: Metadata = {
-//   title:
-//     "GM International | Bangladesh | China | Thailand | Malaysia | Australia",
-//   description: "Develop By GM IT Solution",
-// };
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://gminternational.live"),
@@ -55,17 +50,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(authConfig);
-  const email = session?.user?.email;
-
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/users/user-role?email=${email}`,
-  );
-
-  const result = await res.json();
-
-  const isAdmin = result.userRole === "admin";
-
+  const session: any = await getServerSession(authConfig);
+  const isAdmin = session?.user?.userRole === "admin";
   return (
     <html lang="en">
       <head>
@@ -88,25 +74,15 @@ export default async function RootLayout({
           }}
         />
       </head>
-
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        
         <UserProvider>
           <SessionWrapper>
             <HidableNavbar />
-            <Toaster
-              closeButton
-              position="top-right"
-              toastOptions={{
-                style: {
-                  backgroundColor: "#F88379",
-                  color: "white",
-                },
-              }}
-            />
+            <Toaster closeButton position="top-right" />
             {isAdmin ? children : <CopyProtected>{children}</CopyProtected>}
+            {/* <FloatingMessage /> */}
             <HidableFooter />
           </SessionWrapper>
         </UserProvider>

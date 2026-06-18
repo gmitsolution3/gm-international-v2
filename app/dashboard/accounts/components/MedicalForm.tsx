@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -81,7 +82,11 @@ function SectionDivider({ label }: { label: string }) {
 
 // ─── Main Component ───────────────────────────────────────────────────────────
 
-export default function MedicalForm({ authEmail }: { authEmail?: string | null | undefined }) {
+export default function MedicalForm({
+  authEmail,
+}: {
+  authEmail?: string | null | undefined;
+}) {
   const {
     register,
     handleSubmit,
@@ -89,50 +94,51 @@ export default function MedicalForm({ authEmail }: { authEmail?: string | null |
     reset,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<MedicalFormData>({ mode: "onBlur" });
+  const router = useRouter();
 
   const totalAmount = watch("totalAmount") ?? 0;
   const advance = watch("advance") ?? 0;
   const due = Math.max(0, Number(totalAmount) - Number(advance));
 
   const onSubmit = async (data: MedicalFormData) => {
-
     const payload = {
       ...data,
       due,
       submittedBy: authEmail,
-      createdAt: new Date().toISOString(),
     };
 
-    try{
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/accounts/medical-application`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/med-account/api/v1/med`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
           },
+          body: JSON.stringify(payload),
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log({ result });
+
+      if (result.success) {
+        toast.success(
+          result.message || "Patient record submitted successfully!",
         );
+        router.push("/dashboard/accounts/medical");
+        return;
+      }
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-
-        if(result.success){
-         
-          toast.success(result.message || "Patient record submitted successfully!");
-          return
-        }
-
-        toast.error(result.message || "Failed to submit medical application.");
-    }catch(err){
+      toast.error(result.message || "Failed to submit medical application.");
+    } catch (err) {
       console.error("Submission error:", err);
       toast.error("Failed to submit medical application.");
     }
-
   };
 
   return (

@@ -2,8 +2,10 @@
 "use client";
 
 import { UploadToCloudinary } from "@/app/components/uploadPdf/uploadToCloudinary";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
+import { toast } from "sonner";
 
 // Define the types based on your structure
 export interface AddressEntry {
@@ -20,6 +22,7 @@ export interface IOfficeAddress {
 }
 
 const OfficeAddressForm: React.FC = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -86,8 +89,9 @@ const OfficeAddressForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<IOfficeAddress> = async (data) => {
     try {
+      // office-address/api/v1/create-office-address
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/create-office-address`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/office-address/api/v1/create-office-address`,
         {
           method: "POST",
           headers: {
@@ -98,14 +102,13 @@ const OfficeAddressForm: React.FC = () => {
       );
 
       const result = await response.json();
-     
 
       if (!result.success) {
         throw new Error("Failed to submit form");
       }
 
-      alert("Office address created successfully!");
-      reset();
+      toast.success("Office address created successfully!");
+      router.push("/dashboard/setting/office-address");
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("Failed to submit form. Please try again.");

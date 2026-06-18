@@ -1,4 +1,4 @@
-import AdmissionForm from "@/app/(Public)/student-home-page/student-package-offer/[id]/user-application-form/page";
+import AdmissionForm from "@/app/(Public)/student-home-page/student-package/[id]/user-application-form/page";
 import { X } from "lucide-react";
 import React from "react";
 

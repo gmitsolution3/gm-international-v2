@@ -1,6 +1,6 @@
 export const getMedicalAnalysis = async () => {
   const documents = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/v1/admin/medical/dashboard-stats`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical-application/api/v1/dashboard-stats`,
     {
       cache: "no-store",
     },
@@ -13,9 +13,9 @@ export const getMedicalAnalysis = async () => {
 
 export const getTouristAnalysis = async () => {
   const documents = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/v1/admin/tour/dashboard-stats`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/api/v1/get/dashboard-state`,
     {
-      cache: "force-cache",
+      cache: "no-store",
     },
   );
 
@@ -51,7 +51,7 @@ export const getUserTouristDocuments = async (email: string) => {
 };
 export const getUserMedicalDashboard = async (email: string) => {
   const documents = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-users-medical-documents?email=${email}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical-application/api/v1/user-dashboard-stats?email=${email}`,
     {
       cache: "force-cache",
     },
@@ -64,7 +64,7 @@ export const getUserMedicalDashboard = async (email: string) => {
 
 export const getBusinessAnalysis = async () => {
   const documents = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/v1/admin/business/dashboard-stats`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-application/api/v1/get-dashboard/stats`,
     {
       cache: "force-cache",
     },
@@ -76,7 +76,7 @@ export const getBusinessAnalysis = async () => {
 };
 export const getUmrahHajjAnalysis = async () => {
   const documents = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/v1/admin/umrah-hajj/dashboard-stats`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/umrah-application/api/v1/dashboard-stats`,
     {
       cache: "force-cache",
     },

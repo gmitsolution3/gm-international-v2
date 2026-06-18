@@ -6,7 +6,7 @@ import VisaAccountsTable from "../components/VisaAccountsTable.tsx";
 
 const fetchVisaAccounts = async (email: string | undefined | null) => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/account/visa-application?email=${email}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/acc-business/api/v1/account/visa-application?email=${email}`,
     {
       cache: "no-store",
     },

@@ -102,7 +102,7 @@ const MedicalAccountsTable = ({ data, isAdmin, userRole }: MedicalAccountsTableP
       try {
         // API call to update medical account
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/accounts/map-update/${id}`,
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/med-account/api/v1/med-upd/${id}`,
           {
             method: "PUT",
             headers: {

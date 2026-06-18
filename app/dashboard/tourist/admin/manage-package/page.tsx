@@ -1,13 +1,9 @@
 import React from "react";
-import { AddTouristPackage } from "./components/addTouristpackage";
-import PackageManagement from "./components/packageManagement";
-import TourPackagesAdmin from "./components/packageManagement";
-import { DashboardErrorHandler } from "@/app/dashboard/components/emtryHandaller";
 import SelectTourPackage from "./components/SelectTourPackage";
 
 const TouristManagePackage = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/all/tourist-package/bd-client`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/api/v1/get/all-packages/bd-client`,
     {
       cache: "no-store",
     },
@@ -17,7 +13,7 @@ const TouristManagePackage = async () => {
 
   return (
     <div>
-      <SelectTourPackage initialPackages={resOfResult} />
+      <SelectTourPackage initialPackages={resOfResult.data} />
     </div>
   );
 };

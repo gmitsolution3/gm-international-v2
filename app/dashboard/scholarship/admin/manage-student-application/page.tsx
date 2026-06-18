@@ -3,10 +3,10 @@ import UserApplication from "./components/userApplication";
 
 const ManageStudentApplication = async () => {
   const manageApplicationData = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/manage-application`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/scholarship-application/api/v1/get/all-applications`,
     {
       cache: "no-store",
-    }
+    },
   );
   const applicationData = await manageApplicationData.json();
 
@@ -24,7 +24,7 @@ const ManageStudentApplication = async () => {
           </div>
           <AddApplication />
         </div>
-        <UserApplication applicationData={applicationData} />
+        <UserApplication applicationData={applicationData.data} />
       </div>
     </main>
   );

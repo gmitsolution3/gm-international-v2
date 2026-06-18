@@ -122,7 +122,7 @@ const VisaAccountsTable = ({
 
       // API call to update visa account
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/accounts/vap-update/${id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/acc-business/api/v1/accounts/vap-update/${id}`,
         {
           method: "PUT",
           headers: {
@@ -160,8 +160,6 @@ const VisaAccountsTable = ({
     setEditingId(null);
     setEditData({});
   };
-
- 
 
   const handleInputChange = (
     field: keyof VisaAccount,

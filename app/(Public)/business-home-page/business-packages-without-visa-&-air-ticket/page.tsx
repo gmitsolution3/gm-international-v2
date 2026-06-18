@@ -23,7 +23,7 @@ const WithoutVisaAndAirTicket =async () => {
         </h1>
       </div>
       <div className="max-w-7xl mx-auto">
-        <ShowHomePackage packages={packageData}  />
+        <ShowHomePackage packages={packageData.data}  />
       </div>
     </div>
   );

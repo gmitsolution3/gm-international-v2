@@ -1,29 +1,3 @@
-// import React from "react";
-// import { getUmrahDataBySlug } from "../umrah-packages/[id]/page";
-// import UmrahHajjApplicationForm from "../components/applicationForm/umrahHajjApplicationForm";
-
-// interface Props {
-//   searchParams: Promise<{
-//     pkgId?: string;
-//   }>;
-// }
-
-// const UmrahHajjApplication = async ({ searchParams }: Props) => {
-//   const { pkgId } = await searchParams;
-//   const pkgDetails = await getUmrahDataBySlug(pkgId as string);
-//   console.log(pkgDetails);
-
-//   return <div className="min-h-screen">
-//     <h1 className="text-3xl font-bold mb-6">Umrah & Hajj Application Form</h1>
-//     <p className="mb-4">You are applying for the package: <strong>{pkgDetails.data.name}</strong></p>
-//     <div><UmrahHajjApplicationForm pkg={pkgDetails.data} /></div>
-//   </div>;
-// };
-
-// export default UmrahHajjApplication;
-
-
-
 // app/umrah-hajj-application/page.tsx
 import React from "react";
 import { getUmrahDataBySlug } from "../umrah-packages/[id]/page";

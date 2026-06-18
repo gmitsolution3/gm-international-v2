@@ -12,32 +12,18 @@ import {
   Users,
   Calendar,
   MapPin,
-  DollarSign,
-  Eye,
   Filter,
   Download,
   CheckSquare,
   Square,
   AlertCircle,
-  UserPlus,
-  Mail,
-  Phone,
-  Building,
-  Clock,
   Globe,
-  CreditCard,
   Plane,
-  MoreVertical,
   ChevronLeft,
   ChevronRight,
-  Star,
-  TrendingUp,
   Package,
-  CalendarRange,
-  Users2,
   Wallet,
   BadgeCheck,
-  AlertTriangle,
 } from "lucide-react";
 import { FaPassport } from "react-icons/fa";
 import { toast } from "sonner";
@@ -67,88 +53,6 @@ interface CantonFairPackage {
   isWithVisaAndAirTicket: boolean;
 }
 
-interface B2BUser {
-  id: string;
-  name: string;
-  email: string;
-  company: string;
-  phone: string;
-  status: "active" | "inactive";
-  assignedPackages: string[];
-  creditLimit?: number;
-  specializations?: string[];
-}
-
-// Mock B2B Users Data
-const mockB2BUsers: B2BUser[] = [
-  {
-    id: "1",
-    name: "Rajesh Kumar",
-    email: "rajesh@travel-india.com",
-    company: "Travel India Solutions",
-    phone: "+91 98765 43210",
-    status: "active",
-    assignedPackages: ["698b606fec910099f705852a"],
-    creditLimit: 500000,
-    specializations: ["Canton Fair", "Business Tours"],
-  },
-  {
-    id: "2",
-    name: "Sarah Chen",
-    email: "sarah.chen@asiantravel.sg",
-    company: "Asian Travel Singapore",
-    phone: "+65 9123 4567",
-    status: "active",
-    assignedPackages: [],
-    creditLimit: 300000,
-    specializations: ["Trade Fairs", "Corporate Travel"],
-  },
-  {
-    id: "3",
-    name: "Mohammed Al-Rashid",
-    email: "m.alrashid@dubaitravel.ae",
-    company: "Dubai Travel & Tourism",
-    phone: "+971 50 123 4567",
-    status: "active",
-    assignedPackages: ["698dcc8fa3bfe12170ad1143", "698dcd9a3930d7c5c71f7704"],
-    creditLimit: 750000,
-    specializations: ["Luxury Travel", "Exhibitions"],
-  },
-  {
-    id: "4",
-    name: "Linda Watson",
-    email: "l.watson@globaltours.uk",
-    company: "Global Tours UK",
-    phone: "+44 7700 900123",
-    status: "inactive",
-    assignedPackages: [],
-    creditLimit: 250000,
-    specializations: ["Group Tours"],
-  },
-  {
-    id: "5",
-    name: "Dr. Wei Zhang",
-    email: "wei.zhang@chinatravel.com",
-    company: "China Travel International",
-    phone: "+86 138 0013 8000",
-    status: "active",
-    assignedPackages: ["69903601e66f41f9b0648ae6"],
-    creditLimit: 1000000,
-    specializations: ["Canton Fair", "Medical Tourism", "Business Travel"],
-  },
-  {
-    id: "6",
-    name: "Maria Garcia",
-    email: "maria@spainbusiness.com",
-    company: "Spain Business Travel",
-    phone: "+34 612 345 678",
-    status: "active",
-    assignedPackages: [],
-    creditLimit: 400000,
-    specializations: ["European Market", "Trade Fairs"],
-  },
-];
-
 interface CantonFairPackageManagerProps {
   initialPackages?: CantonFairPackage[];
 }
@@ -165,7 +69,6 @@ const CantonFairPackageManager: React.FC<CantonFairPackageManagerProps> = ({
   const [selectedPackages, setSelectedPackages] = useState<Set<string>>(
     new Set(),
   );
-  const [showAssignModal, setShowAssignModal] = useState(false);
   const [showBulkAssign, setShowBulkAssign] = useState(false);
   const [expandedPackage, setExpandedPackage] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -179,7 +82,6 @@ const CantonFairPackageManager: React.FC<CantonFairPackageManagerProps> = ({
   const [sortBy, setSortBy] = useState<"name" | "price" | "date" | "pax">(
     "date",
   );
-  const [showUserDropdown, setShowUserDropdown] = useState<string | null>(null);
   const [notification, setNotification] = useState<{
     type: "success" | "error";
     message: string;
@@ -187,163 +89,10 @@ const CantonFairPackageManager: React.FC<CantonFairPackageManagerProps> = ({
   const [selectedB2BUsers, setSelectedB2BUsers] = useState<Set<string>>(
     new Set(),
   );
-  const [b2bUsers] = useState<B2BUser[]>(mockB2BUsers);
+
   const [showQuickView, setShowQuickView] = useState<CantonFairPackage | null>(
     null,
   );
-
-  // Load initial data
-  useEffect(() => {
-    if (initialPackages.length === 0) {
-      // Use your provided data
-      const mockPackages: CantonFairPackage[] = [
-        {
-          _id: "698b606fec910099f705852a",
-          packageName: "Canton Fair Package 01",
-          eventName: "China Canton Fair Phase 1",
-          duration: "6 Night 7 Days",
-          country: "China",
-          phases: [
-            {
-              phaseNumber: 1,
-              startDate: "2026-04-15",
-              endDate: "2026-04-19",
-              returnCity: "Guangzhou",
-            },
-          ],
-          maxPrice: 120000,
-          minimumPax: 2,
-          image:
-            "https://res.cloudinary.com/dqyfwfeed/image/upload/v1770902910/xvdvw9jed1l6tjvme3u6.jpg",
-          createdAt: "2026-02-10T16:37:59.782Z",
-          createdBy: "sabbir@gmail.com",
-          packageStatus: "active",
-          paxPrice: 1289001,
-          isWithVisaAndAirTicket: true,
-        },
-        {
-          _id: "698dcc8fa3bfe12170ad1143",
-          packageName: "Canton Fair Package 02",
-          eventName: "China Canton Fair Phase 2",
-          duration: "6 Night 7 Days",
-          country: "China",
-          phases: [
-            {
-              phaseNumber: "2",
-              startDate: "23 April",
-              endDate: "27 April",
-              returnCity: "Guangzhou",
-            },
-          ],
-          maxPrice: 120000,
-          minimumPax: 2,
-          image:
-            "https://res.cloudinary.com/dqyfwfeed/image/upload/v1770900521/ndxrfgskhzovjvltipuh.jpg",
-          createdAt: "2026-02-12T12:47:16.436Z",
-          createdBy: "sabbir@gmail.com",
-          packageStatus: "active",
-          isWithVisaAndAirTicket: true,
-        },
-        {
-          _id: "698dcd9a3930d7c5c71f7704",
-          packageName: "Canton Fair Package 03",
-          eventName: "China Canton Fair Phase 3",
-          duration: "6 Night 7 Days",
-          country: "China",
-          phases: [
-            {
-              phaseNumber: "3",
-              startDate: "1 May",
-              endDate: "5 May",
-              returnCity: "Guangzhou",
-            },
-          ],
-          maxPrice: 120000,
-          minimumPax: 2,
-          image:
-            "https://res.cloudinary.com/dqyfwfeed/image/upload/v1771411304/dgjor88zp6aslejsrucz.png",
-          createdAt: "2026-02-12T12:52:03.592Z",
-          createdBy: "sabbir@gmail.com",
-          packageStatus: "active",
-          isWithVisaAndAirTicket: true,
-        },
-        {
-          _id: "69903601e66f41f9b0648ae6",
-          packageName: "Canton Fair Package 1",
-          eventName: "Canton Fair Phase 1",
-          duration: "6 Night 7 Days",
-          country: "China",
-          phases: [
-            {
-              phaseNumber: 1,
-              startDate: "15 April",
-              endDate: "19 April",
-              returnCity: "Dhaka",
-            },
-          ],
-          maxPrice: 57999,
-          minimumPax: 2,
-          image:
-            "https://res.cloudinary.com/dqyfwfeed/image/upload/v1771076750/is5e2lwp9almry2bvefs.jpg",
-          createdAt: "2026-02-14T08:43:15.721Z",
-          createdBy: "sabbir@gmail.com",
-          packageStatus: "active",
-          isWithVisaAndAirTicket: false,
-        },
-        {
-          _id: "69907d30cd158f024d7594d2",
-          packageName: "Canton Fair Package 2",
-          eventName: "China Canton Fair Phase 2",
-          duration: "6 Night 7 Days",
-          country: "China",
-          phases: [
-            {
-              phaseNumber: "2",
-              startDate: "23 April",
-              endDate: "27 April",
-              returnCity: "Dhaka",
-            },
-          ],
-          maxPrice: 57999,
-          minimumPax: 2,
-          image:
-            "https://res.cloudinary.com/dqyfwfeed/image/upload/v1771076827/swajuehhlutwg4jog8yh.png",
-          createdAt: "2026-02-14T13:46:30.567Z",
-          createdBy: "sabbir@gmail.com",
-          packageStatus: "active",
-          isWithVisaAndAirTicket: false,
-        },
-        {
-          _id: "69907dc19c12a6b65220bae4",
-          packageName: "Canton Fair Package 3",
-          eventName: "China Canton Fair Phase 3",
-          duration: "6 Night 7 Days",
-          country: "China",
-          phases: [
-            {
-              phaseNumber: "3",
-              startDate: "1 May",
-              endDate: "5 May",
-              returnCity: "Dhaka",
-            },
-          ],
-          maxPrice: 57999,
-          minimumPax: 2,
-          image:
-            "https://res.cloudinary.com/dqyfwfeed/image/upload/v1771076992/wiqzmdvq4luynudzaacg.jpg",
-          createdAt: "2026-02-14T13:49:15.225Z",
-          createdBy: "sabbir@gmail.com",
-          packageStatus: "active",
-          isWithVisaAndAirTicket: false,
-        },
-      ];
-      setPackages(mockPackages);
-      setFilteredPackages(mockPackages);
-    } else {
-      setPackages(initialPackages);
-      setFilteredPackages(initialPackages);
-    }
-  }, [initialPackages]);
 
   // Filter and search logic
   useEffect(() => {
@@ -424,26 +173,6 @@ const CantonFairPackageManager: React.FC<CantonFairPackageManagerProps> = ({
     }
   };
 
-  const toggleB2BUserSelection = (userId: string) => {
-    const newSelection = new Set(selectedB2BUsers);
-    if (newSelection.has(userId)) {
-      newSelection.delete(userId);
-    } else {
-      newSelection.add(userId);
-    }
-    setSelectedB2BUsers(newSelection);
-  };
-
-  // Assignment handlers
-  const handleSingleAssign = (pkg: CantonFairPackage, user: B2BUser) => {
-   
-    setNotification({
-      type: "success",
-      message: `Successfully assigned "${pkg.packageName}" to ${user.name}`,
-    });
-    setTimeout(() => setNotification(null), 3000);
-  };
-
   const handleBulkAssign = async () => {
     if (selectedPackages.size === 0) {
       setNotification({
@@ -457,11 +186,16 @@ const CantonFairPackageManager: React.FC<CantonFairPackageManagerProps> = ({
       const assignAblePackages = Array.from(selectedPackages);
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b/created-business-package`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b/business-pkg/api/v1/create`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(assignAblePackages),
+          body: JSON.stringify({
+            packageIds: assignAblePackages,
+            action: "assign_business_pkg",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          }),
         },
       );
 
@@ -469,7 +203,7 @@ const CantonFairPackageManager: React.FC<CantonFairPackageManagerProps> = ({
 
       if (!result.success) {
         toast.error(`find error: ${result.message}`);
-        return
+        return;
       }
 
       toast.success(
@@ -963,16 +697,7 @@ const CantonFairPackageManager: React.FC<CantonFairPackageManagerProps> = ({
                   </div>
                 )}
 
-                {/* Action Buttons */}
-                {/* <div className="mt-4 flex gap-2">
-                  <button
-                    onClick={() => setShowBulkAssign(true)}
-                    className="flex-1 inline-flex items-center justify-center px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors"
-                  >
-                    <UserPlus size={16} className="mr-2" />
-                    Assign
-                  </button>
-                </div> */}
+               
               </div>
             </div>
           ))}
@@ -1050,7 +775,7 @@ const CantonFairPackageManager: React.FC<CantonFairPackageManagerProps> = ({
 
       {/* Bulk Assign Modal */}
       {showBulkAssign && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 backdrop-blur-lg bg-white/40 bg-opacity-50 flex items-center justify-center p-4 z-50">
           <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between">
               <h2 className="text-xl font-semibold text-gray-900">

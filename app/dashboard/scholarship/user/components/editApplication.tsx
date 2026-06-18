@@ -86,13 +86,14 @@ const StudentApplicationManager = ({
       try {
         setLoading(true);
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/application-status?email=${email}`,
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/scholarship-application/api/v1/get/user/application/${email}`,
           {
             cache: "no-cache",
-          }
+          },
         );
         const data = await response.json();
-        setApplications(data);
+        console.log({data})
+        setApplications(data.data);
       } catch (error) {
         console.error("Error fetching applications:", error);
       } finally {

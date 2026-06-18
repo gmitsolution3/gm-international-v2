@@ -1,9 +1,9 @@
 export const getPackageWithoutVisa = async () => {
   const res = await fetch(
-    `${process.env.NEXT_EXPRESS_BASE_URL}/home-page-package-without-visa-air-ticket`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/business-package/api/v1/get/business-home-pkg-without-visa`,
     {
       cache: "no-store",
-    }
+    },
   );
 
   if (!res.ok) throw new Error("Failed to fetch packages");
@@ -12,9 +12,12 @@ export const getPackageWithoutVisa = async () => {
 };
 
 export const getAllPackageWithoutVisa = async () => {
-  const res = await fetch(`${process.env.NEXT_EXPRESS_BASE_URL}/all-package-without-visa-and-air-ticket`, {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_EXPRESS_BASE_URL}/business-package/api/v1/get/business-all-pkg-without-visa`,
+    {
+      cache: "no-store",
+    },
+  );
 
   if (!res.ok) throw new Error("Failed to fetch packages");
 
@@ -26,7 +29,7 @@ export const getCompany = async (id: string) => {
     `${process.env.NEXT_EXPRESS_BASE_URL}/get-company/${id}`,
     {
       cache: "no-store",
-    }
+    },
   );
 
   if (!res.ok) throw new Error("Failed to fetch packages");
@@ -36,10 +39,10 @@ export const getCompany = async (id: string) => {
 
 export const getHomePackage = async () => {
   const res = await fetch(
-    `${process.env.NEXT_EXPRESS_BASE_URL}/get-homepage-business-package`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/business-package/api/v1/get/business-home-pkg`,
     {
       cache: "no-store",
-    }
+    },
   );
 
   if (!res.ok) throw new Error("Failed to fetch packages");
@@ -48,10 +51,10 @@ export const getHomePackage = async () => {
 };
 export const getBusinessPackages = async () => {
   const res = await fetch(
-    `${process.env.NEXT_EXPRESS_BASE_URL}/get-business-packages`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/business-package/api/v1/get/all-packages`,
     {
       cache: "no-store",
-    }
+    },
   );
 
   if (!res.ok) throw new Error("Failed to fetch packages");
@@ -61,10 +64,10 @@ export const getBusinessPackages = async () => {
 
 export const getBusinessDetails = async (id: string) => {
   const res = await fetch(
-    `${process.env.NEXT_EXPRESS_BASE_URL}/get-business-details/${id}`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/business-package/api/v1/get/single-package/${id}`,
     {
       cache: "no-store",
-    }
+    },
   );
 
   if (!res.ok) throw new Error("Failed to fetch packages");

@@ -173,7 +173,7 @@ export function UserApplicationsTable({ edit }: { edit?: boolean }) {
                 {!edit && (
                   <td className="px-6 py-4 text-sm text-blue-500 dark:text-slate-400 hover:underline hover:cursor-pointer hover:link">
                     <Link
-                      href={`/student-home-page/student-package-offer/${application.applicantId}`}
+                      href={`/student-home-page/student-package/${application.applicantId}`}
                     >
                       View Details
                     </Link>

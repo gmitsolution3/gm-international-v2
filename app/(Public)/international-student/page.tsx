@@ -12,7 +12,7 @@ export const metadata = generateSEO(
 
 const InternationalStudent = async () => {
   const res = await fetch(
-    `${process.env.NEXT_EXPRESS_BASE_URL}/international-student-package`,
+    `${process.env.NEXT_EXPRESS_BASE_URL}/scholarship-package/api/v1/get-international-all-pkg`,
     {
       cache: "no-store",
     },
@@ -83,7 +83,7 @@ const InternationalStudent = async () => {
 
         {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-10">
-          {result.map((offer: any, index: number) => (
+          {result.data.map((offer: any, index: number) => (
             <OfferCard key={index} offer={offer} from={from} />
           ))}
         </div>

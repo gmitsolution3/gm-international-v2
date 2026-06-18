@@ -8,7 +8,7 @@ import ManageTeamMember from "./components/ManageTeamMember";
 export const getTeamMember = async () => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/get-office-team`,
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/about-team/api/v1/get/all-team-member`,
       {
         cache: "no-store",
       },

@@ -90,7 +90,7 @@ const UmrahHajjAnalysisState: React.FC<UmrahHajjAnalysisStateProps> = ({
 
   // Top packages data
   const topPackagesData = topPackages.map((pkg, index) => ({
-    name: pkg._id.length > 25 ? pkg._id.substring(0, 25) + "..." : pkg._id,
+    name: pkg._id ? pkg._id.substring(0, 25) + "..." : pkg._id,
     fullName: pkg._id,
     count: pkg.count,
     revenue: pkg.totalRevenue,

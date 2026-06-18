@@ -9,7 +9,6 @@ import {
   CheckCircle,
 } from "lucide-react";
 import { ApplicationForm } from "./type";
-import { EditApplication } from "../../medical/users/components/editApplication";
 import { EditBusinessApplication } from "./editBusinessApplication";
 
 

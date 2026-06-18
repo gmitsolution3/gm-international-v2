@@ -24,10 +24,8 @@ export const formatDate = (dateString: string) => {
    });
  };
 
-const AssignStudentPackage = async ({ searchParams }: any) => {
-  
+const AssignStudentPackage = async () => {
   const b2bUser = await getB2BStudentPackage();
-
   return (
     <>
       <div>

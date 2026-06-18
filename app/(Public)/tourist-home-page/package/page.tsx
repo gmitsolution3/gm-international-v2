@@ -10,10 +10,9 @@ export const metadata = generateSEO(
   "GM International provides professional tourist visa services, travel planning, holiday packages, flight booking, and international travel assistance for China, Thailand, and Malaysia.",
 );
 
-
 const TouristAllPackage = async () => {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/all/tourist-package/bd-client`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-package/api/v1/get/all-packages/bd-client`,
     {
       next: { revalidate: 300 },
     },
@@ -42,7 +41,7 @@ const TouristAllPackage = async () => {
           <TouristFilter allPackage={data} />
         </div> */}
         <div>
-          <TouristHomePackages packages={data} />
+          <TouristHomePackages packages={data.data} />
         </div>
       </div>
     </div>

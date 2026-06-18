@@ -16,8 +16,6 @@ export async function OfferSidebar({
 }: OfferSidebarProps) {
   const session: any = await getServerSession(authConfig);
 
-
-
   const {
     _id,
     city,
@@ -30,6 +28,8 @@ export async function OfferSidebar({
     serviceFee,
     universityName,
   } = packageSidebarInfo;
+
+  console.log({_id})
 
   return (
     <Card className="sticky top-8 bg-muted/50">
@@ -82,7 +82,7 @@ export async function OfferSidebar({
         {source?.form && source.b2bId ? (
           <div>
             <Link
-              href={`/student-home-page/student-package-offer/user_application_form/${_id}?b2bId=${source.b2bId}&form=${source.form}`}
+              href={`/student-home-page/student-package/user_application_form/${_id}?b2bId=${source.b2bId}&form=${source.form}`}
               className="hover:cursor-pointer"
             >
               <Button className="w-full bg-destructive hover:bg-destructive/90 text-primary-foreground font-semibold h-11 hover:cursor-pointer">
@@ -101,7 +101,7 @@ export async function OfferSidebar({
         ) : (
           <div>
             <Link
-              href={`/student-home-page/student-package-offer/user_application_form/${_id}`}
+              href={`/student-home-page/student-package/user_application_form/${_id}`}
               className="hover:cursor-pointer"
             >
               <Button className="w-full bg-destructive hover:bg-destructive/90 text-primary-foreground font-semibold h-11 hover:cursor-pointer">

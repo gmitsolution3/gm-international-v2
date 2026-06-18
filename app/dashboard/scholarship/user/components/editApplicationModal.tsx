@@ -1,6 +1,6 @@
 "use client";
 
-import Dropdown from "@/app/(Public)/student-home-page/student-package-offer/user_application_form/components/dropDown";
+import Dropdown from "@/app/(Public)/student-home-page/student-package/user_application_form/components/dropDown";
 import { Loader2, Upload } from "lucide-react";
 import { useEffect, useState } from "react";
 

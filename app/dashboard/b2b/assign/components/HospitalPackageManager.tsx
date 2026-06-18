@@ -62,55 +62,6 @@ interface B2BUser {
   assignedPackages: string[];
 }
 
-// Mock B2B Users Data
-const mockB2BUsers: B2BUser[] = [
-  {
-    id: "1",
-    name: "Rajesh Kumar",
-    email: "rajesh@healthcare-india.com",
-    company: "Healthcare India Pvt Ltd",
-    phone: "+91 98765 43210",
-    status: "active",
-    assignedPackages: ["699c226f0dbc738fa9f259ce"],
-  },
-  {
-    id: "2",
-    name: "Sarah Chen",
-    email: "sarah.chen@medconnect.sg",
-    company: "MedConnect Singapore",
-    phone: "+65 9123 4567",
-    status: "active",
-    assignedPackages: [],
-  },
-  {
-    id: "3",
-    name: "Mohammed Al-Rashid",
-    email: "m.alrashid@dubai-health.ae",
-    company: "Dubai Health Authority",
-    phone: "+971 50 123 4567",
-    status: "active",
-    assignedPackages: ["699c27ef0eb84c9ce85476ee", "699d60d355ccf27d20166e81"],
-  },
-  {
-    id: "4",
-    name: "Linda Watson",
-    email: "l.watson@globalmed.uk",
-    company: "Global Medical Solutions UK",
-    phone: "+44 7700 900123",
-    status: "inactive",
-    assignedPackages: [],
-  },
-  {
-    id: "5",
-    name: "Dr. Wei Zhang",
-    email: "wei.zhang@chinamed.com",
-    company: "China Medical International",
-    phone: "+86 138 0013 8000",
-    status: "active",
-    assignedPackages: ["699e9d48db4c2a2adaf49762"],
-  },
-];
-
 interface HospitalPackageManagerProps {
   initialPackages?: HospitalPackage[];
 }
@@ -126,8 +77,6 @@ const HospitalPackageManager: React.FC<HospitalPackageManagerProps> = ({
   const [selectedPackages, setSelectedPackages] = useState<Set<string>>(
     new Set(),
   );
-  const [showAssignModal, setShowAssignModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<B2BUser | null>(null);
   const [showBulkAssign, setShowBulkAssign] = useState(false);
   const [expandedPackage, setExpandedPackage] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
@@ -138,7 +87,6 @@ const HospitalPackageManager: React.FC<HospitalPackageManagerProps> = ({
   const [sortBy, setSortBy] = useState<"name" | "views" | "rating" | "newest">(
     "newest",
   );
-  const [showUserDropdown, setShowUserDropdown] = useState<string | null>(null);
   const [notification, setNotification] = useState<{
     type: "success" | "error";
     message: string;
@@ -146,100 +94,8 @@ const HospitalPackageManager: React.FC<HospitalPackageManagerProps> = ({
   const [selectedB2BUsers, setSelectedB2BUsers] = useState<Set<string>>(
     new Set(),
   );
-  const [b2bUsers] = useState<B2BUser[]>(mockB2BUsers);
-
-  // Load initial data (in real app, this would be an API call)
-  useEffect(() => {
-    if (initialPackages.length === 0) {
-      // Simulate loading from your JSON data
-      const mockPackages: HospitalPackage[] = [
-        {
-          _id: "699c226f0dbc738fa9f259ce",
-          hospital_name:
-            "The First Affiliated Hospital of Sun Yat-sen University",
-          country_name: "China",
-          city_name: "Guangzhou",
-          provience: "Guangdong",
-          photo:
-            "https://res.cloudinary.com/dqyfwfeed/image/upload/v1771839712/c2znw9bwvinmuwzp945e.jpg",
-          hospital_type: "public",
-          department: [
-            "Dermatology",
-            "Neurology/Neurosurgery",
-            "Surgery",
-            "Gynecology & Obstetrics",
-          ],
-          total_view: 15,
-          total_sell: 0,
-          createdAt: "2026-02-23T09:39:53.362Z",
-          createdBy: "sabbir@gmail.com",
-          updatedAt: "2026-02-23T09:39:53.362Z",
-          rating: 5,
-        },
-        {
-          _id: "699c27ef0eb84c9ce85476ee",
-          hospital_name: "Sun Yat-sen Memorial Hospital",
-          country_name: "China",
-          city_name: "Guangzhou",
-          provience: "Guangdong",
-          photo:
-            "https://res.cloudinary.com/dqyfwfeed/image/upload/v1771841127/myjvmz6crdppzidkjyfj.jpg",
-          hospital_type: "public",
-          department: ["Oncology", "Immunology", "Radiology", "Urology"],
-          total_view: 29,
-          total_sell: 5,
-          createdAt: "2026-02-23T10:05:18.482Z",
-          createdBy: "sabbir@gmail.com",
-          updatedAt: "2026-02-23T10:05:18.482Z",
-          rating: 5,
-        },
-        {
-          _id: "699d60d355ccf27d20166e81",
-          hospital_name: "Zhongshan Ophthalmic Center",
-          country_name: "China",
-          city_name: "Guangzhou",
-          provience: "Guangdong",
-          photo:
-            "https://res.cloudinary.com/dqyfwfeed/image/upload/v1771921108/gtodgtts4pavkmqyttlb.png",
-          hospital_type: "public",
-          department: ["Cataract", "Glaucoma", "Retina", "Corneal Disease"],
-          total_view: 6,
-          total_sell: 0,
-          createdAt: "2026-02-24T08:17:20.672Z",
-          createdBy: "sabbir@gmail.com",
-          updatedAt: "2026-02-24T08:17:20.672Z",
-          rating: 5,
-        },
-        {
-          _id: "699ea2ec5487a7e1fd83c5d0",
-          hospital_name: "Shenzhen Hengsheng Hospital",
-          country_name: "China",
-          city_name: "Guangzhou",
-          provience: "Guangdong",
-          photo:
-            "https://res.cloudinary.com/dqyfwfeed/image/upload/v1772003742/cwcln5eigjswbootpmyt.jpg",
-          hospital_type: "private",
-          department: ["Pediatrics", "Obstetrics", "IVF", "Rehabilitation"],
-          total_view: 2,
-          total_sell: 0,
-          createdAt: "2026-02-25T07:14:24.856Z",
-          createdBy: "sabbir@gmail.com",
-          updatedAt: "2026-02-25T07:14:24.856Z",
-          rating: 5,
-        },
-      ];
-      setPackages(mockPackages);
-      setFilteredPackages(mockPackages);
-    } else {
-      setPackages(initialPackages);
-      setFilteredPackages(initialPackages);
-    }
-  }, [initialPackages]);
-
-  // Filter and search logic
   useEffect(() => {
     let filtered = [...packages];
-
     // Apply search
     if (searchTerm) {
       filtered = filtered.filter(
@@ -319,7 +175,7 @@ const HospitalPackageManager: React.FC<HospitalPackageManagerProps> = ({
   // Assignment handlers
   const handleSingleAssign = (pkg: HospitalPackage, user: B2BUser) => {
     // In real app, make API call here
-    
+
     setNotification({
       type: "success",
       message: `Successfully assigned "${pkg.hospital_name}" to ${user.name}`,
@@ -327,16 +183,8 @@ const HospitalPackageManager: React.FC<HospitalPackageManagerProps> = ({
     setTimeout(() => setNotification(null), 3000);
   };
 
-  const handleBulkAssign =async () => {
-    console.log({ handleBulk: "click" });
-    // if (selectedB2BUsers.size === 0) {
-    //   setNotification({
-    //     type: "error",
-    //     message: "Please select at least one B2B user",
-    //   });
-    //   setTimeout(() => setNotification(null), 3000);
-    //   return;
-    // }
+  const handleBulkAssign = async () => {
+   
 
     try {
       if (selectedPackages.size === 0) {
@@ -348,32 +196,41 @@ const HospitalPackageManager: React.FC<HospitalPackageManagerProps> = ({
         return;
       }
 
-   
-
       const assignAblePackages = Array.from(selectedPackages);
 
-  
-
-      const res = await fetch(`${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b/created-medical-package`,{
-        method: "POST",
-        headers: {"Content-Type" : "application/json",},
-        body: JSON.stringify(assignAblePackages)
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b-medical-pkg/api/v1/create`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          // body: JSON.stringify(assignAblePackages),
+          body: JSON.stringify({
+            packageIds: assignAblePackages,
+            action: "assign_medical_pkg_to_b2b",
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          }),
+        },
+      );
 
       const result = await res.json();
 
-      if(!result.success){
-        toast.error(`find error: ${result.message}`)
+      console.log({ assignAblePackages });
+
+      console.log({ result });
+
+      if (!result.success) {
+        toast.error(`find error: ${result.message}`);
+        return;
       }
 
-
-   
-
-      toast.success(`Successfully assigned ${selectedPackages.size} package(s)`)
-    //   setNotification({
-    //     type: "success",
-    //     message: `Successfully assigned ${selectedPackages.size} package(s)`,
-    //   });
+      toast.success(
+        `Successfully assigned ${selectedPackages.size} package(s)`,
+      );
+      //   setNotification({
+      //     type: "success",
+      //     message: `Successfully assigned ${selectedPackages.size} package(s)`,
+      //   });
       setTimeout(() => setNotification(null), 3000);
       setShowBulkAssign(false);
       setSelectedPackages(new Set());
@@ -393,7 +250,7 @@ const HospitalPackageManager: React.FC<HospitalPackageManagerProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 z-9999">
       {/* Notification */}
       {notification && (
         <div
@@ -659,52 +516,6 @@ const HospitalPackageManager: React.FC<HospitalPackageManagerProps> = ({
                         </div>
                       </div>
                     </td>
-                    {/* <td className="px-6 py-4">
-                      <div className="relative">
-                        <button
-                          onClick={() =>
-                            setShowUserDropdown(
-                              showUserDropdown === pkg._id ? null : pkg._id,
-                            )
-                          }
-                          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                        >
-                          <UserPlus size={18} className="text-gray-600" />
-                        </button>
-
-                        
-                        {showUserDropdown === pkg._id && (
-                          <div className="absolute right-0 mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 z-10">
-                            <div className="p-3 border-b border-gray-200">
-                              <p className="text-sm font-medium text-gray-900">
-                                Assign to B2B User
-                              </p>
-                            </div>
-                            <div className="max-h-64 overflow-y-auto">
-                              {b2bUsers
-                                .filter((u) => u.status === "active")
-                                .map((user) => (
-                                  <button
-                                    key={user.id}
-                                    onClick={() => {
-                                      handleSingleAssign(pkg, user);
-                                      setShowUserDropdown(null);
-                                    }}
-                                    className="w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0"
-                                  >
-                                    <p className="text-sm font-medium text-gray-900">
-                                      {user.name}
-                                    </p>
-                                    <p className="text-xs text-gray-500">
-                                      {user.company}
-                                    </p>
-                                  </button>
-                                ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    </td> */}
                   </tr>
                 ))}
               </tbody>
@@ -831,25 +642,6 @@ const HospitalPackageManager: React.FC<HospitalPackageManagerProps> = ({
                     ))}
                   </div>
                 )}
-
-                {/* Action Buttons */}
-                {/* <div className="mt-4 flex gap-2">
-                  <button
-                    onClick={() =>
-                      setSelectedUser(
-                        b2bUsers.find((u) => u.status === "active") || null,
-                      )
-                    }
-                    className="flex-1 inline-flex items-center justify-center px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors"
-                  >
-                    <UserPlus size={16} className="mr-2" />
-                    Assign
-                  </button>
-                  <button className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-sm rounded-lg transition-colors">
-                    <Eye size={16} className="mr-2" />
-                    Details
-                  </button>
-                </div> */}
               </div>
             </div>
           ))}
@@ -927,7 +719,7 @@ const HospitalPackageManager: React.FC<HospitalPackageManagerProps> = ({
 
       {/* Bulk Assign Modal */}
       {showBulkAssign && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 backdrop-blur-2xl bg-white/30 bg-opacity-50 flex items-center justify-center p-4 z-9999">
           <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
             <div className="p-6 border-b border-gray-200 flex items-center justify-between">
               <h2 className="text-xl font-semibold text-gray-900">

@@ -36,9 +36,7 @@ const MedicalForm = ({ onClose, email }: onCloseProps) => {
       description: "",
       total_view: 0,
       total_sell: 0,
-      createdAt: new Date(),
       createdBy: email || "admin",
-      updatedAt: new Date(),
       rating: 0,
     },
   });
@@ -48,7 +46,6 @@ const MedicalForm = ({ onClose, email }: onCloseProps) => {
   const [imageUploading, setImageUploading] = useState(false);
   const [imageURL, setImageURL] = useState<string | null>(null);
   const [departmentInput, setDepartmentInput] = useState("");
-
 
   const handleAddDepartment = () => {
     if (!departmentInput.trim()) return;
@@ -75,7 +72,7 @@ const MedicalForm = ({ onClose, email }: onCloseProps) => {
 
     try {
       const imgURL = await handleFileUpload(file);
-      
+
       if (!imgURL) {
         return toast.error("Image not uploaded! try again");
       }
@@ -88,18 +85,14 @@ const MedicalForm = ({ onClose, email }: onCloseProps) => {
     }
   };
 
-
-
   const onSubmit = async (data: MedicalFormData) => {
-    
     const finalData = {
       ...data,
       photo: imageURL,
     };
 
-
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical-list`,
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/medical-pkg/api/v1/create-medical-pkg`,
       {
         method: "POST",
         headers: {
@@ -122,16 +115,14 @@ const MedicalForm = ({ onClose, email }: onCloseProps) => {
       return;
     }
 
-    if (result.insertedId) {
-      Swal.fire({
-        title: "Your Form has been submitted",
-        icon: "success",
-        draggable: false,
-        showConfirmButton: false,
-        timer: 2000,
-      });
-      onClose();
-    }
+    Swal.fire({
+      title: "Your Form has been submitted",
+      icon: "success",
+      draggable: false,
+      showConfirmButton: false,
+      timer: 2000,
+    });
+    onClose();
   };
 
   return (
@@ -336,7 +327,6 @@ const MedicalForm = ({ onClose, email }: onCloseProps) => {
             </div>
           </div>
 
-        
           <div>
             <label className="block text-sm font-medium text-red-800 mb-2">
               Departments
@@ -388,7 +378,7 @@ const MedicalForm = ({ onClose, email }: onCloseProps) => {
             <Controller
               name="description"
               control={control}
-              rules={{ 
+              rules={{
                 required: "Description is required",
                 minLength: {
                   value: 10,

@@ -1,7 +1,7 @@
 
 export const getScholarshipsAnalysis = async () => {
   const documents = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/v1/admin/scholarship/dashboard-stats`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/scholarship-application/api/v1/get-dashboard-stats`,
     {
       cache: "no-store",
     },

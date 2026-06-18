@@ -23,7 +23,7 @@ const BusinessPackage = async() => {
         </div>
       </div>
       <div>
-        <ShowAllTourPackages initialData={allData} />
+        <ShowAllTourPackages initialData={allData.data} />
       </div>
     </div>
   );

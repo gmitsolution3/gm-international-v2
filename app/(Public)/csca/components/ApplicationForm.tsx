@@ -251,7 +251,7 @@ const ApplicationForm: React.FC<Props> = ({ userEmail }) => {
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/csca-application`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/csca-application/api/v1/create`,
         {
           method: "POST",
           headers: {
@@ -260,8 +260,10 @@ const ApplicationForm: React.FC<Props> = ({ userEmail }) => {
           body: JSON.stringify(formData),
         },
       );
+      console.log({formData})
 
       const result = await res.json();
+      console.log({result})
 
       if (!result.success) {
         return toast.error(

@@ -134,7 +134,7 @@ const AddressFormTable = ({ offices }: { offices: IOfficeAddress[] }) => {
     try {
       setDeletingId(id);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/delete-office-address/${id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/office-address/api/v1/del-office-address/${id}`,
         { method: "DELETE" },
       );
       if (!response.ok) throw new Error("Failed to delete");

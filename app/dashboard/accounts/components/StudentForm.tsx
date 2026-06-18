@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -31,7 +32,7 @@ async function fetchDegrees(): Promise<Degree> {
   // return res.json();
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/student-programs/unique`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/scholarship-package/api/v1/student-programs/unique`,
   );
   if (!res.ok) {
     throw new Error("Failed to fetch degrees");
@@ -106,6 +107,7 @@ export default function StudentForm({
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "loading" | "success"
   >("idle");
+  const router = useRouter();
 
   const {
     register,
@@ -130,7 +132,7 @@ export default function StudentForm({
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/accounts/students-applications`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/std-account/api/v1/create`,
         {
           method: "POST",
           headers: {
@@ -140,7 +142,6 @@ export default function StudentForm({
             ...data,
             due,
             email,
-            createdAt: new Date().toISOString(),
           }),
         },
       );
@@ -157,6 +158,7 @@ export default function StudentForm({
         result.message || "Student application submitted successfully!",
       );
       setSubmitStatus("success");
+      router.push("/dashboard/accounts/student");
     } catch (err) {
       console.error("Submission error:", err);
       toast.error("Failed to submit application");

@@ -6,6 +6,7 @@ import { Checkbox, Label } from "@headlessui/react";
 import { UploadToCloudinary } from "@/app/components/uploadPdf/uploadToCloudinary";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 interface FormData {
   fullName: string;
@@ -46,7 +47,7 @@ const CustomPackage = () => {
 
   const [uploadedFile, setUploadedFile] = useState<string>("");
   const [fileUrl, setFileUrl] = useState("");
-  const router = useRouter()
+  const router = useRouter();
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -86,7 +87,6 @@ const CustomPackage = () => {
     });
   };
 
- 
   const handleSubmit = async () => {
     const payload = {
       ...formData,
@@ -94,7 +94,7 @@ const CustomPackage = () => {
     };
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/custom-tourist-package`,
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/tourist-query/api/v1/create`,
       {
         method: "POST",
         headers: {
@@ -107,13 +107,19 @@ const CustomPackage = () => {
     const data = await res.json();
 
     if (data.success) {
-      toast.success(data.message);
-      
-      router.push("/tourist-home-page");
-      return
+      // toast.success(data.message);
+      Swal.fire({
+        title: "Your Form has been submitted",
+        icon: "success",
+        draggable: false,
+        showConfirmButton: false,
+        timer: 2000,
+      });
+      router.push("/dashboard");
+      return;
     }
 
-    toast.error("Something was wrong!! try again")
+    toast.error("Something was wrong!! try again");
   };
 
   return (

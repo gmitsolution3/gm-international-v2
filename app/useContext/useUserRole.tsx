@@ -16,7 +16,7 @@ const useUserRole = () => {
       const fetchUserRole = async () => {
         try {
           const res = await fetch(
-            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/users/user-role?email=${session?.user?.email}`
+            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/user-role?email=${session?.user?.email}`
           );
           if (!res.ok) throw new Error("Failed to fetch user role");
           const data = await res.json();

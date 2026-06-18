@@ -31,7 +31,11 @@ interface StudentAccountsTableProps {
   userRole?: string;
 }
 
-const StudentAccountsTable = ({ data, isAdmin, userRole }: StudentAccountsTableProps) => {
+const StudentAccountsTable = ({
+  data,
+  isAdmin,
+  userRole,
+}: StudentAccountsTableProps) => {
   const [accounts, setAccounts] = useState<StudentAccount[]>(data);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [editData, setEditData] = useState<Partial<StudentAccount>>({});
@@ -44,7 +48,8 @@ const StudentAccountsTable = ({ data, isAdmin, userRole }: StudentAccountsTableP
 
   // Check if user can edit all fields (admin) or only advance (office_admin)
   const canEditAllFields = isAdmin && userRole === "admin";
-  const canEditAdvanceOnly = userRole === "office_admin" || (!isAdmin && userRole !== "admin");
+  const canEditAdvanceOnly =
+    userRole === "office_admin" || (!isAdmin && userRole !== "admin");
 
   // Calculate profit (totalAmount - (advance + due))
   const calculateProfit = (total: number, advance: number, due: number) => {
@@ -92,7 +97,7 @@ const StudentAccountsTable = ({ data, isAdmin, userRole }: StudentAccountsTableP
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/accounts/sap-update/${selectedId}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/std-account/api/v1/sap-upd/${selectedId}`,
         {
           method: "PUT",
           headers: {
@@ -105,6 +110,7 @@ const StudentAccountsTable = ({ data, isAdmin, userRole }: StudentAccountsTableP
       );
 
       const result = await res.json();
+      console.log({ result });
 
       if (result.success) {
         setAccounts((prev) =>
@@ -154,13 +160,14 @@ const StudentAccountsTable = ({ data, isAdmin, userRole }: StudentAccountsTableP
     setLoading(true);
     try {
       // Prepare data for API
-      const updatePayload = canEditAdvanceOnly && !canEditAllFields
-        ? { advance: editData.advance, due: editData.due }
-        : editData;
+      const updatePayload =
+        canEditAdvanceOnly && !canEditAllFields
+          ? { advance: editData.advance, due: editData.due }
+          : editData;
 
       // API call to update student account
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/accounts/sap-update/${id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/std-account/api/v1/sap-upd/${id}`,
         {
           method: "PUT",
           headers: {
@@ -170,19 +177,20 @@ const StudentAccountsTable = ({ data, isAdmin, userRole }: StudentAccountsTableP
         },
       );
 
-      const result = await response.json()
+      const result = await response.json();
+      console.log({ result });
 
       if (result.success) {
         // Update local state
         setAccounts(
           accounts.map((acc) =>
-            acc._id === id ? { ...acc, ...editData } : acc
-          )
+            acc._id === id ? { ...acc, ...editData } : acc,
+          ),
         );
         setEditingId(null);
         setEditData({});
 
-        toast.success(result.message || "Update student account")
+        toast.success(result.message || "Update student account");
       } else {
         console.error("Failed to update student account");
         toast.success(result.message || "Failed to update student account");
@@ -200,7 +208,6 @@ const StudentAccountsTable = ({ data, isAdmin, userRole }: StudentAccountsTableP
     setEditData({});
   };
 
- 
   const handleInputChange = (
     field: keyof StudentAccount,
     value: string | number,
@@ -226,9 +233,11 @@ const StudentAccountsTable = ({ data, isAdmin, userRole }: StudentAccountsTableP
       totalAmount: acc.totalAmount + account.totalAmount,
       totalAdvance: acc.totalAdvance + account.advance,
       totalDue: acc.totalDue + account.due,
-      totalProfit: acc.totalProfit + calculateProfit(account.totalAmount, account.advance, account.due),
+      totalProfit:
+        acc.totalProfit +
+        calculateProfit(account.totalAmount, account.advance, account.due),
     }),
-    { totalAmount: 0, totalAdvance: 0, totalDue: 0, totalProfit: 0 }
+    { totalAmount: 0, totalAdvance: 0, totalDue: 0, totalProfit: 0 },
   );
 
   if (accounts.length === 0) {
@@ -241,6 +250,8 @@ const StudentAccountsTable = ({ data, isAdmin, userRole }: StudentAccountsTableP
       </div>
     );
   }
+
+  console.log({ accounts });
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -812,7 +823,12 @@ const StudentAccountsTable = ({ data, isAdmin, userRole }: StudentAccountsTableP
                   className="flex justify-between bg-gray-100 px-2 py-1 rounded"
                 >
                   <span>{doc}</span>
-                  <button onClick={() => handleRemoveDocument(i)} className="hover:bg-red-800 rounded-md hover:text-white"><X/></button>
+                  <button
+                    onClick={() => handleRemoveDocument(i)}
+                    className="hover:bg-red-800 rounded-md hover:text-white"
+                  >
+                    <X />
+                  </button>
                 </div>
               ))}
             </div>

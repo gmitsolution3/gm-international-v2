@@ -97,17 +97,18 @@ export default function AddNoticeForm() {
     setIsSubmitting(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/notice/add`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/notice-management/api/v1/create-notice`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             ...data,
-            createdAt: new Date().toISOString(),
           }),
         },
       );
+
       const result = await res.json();
+  
       if (!res.ok) throw new Error("Failed to add notice");
 
       toast.success("Notice added successfully");

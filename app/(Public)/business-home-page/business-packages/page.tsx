@@ -22,7 +22,7 @@ const BusinessPackages = async () => {
         </h1>
       </div>
       <div>
-        <ShowHomePackage packages={packages} />
+        <ShowHomePackage packages={packages.data} />
       </div>
     </div>
   );

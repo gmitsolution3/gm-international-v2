@@ -11,20 +11,21 @@ const B2BMedicalPackage = async () => {
   const id = (session?.user as any).id;
 
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-b2b-medical-package/${id}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b-medical-pkg/api/v1/get-all-med-pkg`,
   );
 
   const result = await res.json();
 
-
   return (
     <div className="space-y-6">
       <div className="text-2xl text-red-700 font-bold">Medical Section</div>
-      {result.data.length > 0 && (
+      {result.data.packageIds.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-8">
-          {result.data.map((hospital: MedicalFormData, index: number) => (
-            <HospitalCard key={index} hospital={hospital} b2bId={id}/>
-          ))}
+          {result.data.packageIds.map(
+            (hospital: MedicalFormData, index: number) => (
+              <HospitalCard key={index} hospital={hospital} b2bId={id} />
+            ),
+          )}
         </div>
       )}
     </div>

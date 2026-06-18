@@ -5,6 +5,8 @@ import UniversitySection from "./components/hospitalList";
 import { TabsSection } from "./components/tabs";
 import HeroSlider from "./components/HeroSlider";
 import generateSEO from "@/lib/seo";
+import ScholarshipUtil from "@/app/util/scholarship/slider/Slider";
+import ScholarshipFetch from "@/app/util/scholarship/fetches/fetches";
 
 export const metadata = generateSEO(
   "International Student Scholarships for China, Malaysia & Australia",
@@ -12,45 +14,10 @@ export const metadata = generateSEO(
 );
 
 const StudentHomePage = async () => {
-  const fData = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-filtered-data`,
-  );
-
-  const filterData = await fData.json();
-
-  const slides = [
-    {
-      id: 1,
-      title: "Your Dream University Awaits",
-      subtitle: "Study Abroad Made Simple",
-      description:
-        "Explore top universities worldwide with expert guidance, smooth application support, and complete student assistance.",
-      image: "https://i.postimg.cc/D08B2cZV/1-jpg.jpg",
-      imageAlt: "Study abroad students",
-    },
-    {
-      id: 2,
-      title: "Transform Your Career Globally",
-      subtitle: "Opportunities Beyond Borders",
-      description:
-        "Join thousands of successful students who started their international education journey with us.",
-      image: "https://i.postimg.cc/T1pCRcPm/2-jpg.jpg",
-      imageAlt: "Global student opportunities",
-    },
-  ];
-
-  const checklistItems = [
-    "Application form",
-    "Recent photo",
-    "Passport scan copy",
-    "Academic Transcript, Certificate and testimonial",
-    "English test score (If any)",
-    "CSCA score (If any)",
-    "Medical report",
-    "Police clearance ",
-    "Experience Certificates (If any)",
-    "Award Certificate (If any)",
-  ];
+  const [scholarshipPkg, filterData] = await Promise.all([
+    ScholarshipFetch.getScholarshipPkg(),
+    ScholarshipFetch.getFilterData(),
+  ]);
 
   const label = "Student documents checklist";
 
@@ -58,19 +25,19 @@ const StudentHomePage = async () => {
     <div className="min-h-screen">
       <div>
         <HeroSlider
-          slides={slides}
-          checklistItems={checklistItems}
+          slides={ScholarshipUtil.slides}
+          checklistItems={ScholarshipUtil.checklistItems}
           label={label}
         />
       </div>
       <div>
-        <TabsSection filterData={filterData} />
+        <TabsSection filterData={filterData.data} />
       </div>
       <div className="text-2xl font-bold max-w-7xl mx-auto min-h-137.5 flex items-center justify-center">
-        <PackageOfferSection />
+        <PackageOfferSection pkg={scholarshipPkg.data} />
       </div>
       <div>
-        <UniversitySection />
+        <UniversitySection pkg={scholarshipPkg.data} />
       </div>
       <div className="">
         <SupportSection />

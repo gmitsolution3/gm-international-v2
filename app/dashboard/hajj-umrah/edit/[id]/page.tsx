@@ -11,10 +11,10 @@ interface ViewUmrahBookedDataProps {
 const getUmrahBookedData = async (id: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/api/v1/umrah-booked-data/${id}`,
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/umrah-application/api/v1/find-single-application/${id}`,
       {
         cache: "no-store",
-      }
+      },
     );
     
     if (!res.ok) {

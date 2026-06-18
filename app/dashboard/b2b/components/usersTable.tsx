@@ -1,25 +1,37 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react';
-import { Users, Mail, Phone, Shield, CheckCircle, XCircle, Calendar, User, DeleteIcon, Trash2 } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Users,
+  Mail,
+  Phone,
+  Shield,
+  CheckCircle,
+  XCircle,
+  Calendar,
+  User,
+  DeleteIcon,
+  Trash2,
+} from "lucide-react";
 import { GoPackageDependencies } from "react-icons/go";
-import Link from 'next/link';
-import { toast } from 'sonner';
+import Link from "next/link";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 interface Users {
-    _id: string;
-    userName: string;
-    email: string;
-    phone: string;
-    userRole: "b2b" | "admin" | "user",
-    isActive: boolean;
-    b2bProfileId: string;
-    createdBy: string;
-    createdAt: string;
+  _id: string;
+  userName: string;
+  email: string;
+  phone: string;
+  userRole: "b2b" | "admin" | "user";
+  isActive: boolean;
+  b2bProfileId: string;
+  createdBy: string;
+  createdAt: string;
 }
 
 interface UsersProps {
-    allUsers: Users[]
+  allUsers: Users[];
 }
 
 const formatDate = (dateString: string) => {
@@ -33,20 +45,24 @@ const formatDate = (dateString: string) => {
   });
 };
 
-
-const handleDelete = async(id:string)=>{
-  const res = await fetch(`${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b/user-application/${id}`);
-
-  const result = await res.json();
-  if(result.success){
-    toast.success("Application deleted successfully")
-  }
-}
-
-export default function UsersTable({allUsers}:UsersProps) {
+export default function UsersTable({ allUsers }: UsersProps) {
   const [users] = useState<Users[]>(allUsers);
+  const router = useRouter();
 
-  
+  const handleDelete = async (id: string) => {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/b2b-user/api/v1/del/${id}`,
+      {
+        method: "DELETE",
+      },
+    );
+
+    const result = await res.json();
+    if (result.success) {
+      toast.success("Application deleted successfully");
+      router.refresh();
+    }
+  };
 
   return (
     <div className="min-h-screen p-4 md:p-8">
