@@ -82,7 +82,7 @@ export default async function RootLayout({
             <HidableNavbar />
             <Toaster closeButton position="top-right" />
             {isAdmin ? children : <CopyProtected>{children}</CopyProtected>}
-            {/* <FloatingMessage /> */}
+            <FloatingMessage />
             <HidableFooter />
           </SessionWrapper>
         </UserProvider>
