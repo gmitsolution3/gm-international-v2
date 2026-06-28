@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { io, Socket } from "socket.io-client";
+import { v4 as uuid } from "uuid";
 
 const SOCKET_URL =
   process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:8080";
@@ -54,8 +55,15 @@ const isBusinessHours = () => {
 
 export const LiveChat = () => {
   const { data: session } = useSession();
+
+  let guestId = localStorage.getItem("guest_id");
+  if (!guestId) {
+    guestId = uuid();
+    localStorage.setItem("guest_id", guestId);
+  }
+
   const user = session?.user as any;
-  const userId = user?.id || "anonymous";
+  const userId = user?.id || guestId;
   const userRole = user?.userRole || "user";
   const isAdmin = customRole.includes(userRole);
   const adminEmail = isAdmin ? user?.email : "";
@@ -85,6 +93,7 @@ export const LiveChat = () => {
   const socketRef = useRef<Socket | null>(null);
   const chatBottomRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+
 
   // Helper function to get current time
   function getCurrentTime() {
@@ -119,7 +128,6 @@ export const LiveChat = () => {
 
     // Connection events
     socket.on("connect", () => {
-      console.log("Connected to chat server:", socket.id);
       setIsConnected(true);
 
       // Reconnect handling
