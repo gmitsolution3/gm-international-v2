@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { io, Socket } from "socket.io-client";
+import { toast } from "sonner";
 import { v4 as uuid } from "uuid";
 
 const SOCKET_URL =
@@ -94,7 +95,6 @@ export const LiveChat = () => {
   const chatBottomRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-
   // Helper function to get current time
   function getCurrentTime() {
     const now = new Date();
@@ -129,7 +129,6 @@ export const LiveChat = () => {
     // Connection events
     socket.on("connect", () => {
       setIsConnected(true);
-
       // Reconnect handling
       if (isAdmin) {
         socket.emit("getActiveChats", { adminId });
@@ -450,6 +449,15 @@ export const LiveChat = () => {
     }
   };
 
+  const handleCopyPhone = async (phone: string) => {
+    try {
+      await navigator.clipboard.writeText(phone);
+      toast.success("Phone number copied");
+    } catch (error) {
+      toast.error("Failed to copy phone number");
+    }
+  };
+
   // Typing Animation Component
   const TypingIndicator = () => (
     <div className="flex items-start mb-3 ml-2">
@@ -604,8 +612,16 @@ export const LiveChat = () => {
                     >
                       <div className="flex justify-between items-center">
                         <span className="text-sm font-medium text-gray-800">
-                          {chat.userId?.name || "User"}:{" "}
-                          {chat.userId?.phone || ""}
+                          {chat.userName || "User"}:{" "}
+                          <span
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleCopyPhone(chat.phone);
+                            }}
+                            className="text-red-700 hover:cursor-pointer hover:underline"
+                          >
+                            {chat.phone || ""}
+                          </span>
                         </span>
                         <span className="text-[10px] text-gray-400">
                           {new Date(

@@ -19,9 +19,6 @@ export default async function TouristPackageDetails({ params, searchParams }: Pa
 
   const resOfResult = await res.json();
 
-  console.log({resOfResult})
-
-
 
   return <PackageDetails packageData={resOfResult.data} source={source} />;
 }

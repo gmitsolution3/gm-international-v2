@@ -5,7 +5,6 @@ const ServiceDep = [
   "Medical",
   "Tourist",
   "Business",
-  "Visa",
   "Umrah Hajj",
 ];
 

@@ -21,12 +21,7 @@ export default async function OfferDetailsPage({
       cache: "no-store",
     },
   );
-  // const res = await fetch(
-  //   `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/admin/scholarship-package-management/${id}`,
-  //   {
-  //     cache: "no-store",
-  //   },
-  // );
+ 
 
   const packageDetails = await res.json();
 
