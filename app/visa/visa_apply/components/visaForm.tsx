@@ -50,9 +50,10 @@ export default function VisaForm() {
       setLoading(true);
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-form-data?country=${country}&visaType=${visaType}`
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/form-data/get-form-data?country=${country}&visaType=${visaType}`
         );
         const result = await res.json();
+        console.log({result})
 
         setSections(result.data || []);
       } catch (err) {

@@ -50,8 +50,8 @@ export default function Step3({ onNext, onPrevious }: Step3Props) {
       setIsLoading(true);
       try {
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-file-data?country=${country}&visaType=${visaType}`,
-          { cache: "no-store" }
+          `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/form-data/get-file-data?country=${country}&visaType=${visaType}`,
+          { cache: "no-store" },
         );
         const data = await res.json();
 
@@ -161,7 +161,7 @@ export default function Step3({ onNext, onPrevious }: Step3Props) {
                     "border-2 border-dashed transition-all duration-300 flex items-center gap-3",
                     isUploaded
                       ? "border-green-500 bg-green-50 hover:bg-green-100"
-                      : "border-red-200 text-red-600 hover:bg-red-50"
+                      : "border-red-200 text-red-600 hover:bg-red-50",
                   )}
                   onClick={() => document.getElementById(doc.name)?.click()}
                 >
@@ -204,9 +204,10 @@ export default function Step3({ onNext, onPrevious }: Step3Props) {
           ← Previous
         </Button>
         <Button
+          type="button"
           onClick={onNext}
           disabled={requiredFiles.some(
-            (doc: any) => doc.required && !uploadedFiles[doc.name]
+            (doc: any) => doc.required && !uploadedFiles[doc.name],
           )}
           className="w-full sm:w-auto bg-[#CA2328] hover:bg-red-600 text-white px-8 py-6 rounded-full font-semibold text-base disabled:opacity-50"
         >

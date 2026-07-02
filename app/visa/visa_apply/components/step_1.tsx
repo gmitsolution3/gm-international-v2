@@ -1,14 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useFormContext } from "react-hook-form";
+import { ChevronDown } from "lucide-react";
 
 interface Step1Props {
   onNext: () => void;
@@ -27,11 +21,8 @@ const visaTypes = [
   { value: "Medical", label: "Medical Visa" },
 ];
 
-
 export default function Step1({ onNext }: Step1Props) {
-  // const isFormComplete = formData.country && formData.visaType
   const {
-    setValue,
     register,
     formState: { errors },
     watch,
@@ -51,11 +42,10 @@ export default function Step1({ onNext }: Step1Props) {
         {/* Country icon */}
         <div className="flex justify-start md:justify-center w-full">
           <div className="w-20 h-20 sm:w-24 sm:h-24 bg-slate-100 rounded-full flex items-center justify-center">
-            {/* <Globe className="w-10 h-10 sm:w-12 sm:h-12 text-red-500" /> */}
             <img
               src="https://i.postimg.cc/prJ5HkXk/Frame-1618871795.png"
               alt="global"
-              className='"w-20 h-20 sm:w-12 sm:h-12 md:w-20 md:h-20 text-red-500" '
+              className="w-20 h-20 sm:w-12 sm:h-12 md:w-20 md:h-20 text-red-500"
             />
           </div>
         </div>
@@ -73,46 +63,42 @@ export default function Step1({ onNext }: Step1Props) {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
-        {/* Country select */}
-        <div>
-          {/* value={formData.country} onValueChange= */}
-          {/* {(value) => setFormData({ ...formData, country: value })} */}
-          <Select
-            onValueChange={(value) =>
-              setValue("country", value, { shouldValidate: true })
-            }
+        {/* Country select - native HTML select */}
+        <div className="relative  border border-red-700 rounded-xl">
+          <select
+            {...register("country", { required: true })}
+            defaultValue=""
+            className="w-full h-12 sm:h-14 bg-slate-100 border-none text-slate-700 text-base px-4 rounded-md appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-300"
           >
-            <SelectTrigger className="w-full h-12 sm:h-14 bg-slate-100 border-none text-slate-700 text-base py-8 px-4">
-              <SelectValue placeholder="Country" />
-            </SelectTrigger>
-            <SelectContent>
-              {countries.map((country) => (
-                <SelectItem key={country.value} value={country.value}>
-                  {country.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            <option value="" disabled>
+              Country
+            </option>
+            {countries.map((c) => (
+              <option key={c.value} value={c.value}>
+                {c.label}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
         </div>
 
-        {/* Visa type select */}
-        <div>
-          <Select
-            onValueChange={(value) =>
-              setValue("visaType", value, { shouldValidate: true })
-            }
+        {/* Visa type select - native HTML select */}
+        <div className="relative border border-red-700 rounded-xl">
+          <select
+            {...register("visaType", { required: true })}
+            defaultValue=""
+            className="w-full h-12 sm:h-14 bg-slate-100 border-none text-slate-700 text-base px-4 rounded-md appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-300"
           >
-            <SelectTrigger className="w-full h-12 sm:h-14 bg-slate-100 border-none text-slate-700 text-base py-8 px-4">
-              <SelectValue placeholder="Select visa type" />
-            </SelectTrigger>
-            <SelectContent>
-              {visaTypes.map((type) => (
-                <SelectItem key={type.value} value={type.value}>
-                  {type.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            <option value="" disabled>
+              Select visa type
+            </option>
+            {visaTypes.map((v) => (
+              <option key={v.value} value={v.value}>
+                {v.label}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
         </div>
       </div>
 

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useFormContext } from "react-hook-form";
 import Swal from "sweetalert2";
 
@@ -20,23 +20,22 @@ export default function Step4({ onPrevious }: Step4Props) {
     const fullData = {
       ...data,
       createdBy: session?.user?.email,
-      createdAt: new Date().toISOString(),
       applicationStatus: "pending",
       paymentStatus: "pending",
     };
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/submit-visa-application`,
+      `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/visa-applications/insert`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(fullData),
-      }
+      },
     );
 
     const result = await res.json();
-    if (result.insertedId) {
+    if (result) {
       Swal.fire({
         icon: "success",
         title: "Application Submitted",
@@ -73,7 +72,9 @@ export default function Step4({ onPrevious }: Step4Props) {
       >
         ← Go Back
       </Button>
-      <Button onClick={handleSubmit(onSubmit)}>Submit Application</Button>
+      <Button type="button" onClick={handleSubmit(onSubmit)}>
+        Submit Application
+      </Button>
     </div>
   );
 }

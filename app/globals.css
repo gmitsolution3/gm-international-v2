@@ -116,14 +116,15 @@
 }
 
 html {
-  scrollbar-gutter: stable;
+  scrollbar-gutter: stable both-edges;
   scroll-behavior: smooth;
 }
 
-/* html,
+
+html,
 body {
   overflow-y: scroll;
-} */
+}
 
 @keyframes bounce {
   0%,

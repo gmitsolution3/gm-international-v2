@@ -52,9 +52,13 @@ export default function VisaApply() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           {/* {renderStep()} */}
           {currentStep === 1 && <Step1 onNext={handleNext} />}
-          {currentStep === 2 && <Step2 onNext={handleNext} onPrevious={handlePrevious}/>}
-          {currentStep === 3 && <Step3 onNext={handleNext} onPrevious={handlePrevious}/>}
-          {currentStep === 4 && <Step4 onPrevious={handlePrevious}/>}
+          {currentStep === 2 && (
+            <Step2 onNext={handleNext} onPrevious={handlePrevious} />
+          )}
+          {currentStep === 3 && (
+            <Step3 onNext={handleNext} onPrevious={handlePrevious} />
+          )}
+          {currentStep === 4 && <Step4 onPrevious={handlePrevious} />}
         </div>
       </main>
     </FormProvider>

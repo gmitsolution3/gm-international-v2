@@ -79,7 +79,7 @@ export default async function RootLayout({
       >
         <UserProvider>
           <SessionWrapper>
-            <HidableNavbar />
+            <HidableNavbar session={session.user} />
             <Toaster closeButton position="top-right" />
             {isAdmin ? children : <CopyProtected>{children}</CopyProtected>}
             <FloatingMessage />

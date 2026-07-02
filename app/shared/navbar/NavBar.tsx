@@ -2,13 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import {
-  CircleCheckIcon,
-  CircleHelpIcon,
-  CircleIcon,
-  Menu,
-  X,
-} from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 import {
   NavigationMenu,
@@ -20,10 +14,8 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import HotlineButton from "./components/hotlineButton";
-import { useSession } from "next-auth/react";
 import { UserDropdown } from "./components/DropdownMenuOnNavbar";
-import useUserRole from "@/app/useContext/useUserRole";
-import Loader from "@/components/ui/loader";
+import { SessionUser } from "@/app/components/hideAbleNavBar/hideableNavbar";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -64,32 +56,23 @@ const components: { title: string; href: string; description: string }[] = [
   },
 ];
 
-type UserRole = {
-  userRole: string;
-  loading: boolean;
-};
-
 type User = {
   avatar: string;
 };
 
-export function NavBar() {
-  const { data: session, status } = useSession();
+export function NavBar({ session }: { session: SessionUser }) {
+  // const { data: session, status } = useSession();
   const [userData, setUserData] = useState<User | undefined>();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
 
-  const result: UserRole = useUserRole();
-  const { userRole, loading } = result;
-
-
   useEffect(() => {
     const fetchUserData = async () => {
-      if (session?.user?.email) {
+      if (session?.email) {
         try {
           const user = await fetch(
-            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/get-avatar?email=${session.user.email}`,
-            { cache: "no-store" }
+            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/get-avatar?email=${session.email}`,
+            { cache: "no-store" },
           );
           const userUpdateData = await user.json();
           setUserData(userUpdateData);
@@ -145,8 +128,6 @@ export function NavBar() {
               <Link href="/">Home</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
-
-          
 
           <NavigationMenuItem>
             <NavigationMenuTrigger>Services</NavigationMenuTrigger>
@@ -240,23 +221,17 @@ export function NavBar() {
           <NavigationMenuItem>
             <HotlineButton />
           </NavigationMenuItem>
-          {session?.user?.email ? (
-            <>
-              {loading ? (
-                <div className="animate-spin rounded-full h-8 w-8 border-t-4 border-red-600"></div>
-              ) : (
-                <div>
-                  <NavigationMenuItem>
-                    <UserDropdown
-                      email={session.user.email}
-                      photo={avatar || undefined}
-                      name={session.user.name || undefined}
-                      role={userRole}
-                    />
-                  </NavigationMenuItem>
-                </div>
-              )}
-            </>
+          {session?.email ? (
+            <div>
+              <NavigationMenuItem>
+                <UserDropdown
+                  email={session.email}
+                  photo={avatar || undefined}
+                  name={session.name || undefined}
+                  role={session.userRole}
+                />
+              </NavigationMenuItem>
+            </div>
           ) : (
             <NavigationMenuItem>
               <Link
@@ -287,11 +262,12 @@ export function NavBar() {
             <div>
               <HotlineButton />
             </div>
-            {session?.user?.email ? (
+            {session?.email ? (
               <UserDropdown
-                email={session.user.email}
+                email={session.email}
                 photo={avatar || undefined}
-                name={session.user.name || undefined}
+                name={session.name || undefined}
+                role={session.userRole}
               />
             ) : (
               <Link
