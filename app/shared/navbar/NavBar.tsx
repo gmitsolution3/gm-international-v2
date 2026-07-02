@@ -60,7 +60,7 @@ type User = {
   avatar: string;
 };
 
-export function NavBar({ session }: { session: SessionUser }) {
+export function NavBar({ session }: { session?: SessionUser | null}) {
   // const { data: session, status } = useSession();
   const [userData, setUserData] = useState<User | undefined>();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);

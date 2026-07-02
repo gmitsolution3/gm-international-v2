@@ -18,7 +18,7 @@ export interface SessionUser{
   username: string;
 }
 
-export default function HidableNavbar({ session }: { session: SessionUser }) {
+export default function HidableNavbar({ session }: { session?: SessionUser | null }) {
   const pathname = usePathname();
 
   const hideNavbar = pathname.startsWith("/dashboard");
