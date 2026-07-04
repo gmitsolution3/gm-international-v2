@@ -16,6 +16,7 @@ import {
 import HotlineButton from "./components/hotlineButton";
 import { UserDropdown } from "./components/DropdownMenuOnNavbar";
 import { SessionUser } from "@/app/components/hideAbleNavBar/hideableNavbar";
+import { useSession } from "next-auth/react";
 
 const components: { title: string; href: string; description: string }[] = [
   {
@@ -60,18 +61,18 @@ type User = {
   avatar: string;
 };
 
-export function NavBar({ session }: { session?: SessionUser | null}) {
-  // const { data: session, status } = useSession();
+export function NavBar() {
+  const { data: session, status } = useSession();
   const [userData, setUserData] = useState<User | undefined>();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (session?.email) {
+      if (session?.user?.email) {
         try {
           const user = await fetch(
-            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/get-avatar?email=${session.email}`,
+            `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/user/get-avatar?email=${session.user.email}`,
             { cache: "no-store" },
           );
           const userUpdateData = await user.json();
@@ -221,14 +222,14 @@ export function NavBar({ session }: { session?: SessionUser | null}) {
           <NavigationMenuItem>
             <HotlineButton />
           </NavigationMenuItem>
-          {session?.email ? (
+          {session?.user?.email ? (
             <div>
               <NavigationMenuItem>
                 <UserDropdown
-                  email={session.email}
+                  email={session.user.email}
                   photo={avatar || undefined}
-                  name={session.name || undefined}
-                  role={session.userRole}
+                  name={session.user.name || undefined}
+                  role={(session?.user as any)?.userRole}
                 />
               </NavigationMenuItem>
             </div>
@@ -262,12 +263,12 @@ export function NavBar({ session }: { session?: SessionUser | null}) {
             <div>
               <HotlineButton />
             </div>
-            {session?.email ? (
+            {session?.user?.email ? (
               <UserDropdown
-                email={session.email}
+                email={session.user.email}
                 photo={avatar || undefined}
-                name={session.name || undefined}
-                role={session.userRole}
+                name={session.user.name || undefined}
+                role={(session?.user as any)?.userRole}
               />
             ) : (
               <Link

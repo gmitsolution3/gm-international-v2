@@ -13,6 +13,7 @@ export async function proxy(req: NextRequest) {
 
   // Redirect signed-in users away from sign-in/sign-up pages
   if ((pathname === "/auth/signin" || pathname === "/auth/signup") && token) {
+    console.log(token)
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
@@ -50,6 +51,8 @@ export async function proxy(req: NextRequest) {
     );
     return NextResponse.redirect(loginUrl);
   }
+
+  console.log({token})
 
   // Otherwise continue
   return NextResponse.next();

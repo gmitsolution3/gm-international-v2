@@ -121,10 +121,10 @@ html {
 }
 
 
-html,
+/* html,
 body {
   overflow-y: scroll;
-}
+} */
 
 @keyframes bounce {
   0%,

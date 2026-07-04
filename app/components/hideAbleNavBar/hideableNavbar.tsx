@@ -29,7 +29,7 @@ export default function HidableNavbar({ session }: { session?: SessionUser | nul
 
   return (
     <div className="sticky top-0 z-50 bg-white">
-      <NavBar session={session} />
+      <NavBar />
     </div>
   );
 }

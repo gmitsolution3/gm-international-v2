@@ -7,6 +7,9 @@ import useUserRole from "@/app/useContext/useUserRole";
 import Loader from "@/components/ui/loader";
 import { ChartBarIcon, User2Icon } from "lucide-react";
 import { IoDocumentTextSharp } from "react-icons/io5";
+import { useSession } from "next-auth/react";
+import { authConfig } from "@/auth.config";
+import userRoleContext from "@/app/useContext/userRole";
 
 interface ServiceCardProps {
   iconUrl: string;
@@ -241,10 +244,10 @@ const QuickStats: React.FC<{ userRole: string }> = ({ userRole }) => {
 };
 
 const MainDashboard: React.FC = () => {
-  const { userRole, loading } = useUserRole();
+  const { userRole, loading } = userRoleContext();
   const [services, setServices] = useState<ServiceCardProps[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-  
+
 
   React.useEffect(() => {
     if (!userRole) return;
