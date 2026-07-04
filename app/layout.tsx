@@ -12,6 +12,7 @@ import { getServerSession } from "next-auth";
 import { authConfig } from "@/auth.config";
 import { UserProvider } from "./useContext/useUserData";
 import FloatingMessage from "./components/floatingCart/FloatingMessage";
+import InitialLoader from "./components/InitialLoader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -77,15 +78,17 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <UserProvider>
-          <SessionWrapper>
-            <HidableNavbar session={session?.user ?? null} />
-            <Toaster closeButton position="top-right" />
-            {isAdmin ? children : <CopyProtected>{children}</CopyProtected>}
-            <FloatingMessage />
-            <HidableFooter />
-          </SessionWrapper>
-        </UserProvider>
+        <InitialLoader>
+          <UserProvider>
+            <SessionWrapper>
+              <HidableNavbar />
+              <Toaster closeButton position="top-right" />
+              {isAdmin ? children : <CopyProtected>{children}</CopyProtected>}
+              <FloatingMessage />
+              <HidableFooter />
+            </SessionWrapper>
+          </UserProvider>
+        </InitialLoader>
       </body>
     </html>
   );

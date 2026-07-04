@@ -11,11 +11,8 @@ export async function proxy(req: NextRequest) {
   const token = await getToken({ req, secret });
   const { pathname } = req.nextUrl;
 
-  console.log({"beforeToken": token});
-
   // Redirect signed-in users away from sign-in/sign-up pages
   if ((pathname === "/auth/signin" || pathname === "/auth/signup") && token) {
-    console.log({"afterToken": token});
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
@@ -36,7 +33,7 @@ export async function proxy(req: NextRequest) {
     "/b2b/dashboard/b2b-business-package",
     "/b2b/dashboard/visa-rate",
     "/b2b/dashboard/services-pricing",
-    "/csca/csca-application"
+    "/csca/csca-application",
   ];
 
   const isProtectedPath = protectedPaths.some((path) =>
@@ -53,8 +50,6 @@ export async function proxy(req: NextRequest) {
     );
     return NextResponse.redirect(loginUrl);
   }
-
-  console.log({"finalToken": token});
 
   // Otherwise continue
   return NextResponse.next();

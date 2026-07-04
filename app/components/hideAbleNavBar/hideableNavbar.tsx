@@ -2,12 +2,6 @@
 
 import { NavBar } from "@/app/shared/navbar/NavBar";
 import { usePathname } from "next/navigation";
-// email: "sabbir@gmail.com";
-// id: "6a23d5e4ffcc967de9ca2b39";
-// name: "sabbir";
-// phone: "01817247388";
-// userRole: "admin";
-// username: "sabbir";
 
 export interface SessionUser{
   email: string;
@@ -18,7 +12,7 @@ export interface SessionUser{
   username: string;
 }
 
-export default function HidableNavbar({ session }: { session?: SessionUser | null }) {
+export default function HidableNavbar() {
   const pathname = usePathname();
 
   const hideNavbar = pathname.startsWith("/dashboard");
