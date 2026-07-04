@@ -11,9 +11,11 @@ export async function proxy(req: NextRequest) {
   const token = await getToken({ req, secret });
   const { pathname } = req.nextUrl;
 
+  console.log({"beforeToken": token});
+
   // Redirect signed-in users away from sign-in/sign-up pages
   if ((pathname === "/auth/signin" || pathname === "/auth/signup") && token) {
-    console.log(token)
+    console.log({"afterToken": token});
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
@@ -52,7 +54,7 @@ export async function proxy(req: NextRequest) {
     return NextResponse.redirect(loginUrl);
   }
 
-  console.log({token})
+  console.log({"finalToken": token});
 
   // Otherwise continue
   return NextResponse.next();
