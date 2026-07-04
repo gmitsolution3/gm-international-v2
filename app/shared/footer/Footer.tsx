@@ -132,7 +132,7 @@ export default function Footer() {
                     href="https://www.facebook.com/profile.php?id=61580654585072"
                     className="hover:underline pl-1"
                     target="_blank"
-                  > 
+                  >
                     Thailand
                   </a>{" "}
                   |
@@ -142,7 +142,8 @@ export default function Footer() {
                     target="_blank"
                   >
                     Malaysia
-                  </a>{" "} |
+                  </a>{" "}
+                  |
                   <a
                     href="https://www.facebook.com/profile.php?id=61580654585072"
                     className="hover:underline pl-1"

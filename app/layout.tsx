@@ -25,7 +25,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://gminternational.live"),
+  metadataBase: new URL("https://www.gminternational.live"),
 
   title: {
     default:
@@ -83,7 +83,9 @@ export default async function RootLayout({
             <SessionWrapper>
               <HidableNavbar />
               <Toaster closeButton position="top-right" />
-              {isAdmin ? children : <CopyProtected>{children}</CopyProtected>}
+              <main className="flex-1">
+                {isAdmin ? children : <CopyProtected>{children}</CopyProtected>}
+              </main>
               <FloatingMessage />
               <HidableFooter />
             </SessionWrapper>

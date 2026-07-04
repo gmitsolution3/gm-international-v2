@@ -11,7 +11,7 @@ export default function HidableFooter() {
   if (hideNavbar) return null;
 
   return (
-    <div className="sticky top-0 z-50 bg-white">
+    <div>
       <Footer />
     </div>
   );
