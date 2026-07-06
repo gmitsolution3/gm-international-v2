@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Search, MapPin, Globe, GraduationCap, Filter } from "lucide-react";
 import OfferCard from "../components/OfferCard";
@@ -9,7 +8,6 @@ export const metadata = generateSEO(
   "Result of your search for International Student Scholarships for China, Malaysia & Australia",
   "Apply for fully funded and partial scholarships in China, Malaysia, and Australia. Get expert support for admissions, visa applications, and study abroad programs.",
 );
-
 
 interface PageProps {
   searchParams: {
@@ -23,10 +21,8 @@ const FindSearchResult = async ({ searchParams }: PageProps) => {
   const { country, city, program } = await searchParams;
   const hotlineNumber = "+8801896042360";
 
-
-
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/get-search-result?country=${country}&city=${city}&program=${program}`,
+    `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/scholarship-package/api/v1/find-search-result?country=${country}&city=${city}&program=${program}`,
     { cache: "no-store" },
   );
 
