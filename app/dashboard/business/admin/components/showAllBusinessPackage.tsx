@@ -119,7 +119,7 @@ const PackageDescriptionView = ({ html }: { html: string }) => {
 
 // Types
 interface PhaseItem {
-  phaseNumber: number;
+  phaseNumber: string;
   startDate: string;
   endDate: string;
   returnCity: string;
@@ -859,7 +859,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                         type="button"
                         onClick={() =>
                           appendPhase({
-                            phaseNumber: phaseFields.length + 1,
+                            phaseNumber: (phaseFields.length + 1).toString(),
                             startDate: "",
                             endDate: "",
                             returnCity: "",
