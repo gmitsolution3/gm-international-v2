@@ -320,45 +320,23 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
       };
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-package-update/${selectedPackage._id}`,
+        `${process.env.NEXT_PUBLIC_EXPRESS_BASE_URL}/business-package/api/v1/update/${selectedPackage._id}`,
         {
-          method: "PUT",
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(updateData),
         },
       );
-
       const result = await res.json();
-
       if (res.ok) {
-        // Update local state
-        // setPackages((prev) =>
-        //   prev.map((pkg) =>
-        //     pkg._id === selectedPackage._id
-        //       ? {
-        //           ...pkg,
-        //           ...updateData,
-        //           _id: pkg._id,
-        //           createdAt: pkg.createdAt,
-        //           createdBy: pkg.createdBy,
-        //         }
-        //       : pkg,
-        //   ),
-        // );
-
-        // setSelectedPackage((prev) =>
-        //   prev ? { ...prev, ...updateData } : null,
-        // );
-
         Swal.fire({
           icon: "success",
           title: "Package updated successfully!",
           timer: 1500,
           showConfirmButton: false,
         });
-
         setIsEditMode(false);
         setIsModalOpen(false);
       } else {
