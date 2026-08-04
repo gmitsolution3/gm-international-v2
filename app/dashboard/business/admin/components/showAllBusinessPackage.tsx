@@ -316,6 +316,10 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
       // Update package
       const updateData = {
         ...data,
+        phases: data.phases.map((phase) => ({
+          ...phase,
+          phaseNumber: String(phase.phaseNumber),
+        })),
         image: imageURL || selectedPackage.image,
       };
 
@@ -326,7 +330,7 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(updateData), 
+          body: JSON.stringify(updateData),
         },
       );
       const result = await res.json();
