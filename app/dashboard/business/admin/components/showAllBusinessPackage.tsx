@@ -141,6 +141,7 @@ interface TourPackage {
   packageStatus?: "active" | "inactive" | "pending";
   isB2B?: boolean;
   B2BPrice?: string;
+  isWithVisaAndAirTicket?: boolean;
 }
 
 interface TourPackageProps {
@@ -487,6 +488,18 @@ const ShowAllTourPackages = ({ initialData }: TourPackageProps) => {
                   >
                     <td className="px-6 py-4 text-sm font-medium text-black">
                       {pkg.packageName}
+                      <br />
+                      <span className="text-xs text-gray-500">
+                        {pkg.isWithVisaAndAirTicket ? (
+                          <span className="text-xs text-green-700">
+                            With Visa & Air Ticket
+                          </span>
+                        ) : (
+                          <span className="text-xs text-red-700">
+                            Without Visa & Air Ticket
+                          </span>
+                        )}
+                      </span>
                     </td>
                     <td className="px-6 py-4 text-sm text-black">
                       {pkg.eventName}
