@@ -3,12 +3,9 @@
 import Link from "next/link";
 import React, { useState, useMemo } from "react";
 import Image from "next/image";
-import useUserRole from "@/app/useContext/useUserRole";
 import Loader from "@/components/ui/loader";
 import { ChartBarIcon, User2Icon } from "lucide-react";
 import { IoDocumentTextSharp } from "react-icons/io5";
-import { useSession } from "next-auth/react";
-import { authConfig } from "@/auth.config";
 import userRoleContext from "@/app/useContext/userRole";
 
 interface ServiceCardProps {
@@ -334,6 +331,15 @@ const MainDashboard: React.FC = () => {
       },
       {
         iconUrl:
+          "https://i.ibb.co.com/5gkwR4kt/graphic-designer-Dl-JYAk7-A-d-M-unsplash.png",
+        title: "Intern",
+        description: "Manage your intern",
+        color: "bg-green-500",
+        titleColor: "text-black",
+        page_link: `/dashboard/intern/admin`,
+      },
+      {
+        iconUrl:
           "https://i.postimg.cc/zXX6FsTm/1eee10a3-ae86-4224-86f7-5bec20dcd51f-Photoroom.png",
         title: "Setting",
         description: "Manage other activities",
@@ -358,7 +364,8 @@ const MainDashboard: React.FC = () => {
         (service) =>
           service.title !== "B2B" &&
           service.title !== "User" &&
-          service.title !== "Setting",
+          service.title !== "Setting" &&
+          service.title !== "Intern",
       );
     } else {
       roleFiltered = [];

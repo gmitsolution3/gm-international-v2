@@ -3,7 +3,8 @@
 import { useEffect, useState } from 'react';
 import { Mail, Phone, Calendar, Shield } from 'lucide-react';
 
-interface User {
+export interface User {
+  id:string;
   username: string;
   email: string;
   phone: string;

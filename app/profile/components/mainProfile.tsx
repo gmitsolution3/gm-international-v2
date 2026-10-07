@@ -9,6 +9,7 @@ import { EditProfileModal } from "./profileModal";
 interface UserProfileData {
   userProfleData: {
     _id: string;
+    id: string;
     username: string;
     email: string;
     phone: string;

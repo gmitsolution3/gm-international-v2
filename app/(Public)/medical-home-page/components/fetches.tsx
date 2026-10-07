@@ -59,6 +59,7 @@ export const getAllMedicalData = async () => {
   return res.json();
 };
 
+
 export const getFilterInfo = async () => {
   const res = await fetch(
     `${process.env.NEXT_EXPRESS_BASE_URL}/medical-pkg/api/v1/hospital-filters`,
